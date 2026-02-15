@@ -1,0 +1,87 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Bible Explorer." />
+    <meta property="og:title" content="Bible Explorer" />
+    <meta property="og:description" content="Bible Explorer." />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:image"
+      content="https://gospelgo.org/images/Gospelgo300.png"
+    />
+    <meta property="og:url" content="https://bibleexplorer.gospelgo.org" />
+    <title>Welcome to Bible Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/normalize.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <link rel="icon" type="image/png" href="Gg.png" />
+  </head>
+  <body>
+    <div id="app">
+      <header class="header">
+        <div class="title-block">
+          <div class="eyebrow">Bible Explorer</div>
+          <h1 class="title">Bible View</h1>
+          <p class="subtitle">Overview, topics, and reading in one canvas</p>
+          <p class="source">Berean Standard Bible</p>
+        </div>
+        <div class="controls">
+          <div class="state-switcher">
+            <div class="state-labels">
+              <span>State 1</span>
+              <span>State 2</span>
+              <span>State 3</span>
+            </div>
+            <input
+              class="state-slider"
+              type="range"
+              min="1"
+              max="3"
+              value="1"
+              step="1"
+            />
+            <div class="state-captions">
+              <span>Bible</span>
+              <span>Book</span>
+              <span>Verse</span>
+            </div>
+          </div>
+          <label class="topic-search">
+            <span>Topics</span>
+            <input id="topic-input" type="search" placeholder="Search topics" />
+          </label>
+          <button class="topic-action" id="topic-action" type="button">
+            Reset Topic
+          </button>
+          <span class="control-pill"><strong>State</strong> Overview</span>
+        </div>
+      </header>
+      <section class="viewport">
+        <div class="canvas">
+          <div class="state state--overview">
+            <div class="state-header">
+              <h2 class="state-title">Overview</h2>
+              <div class="state-meta">1189 chapters</div>
+            </div>
+            <div class="treemap" id="treemap"></div>
+          </div>
+        </div>
+      </section>
+      <footer class="footer">
+        <div class="legend" id="genre-legend"></div>
+      </footer>
+    </div>
+    <script src="js/app.js"></script>
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+  </body>
+</html>
