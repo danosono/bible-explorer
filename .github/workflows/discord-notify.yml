@@ -35,7 +35,7 @@ jobs:
               embeds: [
                 {
                   title: `📝 ${commits.length} new commit${commits.length > 1 ? "s" : ""} pushed`,
-                  description: `Branch: **${branch}**\n🌐 [Visit site](https://bible-explorer.gospelgo.org)`,
+                  description: `Branch: **${branch}**\n🌐 [bible-explorer.gospelgo.org](https://bible-explorer.gospelgo.org)`,
                   color: 0x1abc9c,
                   fields,
                   footer: { text: "Bible Explorer Dev Notes" },
