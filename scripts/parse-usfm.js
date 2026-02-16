@@ -90,6 +90,10 @@ const parseUsfmFile = async (filePath, nameMap) => {
     }
 
     if (currentVerse) {
+      // Skip section headers (\s1, \s2, etc), cross-references (\r), and their content
+      if (line.startsWith("\\s") || line.startsWith("\\r")) {
+        continue;
+      }
       const extra = sanitizeText(line);
       if (extra) {
         currentVerse.text = (currentVerse.text + " " + extra).trim();
