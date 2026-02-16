@@ -3,6 +3,7 @@ const stateSlider = document.querySelector(".state-slider");
 const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
 const topicAction = document.getElementById("topic-action");
+const currentTopicEl = document.getElementById("current-topic");
 
 // Global state for topics
 let topicsData = {};
@@ -11,7 +12,9 @@ let bibleData = {}; // Bible text data
 let bookSummaries = {}; // Book summaries
 let selectedTopic = null;
 let booksData = [];
-const DEFAULT_TOPIC = "birth of Jesus Christ";
+let selectedBookId = null;
+const DEFAULT_TOPIC = "life";
+const STORED_TOPIC_KEY = "bibleExplorerTopic";
 const topicsIndex = new Map();
 let allTopicNames = [];
 const MAX_TOPIC_OPTIONS = 200;
@@ -104,6 +107,93 @@ const resolveTopicKey = (value) => {
 
 const getCurrentState = () => Number(stateSlider?.value) || 1;
 
+const updateStateUI = (stateValue = getCurrentState()) => {
+  if (statePill) {
+    statePill.innerHTML = "<strong>State</strong> " + stateNames[stateValue];
+  }
+  document.body.dataset.state = String(stateValue);
+  updateTopicActionState(stateValue);
+};
+
+const renderCurrentState = () => {
+  const stateValue = getCurrentState();
+  if (stateValue === 1) {
+    renderTreemap(booksData, selectedTopic);
+    return;
+  }
+  if (stateValue === 2) {
+    renderBookView(selectedBookId, selectedTopic);
+    return;
+  }
+  renderReadView(selectedBookId, selectedTopic);
+};
+
+const setState = (nextState) => {
+  const stateValue = Number(nextState) || 1;
+  if (stateSlider) {
+    stateSlider.value = String(stateValue);
+  }
+  updateStateUI(stateValue);
+  renderCurrentState();
+};
+
+const updateCurrentTopicLabel = () => {
+  if (!currentTopicEl) return;
+  currentTopicEl.textContent = selectedTopic || "All topics";
+};
+
+const getStoredTopic = () => {
+  try {
+    return localStorage.getItem(STORED_TOPIC_KEY);
+  } catch (error) {
+    return null;
+  }
+};
+
+const parseChapterVerse = (refText) => {
+  if (!refText) return null;
+  const match = refText.match(/(\d+):(\d+)/);
+  if (!match) return null;
+  return {
+    chapter: parseInt(match[1], 10),
+    verse: parseInt(match[2], 10)
+  };
+};
+
+const getAbsoluteVerseIndex = (bookId, chapterNumber, verseNumber) => {
+  const book = bibleData[bookId];
+  if (!book || !Array.isArray(book.chapters) || !chapterNumber || !verseNumber) return null;
+  let total = 0;
+  const limit = Math.min(chapterNumber - 1, book.chapters.length);
+  for (let i = 0; i < limit; i += 1) {
+    const chapter = book.chapters[i];
+    const count = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 0);
+    total += count;
+  }
+  return total + verseNumber;
+};
+
+const getBookVerseTotal = (bookId) => {
+  const book = bibleData[bookId];
+  if (!book || !Array.isArray(book.chapters)) return null;
+  return book.chapters.reduce((sum, chapter) => {
+    const count = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 0);
+    return sum + count;
+  }, 0);
+};
+
+const setStoredTopic = (topicName) => {
+  try {
+    if (topicName) {
+      localStorage.setItem(STORED_TOPIC_KEY, topicName);
+    } else {
+      localStorage.removeItem(STORED_TOPIC_KEY);
+    }
+  } catch (error) {
+    // Ignore storage failures; topic will not persist across refresh.
+  }
+};
+
 const updateTopicActionState = (stateValue = getCurrentState()) => {
   if (!topicAction) return;
   const isOverview = stateValue === 1;
@@ -127,7 +217,12 @@ const applyTopicSelection = (topicName, options = {}) => {
     topicInput.value = selectedTopic || "";
   }
 
-  renderTreemap(booksData, selectedTopic);
+  if (commit) {
+    setStoredTopic(selectedTopic);
+  }
+
+  renderCurrentState();
+  updateCurrentTopicLabel();
   updateTopicActionState();
 };
 
@@ -187,13 +282,20 @@ const stateNames = {
 if (stateSlider && statePill) {
   const updateState = () => {
     const value = Number(stateSlider.value) || 1;
-    statePill.innerHTML = "<strong>State</strong> " + stateNames[value];
-    document.body.dataset.state = String(value);
-    updateTopicActionState(value);
+    updateStateUI(value);
   };
-  stateSlider.addEventListener("input", updateState);
+  stateSlider.addEventListener("input", () => {
+    updateState();
+    renderCurrentState();
+  });
   updateState();
 }
+
+const goToBookView = (bookId) => {
+  if (!bookId) return;
+  selectedBookId = bookId;
+  setState(2);
+};
 
 const fallbackBooks = [
   { id: "GEN", name: "Genesis", verseCount: 1533 },
@@ -642,6 +744,12 @@ const renderTreemap = (books, topic = null) => {
     const titleBar = document.createElement("div");
     titleBar.className = "card-title-bar";
     titleBar.textContent = item.displayName;
+    titleBar.classList.add("is-clickable");
+    titleBar.title = "Click to open Book view";
+    titleBar.addEventListener("click", (e) => {
+      e.stopPropagation();
+      goToBookView(item.id);
+    });
 
     card.appendChild(titleBar);
 
@@ -658,18 +766,30 @@ const renderTreemap = (books, topic = null) => {
       if (topicData && topicData.references[item.id]) {
         // Render real lines at verse position percentages
         const verseEntries = topicData.references[item.id];
-        const totalVerses = verseCounts[item.id] || 1;
+        const totalVerses = getBookVerseTotal(item.id) || verseCounts[item.id] || 1;
         
         // Group verses by proximity (within 2% are considered overlapping)
         const verseGroups = [];
         const OVERLAP_THRESHOLD = 2; // percentage points
         
-        const versePositions = verseEntries.map(entry => ({
-          verse: entry.verse,
-          percentage: (entry.verse / totalVerses) * 100,
-          subtopics: Array.isArray(entry.subtopics) ? entry.subtopics : [],
-          refs: Array.isArray(entry.refs) ? entry.refs : []
-        }));
+        const versePositions = verseEntries.map((entry) => {
+          const refs = Array.isArray(entry.refs) ? entry.refs : [];
+          const primaryRef = refs[0] || "";
+          const parsed = parseChapterVerse(primaryRef);
+          const chapterNumber = parsed?.chapter || entry.chapter || null;
+          const verseNumber = parsed?.verse || entry.verse || null;
+          const absoluteVerse = getAbsoluteVerseIndex(item.id, chapterNumber, verseNumber) || entry.verse || 1;
+          const percentage = (absoluteVerse / totalVerses) * 100;
+
+          return {
+            chapter: chapterNumber,
+            verse: verseNumber,
+            absoluteVerse,
+            percentage,
+            subtopics: Array.isArray(entry.subtopics) ? entry.subtopics : [],
+            refs
+          };
+        });
         
         versePositions.forEach((vp) => {
           let foundGroup = false;
@@ -698,10 +818,16 @@ const renderTreemap = (books, topic = null) => {
             
             // Stagger overlapping lines horizontally
             if (group.length > 1) {
-              const totalWidth = 100;
-              const individualisedWidth = totalWidth / group.length;
-              lineEl.style.left = `${(index * individualisedWidth)}%`;
+              const maxColumns = 10;
+              const columns = Math.min(group.length, maxColumns);
+              const row = Math.floor(index / maxColumns);
+              const column = index % maxColumns;
+              const individualisedWidth = 100 / columns;
+              lineEl.style.left = `${column * individualisedWidth}%`;
               lineEl.style.width = `${individualisedWidth}%`;
+              if (row > 0) {
+                lineEl.style.transform = `translateY(${row * 8}px)`;
+              }
             }
             
             // Create tooltip data (verse text loaded only when shown)
@@ -727,18 +853,14 @@ const renderTreemap = (books, topic = null) => {
           });
         });
         
-        // Show count of verses
-        const badge = document.createElement("div");
-        badge.className = "topic-badge";
-        badge.textContent = verseEntries.length > 1 ? `${verseEntries.length} verses` : "1 verse";
-        badge.title = topicData.name;
-        lines.appendChild(badge);
-        
+        const verseCount = verseEntries.length;
+
         // Add expand button
         const expandBtn = document.createElement("button");
         expandBtn.className = "expand-verses-btn";
-        expandBtn.innerHTML = "⊕";
-        expandBtn.title = "View all verses";
+        expandBtn.textContent = String(verseCount);
+        expandBtn.title = verseCount === 1 ? "View 1 verse" : `View ${verseCount} verses`;
+        expandBtn.setAttribute("aria-label", expandBtn.title);
         expandBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           showVerseModal(item.id, item.displayName, versePositions, topicData.name);
@@ -773,6 +895,148 @@ const renderTreemap = (books, topic = null) => {
   });
 
   treemapEl.appendChild(fragment);
+};
+
+const renderBookView = (bookId, topic = null) => {
+  const grid = document.getElementById("book-grid");
+  const titleEl = document.getElementById("book-title");
+  const metaEl = document.getElementById("book-meta");
+  const topicEl = document.getElementById("book-current-topic");
+  if (!grid || !titleEl || !metaEl || !topicEl) return;
+
+  grid.innerHTML = "";
+  topicEl.textContent = selectedTopic || "All topics";
+
+  const book = bookId ? bibleData[bookId] : null;
+  if (!book || !Array.isArray(book.chapters)) {
+    titleEl.textContent = "Book";
+    metaEl.textContent = "Select a book to view chapters";
+    return;
+  }
+
+  const bookName = book.name || BOOK_NAMES[bookId] || bookId;
+  const totalVerses = getBookVerseTotal(bookId) || 0;
+  titleEl.textContent = bookName;
+  metaEl.textContent = `${book.chapters.length} chapters • ${totalVerses} verses`;
+
+  const topicData = topic ? topicsData[topic] : null;
+  const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
+  const entriesByChapter = new Map();
+
+  if (bookEntries) {
+    bookEntries.forEach((entry) => {
+      const refs = Array.isArray(entry.refs) ? entry.refs : [];
+      const primaryRef = refs[0] || "";
+      const parsed = parseChapterVerse(primaryRef);
+      const chapterNumber = parsed?.chapter || entry.chapter || null;
+      const verseNumber = parsed?.verse || entry.verse || null;
+      if (!chapterNumber || !verseNumber) return;
+      if (!entriesByChapter.has(chapterNumber)) {
+        entriesByChapter.set(chapterNumber, []);
+      }
+      entriesByChapter.get(chapterNumber).push({
+        chapter: chapterNumber,
+        verse: verseNumber,
+        refs,
+        subtopics: Array.isArray(entry.subtopics) ? entry.subtopics : []
+      });
+    });
+  }
+
+  const fragment = document.createDocumentFragment();
+  book.chapters.forEach((chapter, index) => {
+    const chapterNumber = Number(chapter.number) || index + 1;
+    const card = document.createElement("article");
+    card.className = "card card--abstract";
+
+    const titleBar = document.createElement("div");
+    titleBar.className = "card-title-bar";
+    titleBar.textContent = `Chapter ${chapterNumber}`;
+    card.appendChild(titleBar);
+
+    const lines = document.createElement("div");
+    lines.className = "pin-lines";
+
+    const chapterEntries = entriesByChapter.get(chapterNumber) || [];
+    if (chapterEntries.length > 0) {
+      const chapterVerseTotal = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 1);
+      const verseGroups = [];
+      const OVERLAP_THRESHOLD = 2;
+
+      const versePositions = chapterEntries.map((entry) => {
+        const percentage = (entry.verse / chapterVerseTotal) * 100;
+        return {
+          chapter: entry.chapter,
+          verse: entry.verse,
+          percentage,
+          subtopics: entry.subtopics,
+          refs: entry.refs
+        };
+      });
+
+      versePositions.forEach((vp) => {
+        let foundGroup = false;
+        for (const group of verseGroups) {
+          const avgPos = group.reduce((sum, v) => sum + v.percentage, 0) / group.length;
+          if (Math.abs(vp.percentage - avgPos) <= OVERLAP_THRESHOLD) {
+            group.push(vp);
+            foundGroup = true;
+            break;
+          }
+        }
+        if (!foundGroup) {
+          verseGroups.push([vp]);
+        }
+      });
+
+      verseGroups.forEach((group) => {
+        group.forEach((vp, index) => {
+          const lineEl = document.createElement("div");
+          lineEl.className = "pin-line";
+          lineEl.style.position = "absolute";
+          lineEl.style.top = `${vp.percentage}%`;
+
+          if (group.length > 1) {
+            const maxColumns = 10;
+            const columns = Math.min(group.length, maxColumns);
+            const row = Math.floor(index / maxColumns);
+            const column = index % maxColumns;
+            const individualisedWidth = 100 / columns;
+            lineEl.style.left = `${column * individualisedWidth}%`;
+            lineEl.style.width = `${individualisedWidth}%`;
+            if (row > 0) {
+              lineEl.style.transform = `translateY(${row * 8}px)`;
+            }
+          }
+
+          const refText = (vp.refs && vp.refs[0]) ? vp.refs[0] : `Chapter ${vp.chapter}:${vp.verse}`;
+          const subtopicText = (vp.subtopics && vp.subtopics.length > 0) ? vp.subtopics.join("; ") : "";
+          lineEl.addEventListener("mouseenter", (e) => {
+            showTooltip(e, refText, subtopicText, bookId, vp.verse);
+          });
+          lineEl.addEventListener("mouseleave", hideTooltip);
+          lines.appendChild(lineEl);
+        });
+      });
+    }
+
+    card.appendChild(lines);
+    fragment.appendChild(card);
+  });
+
+  grid.appendChild(fragment);
+};
+
+const renderReadView = (bookId, topic = null) => {
+  const readTitle = document.getElementById("read-title");
+  const readMeta = document.getElementById("read-meta");
+  const readTopic = document.getElementById("read-current-topic");
+  if (!readTitle || !readMeta || !readTopic) return;
+  const book = bookId ? bibleData[bookId] : null;
+  const bookName = book?.name || BOOK_NAMES[bookId] || "Verse";
+  readTitle.textContent = bookName;
+  readMeta.textContent = book ? "Choose a verse to read" : "Select a book first";
+  readTopic.textContent = selectedTopic || "All topics";
 };
 
 const loadBooks = async () => {
@@ -852,6 +1116,13 @@ const boot = async () => {
       updateTopicOptions(e.target.value);
       applyTopicSelection(e.target.value, { commit: false });
     });
+
+    const storedTopic = resolveTopicKey(getStoredTopic());
+    if (storedTopic) {
+      applyTopicSelection(storedTopic, { commit: true });
+    } else {
+      applyTopicSelection(DEFAULT_TOPIC, { commit: true });
+    }
   }
 
   if (topicAction) {
@@ -865,11 +1136,11 @@ const boot = async () => {
     });
   }
   
-  renderTreemap(booksData, selectedTopic);
+  renderCurrentState();
   attachGenreLegend();
 
   const observer = new ResizeObserver(() => {
-    renderTreemap(booksData, selectedTopic);
+    renderCurrentState();
   });
   observer.observe(treemapEl);
 };

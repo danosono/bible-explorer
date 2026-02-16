@@ -54,7 +54,7 @@
             </div>
           </div>
           <label class="topic-search">
-            <span>Topics</span>
+            <span>Nave's Topics</span>
             <input id="topic-input" type="search" placeholder="Search topics" />
           </label>
           <button class="topic-action" id="topic-action" type="button">
@@ -68,9 +68,29 @@
           <div class="state state--overview">
             <div class="state-header">
               <h2 class="state-title">Overview</h2>
-              <div class="state-meta">1189 chapters</div>
+              <div class="state-current-topic" id="current-topic">All topics</div>
+              <div class="state-meta">66 Books written by 40 authors over 1500 years</div>
             </div>
             <div class="treemap" id="treemap"></div>
+          </div>
+          <div class="state state--book">
+            <div class="state-header">
+              <h2 class="state-title" id="book-title">Book</h2>
+              <div class="state-current-topic" id="book-current-topic">All topics</div>
+              <div class="state-meta" id="book-meta">Select a book to view chapters</div>
+            </div>
+            <div class="panel-grid" id="book-grid"></div>
+          </div>
+          <div class="state state--read">
+            <div class="state-header">
+              <h2 class="state-title" id="read-title">Verse</h2>
+              <div class="state-current-topic" id="read-current-topic">All topics</div>
+              <div class="state-meta" id="read-meta">Select a book first</div>
+            </div>
+            <div class="reading-block">
+              <h3>Verse Reader</h3>
+              <p>Choose a verse from Book view to read full text here.</p>
+            </div>
           </div>
         </div>
       </section>

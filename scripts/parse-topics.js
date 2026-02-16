@@ -21,44 +21,74 @@ const BOOK_VERSE_COUNTS = {
 
 // Book ID to abbreviation mapping
 const BOOK_IDS = {
-  'Gen': 'GEN', 'Exodus': 'EXO', 'Exod': 'EXO', 'Leviticus': 'LEV', 'Lev': 'LEV',
-  'Numbers': 'NUM', 'Num': 'NUM', 'Deuteronomy': 'DEU', 'Deut': 'DEU',
-  'Joshua': 'JOS', 'Josh': 'JOS', 'Judges': 'JDG', 'Ruth': 'RUT',
+  'Gen': 'GEN', 'Ge': 'GEN', 'Gn': 'GEN', 'Genesis': 'GEN',
+  'Exodus': 'EXO', 'Exod': 'EXO', 'Ex': 'EXO',
+  'Leviticus': 'LEV', 'Lev': 'LEV', 'Le': 'LEV',
+  'Numbers': 'NUM', 'Num': 'NUM', 'Nu': 'NUM',
+  'Deuteronomy': 'DEU', 'Deut': 'DEU', 'De': 'DEU', 'Dt': 'DEU',
+  'Joshua': 'JOS', 'Josh': 'JOS', 'Jos': 'JOS',
+  'Judges': 'JDG', 'Judg': 'JDG', 'Jdg': 'JDG',
+  'Ruth': 'RUT', 'Ru': 'RUT',
   '1 Samuel': '1SA', '1SA': '1SA', '1 Sam': '1SA',
   '2 Samuel': '2SA', '2SA': '2SA', '2 Sam': '2SA',
   '1 Kings': '1KI', '1Kgs': '1KI', '1 Kgs': '1KI',
   '2 Kings': '2KI', '2Kgs': '2KI', '2 Kgs': '2KI',
   '1 Chronicles': '1CH', '1Chr': '1CH', '1 Chr': '1CH',
   '2 Chronicles': '2CH', '2Chr': '2CH', '2 Chr': '2CH',
-  'Ezra': 'EZR', 'Nehemiah': 'NEH', 'Neh': 'NEH',
-  'Esther': 'EST', 'Job': 'JOB', 'Psalms': 'PSA', 'Psa': 'PSA',
-  'Proverbs': 'PRO', 'Pro': 'PRO', 'Ecclesiastes': 'ECC', 'Eccl': 'ECC',
-  'Song of Songs': 'SNG', 'Song': 'SNG', 'Isaiah': 'ISA', 'Isa': 'ISA',
-  'Jeremiah': 'JER', 'Jer': 'JER', 'Lamentations': 'LAM', 'Lam': 'LAM',
-  'Ezekiel': 'EZK', 'Ezek': 'EZK', 'Daniel': 'DAN', 'Dan': 'DAN',
-  'Hosea': 'HOS', 'Hos': 'HOS', 'Joel': 'JOL', 'Amos': 'AMO',
-  'Obadiah': 'OBA', 'Oba': 'OBA', 'Jonah': 'JON', 'Micah': 'MIC', 'Mic': 'MIC',
-  'Nahum': 'NAM', 'Nahm': 'NAM', 'Habakkuk': 'HAB', 'Hab': 'HAB',
-  'Zephaniah': 'ZEP', 'Zeph': 'ZEP', 'Haggai': 'HAG', 'Hag': 'HAG',
-  'Zechariah': 'ZEC', 'Zech': 'ZEC', 'Malachi': 'MAL', 'Mal': 'MAL',
-  'Matthew': 'MAT', 'Matt': 'MAT', 'Mark': 'MRK',
-  'Luke': 'LUK', 'John': 'JHN', 'Acts': 'ACT',
-  'Romans': 'ROM', 'Rom': 'ROM', '1 Corinthians': '1CO', '1Cor': '1CO', '1 Cor': '1CO',
-  '2 Corinthians': '2CO', '2Cor': '2CO', '2 Cor': '2CO',
-  'Galatians': 'GAL', 'Gal': 'GAL', 'Ephesians': 'EPH', 'Eph': 'EPH',
-  'Philippians': 'PHP', 'Phil': 'PHP', 'Colossians': 'COL', 'Col': 'COL',
-  '1 Thessalonians': '1TH', '1Thess': '1TH', '1 Thess': '1TH',
-  '2 Thessalonians': '2TH', '2Thess': '2TH', '2 Thess': '2TH',
-  '1 Timothy': '1TI', '1Tim': '1TI', '1 Tim': '1TI',
-  '2 Timothy': '2TI', '2Tim': '2TI', '2 Tim': '2TI',
-  'Titus': 'TIT', 'Philemon': 'PHM', 'Hebrews': 'HEB', 'Heb': 'HEB',
-  'James': 'JAS', 'Jas': 'JAS', '1 Peter': '1PE', '1Pet': '1PE', '1 Pet': '1PE',
-  '2 Peter': '2PE', '2Pet': '2PE', '2 Pet': '2PE',
-  '1 John': '1JN', '1Jn': '1JN', '1 Jn': '1JN',
-  '2 John': '2JN', '2Jn': '2JN', '2 Jn': '2JN',
-  '3 John': '3JN', '3Jn': '3JN', '3 Jn': '3JN',
-  'Jude': 'JUD', 'Revelation': 'REV', 'Rev': 'REV'
+  'Ezra': 'EZR', 'Ezr': 'EZR', 'Nehemiah': 'NEH', 'Neh': 'NEH', 'Ne': 'NEH',
+  'Esther': 'EST', 'Est': 'EST',
+  'Job': 'JOB',
+  'Psalms': 'PSA', 'Psalm': 'PSA', 'Psa': 'PSA', 'Ps': 'PSA',
+  'Proverbs': 'PRO', 'Pro': 'PRO', 'Pr': 'PRO',
+  'Ecclesiastes': 'ECC', 'Eccl': 'ECC', 'Ec': 'ECC',
+  'Song of Songs': 'SNG', 'Song': 'SNG', 'So': 'SNG', 'Cant': 'SNG',
+  'Isaiah': 'ISA', 'Isa': 'ISA',
+  'Jeremiah': 'JER', 'Jer': 'JER',
+  'Lamentations': 'LAM', 'Lam': 'LAM', 'La': 'LAM',
+  'Ezekiel': 'EZK', 'Ezek': 'EZK', 'Eze': 'EZK',
+  'Daniel': 'DAN', 'Dan': 'DAN', 'Da': 'DAN',
+  'Hosea': 'HOS', 'Hos': 'HOS', 'Ho': 'HOS',
+  'Joel': 'JOL', 'Joe': 'JOL',
+  'Amos': 'AMO', 'Am': 'AMO',
+  'Obadiah': 'OBA', 'Oba': 'OBA', 'Ob': 'OBA',
+  'Jonah': 'JON', 'Jon': 'JON',
+  'Micah': 'MIC', 'Mic': 'MIC',
+  'Nahum': 'NAM', 'Nahm': 'NAM', 'Na': 'NAM',
+  'Habakkuk': 'HAB', 'Hab': 'HAB',
+  'Zephaniah': 'ZEP', 'Zeph': 'ZEP', 'Zep': 'ZEP',
+  'Haggai': 'HAG', 'Hag': 'HAG',
+  'Zechariah': 'ZEC', 'Zech': 'ZEC', 'Zec': 'ZEC',
+  'Malachi': 'MAL', 'Mal': 'MAL',
+  'Matthew': 'MAT', 'Matt': 'MAT', 'Mt': 'MAT',
+  'Mark': 'MRK', 'Mr': 'MRK', 'Mk': 'MRK',
+  'Luke': 'LUK', 'Lu': 'LUK', 'Lk': 'LUK',
+  'John': 'JHN', 'Jn': 'JHN', 'Jno': 'JHN', 'Joh': 'JHN',
+  'Acts': 'ACT', 'Act': 'ACT', 'Ac': 'ACT',
+  'Romans': 'ROM', 'Rom': 'ROM', 'Ro': 'ROM', 'Rm': 'ROM',
+  '1 Corinthians': '1CO', '1Cor': '1CO', '1 Cor': '1CO', '1 Co': '1CO',
+  '2 Corinthians': '2CO', '2Cor': '2CO', '2 Cor': '2CO', '2 Co': '2CO',
+  'Galatians': 'GAL', 'Gal': 'GAL', 'Ga': 'GAL',
+  'Ephesians': 'EPH', 'Eph': 'EPH', 'Ep': 'EPH',
+  'Philippians': 'PHP', 'Phil': 'PHP', 'Php': 'PHP',
+  'Colossians': 'COL', 'Col': 'COL',
+  '1 Thessalonians': '1TH', '1Thess': '1TH', '1 Thess': '1TH', '1 Th': '1TH',
+  '2 Thessalonians': '2TH', '2Thess': '2TH', '2 Thess': '2TH', '2 Th': '2TH',
+  '1 Timothy': '1TI', '1Tim': '1TI', '1 Tim': '1TI', '1 Ti': '1TI',
+  '2 Timothy': '2TI', '2Tim': '2TI', '2 Tim': '2TI', '2 Ti': '2TI',
+  'Titus': 'TIT', 'Tit': 'TIT',
+  'Philemon': 'PHM', 'Phm': 'PHM',
+  'Hebrews': 'HEB', 'Heb': 'HEB',
+  'James': 'JAS', 'Jas': 'JAS', 'Jm': 'JAS',
+  '1 Peter': '1PE', '1Pet': '1PE', '1 Pet': '1PE', '1 Pe': '1PE',
+  '2 Peter': '2PE', '2Pet': '2PE', '2 Pet': '2PE', '2 Pe': '2PE',
+  '1 John': '1JN', '1Jn': '1JN', '1 Jn': '1JN', '1 Jo': '1JN',
+  '2 John': '2JN', '2Jn': '2JN', '2 Jn': '2JN', '2 Jo': '2JN',
+  '3 John': '3JN', '3Jn': '3JN', '3 Jn': '3JN', '3 Jo': '3JN',
+  'Jude': 'JUD', 'Jud': 'JUD',
+  'Revelation': 'REV', 'Rev': 'REV', 'Re': 'REV'
 };
+
+const unknownBookCounts = new Map();
 
 function parseVerseReference(ref) {
   // Parses "Gen. 3:15" or "Matt. 1:18, 23" or "Luke 1:26–35, 38–56"
@@ -69,20 +99,22 @@ function parseVerseReference(ref) {
   
   const bookName = match[1].trim();
   const bookLabel = bookName.replace(/\.$/, "");
+  const bookKey = bookLabel;
   const chapter = parseInt(match[2]);
   const verseStr = match[3];
   
   // Find book ID
-  let bookId = BOOK_IDS[bookName];
+  let bookId = BOOK_IDS[bookKey];
   if (!bookId) {
     // Try partial matching
     const keys = Object.keys(BOOK_IDS);
-    const found = keys.find(k => bookName.includes(k) || k.includes(bookName));
+    const found = keys.find(k => bookKey.includes(k) || k.includes(bookKey));
     if (found) bookId = BOOK_IDS[found];
   }
   
   if (!bookId) {
-    console.warn(`Could not identify book: ${bookName}`);
+    const key = bookKey || bookName || 'UNKNOWN';
+    unknownBookCounts.set(key, (unknownBookCounts.get(key) || 0) + 1);
     return null;
   }
   
@@ -231,6 +263,17 @@ async function main() {
     
     for (const [name, data] of Object.entries(topics)) {
       console.log(`  "${name}": ${data.books.length} books with ${Object.values(data.references).flat().length} total verse references`);
+    }
+
+    if (unknownBookCounts.size) {
+      console.log('\nUnknown book labels (count):');
+      const sorted = Array.from(unknownBookCounts.entries())
+        .sort((a, b) => b[1] - a[1]);
+      for (const [label, count] of sorted) {
+        console.log(`  ${label}: ${count}`);
+      }
+    } else {
+      console.log('\nNo unknown book labels found.');
     }
   } catch (error) {
     console.error('Error:', error);
