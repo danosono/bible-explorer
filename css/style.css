@@ -204,6 +204,26 @@ body::before {
 	color: var(--text-3);
 }
 
+/* Datalist dropdown styling for 4K */
+@media (min-width: 2560px) {
+	.topic-search input {
+		font-size: 1.05rem;
+		padding: 11px 14px;
+	}
+	
+	/* Webkit browsers (Chrome, Edge, Safari) */
+	.topic-datalist option {
+		font-size: 1.05rem;
+	}
+	
+	/* Firefox */
+	@-moz-document url-prefix() {
+		.topic-datalist option {
+			font-size: 1.05rem;
+		}
+	}
+}
+
 .topic-action {
 	align-self: end;
 	padding: 9px 14px;
@@ -351,7 +371,7 @@ body::before {
 	top: 0;
 	left: 0;
 	right: 0;
-	padding: 6px 8px;
+	padding: 6px 32px 6px 8px;
 	background: rgba(8, 12, 20, 0.75);
 	border-bottom: 1px solid rgba(96, 130, 168, 0.2);
 	font-size: 0.7rem;
@@ -569,12 +589,11 @@ body::before {
 	position: absolute;
 	bottom: 8px;
 	right: 8px;
-	width: 28px;
-	height: 28px;
+	width: auto;
+	height: auto;
 	padding: 0;
-	background: rgba(95, 200, 255, 0.2);
-	border: 1px solid rgba(95, 200, 255, 0.5);
-	border-radius: 50%;
+	background: transparent;
+	border: none;
 	color: rgba(95, 200, 255, 0.9);
 	font-size: 1.2rem;
 	font-weight: bold;
@@ -587,9 +606,44 @@ body::before {
 }
 
 .expand-verses-btn:hover {
-	background: rgba(95, 200, 255, 0.35);
-	box-shadow: 0 0 12px rgba(95, 200, 255, 0.4);
-	transform: scale(1.1);
+	color: rgba(95, 200, 255, 1);
+	text-shadow: 0 0 12px rgba(95, 200, 255, 0.6);
+	transform: scale(1.2);
+}
+
+.info-btn {
+	position: absolute;
+	top: 8px;
+	right: 12px;
+	width: auto;
+	height: auto;
+	padding: 0;
+	margin-left: 2px;
+	background: transparent;
+	border: none;
+	color: rgba(157, 227, 212, 0.9);
+	font-size: 1.4rem;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 15;
+}
+
+.info-btn:hover {
+	color: rgba(157, 227, 212, 1);
+	text-shadow: 0 0 12px rgba(157, 227, 212, 0.6);
+	transform: scale(1.2);
+}
+
+.book-summary-text {
+	font-size: 0.95rem;
+	line-height: 1.7;
+	color: var(--text-1);
+	margin: 0;
+	padding: 20px;
 }
 
 /* Verse Modal Styles */
@@ -1099,5 +1153,16 @@ tip.show {
 
 	.separator-text {
 		font-size: 1.1rem;
+	}
+
+	.info-btn {
+		width: auto;
+		height: auto;
+		font-size: 1.8rem;
+	}
+
+	.book-summary-text {
+		font-size: 1.15rem;
+		line-height: 1.8;
 	}
 }

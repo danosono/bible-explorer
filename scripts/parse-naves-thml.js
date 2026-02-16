@@ -80,7 +80,7 @@ const parse = (xml, limit = 0) => {
   while ((match = termDefRegex.exec(xml))) {
     const term = normalizeTopicName(match[1]);
     const defContent = match[2];
-    const pRegex = /<p class=\"index2\"[^>]*>([\s\S]*?)<\/p>/gi;
+    const pRegex = /<p class=\"index[2-9]\"[^>]*>([\s\S]*?)<\/p>/gi;
     let pMatch;
 
     while ((pMatch = pRegex.exec(defContent))) {

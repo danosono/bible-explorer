@@ -8,6 +8,7 @@ const topicAction = document.getElementById("topic-action");
 let topicsData = {};
 let verseCounts = {}; // Book verse counts for percentage calculation
 let bibleData = {}; // Bible text data
+let bookSummaries = {}; // Book summaries
 let selectedTopic = null;
 let booksData = [];
 const DEFAULT_TOPIC = "birth of Jesus Christ";
@@ -19,25 +20,22 @@ const MAX_TOPIC_OPTIONS = 200;
 let verseTextCache = {};
 let currentTooltip = null;
 
-const getVerseText = (bookId, verseNumber) => {
+const getVerseText = (bookId, chapter, verse) => {
   if (!bibleData[bookId]) return null;
-  const cacheKey = `${bookId}-${verseNumber}`;
+  const cacheKey = `${bookId}-${chapter}-${verse}`;
   if (verseTextCache[cacheKey]) {
     return verseTextCache[cacheKey];
   }
   
   const book = bibleData[bookId];
-  let currentVerse = 0;
-  for (const chapter of book.chapters) {
-    for (const verse of chapter.verses) {
-      currentVerse++;
-      if (currentVerse === verseNumber) {
-        verseTextCache[cacheKey] = verse.text;
-        return verse.text;
-      }
-    }
-  }
-  return null;
+  if (!book.chapters || !book.chapters[chapter - 1]) return null;
+  
+  const chapterData = book.chapters[chapter - 1];
+  if (!chapterData.verses || !chapterData.verses[verse - 1]) return null;
+  
+  const verseText = chapterData.verses[verse - 1].text;
+  verseTextCache[cacheKey] = verseText;
+  return verseText;
 };
 
 const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
@@ -52,9 +50,16 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
   if (subtopicText) {
     text += ` (${subtopicText})`;
   }
-  const verseText = getVerseText(bookId, verseNumber);
-  if (verseText) {
-    text += `\n${verseText}`;
+  
+  // Parse refText to extract chapter and verse (e.g., "Acts 15:16")
+  const match = refText.match(/(\d+):(\d+)/);
+  if (match) {
+    const chapter = parseInt(match[1], 10);
+    const verse = parseInt(match[2], 10);
+    const verseText = getVerseText(bookId, chapter, verse);
+    if (verseText) {
+      text += `\n${verseText}`;
+    }
   }
   
   tooltip.textContent = text;
@@ -63,15 +68,14 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
   
   // Position tooltip
   requestAnimationFrame(() => {
-    const rect = e.target.getBoundingClientRect();
-    let x = rect.left;
-    let y = rect.bottom + 8;
+    let x = e.clientX + 20;
+    let y = e.clientY + 20;
     const tw = tooltip.offsetWidth;
     const th = tooltip.offsetHeight;
     
     // Keep on screen
-    if (x + tw > window.innerWidth) x = window.innerWidth - tw - 10;
-    if (y + th > window.innerHeight) y = rect.top - th - 8;
+    if (x + tw > window.innerWidth) x = e.clientX - tw - 20;
+    if (y + th > window.innerHeight) y = e.clientY - th - 20;
     if (x < 0) x = 10;
     if (y < 0) y = 10;
     
@@ -160,6 +164,7 @@ const updateTopicOptions = (filterValue) => {
   if (!list) {
     list = document.createElement("datalist");
     list.id = listId;
+    list.className = "topic-datalist";
     topicInput.parentElement.appendChild(list);
     topicInput.setAttribute("list", listId);
   }
@@ -611,7 +616,6 @@ const renderTreemap = (books, topic = null) => {
     tile.style.top = item.y + "px";
     tile.style.width = Math.max(0, item.w) + "px";
     tile.style.height = Math.max(0, item.h) + "px";
-    tile.title = item.displayName;
     tile.dataset.row = item.rowIndex || 0;
 
     const card = document.createElement("article");
@@ -746,7 +750,25 @@ const renderTreemap = (books, topic = null) => {
       
       card.appendChild(lines);
     }
+    
     tile.appendChild(card);
+    
+    // Add info button for book summaries (always visible for non-separator books)
+    if (!item.isSeparator) {
+      const infoBtn = document.createElement("button");
+      infoBtn.className = "info-btn";
+      infoBtn.innerHTML = "ⓘ";
+      const hasSummary = bookSummaries && bookSummaries[item.id];
+      infoBtn.title = hasSummary ? "Book summary" : "Summary not available";
+      infoBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        if (hasSummary) {
+          showBookSummaryModal(item.id, item.displayName);
+        }
+      });
+      tile.appendChild(infoBtn);
+    }
+    
     fragment.appendChild(tile);
   });
 
@@ -798,11 +820,24 @@ const loadBible = async () => {
   }
 };
 
+const loadBookSummaries = async () => {
+  try {
+    const response = await fetch("data/book-summaries.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Missing book summaries");
+    const data = await response.json();
+    return data || {};
+  } catch (error) {
+    console.warn("Failed to load book summaries:", error);
+    return {};
+  }
+};
+
 const boot = async () => {
   if (!treemapEl) return;
   booksData = await loadBooks();
   verseCounts = await loadVerseCounts();
   bibleData = await loadBible();
+  bookSummaries = await loadBookSummaries();
   
   if (topicInput) {
     await loadTopics();
@@ -837,6 +872,47 @@ const boot = async () => {
     renderTreemap(booksData, selectedTopic);
   });
   observer.observe(treemapEl);
+};
+
+const showBookSummaryModal = (bookId, bookName) => {
+  const summary = bookSummaries[bookId];
+  if (!summary) return;
+  
+  // Create modal overlay
+  const modal = document.createElement("div");
+  modal.className = "verse-modal-overlay";
+  
+  const modalContent = document.createElement("div");
+  modalContent.className = "verse-modal";
+  
+  const header = document.createElement("div");
+  header.className = "verse-modal-header";
+  header.innerHTML = `<h3>${bookName}</h3><p>Book Summary</p>`;
+  
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "verse-modal-close";
+  closeBtn.innerHTML = "✕";
+  closeBtn.addEventListener("click", () => modal.remove());
+  header.appendChild(closeBtn);
+  
+  const content = document.createElement("div");
+  content.className = "verse-modal-content";
+  
+  const summaryText = document.createElement("p");
+  summaryText.className = "book-summary-text";
+  summaryText.textContent = summary.summary;
+  content.appendChild(summaryText);
+  
+  modalContent.appendChild(header);
+  modalContent.appendChild(content);
+  modal.appendChild(modalContent);
+  
+  // Close on overlay click
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.remove();
+  });
+  
+  document.body.appendChild(modal);
 };
 
 const showVerseModal = (bookId, bookName, versePositions, topicName) => {
