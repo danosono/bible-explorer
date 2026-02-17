@@ -41,19 +41,35 @@ const getVerseText = (bookId, chapter, verse) => {
   return verseText;
 };
 
+const positionTooltip = (tooltip, e) => {
+  let x = e.clientX + 20;
+  let y = e.clientY + 20;
+  const tw = tooltip.offsetWidth;
+  const th = tooltip.offsetHeight;
+
+  // Keep on screen
+  if (x + tw > window.innerWidth) x = e.clientX - tw - 20;
+  if (y + th > window.innerHeight) y = e.clientY - th - 20;
+  if (x < 0) x = 10;
+  if (y < 0) y = 10;
+
+  tooltip.style.left = x + 'px';
+  tooltip.style.top = y + 'px';
+  tooltip.classList.add('show');
+};
+
+const updateTooltipPosition = (e) => {
+  if (!currentTooltip) return;
+  positionTooltip(currentTooltip, e);
+};
+
 const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
-  // Remove old tooltip
-  if (currentTooltip) currentTooltip.remove();
-  
-  // Create tooltip element
-  const tooltip = document.createElement('tip');
-  
   // Build text
   let text = refText;
   if (subtopicText) {
     text += ` (${subtopicText})`;
   }
-  
+
   // Parse refText to extract chapter and verse (e.g., "Acts 15:16")
   const match = refText.match(/(\d+):(\d+)/);
   if (match) {
@@ -64,27 +80,23 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
       text += `\n${verseText}`;
     }
   }
-  
+
+  if (currentTooltip && currentTooltip.dataset.content === text) {
+    positionTooltip(currentTooltip, e);
+    return;
+  }
+
+  if (currentTooltip) currentTooltip.remove();
+
+  // Create tooltip element
+  const tooltip = document.createElement('tip');
   tooltip.textContent = text;
+  tooltip.dataset.content = text;
   document.body.appendChild(tooltip);
   currentTooltip = tooltip;
-  
-  // Position tooltip
+
   requestAnimationFrame(() => {
-    let x = e.clientX + 20;
-    let y = e.clientY + 20;
-    const tw = tooltip.offsetWidth;
-    const th = tooltip.offsetHeight;
-    
-    // Keep on screen
-    if (x + tw > window.innerWidth) x = e.clientX - tw - 20;
-    if (y + th > window.innerHeight) y = e.clientY - th - 20;
-    if (x < 0) x = 10;
-    if (y < 0) y = 10;
-    
-    tooltip.style.left = x + 'px';
-    tooltip.style.top = y + 'px';
-    tooltip.classList.add('show');
+    positionTooltip(tooltip, e);
   });
 };
 
@@ -1206,35 +1218,261 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   
   const content = document.createElement("div");
   content.className = "verse-modal-content";
+
+  const parseRefChapterVerse = (ref) => {
+    if (!ref) return null;
+    const match = ref.match(/(\d+):(\d+)/);
+    if (!match) return null;
+    return { chapter: Number(match[1]), verse: Number(match[2]) };
+  };
+
+  const buildRangeLabel = (startRef, endRef, startChapter, endChapter, startVerse, endVerse) => {
+    if (startVerse === endVerse) {
+      if (startRef) return startRef;
+      if (startChapter) return `${bookName} ${startChapter}:${startVerse}`;
+      return `${bookName} ${startVerse}`;
+    }
+
+    const startPrefix = startRef && startRef.includes(":") ? startRef.split(":")[0] : bookName;
+    const endPrefix = endRef && endRef.includes(":") ? endRef.split(":")[0] : bookName;
+
+    if (startChapter && endChapter && startChapter === endChapter) {
+      if (startPrefix && endPrefix && startPrefix === endPrefix) {
+        return `${startPrefix}:${startVerse}-${endVerse}`;
+      }
+      return `${bookName} ${startChapter}:${startVerse}-${endVerse}`;
+    }
+
+    if (startRef && endRef) {
+      return `${startRef} - ${endRef}`;
+    }
+
+    if (startChapter && endChapter) {
+      return `${bookName} ${startChapter}:${startVerse} - ${bookName} ${endChapter}:${endVerse}`;
+    }
+
+    return `${bookName} ${startVerse}-${endVerse}`;
+  };
+
+  const mergeAdjacentVerses = (positions) => {
+    const sorted = [...positions].sort((a, b) => {
+      const chapterA = a.chapter ?? parseRefChapterVerse((a.refs || [])[0])?.chapter ?? 0;
+      const chapterB = b.chapter ?? parseRefChapterVerse((b.refs || [])[0])?.chapter ?? 0;
+      if (chapterA !== chapterB) {
+        return chapterA - chapterB;
+      }
+      return (a.verse ?? 0) - (b.verse ?? 0);
+    });
+    const groups = [];
+
+    sorted.forEach((vp) => {
+      const primaryRef = (vp.refs || [])[0] || "";
+      const parsedRef = parseRefChapterVerse(primaryRef);
+      const chapterNumber = vp.chapter ?? parsedRef?.chapter ?? null;
+      const verseNumber = vp.verse ?? parsedRef?.verse ?? null;
+      const subtopicText = (vp.subtopics || []).join("; ");
+      const refText = primaryRef || `Verse ${verseNumber ?? vp.verse}`;
+      const last = groups[groups.length - 1];
+
+      if (
+        last &&
+        chapterNumber !== null &&
+        last.chapter === chapterNumber &&
+        verseNumber !== null &&
+        verseNumber === last.endVerse + 1 &&
+        subtopicText === last.subtopicText
+      ) {
+        last.endVerse = verseNumber;
+        last.endPercentage = vp.percentage;
+        last.refs.push(...(vp.refs || []));
+      } else {
+        groups.push({
+          chapter: chapterNumber,
+          startVerse: verseNumber ?? vp.verse,
+          endVerse: verseNumber ?? vp.verse,
+          startPercentage: vp.percentage,
+          endPercentage: vp.percentage,
+          subtopicText,
+          refs: [...(vp.refs || [])],
+          refText
+        });
+      }
+    });
+
+    const minGapPct = 3.5;
+    let lastTop = -Infinity;
+
+    return groups.map((group) => {
+      const startRef = group.refs[0] || group.refText;
+      const endRef = group.refs[group.refs.length - 1] || startRef;
+      const rangeLabel = buildRangeLabel(
+        startRef,
+        endRef,
+        group.chapter,
+        group.chapter,
+        group.startVerse,
+        group.endVerse
+      );
+      const percentage = (group.startPercentage + group.endPercentage) / 2;
+      let renderTop = percentage;
+
+      if (renderTop < lastTop + minGapPct) {
+        renderTop = lastTop + minGapPct;
+      }
+
+      lastTop = renderTop;
+
+      return {
+        startVerse: group.startVerse,
+        endVerse: group.endVerse,
+        percentage,
+        renderTop: Math.min(renderTop, 100),
+        rangeLabel,
+        subtopicText: group.subtopicText,
+        refs: group.refs
+      };
+    });
+  };
+
+  const buildVerseDetailLines = (group) => {
+    if (!group.refs || group.refs.length === 0) {
+      return ["Verse text unavailable."];
+    }
+
+    const lines = [];
+    group.refs.forEach((ref) => {
+      const parsed = parseRefChapterVerse(ref);
+      if (!parsed) return;
+      const verseText = getVerseText(bookId, parsed.chapter, parsed.verse);
+      if (verseText) {
+        lines.push(`${ref} — ${verseText}`);
+      }
+    });
+
+    if (lines.length === 0) {
+      lines.push("Verse text unavailable.");
+    }
+
+    return lines;
+  };
   
   // Create visual representation with separated lines
   const visualization = document.createElement("div");
   visualization.className = "verse-visualization";
   
-  versePositions.forEach((vp) => {
+  const groupedPositions = mergeAdjacentVerses(versePositions);
+  let detailPopup = null;
+  const lineByKey = new Map();
+  const listByKey = new Map();
+  let listTooltipHideTimer = null;
+  
+  // Determine if scrolling is needed based on verse density
+  const MIN_PIXELS_PER_GROUP = 60; // Minimum pixels to allocate per verse group
+  const numGroups = groupedPositions.length;
+  
+  // Check if verses need more space than default container height
+  const scrollingNeeded = numGroups > 8; // Heuristic: if more than ~8 groups, likely need scrolling
+  let visualizationHeight = null;
+  
+  if (scrollingNeeded && numGroups > 0) {
+    // Calculate height needed to spread lines without bunching
+    visualizationHeight = Math.max(
+      numGroups * MIN_PIXELS_PER_GROUP,
+      600 // Minimum height even if few groups
+    );
+  }
+  
+  // Apply calculated height if scrolling is needed
+  if (visualizationHeight) {
+    visualization.style.height = `${visualizationHeight}px`;
+  }
+  
+  // Store middle group index for later alignment
+  const middleGroupIndex = Math.floor(numGroups / 2);
+
+  const setActiveGroup = (key) => {
+    const line = lineByKey.get(key);
+    const item = listByKey.get(key);
+    if (line) line.classList.add("is-active");
+    if (item) item.classList.add("is-active");
+  };
+
+  const clearActiveGroup = (key) => {
+    const line = lineByKey.get(key);
+    const item = listByKey.get(key);
+    if (line) line.classList.remove("is-active");
+    if (item) item.classList.remove("is-active");
+  };
+
+  const showVerseDetail = (group) => {
+    if (detailPopup) detailPopup.remove();
+    hideTooltip();
+
+    const detail = document.createElement("div");
+    detail.className = "verse-detail-pop";
+
+    const header = document.createElement("div");
+    header.className = "verse-detail-header";
+    const title = document.createElement("strong");
+    title.textContent = group.rangeLabel;
+    header.appendChild(title);
+
+    if (group.subtopicText) {
+      const subtitle = document.createElement("span");
+      subtitle.className = "verse-detail-subtopic";
+      subtitle.textContent = group.subtopicText;
+      header.appendChild(subtitle);
+    }
+
+    const closeBtn = document.createElement("button");
+    closeBtn.className = "verse-detail-close";
+    closeBtn.type = "button";
+    closeBtn.textContent = "✕";
+    closeBtn.addEventListener("click", () => detail.remove());
+    header.appendChild(closeBtn);
+
+    const body = document.createElement("div");
+    body.className = "verse-detail-body";
+    body.textContent = buildVerseDetailLines(group).join("\n\n");
+
+    detail.appendChild(header);
+    detail.appendChild(body);
+
+    detailPopup = detail;
+    modalContent.appendChild(detail);
+  };
+
+  groupedPositions.forEach((group, index) => {
+    const groupKey = `group-${index}`;
     const verseItem = document.createElement("div");
     verseItem.className = "verse-item";
     
     const line = document.createElement("div");
     line.className = "verse-line";
-    line.style.top = `${vp.percentage}%`;
-    const subtopicText = (vp.subtopics || []).join("; ");
-    const refText = (vp.refs || []).join(", ") || `Verse ${vp.verse}`;
+    line.dataset.groupKey = groupKey;
+    line.style.top = `${group.renderTop}%`;
+    const subtopicText = group.subtopicText;
+    const refText = group.rangeLabel;
+
+    lineByKey.set(groupKey, line);
     
     line.addEventListener('mouseenter', (e) => {
-      showTooltip(e, refText, subtopicText, bookId, vp.verse);
+      setActiveGroup(groupKey);
+      showTooltip(e, refText, subtopicText, bookId, group.startVerse);
     });
-    line.addEventListener('mouseleave', hideTooltip);
+    line.addEventListener('mouseleave', () => {
+      clearActiveGroup(groupKey);
+      hideTooltip();
+    });
     line.style.cursor = "pointer";
     line.addEventListener("click", () => {
-      console.log(`Clicked verse ${refText} - navigate to State 3`);
-      modal.remove();
-      // TODO: Navigate to state 3
+      showVerseDetail(group);
     });
     
     const label = document.createElement("span");
     label.className = "verse-label";
-    label.textContent = (vp.refs && vp.refs[0]) ? vp.refs[0] : `V. ${vp.verse}`;
+    label.textContent = refText;
+    label.style.top = `${group.renderTop}%`;
     
     verseItem.appendChild(line);
     verseItem.appendChild(label);
@@ -1247,11 +1485,13 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   const list = document.createElement("div");
   list.className = "verse-list";
   
-  versePositions.forEach((vp) => {
+  groupedPositions.forEach((group, index) => {
+    const groupKey = `group-${index}`;
     const item = document.createElement("div");
     item.className = "verse-list-item";
-    const subtopicText = (vp.subtopics || []).join("; ");
-    const refText = (vp.refs || []).join(", ") || `Verse ${vp.verse}`;
+    item.dataset.groupKey = groupKey;
+    const subtopicText = group.subtopicText;
+    const refText = group.rangeLabel;
     item.innerHTML = `<strong>${refText}</strong>`;
     if (subtopicText) {
       const detail = document.createElement("span");
@@ -1259,16 +1499,55 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
       detail.textContent = subtopicText;
       item.appendChild(detail);
     }
+    listByKey.set(groupKey, item);
+    item.addEventListener("mouseenter", (e) => {
+      if (listTooltipHideTimer) {
+        clearTimeout(listTooltipHideTimer);
+        listTooltipHideTimer = null;
+      }
+      setActiveGroup(groupKey);
+      showTooltip(e, refText, subtopicText, bookId, group.startVerse);
+    });
+    item.addEventListener("mousemove", updateTooltipPosition);
+    item.addEventListener("mouseleave", () => {
+      clearActiveGroup(groupKey);
+      listTooltipHideTimer = setTimeout(() => {
+        hideTooltip();
+      }, 80);
+    });
     item.style.cursor = "pointer";
     item.addEventListener("click", () => {
-      console.log(`Clicked verse ${vp.verse} - navigate to State 3`);
-      modal.remove();
-      // TODO: Navigate to state 3
+      showVerseDetail(group);
     });
     list.appendChild(item);
   });
   
   content.appendChild(list);
+  
+  // Sync scroll between visualization and list
+  visualization.addEventListener("scroll", () => {
+    list.scrollTop = visualization.scrollTop;
+  });
+  list.addEventListener("scroll", () => {
+    visualization.scrollTop = list.scrollTop;
+  });
+  
+  // If scrolling is enabled, center-align the middle line with the middle button
+  if (scrollingNeeded && visualizationHeight && middleGroupIndex < groupedPositions.length) {
+    // Calculate the pixel position of the middle group
+    const middleGroup = groupedPositions[middleGroupIndex];
+    const middleLinePixelPosition = (middleGroup.renderTop / 100) * visualizationHeight;
+    
+    // Center this position in the viewport (assume ~400px default height)
+    const viewportHeight = 400;
+    const scrollTarget = Math.max(0, middleLinePixelPosition - (viewportHeight / 2));
+    
+    // Set initial scroll position on next frame to ensure DOM is ready
+    requestAnimationFrame(() => {
+      visualization.scrollTop = scrollTarget;
+      list.scrollTop = scrollTarget;
+    });
+  }
   
   const footer = document.createElement("div");
   footer.className = "verse-modal-footer";

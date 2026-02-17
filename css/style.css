@@ -341,7 +341,7 @@ body[data-state="3"] .state--book {
 }
 
 .state-title {
-	font-size: 0.9rem;
+	font-size: clamp(0.9rem, 1.5vw, 2.5rem);
 	text-transform: uppercase;
 	letter-spacing: 0.2em;
 	color: var(--text-3);
@@ -350,7 +350,7 @@ body[data-state="3"] .state--book {
 
 .state-current-topic {
 	color: var(--text-2);
-	font-size: 0.85rem;
+	font-size: clamp(0.85rem, 1.1vw, 1.6rem);
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -360,7 +360,7 @@ body[data-state="3"] .state--book {
 
 .state-meta {
 	color: var(--text-3);
-	font-size: 0.8rem;
+	font-size: clamp(0.8rem, 1vw, 1.4rem);
 	justify-self: end;
 }
 
@@ -430,10 +430,11 @@ body[data-state="3"] .state--book {
 	background: rgba(10, 16, 26, 0.95);
 	border: 1px solid rgba(95, 200, 255, 0.45);
 	color: var(--text-1);
-	font-size: 0.62rem;
+	font-size: 1.8rem;
+	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
-	padding: 4px 8px;
+	padding: 8px 14px;
 	border-radius: 999px;
 	white-space: nowrap;
 	opacity: 0;
@@ -718,27 +719,71 @@ body[data-state="3"] .state--book {
 	border: 1px solid rgba(95, 200, 255, 0.3);
 	border-radius: 12px;
 	box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(95, 200, 255, 0.1);
-	max-width: 800px;
-	width: 92%;
-	max-height: 95vh;
+	max-width: 1500px;
+	width: 96%;
+	max-height: 90vh;
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	overflow: hidden;
 }
 
-/* Responsive modal sizing for different viewport heights */
-@media (min-height: 1440px) {
-	.verse-modal {
-		max-height: 90vh;
-		max-width: 900px;
-	}
+.verse-detail-pop {
+	position: absolute;
+	right: 20px;
+	bottom: 20px;
+	width: min(520px, 45%);
+	max-height: 45vh;
+	background: rgba(10, 16, 26, 0.97);
+	border: 1px solid rgba(255, 210, 128, 0.45);
+	border-radius: 10px;
+	box-shadow: 0 16px 32px rgba(0, 0, 0, 0.45);
+	color: var(--text-1);
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+	z-index: 3;
 }
 
-@media (max-height: 800px) {
-	.verse-modal {
-		max-height: 98vh;
-		max-width: 700px;
-	}
+.verse-detail-header {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 12px;
+	align-items: center;
+	padding: 12px 16px;
+	border-bottom: 1px solid rgba(255, 210, 128, 0.25);
+	font-size: clamp(0.95rem, 1vw, 1.4rem);
+}
+
+.verse-detail-subtopic {
+	color: rgba(255, 230, 190, 0.8);
+	font-size: clamp(0.8rem, 0.9vw, 1.2rem);
+}
+
+.verse-detail-close {
+	margin-left: auto;
+	width: 32px;
+	height: 32px;
+	border-radius: 50%;
+	border: 1px solid rgba(255, 210, 128, 0.4);
+	background: rgba(255, 210, 128, 0.12);
+	color: rgba(255, 230, 190, 0.9);
+	font-size: 1rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.verse-detail-close:hover {
+	background: rgba(255, 210, 128, 0.2);
+	box-shadow: 0 0 10px rgba(255, 220, 150, 0.35);
+}
+
+.verse-detail-body {
+	padding: 14px 16px;
+	font-size: clamp(0.9rem, 1vw, 1.35rem);
+	line-height: 1.6;
+	white-space: pre-wrap;
+	overflow-y: auto;
 }
 
 .verse-modal-header {
@@ -750,13 +795,13 @@ body[data-state="3"] .state--book {
 .verse-modal-header h3 {
 	margin: 0 0 4px 0;
 	font-family: "Fraunces", serif;
-	font-size: 1.4rem;
+	font-size: clamp(1.4rem, 2vw, 2.8rem);
 	color: var(--text-1);
 }
 
 .verse-modal-header p {
 	margin: 0;
-	font-size: 0.85rem;
+	font-size: clamp(0.85rem, 1vw, 1.4rem);
 	color: var(--text-3);
 	font-style: italic;
 }
@@ -790,8 +835,8 @@ body[data-state="3"] .state--book {
 	padding: 20px;
 	overflow-y: auto;
 	flex: 1;
-	display: grid;
-	grid-template-columns: 1fr 1fr;
+	display: flex;
+	flex-direction: row;
 	gap: 20px;
 	min-height: 0;
 }
@@ -809,23 +854,10 @@ body[data-state="3"] .state--book {
 	border: 1px solid rgba(95, 200, 255, 0.2);
 	border-radius: 8px;
 	padding: 10px;
-	height: 350px;
-	max-height: 45vh;
+	--verse-label-width: 220px;
+	flex: 1;
+	min-height: 0;
 	overflow: visible;
-}
-
-@media (min-height: 1440px) {
-	.verse-visualization {
-		height: 400px;
-		max-height: 48vh;
-	}
-}
-
-@media (max-height: 800px) {
-	.verse-visualization {
-		height: 250px;
-		max-height: 35vh;
-	}
 }
 
 .verse-item {
@@ -839,49 +871,45 @@ body[data-state="3"] .state--book {
 
 .verse-line {
 	position: absolute;
-	left: 10px;
+	left: calc(var(--verse-label-width) + 10px);
 	right: 10px;
-	height: 2px;
+	height: 5px;
 	background: linear-gradient(90deg, rgba(95, 200, 255, 0.3), rgba(95, 200, 255, 0.8), rgba(95, 200, 255, 0.3));
 	box-shadow: 0 0 8px rgba(95, 200, 255, 0.4);
 	border-radius: 1px;
-	transform: translateY(-1px);
+	transform: translateY(-2.5px);
 	pointer-events: auto;
 	cursor: pointer;
+	z-index: 1;
+}
+
+.verse-line.is-active {
+	background: linear-gradient(90deg, rgba(255, 210, 128, 0.35), rgba(255, 230, 170, 0.95), rgba(255, 210, 128, 0.35));
+	box-shadow: 0 0 14px rgba(255, 220, 150, 0.6);
 }
 
 .verse-label {
 	position: absolute;
 	left: 16px;
-	font-size: 0.7rem;
+	width: var(--verse-label-width);
+	font-size: clamp(0.6rem, 0.75vw, 1rem);
 	color: rgba(95, 200, 255, 0.8);
 	font-weight: 600;
 	white-space: nowrap;
 	transform: translateY(-10px);
-	background: rgba(20, 25, 40, 0.8);
-	padding: 2px 6px;
+	padding: 2px 0;
 	border-radius: 3px;
+	z-index: 2;
 }
 
 .verse-list {
 	display: flex;
 	flex-direction: column;
 	gap: 8px;
-	max-height: 45vh;
+	flex: 1;
+	min-height: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
-}
-
-@media (min-height: 1440px) {
-	.verse-list {
-		max-height: 48vh;
-	}
-}
-
-@media (max-height: 800px) {
-	.verse-list {
-		max-height: 35vh;
-	}
 }
 
 .verse-list-item {
@@ -889,7 +917,7 @@ body[data-state="3"] .state--book {
 	background: rgba(95, 200, 255, 0.08);
 	border: 1px solid rgba(95, 200, 255, 0.2);
 	border-radius: 6px;
-	font-size: 0.85rem;
+	font-size: clamp(0.85rem, 1vw, 1.5rem);
 	color: var(--text-2);
 	transition: all 0.2s ease;
 	display: flex;
@@ -903,7 +931,12 @@ body[data-state="3"] .state--book {
 	background: rgba(95, 200, 255, 0.15);
 	border-color: rgba(95, 200, 255, 0.4);
 	box-shadow: 0 0 8px rgba(95, 200, 255, 0.2);
-	transform: translateX(4px);
+}
+
+.verse-list-item.is-active {
+	background: rgba(255, 210, 128, 0.18);
+	border-color: rgba(255, 220, 150, 0.6);
+	box-shadow: 0 0 12px rgba(255, 220, 150, 0.35);
 }
 
 .verse-position {
@@ -913,7 +946,7 @@ body[data-state="3"] .state--book {
 }
 
 .verse-subtopic {
-	font-size: 0.72rem;
+	font-size: clamp(0.72rem, 1.1vw, 1.6rem);
 	color: rgba(95, 200, 255, 0.75);
 	margin-left: 10px;
 	font-weight: 600;
@@ -935,7 +968,7 @@ body[data-state="3"] .state--book {
 	border: 1px solid rgba(95, 200, 255, 0.4);
 	border-radius: 6px;
 	color: rgba(95, 200, 255, 0.95);
-	font-size: 0.9rem;
+	font-size: clamp(0.9rem, 1.1vw, 1.5rem);
 	font-weight: 600;
 	cursor: pointer;
 	transition: all 0.2s ease;
@@ -986,8 +1019,8 @@ tip.show {
 /* Larger tooltips on 4K displays */
 @media (min-width: 2560px) {
   tip {
-    padding: 14px 18px;
-    font-size: 1rem;
+    padding: 16px 20px;
+    font-size: 1.6rem;
     max-width: 500px;
     line-height: 1.6;
   }
@@ -1033,14 +1066,14 @@ tip.show {
 	gap: 12px;
 	color: var(--text-2);
 	line-height: 1.6;
-	font-size: 0.95rem;
+	font-size: clamp(0.95rem, 1.2vw, 2rem);
 }
 
 .reading-block h3 {
 	font-family: var(--font-display);
 	color: var(--text-1);
 	margin: 0;
-	font-size: 1.2rem;
+	font-size: clamp(1.2rem, 1.5vw, 2.4rem);
 }
 
 .reading-block p {
@@ -1183,11 +1216,15 @@ tip.show {
 	}
 
 	.state-title {
-		font-size: 1.25rem;
+		font-size: 2rem !important;
 	}
 
 	.state-meta {
-		font-size: 1.1rem;
+		font-size: 1.3rem;
+	}
+
+	.state-current-topic {
+		font-size: 1.4rem;
 	}
 
 	.footer {
@@ -1219,5 +1256,28 @@ tip.show {
 	.book-summary-text {
 		font-size: 1.15rem;
 		line-height: 1.8;
+	}
+
+	/* Book/Verse views 4K scaling (~30% increase) */
+	.state--book .card {
+		min-height: 143px;
+	}
+
+	.reading-block {
+		gap: 16px;
+		font-size: 1.6rem;
+		line-height: 1.8;
+	}
+
+	.reading-block h3 {
+		font-size: 2rem;
+	}
+
+	.reading-block p {
+		font-size: 1.6rem;
+	}
+
+	.state--read {
+		padding: 21px;
 	}
 }
