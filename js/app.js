@@ -13,7 +13,11 @@ let bookSummaries = {}; // Book summaries
 let selectedTopic = null;
 let booksData = [];
 let selectedBookId = null;
+let selectedReadReference = null;
+let preserveSelectedBookForNextRender = false;
 const DEFAULT_TOPIC = "life";
+const FALLBACK_NAV_TOPIC = "Love";
+const FALLBACK_NAV_BOOK = "JHN";
 const STORED_TOPIC_KEY = "bibleExplorerTopic";
 const topicsIndex = new Map();
 let allTopicNames = [];
@@ -127,12 +131,117 @@ const updateStateUI = (stateValue = getCurrentState()) => {
   updateTopicActionState(stateValue);
 };
 
+const resolveNavigationTopic = () => {
+  if (selectedTopic && topicsData[selectedTopic]) {
+    return selectedTopic;
+  }
+
+  const resolvedFallback = resolveTopicKey(FALLBACK_NAV_TOPIC)
+    || resolveTopicKey(DEFAULT_TOPIC)
+    || Object.keys(topicsData || {})[0]
+    || null;
+
+  if (resolvedFallback) {
+    selectedTopic = resolvedFallback;
+    if (topicInput) {
+      topicInput.value = resolvedFallback;
+    }
+    setStoredTopic(resolvedFallback);
+    updateCurrentTopicLabel();
+  }
+
+  return resolvedFallback;
+};
+
+const getOrderedReferencedBookIds = (topicName) => {
+  const references = topicName && topicsData[topicName] && topicsData[topicName].references
+    ? topicsData[topicName].references
+    : {};
+
+  const ordered = [];
+  const seen = new Set();
+
+  BOOK_ORDER.forEach((bookId) => {
+    const entries = references[bookId];
+    if (Array.isArray(entries) && entries.length > 0) {
+      ordered.push(bookId);
+      seen.add(bookId);
+    }
+  });
+
+  Object.keys(references).forEach((bookId) => {
+    if (seen.has(bookId)) return;
+    const entries = references[bookId];
+    if (Array.isArray(entries) && entries.length > 0) {
+      ordered.push(bookId);
+      seen.add(bookId);
+    }
+  });
+
+  return ordered;
+};
+
+const getFirstReferenceForBook = (topicName, bookId) => {
+  const entries = topicName && topicsData[topicName] && topicsData[topicName].references
+    ? topicsData[topicName].references[bookId]
+    : null;
+
+  if (!Array.isArray(entries) || entries.length === 0) {
+    return null;
+  }
+
+  const normalized = entries
+    .map((entry) => {
+      const refs = Array.isArray(entry.refs) ? entry.refs : [];
+      const refText = refs[0] || "";
+      const parsed = parseChapterVerse(refText);
+      const chapter = parsed?.chapter || entry.chapter || null;
+      const verse = parsed?.verse || entry.verse || null;
+      if (!chapter || !verse) return null;
+      const absoluteVerse = getAbsoluteVerseIndex(bookId, chapter, verse) || Number.POSITIVE_INFINITY;
+      return {
+        refText,
+        chapter,
+        verse,
+        absoluteVerse
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.absoluteVerse - b.absoluteVerse);
+
+  return normalized[0] || null;
+};
+
+const ensureNavigationContext = (stateValue) => {
+  if (stateValue < 2) {
+    return;
+  }
+
+  const topicName = resolveNavigationTopic();
+  const referencedBookIds = getOrderedReferencedBookIds(topicName);
+  const fallbackBookId = referencedBookIds[0] || FALLBACK_NAV_BOOK;
+  const shouldPreserveSelectedBook = preserveSelectedBookForNextRender;
+  preserveSelectedBookForNextRender = false;
+
+  if (!shouldPreserveSelectedBook && (!selectedBookId || !referencedBookIds.includes(selectedBookId))) {
+    selectedBookId = fallbackBookId;
+  }
+
+  if (stateValue === 3) {
+    const preferredRef = getFirstReferenceForBook(topicName, selectedBookId)
+      || getFirstReferenceForBook(topicName, fallbackBookId)
+      || null;
+    selectedReadReference = preferredRef;
+  }
+};
+
 const renderCurrentState = () => {
   const stateValue = getCurrentState();
   if (stateValue === 1) {
     renderTreemap(booksData, selectedTopic);
     return;
   }
+  ensureNavigationContext(stateValue);
   if (stateValue === 2) {
     renderBookView(selectedBookId, selectedTopic);
     return;
@@ -292,20 +401,18 @@ const stateNames = {
 };
 
 if (stateSlider && statePill) {
-  const updateState = () => {
-    const value = Number(stateSlider.value) || 1;
-    updateStateUI(value);
-  };
   stateSlider.addEventListener("input", () => {
-    updateState();
-    renderCurrentState();
+    const value = Number(stateSlider.value) || 1;
+    setState(value);
   });
-  updateState();
+  updateStateUI(Number(stateSlider.value) || 1);
 }
 
 const goToBookView = (bookId) => {
   if (!bookId) return;
   selectedBookId = bookId;
+  selectedReadReference = null;
+  preserveSelectedBookForNextRender = true;
   setState(2);
 };
 
@@ -1043,12 +1150,190 @@ const renderReadView = (bookId, topic = null) => {
   const readTitle = document.getElementById("read-title");
   const readMeta = document.getElementById("read-meta");
   const readTopic = document.getElementById("read-current-topic");
-  if (!readTitle || !readMeta || !readTopic) return;
+  const readingBlock = document.querySelector(".reading-block");
+  if (!readTitle || !readMeta || !readTopic || !readingBlock) return;
   const book = bookId ? bibleData[bookId] : null;
   const bookName = book?.name || BOOK_NAMES[bookId] || "Verse";
   readTitle.textContent = bookName;
-  readMeta.textContent = book ? "Choose a verse to read" : "Select a book first";
   readTopic.textContent = selectedTopic || "All topics";
+
+  readingBlock.innerHTML = "";
+
+  if (!book || !Array.isArray(book.chapters)) {
+    readMeta.textContent = "Select a book first";
+    const title = document.createElement("h3");
+    title.textContent = "Verse Reader";
+    const hint = document.createElement("p");
+    hint.textContent = "Choose a verse from Book view to read full text here.";
+    readingBlock.appendChild(title);
+    readingBlock.appendChild(hint);
+    return;
+  }
+
+  const topicData = topic && topicsData[topic] ? topicsData[topic] : null;
+  const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
+  const chapterVerseMap = new Map();
+
+  if (Array.isArray(bookEntries)) {
+    bookEntries.forEach((entry) => {
+      const refs = Array.isArray(entry.refs) ? entry.refs : [];
+      const primaryRef = refs[0] || "";
+      const parsed = parseChapterVerse(primaryRef);
+      const chapterNumber = parsed?.chapter || entry.chapter || null;
+      const verseNumber = parsed?.verse || entry.verse || null;
+      if (!chapterNumber || !verseNumber) return;
+      if (!chapterVerseMap.has(chapterNumber)) {
+        chapterVerseMap.set(chapterNumber, new Set());
+      }
+      chapterVerseMap.get(chapterNumber).add(verseNumber);
+    });
+  }
+
+  const referencedChapters = Array.from(chapterVerseMap.keys()).sort((a, b) => a - b);
+  const fallbackChapter = referencedChapters[0] || 1;
+  const preferredChapter = selectedReadReference?.chapter || fallbackChapter;
+  const chapterNumber = clamp(preferredChapter, 1, book.chapters.length);
+  const chapter = book.chapters[chapterNumber - 1];
+  const verses = Array.isArray(chapter?.verses) ? chapter.verses : [];
+  const highlightedVerses = chapterVerseMap.get(chapterNumber) || new Set();
+
+  const getPreferredVerseForChapter = (chapterNum) => {
+    const verseSet = chapterVerseMap.get(chapterNum);
+    if (verseSet && verseSet.size > 0) {
+      return Math.min(...Array.from(verseSet));
+    }
+    return 1;
+  };
+
+  const setReadReference = (chapterNum, verseNum) => {
+    selectedReadReference = {
+      refText: `${bookName} ${chapterNum}:${verseNum}`,
+      chapter: chapterNum,
+      verse: verseNum
+    };
+    renderReadView(bookId, selectedTopic);
+  };
+
+  const scrollToVerse = (container, target) => {
+    if (!container || !target) return;
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+  };
+
+  if (selectedReadReference && selectedReadReference.refText) {
+    readMeta.textContent = `Starting at ${selectedReadReference.refText}`;
+  } else {
+    readMeta.textContent = "Choose a verse to read";
+  }
+
+  const title = document.createElement("h3");
+  title.textContent = bookName;
+  readingBlock.appendChild(title);
+
+  const chapterNav = document.createElement("div");
+  chapterNav.className = "chapter-nav";
+
+  const prevBtn = document.createElement("button");
+  prevBtn.className = "chapter-nav-btn";
+  prevBtn.type = "button";
+  prevBtn.textContent = "Prev";
+  prevBtn.disabled = chapterNumber <= 1;
+  prevBtn.addEventListener("click", () => {
+    if (chapterNumber <= 1) return;
+    const prevChapter = chapterNumber - 1;
+    const nextVerse = getPreferredVerseForChapter(prevChapter);
+    setReadReference(prevChapter, nextVerse);
+  });
+
+  const chapterLabel = document.createElement("span");
+  chapterLabel.className = "chapter-nav-label";
+  chapterLabel.textContent = `Chapter ${chapterNumber}`;
+
+  const jumpBtn = document.createElement("button");
+  jumpBtn.className = "chapter-nav-btn chapter-nav-btn--ghost";
+  jumpBtn.type = "button";
+  jumpBtn.textContent = "Jump to highlight";
+  jumpBtn.disabled = highlightedVerses.size === 0;
+
+  const nextBtn = document.createElement("button");
+  nextBtn.className = "chapter-nav-btn";
+  nextBtn.type = "button";
+  nextBtn.textContent = "Next";
+  nextBtn.disabled = chapterNumber >= book.chapters.length;
+  nextBtn.addEventListener("click", () => {
+    if (chapterNumber >= book.chapters.length) return;
+    const nextChapter = chapterNumber + 1;
+    const nextVerse = getPreferredVerseForChapter(nextChapter);
+    setReadReference(nextChapter, nextVerse);
+  });
+
+  const chapterCenter = document.createElement("div");
+  chapterCenter.className = "chapter-nav-center";
+  chapterCenter.appendChild(chapterLabel);
+  chapterCenter.appendChild(jumpBtn);
+
+  chapterNav.appendChild(prevBtn);
+  chapterNav.appendChild(chapterCenter);
+  chapterNav.appendChild(nextBtn);
+  readingBlock.appendChild(chapterNav);
+
+  if (!verses.length) {
+    const empty = document.createElement("p");
+    empty.textContent = "Verse text unavailable.";
+    readingBlock.appendChild(empty);
+    return;
+  }
+
+  const verseList = document.createElement("div");
+  verseList.className = "chapter-verses";
+  let selectedRow = null;
+  let firstTopicRow = null;
+
+  verses.forEach((verse, index) => {
+    const verseNumber = Number(verse.number) || index + 1;
+    const verseText = verse.text || "";
+    const verseRow = document.createElement("div");
+    verseRow.className = "chapter-verse";
+
+    if (highlightedVerses.has(verseNumber)) {
+      verseRow.classList.add("is-topic");
+      if (!firstTopicRow) {
+        firstTopicRow = verseRow;
+      }
+    }
+    if (
+      selectedReadReference
+      && selectedReadReference.chapter === chapterNumber
+      && selectedReadReference.verse === verseNumber
+    ) {
+      verseRow.classList.add("is-selected");
+      selectedRow = verseRow;
+    }
+
+    const numberEl = document.createElement("span");
+    numberEl.className = "chapter-verse-number";
+    numberEl.textContent = `${verseNumber}`;
+
+    const textEl = document.createElement("span");
+    textEl.className = "chapter-verse-text";
+    textEl.textContent = verseText;
+
+    verseRow.appendChild(numberEl);
+    verseRow.appendChild(textEl);
+    verseRow.addEventListener("click", () => {
+      setReadReference(chapterNumber, verseNumber);
+    });
+    verseList.appendChild(verseRow);
+  });
+
+  jumpBtn.addEventListener("click", () => {
+    scrollToVerse(verseList, firstTopicRow);
+  });
+
+  readingBlock.appendChild(verseList);
+
+  scrollToVerse(verseList, selectedRow || firstTopicRow);
 };
 
 const loadBooks = async () => {
@@ -1175,7 +1460,6 @@ const showBookSummaryModal = (bookId, bookName) => {
   const closeBtn = document.createElement("button");
   closeBtn.className = "verse-modal-close";
   closeBtn.innerHTML = "✕";
-  closeBtn.addEventListener("click", () => modal.remove());
   header.appendChild(closeBtn);
   
   const content = document.createElement("div");
@@ -1217,7 +1501,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   header.appendChild(closeBtn);
   
   const content = document.createElement("div");
-  content.className = "verse-modal-content";
+  content.className = "verse-modal-content verse-modal-content--split";
 
   const parseRefChapterVerse = (ref) => {
     if (!ref) return null;
@@ -1299,9 +1583,6 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
       }
     });
 
-    const minGapPct = 3.5;
-    let lastTop = -Infinity;
-
     return groups.map((group) => {
       const startRef = group.refs[0] || group.refText;
       const endRef = group.refs[group.refs.length - 1] || startRef;
@@ -1314,19 +1595,12 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
         group.endVerse
       );
       const percentage = (group.startPercentage + group.endPercentage) / 2;
-      let renderTop = percentage;
-
-      if (renderTop < lastTop + minGapPct) {
-        renderTop = lastTop + minGapPct;
-      }
-
-      lastTop = renderTop;
 
       return {
         startVerse: group.startVerse,
         endVerse: group.endVerse,
         percentage,
-        renderTop: Math.min(renderTop, 100),
+        renderTop: Math.max(0, Math.min(percentage, 100)),
         rangeLabel,
         subtopicText: group.subtopicText,
         refs: group.refs
@@ -1363,45 +1637,16 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   const groupedPositions = mergeAdjacentVerses(versePositions);
   let detailPopup = null;
   const lineByKey = new Map();
-  const listByKey = new Map();
   let listTooltipHideTimer = null;
-  
-  // Determine if scrolling is needed based on verse density
-  const MIN_PIXELS_PER_GROUP = 60; // Minimum pixels to allocate per verse group
-  const numGroups = groupedPositions.length;
-  
-  // Check if verses need more space than default container height
-  const scrollingNeeded = numGroups > 8; // Heuristic: if more than ~8 groups, likely need scrolling
-  let visualizationHeight = null;
-  
-  if (scrollingNeeded && numGroups > 0) {
-    // Calculate height needed to spread lines without bunching
-    visualizationHeight = Math.max(
-      numGroups * MIN_PIXELS_PER_GROUP,
-      600 // Minimum height even if few groups
-    );
-  }
-  
-  // Apply calculated height if scrolling is needed
-  if (visualizationHeight) {
-    visualization.style.height = `${visualizationHeight}px`;
-  }
-  
-  // Store middle group index for later alignment
-  const middleGroupIndex = Math.floor(numGroups / 2);
 
-  const setActiveGroup = (key) => {
+  const setActiveLine = (key) => {
     const line = lineByKey.get(key);
-    const item = listByKey.get(key);
     if (line) line.classList.add("is-active");
-    if (item) item.classList.add("is-active");
   };
 
-  const clearActiveGroup = (key) => {
+  const clearActiveLine = (key) => {
     const line = lineByKey.get(key);
-    const item = listByKey.get(key);
     if (line) line.classList.remove("is-active");
-    if (item) item.classList.remove("is-active");
   };
 
   const showVerseDetail = (group) => {
@@ -1449,7 +1694,6 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
     
     const line = document.createElement("div");
     line.className = "verse-line";
-    line.dataset.groupKey = groupKey;
     line.style.top = `${group.renderTop}%`;
     const subtopicText = group.subtopicText;
     const refText = group.rangeLabel;
@@ -1457,25 +1701,19 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
     lineByKey.set(groupKey, line);
     
     line.addEventListener('mouseenter', (e) => {
-      setActiveGroup(groupKey);
+      setActiveLine(groupKey);
       showTooltip(e, refText, subtopicText, bookId, group.startVerse);
     });
     line.addEventListener('mouseleave', () => {
-      clearActiveGroup(groupKey);
+      clearActiveLine(groupKey);
       hideTooltip();
     });
     line.style.cursor = "pointer";
     line.addEventListener("click", () => {
       showVerseDetail(group);
     });
-    
-    const label = document.createElement("span");
-    label.className = "verse-label";
-    label.textContent = refText;
-    label.style.top = `${group.renderTop}%`;
-    
+
     verseItem.appendChild(line);
-    verseItem.appendChild(label);
     visualization.appendChild(verseItem);
   });
   
@@ -1489,7 +1727,6 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
     const groupKey = `group-${index}`;
     const item = document.createElement("div");
     item.className = "verse-list-item";
-    item.dataset.groupKey = groupKey;
     const subtopicText = group.subtopicText;
     const refText = group.rangeLabel;
     item.innerHTML = `<strong>${refText}</strong>`;
@@ -1499,18 +1736,17 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
       detail.textContent = subtopicText;
       item.appendChild(detail);
     }
-    listByKey.set(groupKey, item);
     item.addEventListener("mouseenter", (e) => {
       if (listTooltipHideTimer) {
         clearTimeout(listTooltipHideTimer);
         listTooltipHideTimer = null;
       }
-      setActiveGroup(groupKey);
+      setActiveLine(groupKey);
       showTooltip(e, refText, subtopicText, bookId, group.startVerse);
     });
     item.addEventListener("mousemove", updateTooltipPosition);
     item.addEventListener("mouseleave", () => {
-      clearActiveGroup(groupKey);
+      clearActiveLine(groupKey);
       listTooltipHideTimer = setTimeout(() => {
         hideTooltip();
       }, 80);
@@ -1523,31 +1759,17 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   });
   
   content.appendChild(list);
-  
-  // Sync scroll between visualization and list
-  visualization.addEventListener("scroll", () => {
-    list.scrollTop = visualization.scrollTop;
-  });
-  list.addEventListener("scroll", () => {
-    visualization.scrollTop = list.scrollTop;
-  });
-  
-  // If scrolling is enabled, center-align the middle line with the middle button
-  if (scrollingNeeded && visualizationHeight && middleGroupIndex < groupedPositions.length) {
-    // Calculate the pixel position of the middle group
-    const middleGroup = groupedPositions[middleGroupIndex];
-    const middleLinePixelPosition = (middleGroup.renderTop / 100) * visualizationHeight;
-    
-    // Center this position in the viewport (assume ~400px default height)
-    const viewportHeight = 400;
-    const scrollTarget = Math.max(0, middleLinePixelPosition - (viewportHeight / 2));
-    
-    // Set initial scroll position on next frame to ensure DOM is ready
-    requestAnimationFrame(() => {
-      visualization.scrollTop = scrollTarget;
-      list.scrollTop = scrollTarget;
-    });
-  }
+
+  const syncVisualizationHeight = () => {
+    const targetHeight = list.clientHeight;
+    if (targetHeight > 0) {
+      visualization.style.height = `${targetHeight}px`;
+    }
+  };
+
+  requestAnimationFrame(syncVisualizationHeight);
+  const paneResizeObserver = new ResizeObserver(syncVisualizationHeight);
+  paneResizeObserver.observe(list);
   
   const footer = document.createElement("div");
   footer.className = "verse-modal-footer";
@@ -1556,6 +1778,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   state3Btn.textContent = "View Full Verse Text";
   state3Btn.addEventListener("click", () => {
     console.log(`Navigate to State 3 for ${bookName}`);
+    paneResizeObserver.disconnect();
     modal.remove();
     // TODO: Implement State 3 navigation with selected verse
   });
@@ -1565,9 +1788,16 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   modalContent.appendChild(content);
   modalContent.appendChild(footer);
   modal.appendChild(modalContent);
+
+  const cleanupModal = () => {
+    paneResizeObserver.disconnect();
+    modal.remove();
+  };
+
+  closeBtn.onclick = cleanupModal;
   
   modal.addEventListener("click", (e) => {
-    if (e.target === modal) modal.remove();
+    if (e.target === modal) cleanupModal();
   });
   
   document.body.appendChild(modal);

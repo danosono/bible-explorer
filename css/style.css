@@ -116,18 +116,18 @@ body::before {
 .controls {
 	display: flex;
 	align-items: center;
-	gap: 12px;
+	gap: 14px;
 	flex-wrap: wrap;
 }
 
 .state-switcher {
 	display: grid;
-	gap: 6px;
-	padding: 10px 14px 12px;
+	gap: 7px;
+	padding: clamp(12px, 1.1vw, 18px) clamp(15px, 1.3vw, 22px) clamp(13px, 1.2vw, 20px);
 	background: rgba(14, 22, 35, 0.85);
 	border: 1px solid rgba(96, 130, 168, 0.35);
 	border-radius: 14px;
-	min-width: 220px;
+	min-width: clamp(250px, 19vw, 370px);
 	box-shadow: var(--shadow-1);
 }
 
@@ -136,32 +136,53 @@ body::before {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
 	gap: 4px;
-	font-size: 0.62rem;
+	font-size: clamp(0.68rem, 0.7vw, 1rem);
 	text-transform: uppercase;
 	letter-spacing: 0.16em;
 	color: var(--text-3);
 }
 
+.state-labels {
+	display: none;
+}
+
 .state-captions {
-	font-size: 0.72rem;
+	font-size: clamp(0.84rem, 0.9vw, 1.2rem);
+	gap: 0;
 	letter-spacing: 0.08em;
 	text-transform: none;
 	color: var(--text-2);
+}
+
+.state-captions > span:nth-child(1) {
+	justify-self: start;
+	text-align: left;
+}
+
+.state-captions > span:nth-child(2) {
+	justify-self: center;
+	text-align: center;
+}
+
+.state-captions > span:nth-child(3) {
+	justify-self: end;
+	text-align: right;
 }
 
 .state-slider {
 	width: 100%;
 	appearance: none;
 	background: linear-gradient(90deg, rgba(157, 227, 212, 0.65), rgba(116, 176, 195, 0.35));
-	height: 6px;
+	height: clamp(7px, 0.45vw, 10px);
+	margin: clamp(6px, 0.45vw, 10px) 0 clamp(4px, 0.35vw, 8px);
 	border-radius: 999px;
 	outline: none;
 }
 
 .state-slider::-webkit-slider-thumb {
 	appearance: none;
-	width: 18px;
-	height: 18px;
+	width: clamp(19px, 1.05vw, 28px);
+	height: clamp(19px, 1.05vw, 28px);
 	border-radius: 50%;
 	background: var(--accent-2);
 	border: 2px solid rgba(10, 15, 24, 0.9);
@@ -170,8 +191,8 @@ body::before {
 }
 
 .state-slider::-moz-range-thumb {
-	width: 18px;
-	height: 18px;
+	width: clamp(19px, 1.05vw, 28px);
+	height: clamp(19px, 1.05vw, 28px);
 	border-radius: 50%;
 	background: var(--accent-2);
 	border: 2px solid rgba(10, 15, 24, 0.9);
@@ -183,19 +204,19 @@ body::before {
 	display: grid;
 	gap: 6px;
 	color: var(--text-3);
-	font-size: 0.7rem;
+	font-size: clamp(0.84rem, 0.8vw, 1.12rem);
 	text-transform: uppercase;
 	letter-spacing: 0.14em;
 }
 
 .topic-search input {
-	min-width: 200px;
-	padding: 10px 12px;
+	min-width: clamp(242px, 17.5vw, 352px);
+	padding: clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
 	border-radius: 12px;
 	border: 1px solid rgba(82, 122, 162, 0.3);
 	background: rgba(12, 18, 28, 0.8);
 	color: var(--text-1);
-	font-size: 0.88rem;
+	font-size: clamp(1.05rem, 1.05vw, 1.43rem);
 	font-family: var(--font-body);
 	box-shadow: var(--shadow-1);
 }
@@ -226,12 +247,12 @@ body::before {
 
 .topic-action {
 	align-self: end;
-	padding: 9px 14px;
+	padding: clamp(11px, 0.95vw, 16px) clamp(15px, 1.2vw, 22px);
 	border-radius: 12px;
 	border: 1px solid rgba(95, 200, 255, 0.45);
 	background: rgba(14, 22, 35, 0.85);
 	color: rgba(95, 200, 255, 0.9);
-	font-size: 0.78rem;
+	font-size: clamp(0.9rem, 0.9vw, 1.26rem);
 	font-weight: 600;
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
@@ -256,12 +277,12 @@ body::before {
 	display: inline-flex;
 	align-items: center;
 	gap: 8px;
-	padding: 8px 12px;
+	padding: clamp(10px, 0.88vw, 15px) clamp(13px, 1.1vw, 20px);
 	background: rgba(18, 26, 40, 0.85);
 	border: 1px solid rgba(96, 130, 168, 0.3);
 	color: var(--text-2);
 	border-radius: 999px;
-	font-size: 0.82rem;
+	font-size: clamp(0.95rem, 0.9vw, 1.32rem);
 	box-shadow: var(--shadow-1);
 }
 
@@ -837,8 +858,13 @@ body[data-state="3"] .state--book {
 	flex: 1;
 	display: flex;
 	flex-direction: row;
+	align-items: stretch;
 	gap: 20px;
 	min-height: 0;
+}
+
+.verse-modal-content--split {
+	overflow: hidden;
 }
 
 @media (max-width: 700px) {
@@ -854,9 +880,9 @@ body[data-state="3"] .state--book {
 	border: 1px solid rgba(95, 200, 255, 0.2);
 	border-radius: 8px;
 	padding: 10px;
-	--verse-label-width: 220px;
 	flex: 1;
 	min-height: 0;
+	height: 100%;
 	overflow: visible;
 }
 
@@ -871,13 +897,14 @@ body[data-state="3"] .state--book {
 
 .verse-line {
 	position: absolute;
-	left: calc(var(--verse-label-width) + 10px);
+	left: 10px;
 	right: 10px;
 	height: 5px;
 	background: linear-gradient(90deg, rgba(95, 200, 255, 0.3), rgba(95, 200, 255, 0.8), rgba(95, 200, 255, 0.3));
 	box-shadow: 0 0 8px rgba(95, 200, 255, 0.4);
 	border-radius: 1px;
 	transform: translateY(-2.5px);
+	transition: background 0.18s ease, box-shadow 0.18s ease, opacity 0.18s ease;
 	pointer-events: auto;
 	cursor: pointer;
 	z-index: 1;
@@ -887,21 +914,6 @@ body[data-state="3"] .state--book {
 	background: linear-gradient(90deg, rgba(255, 210, 128, 0.35), rgba(255, 230, 170, 0.95), rgba(255, 210, 128, 0.35));
 	box-shadow: 0 0 14px rgba(255, 220, 150, 0.6);
 }
-
-.verse-label {
-	position: absolute;
-	left: 16px;
-	width: var(--verse-label-width);
-	font-size: clamp(0.6rem, 0.75vw, 1rem);
-	color: rgba(95, 200, 255, 0.8);
-	font-weight: 600;
-	white-space: nowrap;
-	transform: translateY(-10px);
-	padding: 2px 0;
-	border-radius: 3px;
-	z-index: 2;
-}
-
 .verse-list {
 	display: flex;
 	flex-direction: column;
@@ -910,10 +922,30 @@ body[data-state="3"] .state--book {
 	min-height: 0;
 	overflow-y: auto;
 	overflow-x: hidden;
+	scrollbar-gutter: stable;
+	padding-right: clamp(10px, 0.9vw, 16px);
+	scrollbar-width: thin;
+	scrollbar-color: rgba(95, 200, 255, 0.45) transparent;
+}
+
+.verse-list::-webkit-scrollbar {
+	width: 10px;
+}
+
+.verse-list::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.verse-list::-webkit-scrollbar-thumb {
+	background: rgba(95, 200, 255, 0.45);
+	border-radius: 999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
 }
 
 .verse-list-item {
 	padding: 10px 12px;
+	margin-right: clamp(2px, 0.35vw, 6px);
 	background: rgba(95, 200, 255, 0.08);
 	border: 1px solid rgba(95, 200, 255, 0.2);
 	border-radius: 6px;
@@ -931,12 +963,6 @@ body[data-state="3"] .state--book {
 	background: rgba(95, 200, 255, 0.15);
 	border-color: rgba(95, 200, 255, 0.4);
 	box-shadow: 0 0 8px rgba(95, 200, 255, 0.2);
-}
-
-.verse-list-item.is-active {
-	background: rgba(255, 210, 128, 0.18);
-	border-color: rgba(255, 220, 150, 0.6);
-	box-shadow: 0 0 12px rgba(255, 220, 150, 0.35);
 }
 
 .verse-position {
@@ -1067,6 +1093,7 @@ tip.show {
 	color: var(--text-2);
 	line-height: 1.6;
 	font-size: clamp(0.95rem, 1.2vw, 2rem);
+	min-height: 0;
 }
 
 .reading-block h3 {
@@ -1076,8 +1103,109 @@ tip.show {
 	font-size: clamp(1.2rem, 1.5vw, 2.4rem);
 }
 
+.chapter-nav {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 6px 0 2px;
+}
+
+.chapter-nav-center {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin: 0 auto;
+}
+
+.chapter-nav-label {
+	font-weight: 600;
+	color: var(--text-2);
+}
+
+.chapter-nav-btn {
+	background: rgba(14, 22, 35, 0.85);
+	border: 1px solid rgba(95, 200, 255, 0.45);
+	color: rgba(95, 200, 255, 0.95);
+	border-radius: 10px;
+	padding: 6px 12px;
+	font-size: 0.9rem;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.chapter-nav-btn--ghost {
+	background: rgba(12, 18, 28, 0.65);
+	border-color: rgba(95, 200, 255, 0.25);
+	color: var(--text-2);
+}
+
+.chapter-nav-btn:disabled {
+	opacity: 0.5;
+	cursor: not-allowed;
+}
+
 .reading-block p {
 	margin: 0;
+}
+
+.chapter-verses {
+	display: grid;
+	gap: 10px;
+	padding-right: 6px;
+	max-height: min(60vh, 560px);
+	overflow-y: auto;
+	border-top: 1px solid rgba(95, 200, 255, 0.15);
+	padding-top: 8px;
+}
+
+.chapter-verse {
+	display: flex;
+	gap: 12px;
+	align-items: flex-start;
+	padding: 10px 12px;
+	border-radius: 10px;
+	background: rgba(12, 18, 28, 0.65);
+	border: 1px solid rgba(95, 200, 255, 0.15);
+	cursor: pointer;
+	transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chapter-verse:hover {
+	border-color: rgba(95, 200, 255, 0.4);
+	background: rgba(95, 200, 255, 0.08);
+}
+
+.chapter-verse-number {
+	min-width: 3ch;
+	color: var(--text-3);
+	font-weight: 700;
+}
+
+.chapter-verse-text {
+	color: var(--text-2);
+}
+
+.chapter-verse.is-topic {
+	border-color: rgba(95, 200, 255, 0.6);
+	background: rgba(95, 200, 255, 0.12);
+	box-shadow: 0 0 12px rgba(95, 200, 255, 0.2);
+}
+
+.chapter-verse.is-selected {
+	border-color: rgba(255, 210, 128, 0.7);
+	background: rgba(255, 210, 128, 0.12);
+	animation: verse-pulse 2.6s ease-in-out infinite;
+}
+
+@keyframes verse-pulse {
+	0%,
+	100% {
+		box-shadow: 0 0 0 rgba(255, 210, 128, 0);
+	}
+	50% {
+		box-shadow: 0 0 14px rgba(255, 210, 128, 0.35);
+	}
 }
 
 .footer {
@@ -1085,11 +1213,11 @@ tip.show {
 	align-items: center;
 	justify-content: flex-start;
 	color: var(--text-3);
-	font-size: 0.6rem;
+	font-size: clamp(0.72rem, 0.78vw, 1rem);
 	padding: 0;
-	height: 24px;
-	min-height: 24px;
-	max-height: 24px;
+	height: clamp(30px, 2.2vh, 42px);
+	min-height: clamp(30px, 2.2vh, 42px);
+	max-height: clamp(30px, 2.2vh, 42px);
 	overflow: hidden;
 	flex-shrink: 0;
 }
@@ -1118,25 +1246,126 @@ tip.show {
 
 .legend-genre {
 	flex-shrink: 0;
-	font-size: 0.75rem;
-	padding: 2px 6px;
-	border-radius: 6px;
-	background: rgba(157, 227, 212, 0.08);
+	font-size: clamp(0.78rem, 0.82vw, 1.1rem);
+	padding: clamp(4px, 0.45vw, 8px) clamp(8px, 0.75vw, 14px);
+	border-radius: 999px;
+	background: rgba(18, 26, 40, 0.92);
 	gap: 4px;
+	height: auto;
+	min-height: clamp(20px, 1.5vw, 30px);
+	border: 1px solid rgba(96, 130, 168, 0.35);
+	transition: background 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .legend-color-bar {
-	display: inline-block;
-	width: 12px;
-	height: 3px;
-	border: 1px solid;
+	width: 8px;
+	height: 8px;
 	border-radius: 999px;
+	border: 2px solid currentColor;
+	background: currentColor;
+	box-shadow: 0 0 8px currentColor;
+}
+
+.legend-genre[data-genre="law"] {
+	border-color: rgba(244, 211, 94, 0.5);
+	background: rgba(244, 211, 94, 0.12);
+	color: rgba(244, 211, 94, 0.95);
+}
+
+.legend-genre[data-genre="history"] {
+	border-color: rgba(41, 179, 209, 0.5);
+	background: rgba(41, 179, 209, 0.12);
+	color: rgba(41, 179, 209, 0.95);
+}
+
+.legend-genre[data-genre="poetry"] {
+	border-color: rgba(218, 112, 214, 0.5);
+	background: rgba(218, 112, 214, 0.12);
+	color: rgba(218, 112, 214, 0.95);
+}
+
+.legend-genre[data-genre="prophecy"] {
+	border-color: rgba(255, 87, 87, 0.5);
+	background: rgba(255, 87, 87, 0.12);
+	color: rgba(255, 87, 87, 0.95);
+}
+
+.legend-genre[data-genre="gospel"] {
+	border-color: rgba(32, 201, 151, 0.5);
+	background: rgba(32, 201, 151, 0.12);
+	color: rgba(32, 201, 151, 0.95);
+}
+
+.legend-genre[data-genre="epistle"] {
+	border-color: rgba(255, 217, 61, 0.5);
+	background: rgba(255, 217, 61, 0.12);
+	color: rgba(255, 217, 61, 0.95);
+}
+
+.legend-genre[data-genre="apocalyptic"] {
+	border-color: rgba(255, 0, 110, 0.5);
+	background: rgba(255, 0, 110, 0.12);
+	color: rgba(255, 0, 110, 0.95);
 }
 
 .legend-genre.active {
-	background: rgba(255, 255, 255, 0.15) !important;
-	box-shadow: 0 0 12px rgba(157, 227, 212, 0.4);
+	box-shadow: 0 0 14px currentColor;
 	transform: scale(1.1);
+}
+
+@media (max-width: 1920px) and (min-width: 1101px) {
+	.controls {
+		gap: 12px;
+	}
+
+	.state-switcher {
+		gap: 6px;
+		padding: 10px 13px 11px;
+		min-width: 230px;
+	}
+
+	.state-captions {
+		font-size: 0.95rem;
+	}
+
+	.state-slider {
+		height: 7px;
+		margin: 4px 0 4px;
+	}
+
+	.state-slider::-webkit-slider-thumb {
+		width: 20px;
+		height: 20px;
+	}
+
+	.state-slider::-moz-range-thumb {
+		width: 20px;
+		height: 20px;
+	}
+
+	.topic-search {
+		font-size: 0.9rem;
+	}
+
+	.topic-search input {
+		min-width: 230px;
+		padding: 10px 12px;
+		font-size: 1rem;
+	}
+
+	.topic-action {
+		padding: 10px 13px;
+		font-size: 0.88rem;
+	}
+
+	.control-pill {
+		padding: 9px 12px;
+		font-size: 0.92rem;
+	}
+
+	body[data-state="1"] .state-title {
+		font-size: clamp(0.82rem, 1.25vw, 1.7rem);
+	}
 }
 
 @media (max-width: 1100px) {
@@ -1192,22 +1421,22 @@ tip.show {
 	}
 
 	.control-pill {
-		font-size: 1.15rem;
-		padding: 12px 18px;
+		font-size: 1.28rem;
+		padding: 13px 20px;
 	}
 
 	.state-labels,
 	.state-captions {
-		font-size: 0.92rem;
+		font-size: 1.02rem;
 	}
 
 	.state-captions {
-		font-size: 1.05rem;
+		font-size: 1.16rem;
 	}
 
 	.topic-search input {
-		font-size: 1.2rem;
-		padding: 14px 16px;
+		font-size: 1.32rem;
+		padding: 15px 18px;
 	}
 
 	.card-title-bar {
