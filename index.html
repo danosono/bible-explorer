@@ -1,7 +1,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, user-scalable=yes"
+    />
     <meta name="description" content="Bible Explorer." />
     <meta property="og:title" content="Bible Explorer" />
     <meta property="og:description" content="Bible Explorer." />
@@ -11,6 +14,12 @@
       content="https://gospelgo.org/images/Gospelgo300.png"
     />
     <meta property="og:url" content="https://bibleexplorer.gospelgo.org" />
+    <meta name="theme-color" content="#0b0e14" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
     <title>Welcome to Bible Explorer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,6 +33,14 @@
     <link rel="icon" type="image/png" href="Gg.png" />
   </head>
   <body>
+    <!-- Mobile/Tablet Notice -->
+    <div id="mobile-notice" class="mobile-notice">
+      <div class="mobile-notice-content">
+        <p class="mobile-notice-text">Visit on desktop for best experience</p>
+        <button id="mobile-notice-dismiss" class="mobile-notice-btn">OK</button>
+      </div>
+    </div>
+
     <div id="app">
       <header class="header">
         <div class="title-block">
@@ -219,7 +236,7 @@
         <div class="legend" id="genre-legend"></div>
       </footer>
     </div>
-    <script src="js/app.js?v=38"></script>
+    <script src="js/app.js?v=39"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

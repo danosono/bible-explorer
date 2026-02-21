@@ -1794,6 +1794,76 @@ tip.show {
 	}
 }
 
+/* Mobile Notice Popup */
+.mobile-notice {
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	z-index: 10000;
+	background: linear-gradient(135deg, rgba(31, 91, 138, 0.95), rgba(47, 127, 143, 0.95));
+	backdrop-filter: blur(10px);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+	animation: slideDown 0.3s ease-out;
+}
+
+.mobile-notice-content {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	padding: 16px 20px;
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.mobile-notice-text {
+	flex: 1;
+	margin: 0;
+	color: var(--text-1);
+	font-size: clamp(0.9rem, 3.5vw, 1rem);
+	font-weight: 500;
+	letter-spacing: 0.01em;
+}
+
+.mobile-notice-btn {
+	flex-shrink: 0;
+	padding: 8px 20px;
+	background: rgba(255, 255, 255, 0.2);
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	border-radius: 6px;
+	color: var(--text-1);
+	font-size: 0.95rem;
+	font-weight: 600;
+	font-family: var(--font-body);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	min-height: 44px;
+	min-width: 60px;
+}
+
+.mobile-notice-btn:hover {
+	background: rgba(255, 255, 255, 0.3);
+	border-color: rgba(255, 255, 255, 0.5);
+	transform: scale(1.05);
+}
+
+.mobile-notice-btn:active {
+	transform: scale(0.98);
+}
+
+@keyframes slideDown {
+	from {
+		transform: translateY(-100%);
+		opacity: 0;
+	}
+	to {
+		transform: translateY(0);
+		opacity: 1;
+	}
+}
+
 @media (max-width: 1100px) {
 	:root {
 		--card-min: 88px;
@@ -1812,14 +1882,119 @@ tip.show {
 
 	#app {
 		grid-template-rows: auto 1fr;
+		padding: 12px;
 	}
 
 	.viewport {
 		min-height: 520px;
 	}
 
+	/* Show mobile notice on tablets and phones */
+	.mobile-notice:not(.dismissed) {
+		display: block;
+	}
+
 	.controls {
 		justify-content: flex-start;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	/* Make touch targets larger for mobile */
+	.topic-action,
+	.jump-button,
+	.chapter-nav-btn {
+		min-height: 44px;
+		min-width: 44px;
+		padding: 10px 16px;
+		font-size: clamp(0.85rem, 3vw, 1rem);
+	}
+
+	/* Adjust header for mobile */
+	.header {
+		padding: 12px 8px;
+	}
+
+	.title {
+		font-size: clamp(1.5rem, 5vw, 2rem);
+	}
+
+	.subtitle {
+		font-size: clamp(0.8rem, 3vw, 1rem);
+	}
+
+	/* Make card titles more readable */
+	:root {
+		--card-min: 75px;
+		--grid-gap: 8px;
+	}
+
+	/* Adjust reading pane max-width for mobile */
+	.reading-pane {
+		max-width: 100%;
+		padding: 12px;
+	}
+
+	/* Stack verse modal content vertically on mobile */
+	.verse-modal-content {
+		padding: 12px;
+	}
+
+	/* Improve topic search on mobile */
+	.topic-search input {
+		font-size: 16px; /* Prevents iOS zoom on focus */
+		min-height: 44px;
+	}
+
+	/* Make control pills more touch-friendly */
+	.control-pill {
+		padding: 8px 14px;
+		font-size: clamp(0.8rem, 3vw, 0.95rem);
+	}
+
+	/* Hide info button on tablets and mobile */
+	.info-btn {
+		display: none;
+	}
+}
+
+/* Extra small screens (phones in portrait) */
+@media (max-width: 480px) {
+	:root {
+		--card-min: 60px;
+		--grid-gap: 6px;
+	}
+
+	#app {
+		padding: 8px;
+	}
+
+	.header {
+		padding: 8px 6px;
+	}
+
+	.title {
+		font-size: clamp(1.2rem, 6vw, 1.8rem);
+	}
+
+	.controls {
+		gap: 6px;
+	}
+
+	/* Hide less critical elements on very small screens */
+	.control-pill {
+		display: none;
+	}
+
+	/* Make jump controls stack better */
+	.jump-controls {
+		flex-wrap: wrap;
+		gap: 6px;
+	}
+
+	.jump-select {
+		min-width: 100px;
+		font-size: 14px;
 	}
 }
 

@@ -2515,6 +2515,47 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 
 boot();
 
+// Handle mobile/tablet notice
+const mobileNotice = document.getElementById('mobile-notice');
+const mobileNoticeDismiss = document.getElementById('mobile-notice-dismiss');
+
+if (mobileNotice && mobileNoticeDismiss) {
+  // Check if user has already dismissed the notice
+  const dismissed = localStorage.getItem('mobile-notice-dismissed');
+  
+  if (dismissed === 'true') {
+    mobileNotice.classList.add('dismissed');
+  }
+  
+  // Handle dismiss button click
+  mobileNoticeDismiss.addEventListener('click', () => {
+    mobileNotice.classList.add('dismissed');
+    localStorage.setItem('mobile-notice-dismissed', 'true');
+    
+    // Fade out animation
+    mobileNotice.style.animation = 'slideUp 0.3s ease-out forwards';
+    setTimeout(() => {
+      mobileNotice.style.display = 'none';
+    }, 300);
+  });
+}
+
+// Add slideUp animation for dismissal
+const style = document.createElement('style');
+style.textContent = `
+  @keyframes slideUp {
+    from {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+  }
+`;
+document.head.appendChild(style);
+
 // Handle mouse back/forward buttons for state navigation
 let lastNavigationTime = 0;
 const handleMouseNavigation = (event) => {
