@@ -79,6 +79,7 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
   }
 
   // Parse refText to extract chapter and verse (e.g., "Acts 15:16")
+  const isRange = /\d+:\d+\s*-\s*\d+(:\d+)?/.test(refText) || refText.includes(" - ");
   const match = refText.match(/(\d+):(\d+)/);
   if (match) {
     const chapter = parseInt(match[1], 10);
@@ -87,6 +88,11 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
     if (verseText) {
       text += `\n${verseText}`;
     }
+    if (isRange) {
+      text += "\nClick to view full range";
+    }
+  } else if (isRange) {
+    text += "\nClick to view full range";
   }
 
   if (currentTooltip && currentTooltip.dataset.content === text) {
@@ -2236,7 +2242,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     if (line) line.classList.remove("is-active");
   };
 
-  const showVerseDetail = (group) => {
+  const showVerseDetail = (group, anchorEvent = null) => {
     if (detailPopup) detailPopup.remove();
     hideTooltip();
     selectedGroup = group;
@@ -2273,6 +2279,57 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 
     detailPopup = detail;
     modalContent.appendChild(detail);
+
+    const positionDetailPopup = (event = null) => {
+      const containerRect = modalContent.getBoundingClientRect();
+      const detailRect = detail.getBoundingClientRect();
+      const padding = 12;
+
+      let left = containerRect.width - detailRect.width - padding;
+      let top = containerRect.height - detailRect.height - padding;
+
+      if (event) {
+        const clickX = event.clientX - containerRect.left;
+        const clickY = event.clientY - containerRect.top;
+        left = clickX + 16;
+        top = clickY + 16;
+      }
+
+      left = Math.min(containerRect.width - detailRect.width - padding, Math.max(padding, left));
+      top = Math.min(containerRect.height - detailRect.height - padding, Math.max(padding, top));
+
+      detail.style.left = `${left}px`;
+      detail.style.top = `${top}px`;
+    };
+
+    requestAnimationFrame(() => positionDetailPopup(anchorEvent));
+
+    // Make popup draggable within modal
+    header.addEventListener("mousedown", (event) => {
+      event.preventDefault();
+      const containerRect = modalContent.getBoundingClientRect();
+      const detailRect = detail.getBoundingClientRect();
+      const offsetX = event.clientX - detailRect.left;
+      const offsetY = event.clientY - detailRect.top;
+      const padding = 12;
+
+      const onMouseMove = (moveEvent) => {
+        const left = moveEvent.clientX - containerRect.left - offsetX;
+        const top = moveEvent.clientY - containerRect.top - offsetY;
+        const clampedLeft = Math.min(containerRect.width - detailRect.width - padding, Math.max(padding, left));
+        const clampedTop = Math.min(containerRect.height - detailRect.height - padding, Math.max(padding, top));
+        detail.style.left = `${clampedLeft}px`;
+        detail.style.top = `${clampedTop}px`;
+      };
+
+      const onMouseUp = () => {
+        window.removeEventListener("mousemove", onMouseMove);
+        window.removeEventListener("mouseup", onMouseUp);
+      };
+
+      window.addEventListener("mousemove", onMouseMove);
+      window.addEventListener("mouseup", onMouseUp);
+    });
   };
 
   groupedPositions.forEach((group, index) => {
@@ -2283,6 +2340,11 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     const line = document.createElement("div");
     line.className = "verse-line";
     line.style.top = `${group.renderTop}%`;
+    const verseCount = Math.max(1, (group.endVerse - group.startVerse + 1));
+    const widthPercent = Math.min(100, 20 + (verseCount * 6));
+    line.style.width = `${widthPercent}%`;
+    line.style.left = "10px";
+    line.style.right = "auto";
     const subtopicText = group.subtopicText;
     const refText = group.rangeLabel;
 
@@ -2297,8 +2359,8 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       hideTooltip();
     });
     line.style.cursor = "pointer";
-    line.addEventListener("click", () => {
-      showVerseDetail(group);
+    line.addEventListener("click", (event) => {
+      showVerseDetail(group, event);
     });
 
     verseItem.appendChild(line);
@@ -2340,8 +2402,8 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       }, 80);
     });
     item.style.cursor = "pointer";
-    item.addEventListener("click", () => {
-      showVerseDetail(group);
+    item.addEventListener("click", (event) => {
+      showVerseDetail(group, event);
     });
     list.appendChild(item);
   });
