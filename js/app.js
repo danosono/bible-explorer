@@ -484,7 +484,13 @@ const applyTopicSelection = (topicName, options = {}) => {
     setStoredTopic(selectedTopic);
   }
 
-  renderCurrentState();
+  // Only re-render during typing in Overview (state 1) and Book (state 2)
+  // For Verse view (state 3), wait for commit to avoid scroll jumping
+  const currentState = getCurrentState();
+  if (commit || currentState <= 2) {
+    renderCurrentState();
+  }
+  
   updateCurrentTopicLabel();
   updateTopicActionState();
 };
@@ -2510,49 +2516,48 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 boot();
 
 // Handle mouse back/forward buttons for state navigation
-document.addEventListener('auxclick', (event) => {
-  // Mouse button 3 = back, button 4 = forward
-  if (event.button === 3) {
+let lastNavigationTime = 0;
+const handleMouseNavigation = (event) => {
+  // Prevent duplicate events (Edge fires both mouseup and auxclick)
+  const now = Date.now();
+  if (now - lastNavigationTime < 100) {
+    return;
+  }
+  
+  // Check for back/forward buttons
+  // Firefox uses button 3/4 in mouseup, Edge/Chrome use button 3/4 in auxclick
+  // Some mice/browsers might also use button 7/8
+  const isBack = event.button === 3 || event.button === 8;
+  const isForward = event.button === 4 || event.button === 7;
+  
+  if (isBack) {
     // Back: go to previous state (but not below 1)
     const currentState = getCurrentState();
     if (currentState > 1) {
       event.preventDefault();
       event.stopPropagation();
+      lastNavigationTime = now;
       setState(currentState - 1);
       return false;
     }
     // If we're at State 1, let browser handle it (go to previous page)
-  } else if (event.button === 4) {
+  } else if (isForward) {
     // Forward: go to next state (but not above 3)
     const currentState = getCurrentState();
     if (currentState < 3) {
       event.preventDefault();
       event.stopPropagation();
+      lastNavigationTime = now;
       setState(currentState + 1);
       return false;
     }
     // If we're at State 3, let browser handle it (go forward in history if available)
   }
-}, true);
+};
 
-// Also prevent mouseup from triggering browser navigation (only when we're handling it)
-document.addEventListener('mouseup', (event) => {
-  if (event.button === 3) {
-    const currentState = getCurrentState();
-    if (currentState > 1) {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    }
-  } else if (event.button === 4) {
-    const currentState = getCurrentState();
-    if (currentState < 3) {
-      event.preventDefault();
-      event.stopPropagation();
-      return false;
-    }
-  }
-}, true);
+// Listen for both mouseup and auxclick to support different browsers
+document.addEventListener('mouseup', handleMouseNavigation, true);
+document.addEventListener('auxclick', handleMouseNavigation, true);
 
 const loadTopics = async () => {
   try {
