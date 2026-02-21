@@ -260,16 +260,49 @@ body::before {
 	letter-spacing: 0.14em;
 }
 
+.topic-search .start-hint {
+	margin-left: 8px;
+	font-style: normal;
+	font-size: clamp(0.7rem, 0.75vw, 0.95rem);
+	letter-spacing: 0.08em;
+	text-transform: none;
+	color: rgba(255, 210, 128, 0.6);
+	background: rgba(255, 210, 128, 0.12);
+	border: 1px solid rgba(255, 210, 128, 0.25);
+	border-radius: 999px;
+	padding: 2px 8px;
+	box-shadow: 0 0 8px rgba(255, 210, 128, 0.12);
+}
+
 .topic-search input {
 	min-width: clamp(242px, 17.5vw, 352px);
 	padding: clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
 	border-radius: 12px;
-	border: 1px solid rgba(82, 122, 162, 0.3);
-	background: rgba(12, 18, 28, 0.8);
+	border: 1px solid rgba(95, 200, 255, 0.55);
+	background: rgba(12, 18, 28, 0.9);
 	color: var(--text-1);
 	font-size: clamp(1.05rem, 1.05vw, 1.43rem);
 	font-family: var(--font-body);
-	box-shadow: var(--shadow-1);
+	box-shadow: 0 0 14px rgba(95, 200, 255, 0.25), var(--shadow-1);
+	transition: box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+	animation: topic-glow 5s ease-in-out infinite;
+}
+
+.topic-search input:focus {
+	box-shadow: 0 0 20px rgba(95, 200, 255, 0.45), var(--shadow-1);
+	border-color: rgba(95, 200, 255, 0.9);
+	background: rgba(12, 18, 28, 0.95);
+	animation: none;
+}
+
+@keyframes topic-glow {
+	0%,
+	100% {
+		box-shadow: 0 0 10px rgba(95, 200, 255, 0.2), var(--shadow-1);
+	}
+	50% {
+		box-shadow: 0 0 18px rgba(95, 200, 255, 0.35), var(--shadow-1);
+	}
 }
 
 .topic-search input::placeholder {
