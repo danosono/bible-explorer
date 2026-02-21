@@ -78,22 +78,61 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
     text += ` (${subtopicText})`;
   }
 
+  const parseRangeFromRefText = (value) => {
+    if (!value) return null;
+    const dashMatch = value.match(/(\d+):(\d+)\s*-\s*(\d+)(?!:)/);
+    if (dashMatch) {
+      const chapter = parseInt(dashMatch[1], 10);
+      const startVerse = parseInt(dashMatch[2], 10);
+      const endVerse = parseInt(dashMatch[3], 10);
+      return {
+        startChapter: chapter,
+        endChapter: chapter,
+        startVerse,
+        endVerse
+      };
+    }
+
+    const matches = [...value.matchAll(/(\d+):(\d+)/g)];
+    if (matches.length >= 1) {
+      const first = matches[0];
+      const last = matches[matches.length - 1];
+      return {
+        startChapter: parseInt(first[1], 10),
+        startVerse: parseInt(first[2], 10),
+        endChapter: parseInt(last[1], 10),
+        endVerse: parseInt(last[2], 10)
+      };
+    }
+
+    return null;
+  };
+
   // Parse refText to extract chapter and verse (e.g., "Acts 15:16")
-  const isRange = /\d+:\d+\s*-\s*\d+(:\d+)?/.test(refText) || refText.includes(" - ");
-  const match = refText.match(/(\d+):(\d+)/);
-  if (match) {
-    const chapter = parseInt(match[1], 10);
-    const verse = parseInt(match[2], 10);
-    const verseText = getVerseText(bookId, chapter, verse);
-    if (verseText) {
-      text += `\n${verseText}`;
+  const range = parseRangeFromRefText(refText);
+  if (range) {
+    const { startChapter, endChapter, startVerse, endVerse } = range;
+    if (startChapter === endChapter && Number.isFinite(startVerse) && Number.isFinite(endVerse)) {
+      const lines = [];
+      const step = startVerse <= endVerse ? 1 : -1;
+      for (let v = startVerse; step > 0 ? v <= endVerse : v >= endVerse; v += step) {
+        const verseText = getVerseText(bookId, startChapter, v);
+        if (verseText) {
+          lines.push(`${startChapter}:${v} — ${verseText}`);
+        }
+      }
+      if (lines.length > 0) {
+        text += `\n${lines.join("\n")}`;
+      }
+    } else {
+      const verseText = getVerseText(bookId, startChapter, startVerse);
+      if (verseText) {
+        text += `\n${verseText}`;
+      }
     }
-    if (isRange) {
-      text += "\nClick to view full range";
-    }
-  } else if (isRange) {
-    text += "\nClick to view full range";
   }
+
+  text += "\nClick to view full range";
 
   if (currentTooltip && currentTooltip.dataset.content === text) {
     positionTooltip(currentTooltip, e);
@@ -1690,7 +1729,7 @@ const renderReadView = (bookId, topic = null) => {
   const prevBtn = document.createElement("button");
   prevBtn.className = "chapter-nav-btn";
   prevBtn.type = "button";
-  prevBtn.textContent = "Prev";
+  prevBtn.textContent = "Prev Ch.";
   prevBtn.disabled = chapterNumber <= 1;
   prevBtn.addEventListener("click", () => {
     if (chapterNumber <= 1) return;
@@ -1718,7 +1757,7 @@ const renderReadView = (bookId, topic = null) => {
   const nextBtn = document.createElement("button");
   nextBtn.className = "chapter-nav-btn";
   nextBtn.type = "button";
-  nextBtn.textContent = "Next";
+  nextBtn.textContent = "Next Ch.";
   nextBtn.disabled = chapterNumber >= book.chapters.length;
   nextBtn.addEventListener("click", () => {
     if (chapterNumber >= book.chapters.length) return;

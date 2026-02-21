@@ -1849,6 +1849,17 @@ tip.show {
 		font-size: 1.4rem;
 	}
 
+	.chapter-nav-btn {
+		font-size: 1.1rem;
+		padding: 9px 16px;
+		border-radius: 12px;
+	}
+
+	.chapter-nav-btn--ghost {
+		font-size: 1.1rem;
+		padding: 9px 16px;
+	}
+
 	.footer {
 		font-size: 0.75rem;
 		height: 32px;
