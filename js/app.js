@@ -1,9 +1,11 @@
 const treemapEl = document.getElementById("treemap");
 const stateSlider = document.querySelector(".state-slider");
+const stateCaptions = document.querySelectorAll(".state-captions span");
 const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
 const topicAction = document.getElementById("topic-action");
 const currentTopicEl = document.getElementById("current-topic");
+const sourceLabelEl = document.querySelector(".source");
 
 // Global state for topics
 let topicsData = {};
@@ -15,6 +17,8 @@ let booksData = [];
 let selectedBookId = null;
 let selectedReadReference = null;
 let preserveSelectedBookForNextRender = false;
+let isRenderingStateTransition = false;
+let pinnedLegendGenre = null;
 const DEFAULT_TOPIC = "life";
 const FALLBACK_NAV_TOPIC = "Love";
 const FALLBACK_NAV_BOOK = "JHN";
@@ -131,9 +135,74 @@ const updateStateUI = (stateValue = getCurrentState()) => {
   updateTopicActionState(stateValue);
 };
 
+const setSourceLabel = (text) => {
+  if (!sourceLabelEl) return;
+  sourceLabelEl.textContent = text || "Berean Standard Bible";
+};
+
+const clearLegendActive = () => {
+  document.querySelectorAll(".legend-genre.active").forEach((node) => {
+    node.classList.remove("active");
+  });
+};
+
+const setPinnedLegendGenre = (genre = null) => {
+  pinnedLegendGenre = genre || null;
+  clearLegendActive();
+  if (!pinnedLegendGenre) return;
+  const legendItem = document.querySelector(`.legend-genre[data-genre="${pinnedLegendGenre}"]`);
+  if (legendItem) {
+    legendItem.classList.add("active");
+  }
+};
+
+const getBookOrderIndex = (bookId) => {
+  const orderIndex = BOOK_ORDER.indexOf(bookId);
+  if (orderIndex >= 0) return orderIndex;
+  return 0;
+};
+
+const getAdjacentBookId = (bookId, direction = 1) => {
+  const total = BOOK_ORDER.length;
+  if (total === 0) return bookId;
+  const currentIndex = getBookOrderIndex(bookId);
+  const nextIndex = (currentIndex + direction + total) % total;
+  return BOOK_ORDER[nextIndex] || bookId;
+};
+
+const openBookInState2 = (bookId) => {
+  if (!bookId) return;
+  selectedBookId = bookId;
+  selectedReadReference = null;
+  preserveSelectedBookForNextRender = true;
+  isRenderingStateTransition = true;
+  setState(2);
+};
+
+const openChapterInState3 = (bookId, chapterNumber, verseNumber = 1) => {
+  const book = bibleData[bookId];
+  const bookName = book?.name || BOOK_NAMES[bookId] || bookId;
+  selectedBookId = bookId;
+  selectedReadReference = {
+    refText: `${bookName} ${chapterNumber}:${verseNumber}`,
+    chapter: chapterNumber,
+    verse: verseNumber
+  };
+  preserveSelectedBookForNextRender = true;
+  isRenderingStateTransition = true;
+  setState(3);
+};
+
 const resolveNavigationTopic = () => {
   if (selectedTopic && topicsData[selectedTopic]) {
     return selectedTopic;
+  }
+
+  // Only auto-assign fallback topic in Overview state (state 1)
+  // In Book/Verse views (states 2-3), allow empty topic selection
+  const stateValue = getCurrentState();
+  if (stateValue !== 1) {
+    return null;
   }
 
   const resolvedFallback = resolveTopicKey(FALLBACK_NAV_TOPIC)
@@ -221,27 +290,55 @@ const ensureNavigationContext = (stateValue) => {
   const referencedBookIds = getOrderedReferencedBookIds(topicName);
   const fallbackBookId = referencedBookIds[0] || FALLBACK_NAV_BOOK;
   const shouldPreserveSelectedBook = preserveSelectedBookForNextRender;
+  console.log('[ensureNavigationContext] shouldPreserveSelectedBook:', shouldPreserveSelectedBook, 'selectedBookId:', selectedBookId);
   preserveSelectedBookForNextRender = false;
 
-  if (!shouldPreserveSelectedBook && (!selectedBookId || !referencedBookIds.includes(selectedBookId))) {
-    selectedBookId = fallbackBookId;
+  if (!shouldPreserveSelectedBook) {
+    if (!selectedBookId || !referencedBookIds.includes(selectedBookId)) {
+      console.log('[ensureNavigationContext] Slider case - setting fallback:', fallbackBookId);
+      selectedBookId = fallbackBookId;
+    }
+  } else {
+    console.log('[ensureNavigationContext] Book click case - preserving:', selectedBookId);
+    if (!selectedBookId) {
+      selectedBookId = fallbackBookId;
+    }
   }
 
   if (stateValue === 3) {
-    const preferredRef = getFirstReferenceForBook(topicName, selectedBookId)
-      || getFirstReferenceForBook(topicName, fallbackBookId)
-      || null;
-    selectedReadReference = preferredRef;
+    // Only set a fallback reference if we don't already have one
+    if (!selectedReadReference) {
+      const preferredRef = getFirstReferenceForBook(topicName, selectedBookId)
+        || getFirstReferenceForBook(topicName, fallbackBookId)
+        || null;
+      selectedReadReference = preferredRef;
+    }
   }
+};
+
+const updateStateIndicator = (state) => {
+  const indicator = document.getElementById('state-indicator');
+  if (!indicator) return;
+  const labels = {
+    1: 'Bible View',
+    2: 'Book View',
+    3: 'Verse View'
+  };
+  indicator.textContent = labels[state] || 'Bible View';
 };
 
 const renderCurrentState = () => {
   const stateValue = getCurrentState();
+  updateStateIndicator(stateValue);
   if (stateValue === 1) {
+    isRenderingStateTransition = false;
     renderTreemap(booksData, selectedTopic);
     return;
   }
-  ensureNavigationContext(stateValue);
+  if (!isRenderingStateTransition) {
+    ensureNavigationContext(stateValue);
+  }
+  isRenderingStateTransition = false;
   if (stateValue === 2) {
     renderBookView(selectedBookId, selectedTopic);
     return;
@@ -318,7 +415,7 @@ const setStoredTopic = (topicName) => {
 const updateTopicActionState = (stateValue = getCurrentState()) => {
   if (!topicAction) return;
   const isOverview = stateValue === 1;
-  topicAction.textContent = isOverview ? "Reset Topic" : "Clear Topic";
+  topicAction.textContent = "Clear Topic";
   topicAction.disabled = !isOverview && !selectedTopic;
 };
 
@@ -408,11 +505,23 @@ if (stateSlider && statePill) {
   updateStateUI(Number(stateSlider.value) || 1);
 }
 
+stateCaptions.forEach(caption => {
+  caption.addEventListener("click", () => {
+    const targetState = Number(caption.dataset.state);
+    if (targetState) {
+      setState(targetState);
+    }
+  });
+});
+
 const goToBookView = (bookId) => {
   if (!bookId) return;
+  console.log('[goToBookView] Setting selectedBookId to:', bookId);
   selectedBookId = bookId;
   selectedReadReference = null;
   preserveSelectedBookForNextRender = true;
+  isRenderingStateTransition = true;
+  console.log('[goToBookView] preserveSelectedBookForNextRender set to true');
   setState(2);
 };
 
@@ -661,7 +770,7 @@ const buildItems = (books) => {
     .map((book, index) => ({
       ...book,
       value: Math.max(1, Number(book.verseCount) || 1),
-      displayName: BOOK_NAMES[book.id] || book.name || book.id,
+      displayName: BOOK_NAMES[book.id] || book.id,
       order: orderIndex.has(book.id) ? orderIndex.get(book.id) : BOOK_ORDER.length + index,
       isSeparator: false,
       genre: BOOK_GENRES[book.id] || "history"
@@ -815,6 +924,8 @@ const enforceAspectRatios = (items, width, height) => {
 
 const renderTreemap = (books, topic = null) => {
   if (!treemapEl) return;
+  setSourceLabel("Berean Standard Bible");
+  setPinnedLegendGenre(null);
   const rect = treemapEl.getBoundingClientRect();
   const width = Math.max(rect.width, 320);
   const height = Math.max(rect.height, 320);
@@ -841,11 +952,18 @@ const renderTreemap = (books, topic = null) => {
 
     const card = document.createElement("article");
     card.className = item.isSeparator ? "card card--separator" : "card card--abstract";
+    if (!item.isSeparator) {
+      card.classList.add("is-clickable");
+      card.addEventListener("click", () => {
+        goToBookView(item.id);
+      });
+    }
     if (!item.isSeparator && item.genre) {
       card.setAttribute("data-genre", item.genre);
       
       // Add hover effects to highlight corresponding legend item
       tile.addEventListener("mouseenter", () => {
+        if (pinnedLegendGenre) return;
         const legendItem = document.querySelector(`.legend-genre[data-genre="${item.genre}"]`);
         if (legendItem) {
           legendItem.classList.add("active");
@@ -853,6 +971,7 @@ const renderTreemap = (books, topic = null) => {
       });
       
       tile.addEventListener("mouseleave", () => {
+        if (pinnedLegendGenre) return;
         const legendItem = document.querySelector(`.legend-genre[data-genre="${item.genre}"]`);
         if (legendItem) {
           legendItem.classList.remove("active");
@@ -887,10 +1006,6 @@ const renderTreemap = (books, topic = null) => {
         const verseEntries = topicData.references[item.id];
         const totalVerses = getBookVerseTotal(item.id) || verseCounts[item.id] || 1;
         
-        // Group verses by proximity (within 2% are considered overlapping)
-        const verseGroups = [];
-        const OVERLAP_THRESHOLD = 2; // percentage points
-        
         const versePositions = verseEntries.map((entry) => {
           const refs = Array.isArray(entry.refs) ? entry.refs : [];
           const primaryRef = refs[0] || "";
@@ -910,66 +1025,76 @@ const renderTreemap = (books, topic = null) => {
           };
         });
         
+        // Sort by absolute verse position
+        versePositions.sort((a, b) => a.absoluteVerse - b.absoluteVerse);
+        
+        // Group adjacent verses into ranges
+        const verseRanges = [];
+        let currentRange = null;
+        
         versePositions.forEach((vp) => {
-          let foundGroup = false;
-          for (const group of verseGroups) {
-            const avgPos = group.reduce((sum, v) => sum + v.percentage, 0) / group.length;
-            if (Math.abs(vp.percentage - avgPos) <= OVERLAP_THRESHOLD) {
-              group.push(vp);
-              foundGroup = true;
-              break;
-            }
-          }
-          if (!foundGroup) {
-            verseGroups.push([vp]);
+          if (!currentRange || vp.absoluteVerse > currentRange.endVerse + 1) {
+            // Start new range
+            if (currentRange) verseRanges.push(currentRange);
+            currentRange = {
+              startVerse: vp.absoluteVerse,
+              endVerse: vp.absoluteVerse,
+              verses: [vp],
+              percentage: vp.percentage
+            };
+          } else {
+            // Extend current range
+            currentRange.endVerse = vp.absoluteVerse;
+            currentRange.verses.push(vp);
           }
         });
+        if (currentRange) verseRanges.push(currentRange);
         
-        // Render lines with staggering for overlapping verses
-        verseGroups.forEach((group) => {
-          const groupAvg = group.reduce((sum, v) => sum + v.percentage, 0) / group.length;
-
-          group.forEach((vp, index) => {
-            const lineEl = document.createElement("div");
-            lineEl.className = "pin-line";
-            lineEl.style.position = "absolute";
-            lineEl.style.top = `${vp.percentage}%`;
-            
-            // Stagger overlapping lines horizontally
-            if (group.length > 1) {
-              const maxColumns = 10;
-              const columns = Math.min(group.length, maxColumns);
-              const row = Math.floor(index / maxColumns);
-              const column = index % maxColumns;
-              const individualisedWidth = 100 / columns;
-              lineEl.style.left = `${column * individualisedWidth}%`;
-              lineEl.style.width = `${individualisedWidth}%`;
-              if (row > 0) {
-                lineEl.style.transform = `translateY(${row * 8}px)`;
-              }
-            }
-            
-            // Create tooltip data (verse text loaded only when shown)
-            const refText = (vp.refs && vp.refs[0]) ? vp.refs[0] : `Verse ${vp.verse}`;
-            const subtopicText = (vp.subtopics && vp.subtopics.length > 0) ? vp.subtopics.join("; ") : "";
-            
-            lineEl.addEventListener('mouseenter', (e) => {
-              showTooltip(e, refText, subtopicText, item.id, vp.verse);
-            });
-            lineEl.addEventListener('mouseleave', hideTooltip);
-            lineEl.dataset.verses = refText;
-            lineEl.dataset.subtopics = subtopicText;
-            lineEl.dataset.bookId = item.id;
-            
-            // Click handler to show verse modal
-            lineEl.style.cursor = "pointer";
-            lineEl.addEventListener("click", (e) => {
-              e.stopPropagation();
-              showVerseModal(item.id, item.displayName, versePositions, topicData.name);
-            });
-            
-            lines.appendChild(lineEl);
+        // Render lines for each range with width based on verse count
+        verseRanges.forEach((range) => {
+          const verseCount = range.verses.length;
+          const lineEl = document.createElement("div");
+          lineEl.className = "pin-line";
+          lineEl.style.position = "absolute";
+          lineEl.style.top = `${range.percentage}%`;
+          
+          // Calculate line width based on verse count
+          // 1 verse = 20%, scale up to 100% for larger counts
+          const baseWidth = 20;
+          const maxWidth = 100;
+          const width = Math.min(baseWidth + (verseCount - 1) * 8, maxWidth);
+          lineEl.style.width = `${width}%`;
+          
+          // Handle wrapping for very large verse counts (>10 verses)
+          if (verseCount > 10) {
+            lineEl.classList.add("pin-line-wrapped");
+            // Add visual indicator for wrapped/large groups
+            lineEl.style.height = "3px";
+          }
+          
+          // Create tooltip data
+          const startRef = range.verses[0].refs && range.verses[0].refs[0];
+          const endRef = range.verses[range.verses.length - 1].refs && range.verses[range.verses.length - 1].refs[0];
+          const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+          const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
+          const subtopicText = subtopics.join("; ");
+          
+          lineEl.addEventListener('mouseenter', (e) => {
+            showTooltip(e, refText, subtopicText, item.id, range.startVerse);
           });
+          lineEl.addEventListener('mouseleave', hideTooltip);
+          lineEl.dataset.verses = refText;
+          lineEl.dataset.subtopics = subtopicText;
+          lineEl.dataset.bookId = item.id;
+          
+          // Click handler to show verse modal
+          lineEl.style.cursor = "pointer";
+          lineEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            showVerseModal(item.id, item.displayName, versePositions, topicData.name);
+          });
+          
+          lines.appendChild(lineEl);
         });
         
         const verseCount = verseEntries.length;
@@ -1021,6 +1146,7 @@ const renderBookView = (bookId, topic = null) => {
   const titleEl = document.getElementById("book-title");
   const metaEl = document.getElementById("book-meta");
   const topicEl = document.getElementById("book-current-topic");
+  const bookVerseCount = document.getElementById("book-verse-count");
   if (!grid || !titleEl || !metaEl || !topicEl) return;
 
   grid.innerHTML = "";
@@ -1028,18 +1154,80 @@ const renderBookView = (bookId, topic = null) => {
 
   const book = bookId ? bibleData[bookId] : null;
   if (!book || !Array.isArray(book.chapters)) {
+    delete grid.dataset.density;
     titleEl.textContent = "Book";
     metaEl.textContent = "Select a book to view chapters";
+    if (bookVerseCount) bookVerseCount.textContent = "";
+    setSourceLabel("Berean Standard Bible");
+    setPinnedLegendGenre(null);
     return;
   }
 
-  const bookName = book.name || BOOK_NAMES[bookId] || bookId;
+  const bookName = BOOK_NAMES[bookId] || book.name || bookId;
   const totalVerses = getBookVerseTotal(bookId) || 0;
+  const bookGenre = BOOK_GENRES[bookId] || "history";
+  const chapterCount = book.chapters.length;
+  const chapterDensity = chapterCount >= 150 ? "ultra" : (chapterCount >= 100 ? "high" : "normal");
+  grid.dataset.density = chapterDensity;
   titleEl.textContent = bookName;
-  metaEl.textContent = `${book.chapters.length} chapters • ${totalVerses} verses`;
+  setPinnedLegendGenre(bookGenre);
+  updateBookGenreFooter(bookGenre, bookName);
+
+  metaEl.innerHTML = "";
+  const bookNameSpan = document.createElement("span");
+  bookNameSpan.className = "book-meta-name";
+  bookNameSpan.textContent = bookName;
+  const metaText = document.createElement("span");
+  metaText.textContent = `${chapterCount} chapters • ${totalVerses} verses`;
+  const navWrap = document.createElement("span");
+  navWrap.className = "book-nav-controls";
+  const prevBtn = document.createElement("button");
+  prevBtn.type = "button";
+  prevBtn.className = "book-nav-btn";
+  prevBtn.textContent = "Prev Book";
+  prevBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openBookInState2(getAdjacentBookId(bookId, -1));
+  });
+  const nextBtn = document.createElement("button");
+  nextBtn.type = "button";
+  nextBtn.className = "book-nav-btn";
+  nextBtn.textContent = "Next Book";
+  nextBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    openBookInState2(getAdjacentBookId(bookId, 1));
+  });
+  navWrap.appendChild(prevBtn);
+  navWrap.appendChild(nextBtn);
+  metaEl.appendChild(bookNameSpan);
+  metaEl.appendChild(metaText);
+  metaEl.appendChild(navWrap);
 
   const topicData = topic ? topicsData[topic] : null;
   const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
+  
+  // Calculate total verses for this topic in this book
+  let topicVerseCount = 0;
+  if (bookEntries && Array.isArray(bookEntries)) {
+    const verseSet = new Set();
+    bookEntries.forEach((entry) => {
+      const refs = Array.isArray(entry.refs) ? entry.refs : [];
+      refs.forEach(ref => {
+        verseSet.add(ref);
+      });
+    });
+    topicVerseCount = verseSet.size;
+  }
+  
+  // Update verse count display
+  if (bookVerseCount) {
+    if (topicData && topicVerseCount > 0) {
+      bookVerseCount.textContent = `${topicVerseCount} verse${topicVerseCount !== 1 ? 's' : ''}`;
+    } else {
+      bookVerseCount.textContent = "";
+    }
+  }
+  
   const entriesByChapter = new Map();
 
   if (bookEntries) {
@@ -1062,85 +1250,281 @@ const renderBookView = (bookId, topic = null) => {
     });
   }
 
-  const fragment = document.createDocumentFragment();
-  book.chapters.forEach((chapter, index) => {
+  const chapterItems = book.chapters.map((chapter, index) => {
     const chapterNumber = Number(chapter.number) || index + 1;
+    const chapterVerseTotal = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 1);
+    return {
+      chapter,
+      chapterNumber,
+      chapterVerseTotal,
+      value: Math.max(1, chapterVerseTotal)
+    };
+  });
+
+  const rect = grid.getBoundingClientRect();
+  const width = Math.max(rect.width, 320);
+  const height = Math.max(rect.height, 320);
+  const is4k = window.innerWidth >= 2560;
+
+  let columnCount = 4;
+  if (chapterCount >= 150) {
+    columnCount = 16;
+  } else if (chapterCount >= 51) {
+    columnCount = 12;
+  } else if (chapterCount >= 29) {
+    columnCount = 8;
+  }
+  columnCount = clamp(columnCount, 2, Math.max(2, chapterCount));
+
+  const booksPerCol = Math.ceil(chapterItems.length / columnCount);
+  const minHeightFloor = chapterDensity === "ultra"
+    ? (is4k ? 24 : 18)
+    : chapterDensity === "high"
+      ? (is4k ? 28 : 22)
+      : (is4k ? 34 : 26);
+  const minHeightCeiling = chapterDensity === "ultra"
+    ? (is4k ? 86 : 70)
+    : chapterDensity === "high"
+      ? (is4k ? 100 : 84)
+      : (is4k ? 120 : 96);
+  const dynamicMinHeight = clamp(
+    Math.floor(height / Math.max(booksPerCol + 1, 2)),
+    minHeightFloor,
+    minHeightCeiling
+  );
+  const columnWidth = width / columnCount;
+  const columns = Array.from({ length: columnCount }, () => []);
+  const effectiveColumns = Math.min(columnCount, chapterItems.length);
+  const chapterWeights = chapterItems.map((item) => item.value);
+  const chapterCountTotal = chapterItems.length;
+
+  const prefixSums = new Array(chapterCountTotal + 1).fill(0);
+  for (let i = 1; i <= chapterCountTotal; i += 1) {
+    prefixSums[i] = prefixSums[i - 1] + chapterWeights[i - 1];
+  }
+
+  const rangeSum = (startIndex, endIndex) => prefixSums[endIndex] - prefixSums[startIndex];
+
+  const dp = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(Number.POSITIVE_INFINITY));
+  const split = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(0));
+
+  dp[0][0] = 0;
+  for (let i = 1; i <= chapterCountTotal; i += 1) {
+    dp[1][i] = rangeSum(0, i);
+  }
+
+  for (let col = 2; col <= effectiveColumns; col += 1) {
+    for (let i = col; i <= chapterCountTotal; i += 1) {
+      for (let j = col - 1; j < i; j += 1) {
+        const candidate = Math.max(dp[col - 1][j], rangeSum(j, i));
+        if (candidate < dp[col][i]) {
+          dp[col][i] = candidate;
+          split[col][i] = j;
+        }
+      }
+    }
+  }
+
+  const boundaries = [];
+  let currentI = chapterCountTotal;
+  for (let col = effectiveColumns; col > 1; col -= 1) {
+    const boundary = split[col][currentI];
+    boundaries.push(boundary);
+    currentI = boundary;
+  }
+  boundaries.reverse();
+
+  let start = 0;
+  for (let col = 0; col < effectiveColumns; col += 1) {
+    const end = col < boundaries.length ? boundaries[col] : chapterCountTotal;
+    columns[col] = chapterItems.slice(start, end);
+    start = end;
+  }
+
+  columns.forEach((column, colIndex) => {
+    if (column.length === 0) return;
+    const x = colIndex * columnWidth;
+    const columnValue = column.reduce((sum, item) => sum + item.value, 0);
+    const baseHeightTotal = dynamicMinHeight * column.length;
+    const extraHeight = Math.max(0, height - baseHeightTotal);
+    let y = 0;
+
+    column.forEach((item) => {
+      const valueRatio = columnValue > 0 ? (item.value / columnValue) : (1 / column.length);
+      const proportionalHeight = baseHeightTotal > height
+        ? height * valueRatio
+        : dynamicMinHeight + (extraHeight * valueRatio);
+      item.x = x;
+      item.y = y;
+      item.w = columnWidth;
+      item.h = Math.max(1, proportionalHeight);
+      y += item.h;
+    });
+
+    if (column.length > 0) {
+      const usedHeight = y;
+      const delta = height - usedHeight;
+      if (Math.abs(delta) > 0.1) {
+        const last = column[column.length - 1];
+        last.h = Math.max(1, last.h + delta);
+      }
+    }
+  });
+
+  const fragment = document.createDocumentFragment();
+  chapterItems.forEach((item) => {
+    const { chapter, chapterNumber, chapterVerseTotal } = item;
+
+    const tile = document.createElement("div");
+    tile.className = "chapter-tile";
+    tile.style.left = `${item.x}px`;
+    tile.style.top = `${item.y}px`;
+    tile.style.width = `${Math.max(0, item.w)}px`;
+    tile.style.height = `${Math.max(0, item.h)}px`;
+
     const card = document.createElement("article");
     card.className = "card card--abstract";
+    card.setAttribute("data-genre", bookGenre);
+    card.classList.add("is-clickable");
 
     const titleBar = document.createElement("div");
     titleBar.className = "card-title-bar";
-    titleBar.textContent = `Chapter ${chapterNumber}`;
+    titleBar.textContent = String(chapterNumber);
     card.appendChild(titleBar);
 
     const lines = document.createElement("div");
     lines.className = "pin-lines";
 
     const chapterEntries = entriesByChapter.get(chapterNumber) || [];
-    if (chapterEntries.length > 0) {
-      const chapterVerseTotal = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 1);
-      const verseGroups = [];
-      const OVERLAP_THRESHOLD = 2;
+    const firstChapterEntryVerse = chapterEntries.length > 0
+      ? chapterEntries.map((entry) => Number(entry.verse) || 1).sort((a, b) => a - b)[0]
+      : 1;
 
-      const versePositions = chapterEntries.map((entry) => {
+    const openChapterInReadView = () => {
+      openChapterInState3(bookId, chapterNumber, firstChapterEntryVerse);
+    };
+
+    titleBar.addEventListener("click", (e) => {
+      e.stopPropagation();
+      openChapterInReadView();
+    });
+
+    card.addEventListener("click", () => {
+      openChapterInReadView();
+    });
+
+    if (chapterEntries.length > 0) {
+      // Sort by verse number
+      const sortedEntries = [...chapterEntries].sort((a, b) => a.verse - b.verse);
+      
+      const versePositions = sortedEntries.map((entry) => {
         const percentage = (entry.verse / chapterVerseTotal) * 100;
+        const renderTop = Math.max(0.8, Math.min(99.2, percentage));
         return {
           chapter: entry.chapter,
           verse: entry.verse,
           percentage,
+          renderTop,
           subtopics: entry.subtopics,
           refs: entry.refs
         };
       });
 
+      // Group adjacent verses into ranges
+      const verseRanges = [];
+      let currentRange = null;
+      
       versePositions.forEach((vp) => {
-        let foundGroup = false;
-        for (const group of verseGroups) {
-          const avgPos = group.reduce((sum, v) => sum + v.percentage, 0) / group.length;
-          if (Math.abs(vp.percentage - avgPos) <= OVERLAP_THRESHOLD) {
-            group.push(vp);
-            foundGroup = true;
-            break;
-          }
-        }
-        if (!foundGroup) {
-          verseGroups.push([vp]);
+        if (!currentRange || vp.verse > currentRange.endVerse + 1) {
+          // Start new range
+          if (currentRange) verseRanges.push(currentRange);
+          currentRange = {
+            startVerse: vp.verse,
+            endVerse: vp.verse,
+            verses: [vp],
+            renderTop: vp.renderTop
+          };
+        } else {
+          // Extend current range
+          currentRange.endVerse = vp.verse;
+          currentRange.verses.push(vp);
         }
       });
+      if (currentRange) verseRanges.push(currentRange);
 
-      verseGroups.forEach((group) => {
-        group.forEach((vp, index) => {
-          const lineEl = document.createElement("div");
-          lineEl.className = "pin-line";
-          lineEl.style.position = "absolute";
-          lineEl.style.top = `${vp.percentage}%`;
+      // Render lines for each range with width based on verse count
+      verseRanges.forEach((range) => {
+        const verseCount = range.verses.length;
+        const lineEl = document.createElement("div");
+        lineEl.className = "pin-line";
+        lineEl.style.position = "absolute";
+        lineEl.style.top = `${range.renderTop}%`;
 
-          if (group.length > 1) {
-            const maxColumns = 10;
-            const columns = Math.min(group.length, maxColumns);
-            const row = Math.floor(index / maxColumns);
-            const column = index % maxColumns;
-            const individualisedWidth = 100 / columns;
-            lineEl.style.left = `${column * individualisedWidth}%`;
-            lineEl.style.width = `${individualisedWidth}%`;
-            if (row > 0) {
-              lineEl.style.transform = `translateY(${row * 8}px)`;
-            }
-          }
+        // Calculate line width based on verse count
+        // 1 verse = 20%, scale up to 100% for larger counts
+        const baseWidth = 20;
+        const maxWidth = 100;
+        const width = Math.min(baseWidth + (verseCount - 1) * 8, maxWidth);
+        lineEl.style.width = `${width}%`;
 
-          const refText = (vp.refs && vp.refs[0]) ? vp.refs[0] : `Chapter ${vp.chapter}:${vp.verse}`;
-          const subtopicText = (vp.subtopics && vp.subtopics.length > 0) ? vp.subtopics.join("; ") : "";
-          lineEl.addEventListener("mouseenter", (e) => {
-            showTooltip(e, refText, subtopicText, bookId, vp.verse);
-          });
-          lineEl.addEventListener("mouseleave", hideTooltip);
-          lines.appendChild(lineEl);
+        // Handle wrapping for very large verse counts (>10 verses)
+        if (verseCount > 10) {
+          lineEl.classList.add("pin-line-wrapped");
+          lineEl.style.height = "3px";
+        }
+
+        const startRef = range.verses[0].refs && range.verses[0].refs[0];
+        const endRef = range.verses[range.verses.length - 1].refs && range.verses[range.verses.length - 1].refs[0];
+        const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+        const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
+        const subtopicText = subtopics.join("; ");
+        
+        lineEl.addEventListener("mouseenter", (e) => {
+          showTooltip(e, refText, subtopicText, bookId, range.startVerse);
         });
+        lineEl.addEventListener("mouseleave", hideTooltip);
+        lineEl.style.cursor = "pointer";
+        lineEl.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showVerseModal(
+            bookId,
+            bookName,
+            versePositions,
+            topicData?.name || "Chapter references",
+            {
+              chapterNumber,
+              initialVerse: range.startVerse
+            }
+          );
+        });
+        lines.appendChild(lineEl);
       });
+
+      const expandBtn = document.createElement("button");
+      const verseCount = chapterEntries.length;
+      expandBtn.className = "expand-verses-btn";
+      expandBtn.textContent = String(verseCount);
+      expandBtn.title = verseCount === 1 ? "View 1 verse" : `View ${verseCount} verses`;
+      expandBtn.setAttribute("aria-label", expandBtn.title);
+      expandBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showVerseModal(
+          bookId,
+          bookName,
+          versePositions,
+          topicData?.name || "Chapter references",
+          {
+            chapterNumber,
+            initialVerse: firstChapterEntryVerse
+          }
+        );
+      });
+      tile.appendChild(expandBtn);
     }
 
     card.appendChild(lines);
-    fragment.appendChild(card);
+    tile.appendChild(card);
+    fragment.appendChild(tile);
   });
 
   grid.appendChild(fragment);
@@ -1150,10 +1534,14 @@ const renderReadView = (bookId, topic = null) => {
   const readTitle = document.getElementById("read-title");
   const readMeta = document.getElementById("read-meta");
   const readTopic = document.getElementById("read-current-topic");
+  const verseCount = document.getElementById("verse-count");
   const readingBlock = document.querySelector(".reading-block");
   if (!readTitle || !readMeta || !readTopic || !readingBlock) return;
   const book = bookId ? bibleData[bookId] : null;
-  const bookName = book?.name || BOOK_NAMES[bookId] || "Verse";
+  const bookName = BOOK_NAMES[bookId] || book?.name || "Verse";
+  setSourceLabel("Berean Standard Bible");
+  setPinnedLegendGenre(null);
+  updateBookGenreFooter(null);
   readTitle.textContent = bookName;
   readTopic.textContent = selectedTopic || "All topics";
 
@@ -1161,6 +1549,7 @@ const renderReadView = (bookId, topic = null) => {
 
   if (!book || !Array.isArray(book.chapters)) {
     readMeta.textContent = "Select a book first";
+    if (verseCount) verseCount.textContent = "";
     const title = document.createElement("h3");
     title.textContent = "Verse Reader";
     const hint = document.createElement("p");
@@ -1189,6 +1578,12 @@ const renderReadView = (bookId, topic = null) => {
     });
   }
 
+  // Calculate total verse count for this topic in this book
+  let totalVerseCount = 0;
+  chapterVerseMap.forEach((verses) => {
+    totalVerseCount += verses.size;
+  });
+
   const referencedChapters = Array.from(chapterVerseMap.keys()).sort((a, b) => a - b);
   const fallbackChapter = referencedChapters[0] || 1;
   const preferredChapter = selectedReadReference?.chapter || fallbackChapter;
@@ -1196,6 +1591,27 @@ const renderReadView = (bookId, topic = null) => {
   const chapter = book.chapters[chapterNumber - 1];
   const verses = Array.isArray(chapter?.verses) ? chapter.verses : [];
   const highlightedVerses = chapterVerseMap.get(chapterNumber) || new Set();
+  const highlightedVersesArray = Array.from(highlightedVerses).sort((a, b) => a - b);
+  
+  // Update verse count display for current chapter
+  if (verseCount) {
+    if (topicData && highlightedVersesArray.length > 0) {
+      const chapterVerseCount = highlightedVersesArray.length;
+      verseCount.textContent = `${chapterVerseCount} verse${chapterVerseCount !== 1 ? 's' : ''}`;
+    } else {
+      verseCount.textContent = "";
+    }
+  }
+  
+  // Track current verse index within highlighted verses
+  let currentVerseIndex = 0;
+  const currentVerse = selectedReadReference?.verse;
+  if (highlightedVersesArray.length > 0 && currentVerse) {
+    const idx = highlightedVersesArray.indexOf(currentVerse);
+    if (idx !== -1) {
+      currentVerseIndex = idx;
+    }
+  }
 
   const getPreferredVerseForChapter = (chapterNum) => {
     const verseSet = chapterVerseMap.get(chapterNum);
@@ -1212,6 +1628,37 @@ const renderReadView = (bookId, topic = null) => {
       verse: verseNum
     };
     renderReadView(bookId, selectedTopic);
+  };
+  
+  const updateVerseHighlight = (verseList, targetVerseNum) => {
+    // Remove is-current from all verses
+    verseList.querySelectorAll('.chapter-verse.is-current').forEach(el => {
+      el.classList.remove('is-current');
+    });
+    
+    // Add is-current to target verse
+    const verses = verseList.querySelectorAll('.chapter-verse');
+    verses.forEach((verseEl, index) => {
+      const verseNumber = Number(chapter.verses[index]?.number) || index + 1;
+      if (verseNumber === targetVerseNum) {
+        verseEl.classList.add('is-current');
+        // Update reference without re-rendering
+        selectedReadReference = {
+          refText: `${bookName} ${chapterNumber}:${targetVerseNum}`,
+          chapter: chapterNumber,
+          verse: targetVerseNum
+        };
+        // Update meta text
+        readMeta.textContent = `Starting at ${selectedReadReference.refText}`;
+        // Smooth scroll to verse
+        scrollToVerse(verseList.parentElement, verseEl);
+      }
+    });
+    
+    // Update button states
+    const newIndex = highlightedVersesArray.indexOf(targetVerseNum);
+    prevVerseBtn.disabled = newIndex === 0;
+    nextVerseBtn.disabled = newIndex === highlightedVersesArray.length - 1;
   };
 
   const scrollToVerse = (container, target) => {
@@ -1250,11 +1697,17 @@ const renderReadView = (bookId, topic = null) => {
   chapterLabel.className = "chapter-nav-label";
   chapterLabel.textContent = `Chapter ${chapterNumber}`;
 
-  const jumpBtn = document.createElement("button");
-  jumpBtn.className = "chapter-nav-btn chapter-nav-btn--ghost";
-  jumpBtn.type = "button";
-  jumpBtn.textContent = "Jump to highlight";
-  jumpBtn.disabled = highlightedVerses.size === 0;
+  const prevVerseBtn = document.createElement("button");
+  prevVerseBtn.className = "chapter-nav-btn chapter-nav-btn--ghost";
+  prevVerseBtn.type = "button";
+  prevVerseBtn.textContent = "◄ Prev verse";
+  prevVerseBtn.disabled = highlightedVersesArray.length === 0 || currentVerseIndex === 0;
+
+  const nextVerseBtn = document.createElement("button");
+  nextVerseBtn.className = "chapter-nav-btn chapter-nav-btn--ghost";
+  nextVerseBtn.type = "button";
+  nextVerseBtn.textContent = "Next verse ►";
+  nextVerseBtn.disabled = highlightedVersesArray.length === 0 || currentVerseIndex === highlightedVersesArray.length - 1;
 
   const nextBtn = document.createElement("button");
   nextBtn.className = "chapter-nav-btn";
@@ -1271,7 +1724,10 @@ const renderReadView = (bookId, topic = null) => {
   const chapterCenter = document.createElement("div");
   chapterCenter.className = "chapter-nav-center";
   chapterCenter.appendChild(chapterLabel);
-  chapterCenter.appendChild(jumpBtn);
+  if (highlightedVersesArray.length > 0) {
+    chapterCenter.appendChild(prevVerseBtn);
+    chapterCenter.appendChild(nextVerseBtn);
+  }
 
   chapterNav.appendChild(prevBtn);
   chapterNav.appendChild(chapterCenter);
@@ -1296,19 +1752,21 @@ const renderReadView = (bookId, topic = null) => {
     const verseRow = document.createElement("div");
     verseRow.className = "chapter-verse";
 
-    if (highlightedVerses.has(verseNumber)) {
+    const isHighlighted = highlightedVerses.has(verseNumber);
+    const isCurrentVerse = selectedReadReference
+      && selectedReadReference.chapter === chapterNumber
+      && selectedReadReference.verse === verseNumber;
+
+    if (isHighlighted) {
       verseRow.classList.add("is-topic");
       if (!firstTopicRow) {
         firstTopicRow = verseRow;
       }
-    }
-    if (
-      selectedReadReference
-      && selectedReadReference.chapter === chapterNumber
-      && selectedReadReference.verse === verseNumber
-    ) {
-      verseRow.classList.add("is-selected");
-      selectedRow = verseRow;
+      // Add pulsing glow to current highlighted verse
+      if (isCurrentVerse) {
+        verseRow.classList.add("is-current");
+        selectedRow = verseRow;
+      }
     }
 
     const numberEl = document.createElement("span");
@@ -1321,19 +1779,50 @@ const renderReadView = (bookId, topic = null) => {
 
     verseRow.appendChild(numberEl);
     verseRow.appendChild(textEl);
-    verseRow.addEventListener("click", () => {
-      setReadReference(chapterNumber, verseNumber);
-    });
     verseList.appendChild(verseRow);
-  });
-
-  jumpBtn.addEventListener("click", () => {
-    scrollToVerse(verseList, firstTopicRow);
   });
 
   readingBlock.appendChild(verseList);
 
+  // Add event listeners for verse navigation (now that verseList exists)
+  prevVerseBtn.addEventListener("click", () => {
+    const currentIdx = highlightedVersesArray.indexOf(selectedReadReference?.verse);
+    if (currentIdx > 0) {
+      const prevVerse = highlightedVersesArray[currentIdx - 1];
+      updateVerseHighlight(verseList, prevVerse);
+    }
+  });
+
+  nextVerseBtn.addEventListener("click", () => {
+    const currentIdx = highlightedVersesArray.indexOf(selectedReadReference?.verse);
+    if (currentIdx < highlightedVersesArray.length - 1) {
+      const nextVerse = highlightedVersesArray[currentIdx + 1];
+      updateVerseHighlight(verseList, nextVerse);
+    }
+  });
+
   scrollToVerse(verseList, selectedRow || firstTopicRow);
+};
+
+const updateBookGenreFooter = (genre = null, bookName = null) => {
+  console.log('[updateBookGenreFooter] Called with genre:', genre, 'bookName:', bookName);
+  const legendEl = document.getElementById("genre-legend");
+  if (!legendEl) {
+    console.log('[updateBookGenreFooter] legendEl not found!');
+    return;
+  }
+  const existingIndicator = legendEl.querySelector(".book-genre-indicator");
+  if (existingIndicator) existingIndicator.remove();
+  if (!genre) return;
+
+  const genreLabel = GENRE_LABELS[genre] || genre;
+  const indicator = document.createElement("span");
+  indicator.className = "book-genre-indicator";
+  indicator.setAttribute("data-genre", genre);
+  const displayText = bookName ? `${bookName} • ${genreLabel}` : genreLabel;
+  indicator.textContent = displayText;
+  console.log('[updateBookGenreFooter] Inserting indicator with text:', displayText);
+  legendEl.insertBefore(indicator, legendEl.firstChild);
 };
 
 const loadBooks = async () => {
@@ -1432,6 +1921,91 @@ const boot = async () => {
       }
     });
   }
+
+  // Initialize Jump to Book dropdowns
+  const bookJumpSelect = document.getElementById("book-jump-select");
+  const verseJumpBook = document.getElementById("verse-jump-book");
+  const verseJumpChapter = document.getElementById("verse-jump-chapter");
+  const verseJumpGo = document.getElementById("verse-jump-go");
+
+  const populateBookDropdowns = () => {
+    if (!booksData || booksData.length === 0) return;
+    
+    // Clear existing options (except the default one)
+    const clearDropdown = (select) => {
+      while (select.options.length > 1) {
+        select.remove(1);
+      }
+    };
+
+    clearDropdown(bookJumpSelect);
+    clearDropdown(verseJumpBook);
+
+    // Populate both dropdowns with books in canonical order
+    BOOK_ORDER.forEach((bookId) => {
+      const option1 = document.createElement("option");
+      option1.value = bookId;
+      option1.textContent = BOOK_NAMES[bookId] || bookId;
+      bookJumpSelect.appendChild(option1);
+
+      const option2 = document.createElement("option");
+      option2.value = bookId;
+      option2.textContent = BOOK_NAMES[bookId] || bookId;
+      verseJumpBook.appendChild(option2);
+    });
+  };
+
+  if (bookJumpSelect) {
+    bookJumpSelect.addEventListener("change", (e) => {
+      const bookId = e.target.value;
+      if (bookId) {
+        openBookInState2(bookId);
+        e.target.value = ""; // Reset for next selection
+      }
+    });
+  }
+
+  if (verseJumpBook) {
+    verseJumpBook.addEventListener("change", (e) => {
+      const bookId = e.target.value;
+      if (bookId) {
+        // Populate chapter dropdown
+        const book = bibleData[bookId];
+        if (book && Array.isArray(book.chapters)) {
+          while (verseJumpChapter.options.length > 1) {
+            verseJumpChapter.remove(1);
+          }
+          for (let i = 1; i <= book.chapters.length; i++) {
+            const option = document.createElement("option");
+            option.value = i;
+            option.textContent = `Chapter ${i}`;
+            verseJumpChapter.appendChild(option);
+          }
+          verseJumpChapter.style.display = "block";
+          verseJumpGo.style.display = "inline-block";
+        }
+      } else {
+        verseJumpChapter.style.display = "none";
+        verseJumpGo.style.display = "none";
+      }
+    });
+  }
+
+  if (verseJumpGo) {
+    verseJumpGo.addEventListener("click", () => {
+      const bookId = verseJumpBook.value;
+      const chapterNum = parseInt(verseJumpChapter.value);
+      if (bookId && chapterNum) {
+        openChapterInState3(bookId, chapterNum);
+        verseJumpBook.value = "";
+        verseJumpChapter.value = "";
+        verseJumpChapter.style.display = "none";
+        verseJumpGo.style.display = "none";
+      }
+    });
+  }
+
+  populateBookDropdowns();
   
   renderCurrentState();
   attachGenreLegend();
@@ -1440,6 +2014,10 @@ const boot = async () => {
     renderCurrentState();
   });
   observer.observe(treemapEl);
+  const bookGridEl = document.getElementById("book-grid");
+  if (bookGridEl) {
+    observer.observe(bookGridEl);
+  }
 };
 
 const showBookSummaryModal = (bookId, bookName) => {
@@ -1482,7 +2060,8 @@ const showBookSummaryModal = (bookId, bookName) => {
   document.body.appendChild(modal);
 };
 
-const showVerseModal = (bookId, bookName, versePositions, topicName) => {
+const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {
+  const { chapterNumber = null, initialVerse = null } = options;
   // Create modal overlay
   const modal = document.createElement("div");
   modal.className = "verse-modal-overlay";
@@ -1492,7 +2071,10 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   
   const header = document.createElement("div");
   header.className = "verse-modal-header";
-  header.innerHTML = `<h3>${bookName}</h3><p>${topicName}</p>`;
+  const headerSubtitle = chapterNumber
+    ? `${topicName} • Chapter ${chapterNumber}`
+    : topicName;
+  header.innerHTML = `<h3>${bookName}</h3><p>${headerSubtitle}</p>`;
   
   const closeBtn = document.createElement("button");
   closeBtn.className = "verse-modal-close";
@@ -1636,6 +2218,11 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   
   const groupedPositions = mergeAdjacentVerses(versePositions);
   let detailPopup = null;
+  let selectedGroup = null;
+  const initialGroup = groupedPositions.find((group) => (
+    typeof initialVerse === "number" && initialVerse >= group.startVerse && initialVerse <= group.endVerse
+  )) || groupedPositions[0] || null;
+  selectedGroup = initialGroup;
   const lineByKey = new Map();
   let listTooltipHideTimer = null;
 
@@ -1652,6 +2239,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   const showVerseDetail = (group) => {
     if (detailPopup) detailPopup.remove();
     hideTooltip();
+    selectedGroup = group;
 
     const detail = document.createElement("div");
     detail.className = "verse-detail-pop";
@@ -1775,12 +2363,27 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
   footer.className = "verse-modal-footer";
   const state3Btn = document.createElement("button");
   state3Btn.className = "state3-nav-btn";
-  state3Btn.textContent = "View Full Verse Text";
+  state3Btn.textContent = chapterNumber ? "Open Chapter in Verse View" : "View Full Verse Text";
+  state3Btn.disabled = groupedPositions.length === 0;
   state3Btn.addEventListener("click", () => {
-    console.log(`Navigate to State 3 for ${bookName}`);
+    const targetGroup = selectedGroup || initialGroup;
+    if (!targetGroup) return;
+    const parsedTarget = parseRefChapterVerse((targetGroup.refs || [])[0] || "");
+    const targetChapter = chapterNumber || parsedTarget?.chapter || 1;
+    const targetVerse = targetGroup.startVerse || initialVerse || 1;
+    const navBookName = BOOK_NAMES[bookId] || bibleData[bookId]?.name || bookName;
+
+    selectedBookId = bookId;
+    selectedReadReference = {
+      refText: `${navBookName} ${targetChapter}:${targetVerse}`,
+      chapter: targetChapter,
+      verse: targetVerse
+    };
+    preserveSelectedBookForNextRender = true;
+    isRenderingStateTransition = true;
     paneResizeObserver.disconnect();
     modal.remove();
-    // TODO: Implement State 3 navigation with selected verse
+    setState(3);
   });
   footer.appendChild(state3Btn);
   
@@ -1804,6 +2407,51 @@ const showVerseModal = (bookId, bookName, versePositions, topicName) => {
 };
 
 boot();
+
+// Handle mouse back/forward buttons for state navigation
+document.addEventListener('auxclick', (event) => {
+  // Mouse button 3 = back, button 4 = forward
+  if (event.button === 3) {
+    // Back: go to previous state (but not below 1)
+    const currentState = getCurrentState();
+    if (currentState > 1) {
+      event.preventDefault();
+      event.stopPropagation();
+      setState(currentState - 1);
+      return false;
+    }
+    // If we're at State 1, let browser handle it (go to previous page)
+  } else if (event.button === 4) {
+    // Forward: go to next state (but not above 3)
+    const currentState = getCurrentState();
+    if (currentState < 3) {
+      event.preventDefault();
+      event.stopPropagation();
+      setState(currentState + 1);
+      return false;
+    }
+    // If we're at State 3, let browser handle it (go forward in history if available)
+  }
+}, true);
+
+// Also prevent mouseup from triggering browser navigation (only when we're handling it)
+document.addEventListener('mouseup', (event) => {
+  if (event.button === 3) {
+    const currentState = getCurrentState();
+    if (currentState > 1) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  } else if (event.button === 4) {
+    const currentState = getCurrentState();
+    if (currentState < 3) {
+      event.preventDefault();
+      event.stopPropagation();
+      return false;
+    }
+  }
+}, true);
 
 const loadTopics = async () => {
   try {
@@ -1853,6 +2501,20 @@ const attachGenreLegend = () => {
     
     item.appendChild(colorBar);
     item.appendChild(label);
+    
+    // Highlight books of this genre when hovering over legend
+    item.addEventListener("mouseenter", () => {
+      if (pinnedLegendGenre) return;
+      const cards = document.querySelectorAll(`.treemap-item .card[data-genre="${genre}"]`);
+      cards.forEach(card => card.classList.add("genre-highlighted"));
+    });
+    
+    item.addEventListener("mouseleave", () => {
+      if (pinnedLegendGenre) return;
+      const cards = document.querySelectorAll(".treemap-item .card.genre-highlighted");
+      cards.forEach(card => card.classList.remove("genre-highlighted"));
+    });
+    
     legendEl.appendChild(item);
   });
 };

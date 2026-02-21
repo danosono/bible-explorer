@@ -27,10 +27,26 @@
     <div id="app">
       <header class="header">
         <div class="title-block">
-          <div class="eyebrow">Bible Explorer</div>
-          <h1 class="title">Bible View</h1>
-          <p class="subtitle">Overview, topics, and reading in one canvas</p>
-          <p class="source">Berean Standard Bible</p>
+          <div class="header-main">
+            <h1 class="app-title">
+              Bible Explorer
+              <a
+                href="https://gospelgo.org/"
+                target="_blank"
+                rel="noopener"
+                class="by-link"
+                >by gospelgo</a
+              >
+            </h1>
+            <h2 class="state-indicator" id="state-indicator">Bible View</h2>
+          </div>
+          <a
+            href="https://berean.bible/"
+            target="_blank"
+            rel="noopener"
+            class="source"
+            >Berean Standard Bible</a
+          >
         </div>
         <div class="controls">
           <div class="state-switcher">
@@ -48,9 +64,9 @@
               step="1"
             />
             <div class="state-captions">
-              <span>Bible</span>
-              <span>Book</span>
-              <span>Verse</span>
+              <span data-state="1">Bible</span>
+              <span data-state="2">Book</span>
+              <span data-state="3">Verse</span>
             </div>
           </div>
           <label class="topic-search">
@@ -68,28 +84,125 @@
           <div class="state state--overview">
             <div class="state-header">
               <h2 class="state-title">Overview</h2>
-              <div class="state-current-topic" id="current-topic">All topics</div>
-              <div class="state-meta">66 Books written by 40 authors over 1500 years</div>
+              <div class="state-current-topic" id="current-topic">
+                All topics
+              </div>
+              <div class="state-meta">
+                66 Books written by 40 authors over 1500 years
+              </div>
             </div>
             <div class="treemap" id="treemap"></div>
           </div>
           <div class="state state--book">
             <div class="state-header">
               <h2 class="state-title" id="book-title">Book</h2>
-              <div class="state-current-topic" id="book-current-topic">All topics</div>
-              <div class="state-meta" id="book-meta">Select a book to view chapters</div>
+              <div class="state-topic-group">
+                <div class="state-current-topic" id="book-current-topic">
+                  All topics
+                </div>
+                <div class="verse-count" id="book-verse-count"></div>
+              </div>
+              <div class="state-meta" id="book-meta">
+                Select a book to view chapters
+              </div>
+              <div class="jump-control">
+                <select
+                  id="book-jump-select"
+                  class="jump-select"
+                  title="Jump to a book"
+                >
+                  <option value="">Jump to book...</option>
+                </select>
+              </div>
             </div>
             <div class="panel-grid" id="book-grid"></div>
           </div>
           <div class="state state--read">
             <div class="state-header">
               <h2 class="state-title" id="read-title">Verse</h2>
-              <div class="state-current-topic" id="read-current-topic">All topics</div>
+              <div class="state-topic-group">
+                <div class="state-current-topic" id="read-current-topic">
+                  All topics
+                </div>
+                <div class="verse-count" id="verse-count"></div>
+              </div>
               <div class="state-meta" id="read-meta">Select a book first</div>
+              <div class="jump-control jump-control--verse">
+                <select
+                  id="verse-jump-book"
+                  class="jump-select"
+                  title="Jump to a book"
+                >
+                  <option value="">Jump to book...</option>
+                </select>
+                <select
+                  id="verse-jump-chapter"
+                  class="jump-select"
+                  title="Then select a chapter"
+                  style="display: none"
+                >
+                  <option value="">Then select chapter...</option>
+                </select>
+                <button
+                  id="verse-jump-go"
+                  class="jump-button"
+                  style="display: none"
+                >
+                  Go
+                </button>
+              </div>
             </div>
-            <div class="reading-block">
-              <h3>Verse Reader</h3>
-              <p>Choose a verse from Book view to read full text here.</p>
+            <div class="reading-container">
+              <aside class="reading-sidebar reading-sidebar--left">
+                <nav class="sidebar-nav">
+                  <a
+                    href="https://gospelgo.org/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Visit GospelGo"
+                    >GospelGo</a
+                  >
+                  <a
+                    href="https://discord.gg/x9chq2cw2P"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Join our Discord"
+                    >Discord</a
+                  >
+                </nav>
+              </aside>
+              <div class="reading-block">
+                <h3>Verse Reader</h3>
+                <p>Choose a verse from Book view to read full text here.</p>
+              </div>
+              <aside class="reading-sidebar reading-sidebar--right">
+                <nav class="sidebar-nav">
+                  <a
+                    href="https://gospelgo.org/donate/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Support the project"
+                    >Donate</a
+                  >
+                  <a
+                    href="mailto:admin@gospelgo.org"
+                    class="sidebar-link"
+                    title="Contact us"
+                    >Contact</a
+                  >
+                  <a
+                    href="https://github.com/danosono/bible-explorer"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link sidebar-link--subtle"
+                    title="View source code"
+                    >GitHub</a
+                  >
+                </nav>
+              </aside>
             </div>
           </div>
         </div>
@@ -98,7 +211,7 @@
         <div class="legend" id="genre-legend"></div>
       </footer>
     </div>
-    <script src="js/app.js"></script>
+    <script src="js/app.js?v=30"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
