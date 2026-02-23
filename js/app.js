@@ -1591,10 +1591,11 @@ const renderReadView = (bookId, topic = null) => {
   const book = bookId ? bibleData[bookId] : null;
   const bookName = BOOK_NAMES[bookId] || book?.name || "Verse";
   setSourceLabel("Berean Standard Bible");
-  setPinnedLegendGenre(null);
-  updateBookGenreFooter(null);
+  const bookGenre = BOOK_GENRES[bookId] || "history";
+  setPinnedLegendGenre(book && Array.isArray(book.chapters) ? bookGenre : null);
+  updateBookGenreFooter(book && Array.isArray(book.chapters) ? bookGenre : null, bookName);
   readTitle.textContent = bookName;
-  readTopic.textContent = selectedTopic || "All topics";
+  readTopic.textContent = selectedTopic || "No topic selected";
 
   readingBlock.innerHTML = "";
 

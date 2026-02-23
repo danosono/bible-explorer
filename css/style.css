@@ -1717,6 +1717,13 @@ tip.show {
 	transform: scale(1.1);
 }
 
+body[data-state="2"] .legend-genre.active,
+body[data-state="3"] .legend-genre.active {
+	border-color: currentColor;
+	box-shadow: 0 0 20px currentColor, 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+	transform: translateY(-1px) scale(1.12);
+}
+
 .legend-genre:hover {
 	box-shadow: 0 0 12px currentColor;
 	transform: scale(1.05);
