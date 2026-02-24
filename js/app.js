@@ -1726,10 +1726,6 @@ const renderReadView = (bookId, topic = null) => {
     readMeta.textContent = "Choose a verse to read";
   }
 
-  const title = document.createElement("h3");
-  title.textContent = bookName;
-  readingBlock.appendChild(title);
-
   const chapterNav = document.createElement("div");
   chapterNav.className = "chapter-nav";
 
@@ -1793,6 +1789,10 @@ const renderReadView = (bookId, topic = null) => {
     return;
   }
 
+  // Create wrapper for verses and sidebar
+  const verseContentWrapper = document.createElement("div");
+  verseContentWrapper.className = "verse-content-wrapper";
+
   const verseList = document.createElement("div");
   verseList.className = "chapter-verses";
   let selectedRow = null;
@@ -1834,7 +1834,17 @@ const renderReadView = (bookId, topic = null) => {
     verseList.appendChild(verseRow);
   });
 
-  readingBlock.appendChild(verseList);
+  // Create and append chapter navigation sidebar
+  const chapterNavSidebar = document.createElement("aside");
+  chapterNavSidebar.className = "chapter-nav-sidebar";
+  chapterNavSidebar.id = "chapter-nav-sidebar";
+
+  verseContentWrapper.appendChild(verseList);
+  verseContentWrapper.appendChild(chapterNavSidebar);
+  readingBlock.appendChild(verseContentWrapper);
+
+  // Populate chapter navigation sidebar
+  renderChapterNavSidebar(verses, highlightedVerses, chapterNumber, verseList, updateVerseHighlight);
 
   // Add event listeners for verse navigation (now that verseList exists)
   prevVerseBtn.addEventListener("click", () => {
@@ -1854,6 +1864,120 @@ const renderReadView = (bookId, topic = null) => {
   });
 
   scrollToVerse(verseList, selectedRow || firstTopicRow);
+};
+
+const renderChapterNavSidebar = (verses, highlightedVerses, chapterNumber, verseList, updateVerseHighlight) => {
+  const sidebar = document.getElementById("chapter-nav-sidebar");
+  if (!sidebar) return;
+
+  sidebar.innerHTML = "";
+
+  if (!verses || verses.length === 0) return;
+
+  const track = document.createElement("div");
+  track.className = "chapter-nav-track";
+
+  // Group adjacent highlighted verses into ranges
+  const highlightedArray = Array.from(highlightedVerses).sort((a, b) => a - b);
+  const ranges = [];
+  let currentRange = null;
+
+  highlightedArray.forEach((verseNum) => {
+    if (!currentRange || verseNum !== currentRange.end + 1) {
+      if (currentRange) ranges.push(currentRange);
+      currentRange = { start: verseNum, end: verseNum };
+    } else {
+      currentRange.end = verseNum;
+    }
+  });
+  if (currentRange) ranges.push(currentRange);
+
+  // Create indicators for each verse (or range)
+  const totalVerses = verses.length;
+  
+  // If we have highlighted verses, create indicators for ranges
+  if (ranges.length > 0) {
+    ranges.forEach((range) => {
+      const startPercent = ((range.start - 1) / totalVerses) * 100;
+      const endPercent = (range.end / totalVerses) * 100;
+      const heightPercent = endPercent - startPercent;
+      
+      const indicator = document.createElement("div");
+      indicator.className = "chapter-nav-indicator is-topic";
+      if (range.end > range.start) {
+        indicator.classList.add("is-range");
+      }
+      indicator.style.top = `${startPercent}%`;
+      indicator.style.height = `${heightPercent}%`;
+      indicator.dataset.verseStart = range.start;
+      indicator.dataset.verseEnd = range.end;
+      
+      indicator.addEventListener("click", () => {
+        updateVerseHighlight(verseList, range.start);
+      });
+      
+      track.appendChild(indicator);
+    });
+  }
+
+  // Create current position marker
+  const positionMarker = document.createElement("div");
+  positionMarker.className = "chapter-nav-position";
+  positionMarker.style.top = "0%";
+  
+  // Update position marker based on scroll
+  const updatePositionMarker = () => {
+    if (!verseList) return;
+    
+    const scrollPercent = (verseList.scrollTop / (verseList.scrollHeight - verseList.clientHeight)) * 100;
+    positionMarker.style.top = `${Math.max(0, Math.min(100, scrollPercent))}%`;
+  };
+
+  // Scroll event listener
+  if (verseList) {
+    verseList.addEventListener("scroll", updatePositionMarker);
+    updatePositionMarker();
+  }
+
+  // Drag functionality
+  let isDragging = false;
+  let trackRect = null;
+
+  const onDragStart = (e) => {
+    isDragging = true;
+    trackRect = track.getBoundingClientRect();
+    e.preventDefault();
+  };
+
+  const onDragMove = (e) => {
+    if (!isDragging || !trackRect || !verseList) return;
+    
+    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+    const relativeY = clientY - trackRect.top;
+    const percent = Math.max(0, Math.min(1, relativeY / trackRect.height));
+    
+    const scrollTarget = percent * (verseList.scrollHeight - verseList.clientHeight);
+    verseList.scrollTop = scrollTarget;
+    
+    e.preventDefault();
+  };
+
+  const onDragEnd = () => {
+    isDragging = false;
+    trackRect = null;
+  };
+
+  positionMarker.addEventListener("mousedown", onDragStart);
+  positionMarker.addEventListener("touchstart", onDragStart, { passive: false });
+  
+  window.addEventListener("mousemove", onDragMove);
+  window.addEventListener("touchmove", onDragMove, { passive: false });
+  
+  window.addEventListener("mouseup", onDragEnd);
+  window.addEventListener("touchend", onDragEnd);
+
+  track.appendChild(positionMarker);
+  sidebar.appendChild(track);
 };
 
 const updateBookGenreFooter = (genre = null, bookName = null) => {
