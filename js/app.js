@@ -2238,6 +2238,19 @@ const showBookSummaryModal = (bookId, bookName) => {
 
 const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {
   const { chapterNumber = null, initialVerse = null } = options;
+  
+  // Get book statistics
+  const book = bibleData[bookId];
+  const totalVerses = getBookVerseTotal(bookId) || 0;
+  const totalChapters = book && book.chapters ? book.chapters.length : 0;
+  const topicVerseCount = versePositions.length;
+  const chapterData = chapterNumber && book && Array.isArray(book.chapters)
+    ? book.chapters[chapterNumber - 1]
+    : null;
+  const chapterVerseTotal = chapterData
+    ? (Number(chapterData.verseCount) || (Array.isArray(chapterData.verses) ? chapterData.verses.length : 0))
+    : 0;
+  
   // Create modal overlay
   const modal = document.createElement("div");
   modal.className = "verse-modal-overlay";
@@ -2247,10 +2260,21 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
   
   const header = document.createElement("div");
   header.className = "verse-modal-header";
-  const headerSubtitle = chapterNumber
-    ? `${topicName} • Chapter ${chapterNumber}`
-    : topicName;
-  header.innerHTML = `<h3>${bookName}</h3><p>${headerSubtitle}</p>`;
+  
+  // Build header with stats
+  const bookStats = chapterNumber
+    ? `Chapter ${chapterNumber} • ${chapterVerseTotal.toLocaleString()} verse${chapterVerseTotal !== 1 ? 's' : ''}`
+    : (totalChapters > 0
+      ? `${totalChapters} chapter${totalChapters !== 1 ? 's' : ''} • ${totalVerses.toLocaleString()} verses`
+      : "");
+  const topicStats = `${topicVerseCount} topic verse${topicVerseCount !== 1 ? 's' : ''}`;
+  const headerSubtitle = `${topicName} • ${topicStats}`;
+  
+  const headerHTML = bookStats 
+    ? `<h3>${bookName}</h3><p class="book-stats">${bookStats}</p><p>${headerSubtitle}</p>`
+    : `<h3>${bookName}</h3><p>${headerSubtitle}</p>`;
+  
+  header.innerHTML = headerHTML;
   
   const closeBtn = document.createElement("button");
   closeBtn.className = "verse-modal-close";
@@ -2315,6 +2339,12 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       const subtopicText = (vp.subtopics || []).join("; ");
       const refText = primaryRef || `Verse ${verseNumber ?? vp.verse}`;
       const last = groups[groups.length - 1];
+      
+      // Filter refs to only include those from the current chapter
+      const filteredRefs = (vp.refs || []).filter((ref) => {
+        const parsed = parseRefChapterVerse(ref);
+        return parsed && parsed.chapter === chapterNumber;
+      });
 
       if (
         last &&
@@ -2326,7 +2356,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       ) {
         last.endVerse = verseNumber;
         last.endPercentage = vp.percentage;
-        last.refs.push(...(vp.refs || []));
+        last.refs.push(...filteredRefs);
       } else {
         groups.push({
           chapter: chapterNumber,
@@ -2335,7 +2365,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
           startPercentage: vp.percentage,
           endPercentage: vp.percentage,
           subtopicText,
-          refs: [...(vp.refs || [])],
+          refs: [...filteredRefs],
           refText
         });
       }
@@ -2371,11 +2401,35 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       return ["Verse text unavailable."];
     }
 
-    const lines = [];
+    // Parse all refs and deduplicate
+    const parsedVerses = [];
+    const seenVerses = new Set();
+    
     group.refs.forEach((ref) => {
       const parsed = parseRefChapterVerse(ref);
       if (!parsed) return;
-      const verseText = getVerseText(bookId, parsed.chapter, parsed.verse);
+      
+      const verseKey = `${parsed.chapter}:${parsed.verse}`;
+      if (seenVerses.has(verseKey)) return;
+      seenVerses.add(verseKey);
+      
+      parsedVerses.push({
+        ref,
+        chapter: parsed.chapter,
+        verse: parsed.verse
+      });
+    });
+    
+    // Sort by chapter, then verse
+    parsedVerses.sort((a, b) => {
+      if (a.chapter !== b.chapter) return a.chapter - b.chapter;
+      return a.verse - b.verse;
+    });
+    
+    // Build lines in sorted order
+    const lines = [];
+    parsedVerses.forEach(({ ref, chapter, verse }) => {
+      const verseText = getVerseText(bookId, chapter, verse);
       if (verseText) {
         lines.push(`${ref} — ${verseText}`);
       }

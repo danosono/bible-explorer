@@ -1007,6 +1007,14 @@ body[data-state="3"] .state--book {
 .verse-modal-header p {
 	margin: 0;
 	font-size: clamp(0.85rem, 1vw, 1.4rem);
+
+	.verse-modal-header .book-stats {
+		font-size: clamp(0.75rem, 0.9vw, 1.2rem);
+		color: var(--text-3);
+		font-style: normal;
+		opacity: 0.8;
+		margin-bottom: 4px;
+	}
 	color: var(--text-3);
 	font-style: italic;
 }
