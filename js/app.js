@@ -6,6 +6,8 @@ const topicInput = document.getElementById("topic-input");
 const topicAction = document.getElementById("topic-action");
 const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
+const datasetModeSelect = document.getElementById("dataset-mode");
+const topicSearchLabel = document.getElementById("topic-search-label");
 
 // Global state for topics
 let topicsData = {};
@@ -19,13 +21,252 @@ let selectedReadReference = null;
 let preserveSelectedBookForNextRender = false;
 let isRenderingStateTransition = false;
 let pinnedLegendGenre = null;
+let activeDatasetMode = "topics";
 const DEFAULT_TOPIC = "life";
 const FALLBACK_NAV_TOPIC = "Love";
 const FALLBACK_NAV_BOOK = "JHN";
 const STORED_TOPIC_KEY = "bibleExplorerTopic";
+const STORED_DATASET_KEY = "bibleExplorerDatasetMode";
 const topicsIndex = new Map();
 let allTopicNames = [];
 const MAX_TOPIC_OPTIONS = 200;
+const DATASET_CONFIG = {
+  topics: {
+    file: "data/topics-with-references.json",
+    label: "Nave's Topics",
+    placeholder: "Search topics"
+  },
+  prophecy: {
+    file: "data/prophecy-topics-with-references.json",
+    label: "Prophecy",
+    placeholder: "Search prophecy references"
+  }
+};
+const PROPHECY_AGGREGATE_TOPICS = [
+  { key: "[All] OT Prophecies Made", mode: "ot" },
+  { key: "[All] NT Fulfillments", mode: "nt" },
+  { key: "[All] OT + NT Combined", mode: "both" }
+];
+const PROPHECY_OT_PREFIX = "Prophecy (OT):";
+const PROPHECY_NT_PREFIX = "Fulfillment (NT):";
+
+const isProphecyAggregateTopic = (name) => {
+  return PROPHECY_AGGREGATE_TOPICS.some((item) => item.key === name);
+};
+
+const getPreferredTopicFallback = () => {
+  if (activeDatasetMode === "prophecy") {
+    const firstSpecific = allTopicNames.find((name) => !isProphecyAggregateTopic(name));
+    if (firstSpecific) return firstSpecific;
+  }
+  return allTopicNames[0] || "";
+};
+
+const buildAggregateProphecyTopic = (baseTopics, mode, title) => {
+  const refsByBook = {};
+
+  Object.entries(baseTopics).forEach(([topicKey, topicData]) => {
+    if (isProphecyAggregateTopic(topicKey)) return;
+    const topicName = topicData?.name || topicKey;
+    const references = topicData?.references || {};
+
+    Object.entries(references).forEach(([bookId, entries]) => {
+      if (!Array.isArray(entries) || entries.length === 0) return;
+      if (!refsByBook[bookId]) {
+        refsByBook[bookId] = new Map();
+      }
+      const bookMap = refsByBook[bookId];
+
+      entries.forEach((entry) => {
+        const subtopics = Array.isArray(entry.subtopics) ? entry.subtopics : [];
+        const filteredSubtopics = subtopics.filter((subtopic) => {
+          if (mode === "ot") return subtopic.startsWith(PROPHECY_OT_PREFIX);
+          if (mode === "nt") return subtopic.startsWith(PROPHECY_NT_PREFIX);
+          return subtopic.startsWith(PROPHECY_OT_PREFIX) || subtopic.startsWith(PROPHECY_NT_PREFIX);
+        });
+
+        if (filteredSubtopics.length === 0) return;
+        const verseKey = Number(entry.verse);
+        if (!Number.isFinite(verseKey)) return;
+
+        const existing = bookMap.get(verseKey) || {
+          verse: verseKey,
+          subtopics: new Set(),
+          refs: new Set()
+        };
+
+        filteredSubtopics.forEach((subtopic) => {
+          existing.subtopics.add(`${topicName} — ${subtopic}`);
+        });
+        (Array.isArray(entry.refs) ? entry.refs : []).forEach((ref) => {
+          existing.refs.add(ref);
+        });
+        bookMap.set(verseKey, existing);
+      });
+    });
+  });
+
+  const references = {};
+  const books = [];
+  Object.entries(refsByBook).forEach(([bookId, verseMap]) => {
+    const verseList = Array.from(verseMap.values())
+      .map((entry) => ({
+        verse: entry.verse,
+        subtopics: Array.from(entry.subtopics),
+        refs: Array.from(entry.refs)
+      }))
+      .sort((a, b) => a.verse - b.verse);
+    if (verseList.length > 0) {
+      references[bookId] = verseList;
+      books.push(bookId);
+    }
+  });
+
+  return {
+    name: title,
+    references,
+    books
+  };
+};
+
+const withProphecyAggregateTopics = (baseTopics) => {
+  const enriched = {};
+  PROPHECY_AGGREGATE_TOPICS.forEach((item) => {
+    enriched[item.key] = buildAggregateProphecyTopic(baseTopics, item.mode, item.key);
+  });
+
+  Object.entries(baseTopics).forEach(([key, value]) => {
+    enriched[key] = value;
+  });
+
+  return enriched;
+};
+
+const mergeReferenceKinds = (left, right) => {
+  if (!left) return right || null;
+  if (!right) return left || null;
+  if (left === right) return left;
+  return "mixed";
+};
+
+const NT_BOOK_IDS = new Set([
+  "MAT", "MRK", "LUK", "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL",
+  "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN", "3JN", "JUD", "REV"
+]);
+
+const REF_BOOK_TO_ID = {
+  GEN: "GEN", GE: "GEN", GN: "GEN", GENESIS: "GEN",
+  EX: "EXO", EXO: "EXO", EXOD: "EXO", EXODUS: "EXO",
+  LEV: "LEV", LE: "LEV", LEVITICUS: "LEV",
+  NUM: "NUM", NU: "NUM", NUMBERS: "NUM",
+  DEU: "DEU", DEUT: "DEU", DEUTERONOMY: "DEU", DT: "DEU",
+  JOS: "JOS", JOSH: "JOS", JOSHUA: "JOS",
+  JDG: "JDG", JUDG: "JDG", JUDGES: "JDG",
+  RUT: "RUT", RUTH: "RUT",
+  "1SA": "1SA", "1SAM": "1SA", "1SAMUEL": "1SA",
+  "2SA": "2SA", "2SAM": "2SA", "2SAMUEL": "2SA",
+  "1KI": "1KI", "1KGS": "1KI", "1KINGS": "1KI",
+  "2KI": "2KI", "2KGS": "2KI", "2KINGS": "2KI",
+  "1CH": "1CH", "1CHR": "1CH", "1CHRONICLES": "1CH",
+  "2CH": "2CH", "2CHR": "2CH", "2CHRONICLES": "2CH",
+  EZR: "EZR", EZRA: "EZR",
+  NEH: "NEH", NEHEMIAH: "NEH",
+  EST: "EST", ESTHER: "EST",
+  JOB: "JOB",
+  PSA: "PSA", PS: "PSA", PSALM: "PSA", PSALMS: "PSA",
+  PRO: "PRO", PROV: "PRO", PROVERBS: "PRO",
+  ECC: "ECC", ECCL: "ECC", ECCLESIASTES: "ECC",
+  SNG: "SNG", SONG: "SNG", CANT: "SNG", SONGOFSONGS: "SNG",
+  ISA: "ISA", ISAIAH: "ISA",
+  JER: "JER", JEREMIAH: "JER",
+  LAM: "LAM", LAMENTATIONS: "LAM",
+  EZK: "EZK", EZEK: "EZK", EZEKIEL: "EZK",
+  DAN: "DAN", DANIEL: "DAN",
+  HOS: "HOS", HOSEA: "HOS",
+  JOL: "JOL", JOEL: "JOL",
+  AMO: "AMO", AMOS: "AMO",
+  OBA: "OBA", OBAD: "OBA", OBADIAH: "OBA",
+  JON: "JON", JONAH: "JON",
+  MIC: "MIC", MICAH: "MIC",
+  NAM: "NAM", NAH: "NAM", NAHUM: "NAM",
+  HAB: "HAB", HABAKKUK: "HAB",
+  ZEP: "ZEP", ZEPH: "ZEP", ZEPHANIAH: "ZEP",
+  HAG: "HAG", HAGGAI: "HAG",
+  ZEC: "ZEC", ZECH: "ZEC", ZECHARIAH: "ZEC",
+  MAL: "MAL", MALACHI: "MAL",
+  MAT: "MAT", MATT: "MAT", MT: "MAT", MATTHEW: "MAT",
+  MRK: "MRK", MARK: "MRK", MK: "MRK", MR: "MRK",
+  LUK: "LUK", LUKE: "LUK", LK: "LUK", LU: "LUK",
+  JHN: "JHN", JOHN: "JHN", JN: "JHN", JNO: "JHN", JOH: "JHN",
+  ACT: "ACT", ACTS: "ACT", AC: "ACT",
+  ROM: "ROM", ROMANS: "ROM", RO: "ROM", RM: "ROM",
+  "1CO": "1CO", "1COR": "1CO", "1CORINTHIANS": "1CO",
+  "2CO": "2CO", "2COR": "2CO", "2CORINTHIANS": "2CO",
+  GAL: "GAL", GALATIANS: "GAL",
+  EPH: "EPH", EPHESIANS: "EPH",
+  PHP: "PHP", PHIL: "PHP", PHILIPPIANS: "PHP",
+  COL: "COL", COLOSSIANS: "COL",
+  "1TH": "1TH", "1THESS": "1TH", "1THESSALONIANS": "1TH",
+  "2TH": "2TH", "2THESS": "2TH", "2THESSALONIANS": "2TH",
+  "1TI": "1TI", "1TIM": "1TI", "1TIMOTHY": "1TI",
+  "2TI": "2TI", "2TIM": "2TI", "2TIMOTHY": "2TI",
+  TIT: "TIT", TITUS: "TIT",
+  PHM: "PHM", PHILEMON: "PHM", PHLM: "PHM",
+  HEB: "HEB", HEBREWS: "HEB",
+  JAS: "JAS", JAMES: "JAS",
+  "1PE": "1PE", "1PET": "1PE", "1PETER": "1PE",
+  "2PE": "2PE", "2PET": "2PE", "2PETER": "2PE",
+  "1JN": "1JN", "1JOHN": "1JN", "1JN": "1JN",
+  "2JN": "2JN", "2JOHN": "2JN", "2JN": "2JN",
+  "3JN": "3JN", "3JOHN": "3JN", "3JN": "3JN",
+  JUD: "JUD", JUDE: "JUD",
+  REV: "REV", REVELATION: "REV"
+};
+
+const getBookIdFromRef = (ref = "") => {
+  const text = String(ref || "").trim();
+  if (!text) return null;
+  const match = text.match(/^([1-3]?\s*[A-Za-z\.]+(?:\s+[A-Za-z\.]+)*)\s+\d+:\d+/);
+  if (!match) return null;
+  const normalized = match[1].replace(/\./g, "").replace(/\s+/g, "").toUpperCase();
+  return REF_BOOK_TO_ID[normalized] || null;
+};
+
+const getReferenceKindFromData = ({ subtopics = [], refs = [], bookId = null } = {}) => {
+  const candidateKinds = [];
+
+  if (bookId) {
+    candidateKinds.push(NT_BOOK_IDS.has(bookId) ? "nt" : "ot");
+  }
+
+  const refValues = Array.isArray(refs) ? refs : [];
+  refValues.forEach((ref) => {
+    const refBookId = getBookIdFromRef(ref);
+    if (!refBookId) return;
+    candidateKinds.push(NT_BOOK_IDS.has(refBookId) ? "nt" : "ot");
+  });
+
+  const subtopicValues = Array.isArray(subtopics)
+    ? subtopics
+    : String(subtopics || "").split(";").map((value) => value.trim()).filter(Boolean);
+
+  const hasOTLabel = subtopicValues.some((value) => String(value).startsWith(PROPHECY_OT_PREFIX));
+  const hasNTLabel = subtopicValues.some((value) => String(value).startsWith(PROPHECY_NT_PREFIX));
+  if (hasOTLabel) candidateKinds.push("ot");
+  if (hasNTLabel) candidateKinds.push("nt");
+
+  const hasOT = candidateKinds.includes("ot");
+  const hasNT = candidateKinds.includes("nt");
+  if (hasOT && hasNT) return "mixed";
+  if (hasOT) return "ot";
+  if (hasNT) return "nt";
+  return null;
+};
+
+const applyReferenceKindClass = (element, baseClassName, kind) => {
+  if (!element || !baseClassName || !kind) return;
+  element.classList.add(`${baseClassName}--${kind}`);
+};
 
 // Verse text caching and tooltip management
 let verseTextCache = {};
@@ -42,9 +283,11 @@ const getVerseText = (bookId, chapter, verse) => {
   if (!book.chapters || !book.chapters[chapter - 1]) return null;
   
   const chapterData = book.chapters[chapter - 1];
-  if (!chapterData.verses || !chapterData.verses[verse - 1]) return null;
-  
-  const verseText = chapterData.verses[verse - 1].text;
+  if (!chapterData.verses || !Array.isArray(chapterData.verses)) return null;
+  const verseEntry = chapterData.verses.find((entry) => Number(entry.n ?? entry.number) === Number(verse));
+  if (!verseEntry) return null;
+
+  const verseText = verseEntry.text;
   verseTextCache[cacheKey] = verseText;
   return verseText;
 };
@@ -402,7 +645,9 @@ const setState = (nextState) => {
 
 const updateCurrentTopicLabel = () => {
   if (!currentTopicEl) return;
-  currentTopicEl.textContent = selectedTopic || "All topics";
+  const label = selectedTopic || "All topics";
+  currentTopicEl.textContent = label;
+  currentTopicEl.title = label;
 };
 
 const getStoredTopic = () => {
@@ -410,6 +655,32 @@ const getStoredTopic = () => {
     return localStorage.getItem(STORED_TOPIC_KEY);
   } catch (error) {
     return null;
+  }
+};
+
+const getStoredDatasetMode = () => {
+  try {
+    return localStorage.getItem(STORED_DATASET_KEY);
+  } catch (error) {
+    return null;
+  }
+};
+
+const setStoredDatasetMode = (mode) => {
+  try {
+    localStorage.setItem(STORED_DATASET_KEY, mode);
+  } catch (error) {
+    // Ignore storage failures.
+  }
+};
+
+const updateDatasetUI = () => {
+  const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
+  if (topicSearchLabel) {
+    topicSearchLabel.innerHTML = `${config.label} <em class="start-hint">Search</em>`;
+  }
+  if (topicInput) {
+    topicInput.placeholder = config.placeholder;
   }
 };
 
@@ -433,6 +704,15 @@ const getAbsoluteVerseIndex = (bookId, chapterNumber, verseNumber) => {
     const count = Number(chapter.verseCount) || (Array.isArray(chapter.verses) ? chapter.verses.length : 0);
     total += count;
   }
+
+  const chapterData = book.chapters[chapterNumber - 1];
+  if (chapterData && Array.isArray(chapterData.verses)) {
+    const idx = chapterData.verses.findIndex((entry) => Number(entry.n ?? entry.number) === Number(verseNumber));
+    if (idx >= 0) {
+      return total + idx + 1;
+    }
+  }
+
   return total + verseNumber;
 };
 
@@ -1129,6 +1409,8 @@ const renderTreemap = (books, topic = null) => {
           const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
           const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
           const subtopicText = subtopics.join("; ");
+          const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId: item.id });
+          applyReferenceKindClass(lineEl, "pin-line", referenceKind);
           
           lineEl.addEventListener('mouseenter', (e) => {
             showTooltip(e, refText, subtopicText, item.id, range.startVerse);
@@ -1529,6 +1811,8 @@ const renderBookView = (bookId, topic = null) => {
         const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
         const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
         const subtopicText = subtopics.join("; ");
+        const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId });
+        applyReferenceKindClass(lineEl, "pin-line", referenceKind);
         
         lineEl.addEventListener("mouseenter", (e) => {
           showTooltip(e, refText, subtopicText, bookId, range.startVerse);
@@ -1614,6 +1898,7 @@ const renderReadView = (bookId, topic = null) => {
   const topicData = topic && topicsData[topic] ? topicsData[topic] : null;
   const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
   const chapterVerseMap = new Map();
+  const chapterVerseKinds = new Map();
 
   if (Array.isArray(bookEntries)) {
     bookEntries.forEach((entry) => {
@@ -1627,6 +1912,14 @@ const renderReadView = (bookId, topic = null) => {
         chapterVerseMap.set(chapterNumber, new Set());
       }
       chapterVerseMap.get(chapterNumber).add(verseNumber);
+
+      if (!chapterVerseKinds.has(chapterNumber)) {
+        chapterVerseKinds.set(chapterNumber, new Map());
+      }
+      const verseKindMap = chapterVerseKinds.get(chapterNumber);
+      const existingKind = verseKindMap.get(verseNumber) || null;
+      const nextKind = getReferenceKindFromData({ subtopics: entry.subtopics || [], refs, bookId });
+      verseKindMap.set(verseNumber, mergeReferenceKinds(existingKind, nextKind));
     });
   }
 
@@ -1643,6 +1936,7 @@ const renderReadView = (bookId, topic = null) => {
   const chapter = book.chapters[chapterNumber - 1];
   const verses = Array.isArray(chapter?.verses) ? chapter.verses : [];
   const highlightedVerses = chapterVerseMap.get(chapterNumber) || new Set();
+  const highlightedVerseKinds = chapterVerseKinds.get(chapterNumber) || new Map();
   const highlightedVersesArray = Array.from(highlightedVerses).sort((a, b) => a - b);
   
   // Update verse count display for current chapter
@@ -1691,7 +1985,7 @@ const renderReadView = (bookId, topic = null) => {
     // Add is-current to target verse
     const verses = verseList.querySelectorAll('.chapter-verse');
     verses.forEach((verseEl, index) => {
-      const verseNumber = Number(chapter.verses[index]?.number) || index + 1;
+      const verseNumber = Number(chapter.verses[index]?.n ?? chapter.verses[index]?.number) || index + 1;
       if (verseNumber === targetVerseNum) {
         verseEl.classList.add('is-current');
         // Update reference without re-rendering
@@ -1799,7 +2093,7 @@ const renderReadView = (bookId, topic = null) => {
   let firstTopicRow = null;
 
   verses.forEach((verse, index) => {
-    const verseNumber = Number(verse.number) || index + 1;
+    const verseNumber = Number(verse.n ?? verse.number) || index + 1;
     const verseText = verse.text || "";
     const verseRow = document.createElement("div");
     verseRow.className = "chapter-verse";
@@ -1811,6 +2105,8 @@ const renderReadView = (bookId, topic = null) => {
 
     if (isHighlighted) {
       verseRow.classList.add("is-topic");
+      const verseKind = highlightedVerseKinds.get(verseNumber) || null;
+      applyReferenceKindClass(verseRow, "chapter-verse", verseKind);
       if (!firstTopicRow) {
         firstTopicRow = verseRow;
       }
@@ -1844,7 +2140,7 @@ const renderReadView = (bookId, topic = null) => {
   readingBlock.appendChild(verseContentWrapper);
 
   // Populate chapter navigation sidebar
-  renderChapterNavSidebar(verses, highlightedVerses, chapterNumber, verseList, updateVerseHighlight);
+  renderChapterNavSidebar(verses, highlightedVerses, highlightedVerseKinds, chapterNumber, verseList, updateVerseHighlight);
 
   // Add event listeners for verse navigation (now that verseList exists)
   prevVerseBtn.addEventListener("click", () => {
@@ -1866,7 +2162,7 @@ const renderReadView = (bookId, topic = null) => {
   scrollToVerse(verseList, selectedRow || firstTopicRow);
 };
 
-const renderChapterNavSidebar = (verses, highlightedVerses, chapterNumber, verseList, updateVerseHighlight) => {
+const renderChapterNavSidebar = (verses, highlightedVerses, highlightedVerseKinds, chapterNumber, verseList, updateVerseHighlight) => {
   const sidebar = document.getElementById("chapter-nav-sidebar");
   if (!sidebar) return;
 
@@ -1907,6 +2203,16 @@ const renderChapterNavSidebar = (verses, highlightedVerses, chapterNumber, verse
       if (range.end > range.start) {
         indicator.classList.add("is-range");
       }
+
+      let rangeKind = null;
+      for (let verseNum = range.start; verseNum <= range.end; verseNum += 1) {
+        const kind = highlightedVerseKinds && typeof highlightedVerseKinds.get === "function"
+          ? highlightedVerseKinds.get(verseNum)
+          : null;
+        rangeKind = mergeReferenceKinds(rangeKind, kind);
+      }
+      applyReferenceKindClass(indicator, "chapter-nav-indicator", rangeKind);
+
       indicator.style.top = `${startPercent}%`;
       indicator.style.height = `${heightPercent}%`;
       indicator.dataset.verseStart = range.start;
@@ -2066,7 +2372,44 @@ const boot = async () => {
   bookSummaries = await loadBookSummaries();
   
   if (topicInput) {
+    const storedDatasetMode = getStoredDatasetMode();
+    if (storedDatasetMode && DATASET_CONFIG[storedDatasetMode]) {
+      activeDatasetMode = storedDatasetMode;
+    }
+    if (datasetModeSelect) {
+      datasetModeSelect.value = activeDatasetMode;
+    }
+    updateDatasetUI();
+
     await loadTopics();
+
+    if (datasetModeSelect) {
+      datasetModeSelect.addEventListener("change", async (e) => {
+        const nextMode = e.target.value;
+        if (!DATASET_CONFIG[nextMode]) {
+          e.target.value = activeDatasetMode;
+          return;
+        }
+
+        activeDatasetMode = nextMode;
+        setStoredDatasetMode(nextMode);
+        updateDatasetUI();
+
+        const previousTopic = selectedTopic;
+        await loadTopics();
+        selectedTopic = previousTopic && topicsData[previousTopic]
+          ? previousTopic
+          : (getPreferredTopicFallback() || null);
+
+        if (topicInput) {
+          topicInput.value = selectedTopic || "";
+        }
+        setStoredTopic(selectedTopic);
+        renderCurrentState();
+        updateCurrentTopicLabel();
+        updateTopicActionState();
+      });
+    }
     
     // Listen for topic selection changes
     topicInput.addEventListener("change", (e) => {
@@ -2083,7 +2426,8 @@ const boot = async () => {
     if (storedTopic) {
       applyTopicSelection(storedTopic, { commit: true });
     } else {
-      applyTopicSelection(DEFAULT_TOPIC, { commit: true });
+      const initialTopic = resolveTopicKey(DEFAULT_TOPIC) || getPreferredTopicFallback() || "";
+      applyTopicSelection(initialTopic, { commit: true });
     }
   }
 
@@ -2091,7 +2435,8 @@ const boot = async () => {
     topicAction.addEventListener("click", () => {
       const stateValue = getCurrentState();
       if (stateValue === 1) {
-        applyTopicSelection(DEFAULT_TOPIC, { commit: true });
+        const resetTopic = resolveTopicKey(DEFAULT_TOPIC) || getPreferredTopicFallback() || "";
+        applyTopicSelection(resetTopic, { commit: true });
       } else {
         applyTopicSelection(null, { commit: true });
       }
@@ -2196,48 +2541,87 @@ const boot = async () => {
   }
 };
 
+
+// Use global BOOK_METADATA if available (loaded via <script>), fallback to empty object
+const BOOK_METADATA = window.BOOK_METADATA || {};
+
 const showBookSummaryModal = (bookId, bookName) => {
   const summary = bookSummaries[bookId];
   if (!summary) return;
-  
+
   // Create modal overlay
   const modal = document.createElement("div");
   modal.className = "verse-modal-overlay";
-  
+
   const modalContent = document.createElement("div");
   modalContent.className = "verse-modal";
-  
+
   const header = document.createElement("div");
   header.className = "verse-modal-header";
-  header.innerHTML = `<h3>${bookName}</h3><p>Book Summary</p>`;
-  
+
+  // Add author/date/notes if available
+  const meta = BOOK_METADATA[bookId] || {};
+  let metaHtml = "";
+  if (meta.author || meta.date || meta.notes) {
+    metaHtml += '<div class="book-meta">';
+    if (meta.author) metaHtml += `<div><strong>Author:</strong> ${meta.author}</div>`;
+    if (meta.date) metaHtml += `<div><strong>Date:</strong> ${meta.date}</div>`;
+    if (meta.notes) metaHtml += `<div class="book-meta-notes"><strong>Notes:</strong> ${meta.notes}</div>`;
+    metaHtml += '</div>';
+  }
+  // Add citation icon with tooltip, placed bottom-right
+  header.innerHTML = `<h3>${bookName}</h3>${metaHtml}<p>Book Summary</p>`;
+  const citationIcon = document.createElement("a");
+  citationIcon.href = "https://www.wolfhawke.com/musings/bible-study/table-of-bible-book-dates";
+  citationIcon.target = "_blank";
+  citationIcon.rel = "noopener noreferrer";
+  citationIcon.className = "book-citation-icon book-citation-header";
+  citationIcon.innerHTML = '<span title="Citation: Diener, J.M. “When the Books of the Bible Were Written”. J.M. Diener’s Writings. 2021. https://www.wolfhawke.com/musings/bible-study/table-of-bible-book-dates. Accessed: 27 Feb. 2026." style="font-size:1.1em;vertical-align:middle;cursor:pointer;">ℹ️</span>';
+  header.appendChild(citationIcon);
+
   const closeBtn = document.createElement("button");
   closeBtn.className = "verse-modal-close";
   closeBtn.innerHTML = "✕";
   header.appendChild(closeBtn);
-  
+  // Add close button handler
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modal.remove();
+  });
+
   const content = document.createElement("div");
   content.className = "verse-modal-content";
-  
+
   const summaryText = document.createElement("p");
   summaryText.className = "book-summary-text";
   summaryText.textContent = summary.summary;
   content.appendChild(summaryText);
-  
+
+  // Add citation icon for summary source
+  content.style.position = "relative";
+  const summaryCitation = document.createElement("a");
+  summaryCitation.href = "https://www.gotquestions.org/66-books-of-the-Bible.html";
+  summaryCitation.target = "_blank";
+  summaryCitation.rel = "noopener noreferrer";
+  summaryCitation.className = "book-citation-icon book-citation-bottom";
+  summaryCitation.innerHTML = '<span title="Citation: GotQuestions.org. &#34;66 Books of the Bible.&#34; https://www.gotquestions.org/66-books-of-the-Bible.html. Accessed: 27 Feb. 2026." style="font-size:1.1em;vertical-align:middle;cursor:pointer;">ℹ️</span>';
+  content.appendChild(summaryCitation);
+
   modalContent.appendChild(header);
   modalContent.appendChild(content);
   modal.appendChild(modalContent);
-  
+
   // Close on overlay click
   modal.addEventListener("click", (e) => {
     if (e.target === modal) modal.remove();
   });
-  
+
   document.body.appendChild(modal);
 };
 
 const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {
   const { chapterNumber = null, initialVerse = null } = options;
+  const isProphecyMode = activeDatasetMode === "prophecy";
   
   // Get book statistics
   const book = bibleData[bookId];
@@ -2267,7 +2651,8 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     : (totalChapters > 0
       ? `${totalChapters} chapter${totalChapters !== 1 ? 's' : ''} • ${totalVerses.toLocaleString()} verses`
       : "");
-  const topicStats = `${topicVerseCount} topic verse${topicVerseCount !== 1 ? 's' : ''}`;
+  const topicStatsLabel = isProphecyMode ? "prophecy verse" : "topic verse";
+  const topicStats = `${topicVerseCount} ${topicStatsLabel}${topicVerseCount !== 1 ? 's' : ''}`;
   const headerSubtitle = `${topicName} • ${topicStats}`;
   
   const headerHTML = bookStats 
@@ -2391,7 +2776,8 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
         renderTop: Math.max(0, Math.min(percentage, 100)),
         rangeLabel,
         subtopicText: group.subtopicText,
-        refs: group.refs
+        refs: group.refs,
+        referenceKind: getReferenceKindFromData({ subtopics: group.subtopicText, refs: group.refs, bookId })
       };
     });
   };
@@ -2441,6 +2827,33 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 
     return lines;
   };
+
+  const getReferenceBadges = (subtopicText = "") => {
+    if (!isProphecyMode || !subtopicText) return [];
+    const badges = [];
+    if (subtopicText.includes(PROPHECY_OT_PREFIX)) {
+      badges.push({ label: "OT Prophecy", className: "ref-badge--ot" });
+    }
+    if (subtopicText.includes(PROPHECY_NT_PREFIX)) {
+      badges.push({ label: "NT Fulfillment", className: "ref-badge--nt" });
+    }
+    return badges;
+  };
+
+  const appendReferenceBadges = (container, subtopicText = "") => {
+    const badges = getReferenceBadges(subtopicText);
+    if (!badges.length) return;
+
+    const badgeRow = document.createElement("div");
+    badgeRow.className = "ref-badge-row";
+    badges.forEach((badge) => {
+      const el = document.createElement("span");
+      el.className = `ref-badge ${badge.className}`;
+      el.textContent = badge.label;
+      badgeRow.appendChild(el);
+    });
+    container.appendChild(badgeRow);
+  };
   
   // Create visual representation with separated lines
   const visualization = document.createElement("div");
@@ -2485,6 +2898,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       subtitle.className = "verse-detail-subtopic";
       subtitle.textContent = group.subtopicText;
       header.appendChild(subtitle);
+      appendReferenceBadges(header, group.subtopicText);
     }
 
     const closeBtn = document.createElement("button");
@@ -2563,6 +2977,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     
     const line = document.createElement("div");
     line.className = "verse-line";
+    applyReferenceKindClass(line, "verse-line", group.referenceKind);
     line.style.top = `${group.renderTop}%`;
     const verseCount = Math.max(1, (group.endVerse - group.startVerse + 1));
     const widthPercent = Math.min(100, 20 + (verseCount * 6));
@@ -2604,6 +3019,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     const subtopicText = group.subtopicText;
     const refText = group.rangeLabel;
     item.innerHTML = `<strong>${refText}</strong>`;
+    appendReferenceBadges(item, subtopicText);
     if (subtopicText) {
       const detail = document.createElement("span");
       detail.className = "verse-subtopic";
@@ -2781,10 +3197,13 @@ document.addEventListener('auxclick', handleMouseNavigation, true);
 
 const loadTopics = async () => {
   try {
-    // Load topics with verse references
-    const response = await fetch("data/topics-with-references.json", { cache: "no-store" });
+    const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
+    const response = await fetch(config.file, { cache: "no-store" });
     if (!response.ok) throw new Error("Missing topics data");
-    topicsData = await response.json();
+    const rawTopicsData = await response.json();
+    topicsData = activeDatasetMode === "prophecy"
+      ? withProphecyAggregateTopics(rawTopicsData)
+      : rawTopicsData;
     if (!topicsData || Object.keys(topicsData).length === 0) throw new Error("No topics");
 
     const topicNames = Object.keys(topicsData);
@@ -2795,8 +3214,12 @@ const loadTopics = async () => {
     allTopicNames = topicNames;
     updateTopicOptions("");
   } catch (error) {
-    console.warn("Failed to load topics data, using fallback");
+    console.warn(`Failed to load ${activeDatasetMode} data, using fallback`);
     const fallbackTopics = ["angels", "birth of Jesus Christ", "crucifixion of Jesus Christ", "demons", "appearance of Jesus", "paradise", "resurrection", "Son of man", "transfiguration"];
+    topicsData = {};
+    fallbackTopics.forEach((name) => {
+      topicsData[name] = { name, references: {} };
+    });
     topicsIndex.clear();
     fallbackTopics.forEach((name) => {
       topicsIndex.set(normalizeTopicKey(name), name);

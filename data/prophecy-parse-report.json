@@ -1,0 +1,85 @@
+{
+  "rowsParsed": 351,
+  "rowsWithReferences": 351,
+  "topicsCreated": 351,
+  "verseEntriesAdded": 1543,
+  "rowWarnings": [
+    {
+      "row": 36,
+      "warnings": [
+        "[OT] No active book for token: 3:36-37"
+      ],
+      "raw": "Lev 2 3:36-37"
+    },
+    {
+      "row": 53,
+      "warnings": [
+        "[OT] Unknown book in token: 2 Ki 2:11"
+      ],
+      "raw": "2 Ki 2:11"
+    },
+    {
+      "row": 99,
+      "warnings": [
+        "[OT] No active book for token: 4:20"
+      ],
+      "raw": "Psa 3 4:20"
+    },
+    {
+      "row": 128,
+      "warnings": [
+        "[OT] No chapter:verse patterns found in: Psa 7 2 :16"
+      ],
+      "raw": "Psa 7 2 :16"
+    },
+    {
+      "row": 129,
+      "warnings": [
+        "[OT] No chapter:verse patterns found in: Psa 7 2 :17"
+      ],
+      "raw": "Psa 7 2 :17"
+    },
+    {
+      "row": 130,
+      "warnings": [
+        "[OT] No chapter:verse patterns found in: Psa 7 2 :17"
+      ],
+      "raw": "Psa 7 2 :17"
+    },
+    {
+      "row": 131,
+      "warnings": [
+        "[OT] No chapter:verse patterns found in: Psa 7 2 :17"
+      ],
+      "raw": "Psa 7 2 :17"
+    },
+    {
+      "row": 169,
+      "warnings": [
+        "Invalid chapter/verse: ACT 28:29"
+      ],
+      "raw": "Acts 28:23-29"
+    },
+    {
+      "row": 274,
+      "warnings": [
+        "Invalid chapter/verse: MRK 15:28"
+      ],
+      "raw": "Mark 15:27-28"
+    },
+    {
+      "row": 294,
+      "warnings": [
+        "[OT] Unknown book in token: Eze k 34:23-24"
+      ],
+      "raw": "Eze k 34:23-24"
+    },
+    {
+      "row": 295,
+      "warnings": [
+        "[OT] Unknown book in token: Eze k 37:24-25"
+      ],
+      "raw": "Eze k 37:24-25"
+    }
+  ]
+}

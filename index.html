@@ -86,8 +86,18 @@
               <span data-state="3">Verse</span>
             </div>
           </div>
+          <label class="dataset-select" for="dataset-mode">
+            <span>Dataset</span>
+            <select id="dataset-mode" class="jump-select">
+              <option value="topics" selected>Topics</option>
+              <option value="prophecy">Prophecy</option>
+              <option value="future" disabled>Future (coming soon)</option>
+            </select>
+          </label>
           <label class="topic-search">
-            <span>Nave's Topics <em class="start-hint">Search</em></span>
+            <span id="topic-search-label"
+              >Nave's Topics <em class="start-hint">Search</em></span
+            >
             <input id="topic-input" type="search" placeholder="Search topics" />
           </label>
           <button class="topic-action" id="topic-action" type="button">
@@ -252,6 +262,7 @@
         <div class="legend" id="genre-legend"></div>
       </footer>
     </div>
+    <script src="js/book-metadata.js?v=1"></script>
     <script src="js/app.js?v=40"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
