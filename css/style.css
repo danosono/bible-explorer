@@ -1178,6 +1178,15 @@ body[data-state="3"] .state--book {
 	box-shadow: 0 0 10px rgba(255, 186, 90, 0.5);
 }
 
+/* Make OT verse highlight (hover/active) more visible */
+.verse-line--ot.is-active,
+	.verse-line--ot:hover {
+	background: linear-gradient(90deg, #b3e6ff 0%, #fff7d6 50%, #b3e6ff 100%);
+	box-shadow: 0 0 8px 2px #b3e6ff, 0 0 4px 1px #fff7d6;
+	border-radius: 2px;
+	z-index: 2;
+}
+
 .verse-line--nt {
 	background: linear-gradient(90deg, rgba(80, 235, 255, 0.38), rgba(80, 235, 255, 0.92), rgba(80, 235, 255, 0.38));
 	box-shadow: 0 0 12px 2px rgba(80, 235, 255, 0.44);
