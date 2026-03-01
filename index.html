@@ -280,6 +280,22 @@
       >
         <h2>Bible Explorer requires at least 900 pixels width.</h2>
         <button
+          id="share-link-btn"
+          style="
+            padding: 0.7em 1.5em;
+            font-size: 1.1em;
+            border-radius: 8px;
+            border: none;
+            background: #74b0c3;
+            color: #0b0e14;
+            cursor: pointer;
+            margin-top: 1em;
+            margin-left: 0.7em;
+          "
+        >
+          Share site link
+        </button>
+        <button
           id="copy-link-btn"
           style="
             padding: 0.7em 1.5em;
@@ -321,10 +337,11 @@
       window.addEventListener("resize", checkWidthWarning);
       window.addEventListener("DOMContentLoaded", function () {
         checkWidthWarning();
-        var btn = document.getElementById("copy-link-btn");
-        if (btn) {
-          btn.onclick = function () {
-            var url = "https://bible-explorer.gospelgo.org/";
+        var url = "https://bible-explorer.gospelgo.org/";
+        var copyBtn = document.getElementById("copy-link-btn");
+        var shareBtn = document.getElementById("share-link-btn");
+        if (copyBtn) {
+          copyBtn.onclick = function () {
             if (navigator.clipboard && window.isSecureContext) {
               navigator.clipboard.writeText(url).then(function () {
                 showCopyConfirm();
@@ -354,6 +371,20 @@
                   confirm.style.display = "none";
                 }, 2000);
               }
+            }
+          };
+        }
+        if (shareBtn) {
+          shareBtn.onclick = function () {
+            if (navigator.share) {
+              navigator.share({
+                title: "Bible Explorer",
+                text: "Check out Bible Explorer!",
+                url: url,
+              });
+            } else {
+              // fallback to copy
+              if (copyBtn) copyBtn.click();
             }
           };
         }
