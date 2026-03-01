@@ -1,0 +1,10 @@
+/*
+ * This file has been modularized. All layout, component, state, and responsive rules have been moved to:
+ *   - base.css
+ *   - layout.css
+ *   - components.css
+ *   - states.css
+ *   - responsive.css
+ *
+ * You may safely delete this file after verifying the new CSS structure works as expected.
+ */
