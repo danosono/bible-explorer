@@ -12,6 +12,7 @@ const topicSearchLabel = document.getElementById("topic-search-label");
 // Global state for topics
 let topicsData = {};
 let verseCounts = {}; // Book verse counts for percentage calculation
+let characterCounts = {}; // Book character counts for proportional Overview sizing
 let bibleData = {}; // Bible text data
 let bookSummaries = {}; // Book summaries
 let selectedTopic = null;
@@ -36,10 +37,20 @@ const DATASET_CONFIG = {
     label: "Nave's Topics",
     placeholder: "Search topics"
   },
+  "bsb-topics": {
+    file: "data/bsb-topics-with-references.json",
+    label: "BSB Topics",
+    placeholder: "Search BSB topics"
+  },
   prophecy: {
     file: "data/prophecy-topics-with-references.json",
     label: "Prophecy",
     placeholder: "Search prophecy references"
+  },
+  concordance: {
+    file: "data/bsb-concordance-with-references.json",
+    label: "BSB Concordance",
+    placeholder: "Search words"
   }
 };
 const PROPHECY_AGGREGATE_TOPICS = [
@@ -1100,7 +1111,7 @@ const buildItems = (books) => {
   const items = books
     .map((book, index) => ({
       ...book,
-      value: Math.max(1, Number(book.verseCount) || 1),
+      value: Math.max(1, Number(characterCounts[book.id]) || Number(book.verseCount) || 1),
       displayName: BOOK_NAMES[book.id] || book.id,
       order: orderIndex.has(book.id) ? orderIndex.get(book.id) : BOOK_ORDER.length + index,
       isSeparator: false,
@@ -1113,8 +1124,7 @@ const buildItems = (books) => {
     items.splice(malIndex + 1, 0, {
       id: "SEPARATOR",
       displayName: "0 AD",
-      value: 30,
-      verseCount: 30,
+      value: 100,
       isSeparator: true,
       order: items[malIndex].order + 0.5
     });
@@ -1212,37 +1222,36 @@ const enforceAspectRatios = (items, width, height) => {
     }
   });
 
+  // Global unit: height-per-value-unit, based on the densest column's total value.
+  // Using a single global unit (rather than per-column proportions) keeps book
+  // sizes comparable across the whole treemap, not just within their own column.
+  const maxColumnValue = Math.max(
+    ...columnItems.filter((c) => c.length).map((c) => c.reduce((sum, item) => sum + item.value, 0))
+  );
+  const unitHeight = height / maxColumnValue;
+
   // First pass: calculate heights with minimums
   let maxColumnHeight = 0;
   columnItems.forEach((column) => {
     if (column.length === 0) return;
-    const columnValue = column.reduce((sum, item) => sum + item.value, 0);
-    let totalHeight = 0;
-    
-    column.forEach((item) => {
-      const heightProportion = item.value / columnValue;
-      const proportionalHeight = height * heightProportion;
-      const itemHeight = Math.max(minHeight, proportionalHeight);
-      totalHeight += itemHeight;
-    });
-    
+    const totalHeight = column.reduce(
+      (sum, item) => sum + Math.max(minHeight, item.value * unitHeight),
+      0
+    );
     maxColumnHeight = Math.max(maxColumnHeight, totalHeight);
   });
-  
+
   // Scale factor if columns exceed available height
   const scaleFactor = maxColumnHeight > height ? height / maxColumnHeight : 1;
 
-  // Second pass: apply scaled heights
+  // Second pass: apply scaled heights, stacking from the top of each column
   columnItems.forEach((column, colIndex) => {
     if (column.length === 0) return;
     const x = colIndex * colWidth;
-    const columnValue = column.reduce((sum, item) => sum + item.value, 0);
     let y = 0;
 
     column.forEach((item) => {
-      const heightProportion = item.value / columnValue;
-      const proportionalHeight = height * heightProportion;
-      const itemHeight = Math.max(minHeight, proportionalHeight) * scaleFactor;
+      const itemHeight = Math.max(minHeight, item.value * unitHeight) * scaleFactor;
       item.w = colWidth;
       item.h = itemHeight;
       item.x = x;
@@ -2334,6 +2343,19 @@ const loadVerseCounts = async () => {
   }
 };
 
+const loadCharacterCounts = async () => {
+  try {
+    const response = await fetch("data/book-character-counts.json", { cache: "no-store" });
+    if (!response.ok) throw new Error("Missing character counts");
+    const data = await response.json();
+    if (!data || !data.books) throw new Error("Invalid character counts data");
+    return data.books;
+  } catch (error) {
+    console.warn("Failed to load character counts");
+    return {};
+  }
+};
+
 const loadBible = async () => {
   try {
     const response = await fetch("data/bible.json", { cache: "no-store" });
@@ -2368,6 +2390,7 @@ const boot = async () => {
   if (!treemapEl) return;
   booksData = await loadBooks();
   verseCounts = await loadVerseCounts();
+  characterCounts = await loadCharacterCounts();
   bibleData = await loadBible();
   bookSummaries = await loadBookSummaries();
   
