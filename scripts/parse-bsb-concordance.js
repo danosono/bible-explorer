@@ -12,6 +12,26 @@ const KEEP_WORDS = new Set([
   'City', 'Earth', 'Name', 'Offering', 'Word', 'Heart', 'Egypt'
 ]);
 
+// Multi-word phrases worth surfacing as concordance entries, even though the
+// source xlsx is single-word only. Found by regex-scanning data/bible.json
+// (word-boundary, case-sensitive) and merged into the result like word entries.
+const PHRASE_ENTRIES = ['Son of Man'];
+
+// bookId -> abbreviation, matching the format used in the source xlsx's
+// verse-reference column (e.g. "Gen 1:1", "1Ki 1:42", "1 Joh 1:5").
+const BOOK_ABBREVIATIONS = {
+  GEN: 'Gen', EXO: 'Exo', LEV: 'Lev', NUM: 'Num', DEU: 'Deu', JOS: 'Jos', JDG: 'Jdg', RUT: 'Rut',
+  '1SA': '1Sa', '2SA': '2Sa', '1KI': '1Ki', '2KI': '2Ki', '1CH': '1Ch', '2CH': '2Ch',
+  EZR: 'Ezr', NEH: 'Neh', EST: 'Est', JOB: 'Job', PSA: 'Psa', PRO: 'Pro', ECC: 'Ecc', SNG: 'Sos',
+  ISA: 'Isa', JER: 'Jer', LAM: 'Lam', EZK: 'Eze', DAN: 'Dan', HOS: 'Hos', JOL: 'Joe', AMO: 'Amo',
+  OBA: 'Oba', JON: 'Jon', MIC: 'Mic', NAM: 'Nah', HAB: 'Hab', ZEP: 'Zep', HAG: 'Hag', ZEC: 'Zec',
+  MAL: 'Mal', MAT: 'Mat', MRK: 'Mar', LUK: 'Luk', JHN: 'Joh', ACT: 'Act', ROM: 'Rom',
+  '1CO': '1Co', '2CO': '2Co', GAL: 'Gal', EPH: 'Eph', PHP: 'Php', COL: 'Col',
+  '1TH': '1Th', '2TH': '2Th', '1TI': '1Ti', '2TI': '2Ti', TIT: 'Tts', PHM: 'Phm', HEB: 'Heb',
+  JAS: 'Jam', '1PE': '1Pe', '2PE': '2Pe', '1JN': '1 Joh', '2JN': '2 Joh', '3JN': '3 Joh',
+  JUD: 'Jde', REV: 'Rev'
+};
+
 // The 117 highest-frequency (>=600 occurrences) function words, minus KEEP_WORDS.
 const DISCARD_WORDS = [
   'The', 'And', 'Of', 'To', 'You', 'In', 'Will', 'A', 'He', 'I', 'For', 'His', 'Is', 'Your',
@@ -43,10 +63,6 @@ const EXTENSION_WORDS = [
   'Via', 'Round', 'Off', 'Above', 'Below', 'Between', 'During', 'Throughout', 'Near',
   'Some', 'Any', 'Each', 'Either', 'Neither', 'Both', 'None', 'Such', 'Same', 'Other',
   'Another', 'Several', 'Enough', 'Few', 'Little', 'Much', 'Many', 'Most', 'Less', 'Least',
-  'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve',
-  'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety', 'Hundred',
-  'Thousand', 'First', 'Second', 'Third', 'Fourth', 'Fifth', 'Sixth', 'Seventh', 'Eighth',
-  'Ninth', 'Tenth', 'Once', 'Twice', 'Thrice',
   'Only', 'Still', 'Already', 'Ever', 'Never', 'Always', 'Often', 'Sometimes', 'Soon',
   'Quite', 'Rather', 'Very', 'Indeed', 'Perhaps', 'Else', 'Otherwise', 'Instead', 'However',
   'Moreover', 'Nevertheless', 'Nonetheless', 'Just', 'Cannot', 'Whither', 'Hither', 'Thither',
@@ -128,6 +144,40 @@ async function parseConcordance(bibleData) {
       subtopics: [],
       refs: [parsed.refText]
     });
+  }
+
+  // Multi-word phrases aren't in the xlsx (single-word only), so scan
+  // data/bible.json directly for each PHRASE_ENTRIES phrase.
+  for (const phrase of PHRASE_ENTRIES) {
+    const phraseData = { name: phrase, references: {}, books: [] };
+    const pattern = new RegExp(`\\b${phrase}\\b`);
+
+    for (const [bookId, book] of Object.entries(bibleData)) {
+      const abbreviation = BOOK_ABBREVIATIONS[bookId];
+      if (!abbreviation || !Array.isArray(book.chapters)) continue;
+
+      book.chapters.forEach((chapter, chapterIdx) => {
+        const chapterNumber = Number(chapter.number ?? chapterIdx + 1);
+        if (!Array.isArray(chapter.verses)) return;
+
+        chapter.verses.forEach((verse) => {
+          if (!pattern.test(verse.text || '')) return;
+
+          const verseNumber = Number(verse.n ?? verse.number);
+          const absoluteVerse = getAbsoluteVerseIndex(bibleData, bookId, chapterNumber, verseNumber);
+          if (!phraseData.references[bookId]) {
+            phraseData.references[bookId] = [];
+          }
+          phraseData.references[bookId].push({
+            verse: absoluteVerse,
+            subtopics: [],
+            refs: [`${abbreviation} ${chapterNumber}:${verseNumber}`]
+          });
+        });
+      });
+    }
+
+    result[phrase] = phraseData;
   }
 
   for (const wordData of Object.values(result)) {

@@ -279,6 +279,15 @@ const applyReferenceKindClass = (element, baseClassName, kind) => {
   element.classList.add(`${baseClassName}--${kind}`);
 };
 
+// Map a verse-range's verse count to a flex-basis percentage, implementing a
+// 4-columns-per-row pin-line layout (1/2/3/4 quarter-slots).
+const getPinLineWidthPercent = (verseCount) => {
+  if (verseCount <= 1) return 25;
+  if (verseCount <= 3) return 50;
+  if (verseCount <= 6) return 75;
+  return 100;
+};
+
 // Verse text caching and tooltip management
 let verseTextCache = {};
 let currentTooltip = null;
@@ -1210,48 +1219,81 @@ const enforceAspectRatios = (items, width, height) => {
   const cols = 14;
   const colWidth = width / cols;
   const minHeight = 110; // Minimum height to show 3 pin lines
-  const booksPerCol = Math.ceil(items.length / cols);
-  
-  let columnItems = Array.from({ length: cols }, () => []);
-  let currentCol = 0;
 
-  items.forEach((item, index) => {
-    columnItems[currentCol].push(item);
-    if ((index + 1) % booksPerCol === 0 && currentCol < cols - 1) {
-      currentCol++;
-    }
+  // Sub-linear weight: compresses the ~138x character-count range (Jeremiah
+  // vs. 2 John) down to ~4.4x, so short books differentiate above minHeight
+  // instead of nearly all of them clamping to the same floor value.
+  items.forEach((item) => {
+    item.sizeWeight = Math.pow(item.value, 0.3);
   });
 
-  // Global unit: height-per-value-unit, based on the densest column's total value.
-  // Using a single global unit (rather than per-column proportions) keeps book
-  // sizes comparable across the whole treemap, not just within their own column.
-  const maxColumnValue = Math.max(
-    ...columnItems.filter((c) => c.length).map((c) => c.reduce((sum, item) => sum + item.value, 0))
-  );
-  const unitHeight = height / maxColumnValue;
+  // Greedily pack items, in canonical order, into columns top-to-bottom then
+  // left-to-right: keep adding to the current column until the next item
+  // would overflow `height`, then start a new column. This lets a book with
+  // spare room below it (e.g. 2 Samuel) absorb the next book (1 Kings)
+  // instead of being forced into fixed-size groups of items per column.
+  const packColumns = (unitHeight) => {
+    const columns = Array.from({ length: cols }, () => []);
+    let col = 0;
+    let colHeight = 0;
+    items.forEach((item) => {
+      const itemHeight = Math.max(minHeight, item.sizeWeight * unitHeight);
+      if (colHeight > 0 && colHeight + itemHeight > height && col < cols - 1) {
+        col += 1;
+        colHeight = 0;
+      }
+      columns[col].push(item);
+      colHeight += itemHeight;
+    });
+    return columns;
+  };
 
-  // First pass: calculate heights with minimums
+  // Binary-search for the smallest unitHeight that spreads items across all
+  // 14 columns (too small leaves trailing columns empty; too large overflows
+  // the last column - handled below by scaleFactor).
+  const minWeight = Math.min(...items.map((item) => item.sizeWeight));
+  let lo = 0;
+  let hi = height / minWeight;
+  for (let i = 0; i < 25; i += 1) {
+    const mid = (lo + hi) / 2;
+    const usedCols = packColumns(mid).filter((col) => col.length > 0).length;
+    if (usedCols >= cols) {
+      hi = mid;
+    } else {
+      lo = mid;
+    }
+  }
+  const columnItems = packColumns(hi);
+
+  // Squeeze to fit if the densest resulting column still overflows `height`.
   let maxColumnHeight = 0;
   columnItems.forEach((column) => {
-    if (column.length === 0) return;
+    if (!column.length) return;
     const totalHeight = column.reduce(
-      (sum, item) => sum + Math.max(minHeight, item.value * unitHeight),
+      (sum, item) => sum + Math.max(minHeight, item.sizeWeight * hi),
       0
     );
     maxColumnHeight = Math.max(maxColumnHeight, totalHeight);
   });
-
-  // Scale factor if columns exceed available height
   const scaleFactor = maxColumnHeight > height ? height / maxColumnHeight : 1;
 
-  // Second pass: apply scaled heights, stacking from the top of each column
+  // Apply final heights, stacking from the top of each column. Columns that
+  // fall short of `height` (e.g. the last column often ends up sparser than
+  // the rest after the binary search) are stretched uniformly to fill it,
+  // so no column leaves empty space below its last card.
   columnItems.forEach((column, colIndex) => {
-    if (column.length === 0) return;
+    if (!column.length) return;
     const x = colIndex * colWidth;
-    let y = 0;
 
-    column.forEach((item) => {
-      const itemHeight = Math.max(minHeight, item.value * unitHeight) * scaleFactor;
+    const baseHeights = column.map(
+      (item) => Math.max(minHeight, item.sizeWeight * hi) * scaleFactor
+    );
+    const columnSum = baseHeights.reduce((sum, h) => sum + h, 0);
+    const fillFactor = columnSum < height ? height / columnSum : 1;
+
+    let y = 0;
+    column.forEach((item, i) => {
+      const itemHeight = baseHeights[i] * fillFactor;
       item.w = colWidth;
       item.h = itemHeight;
       item.x = x;
@@ -1379,8 +1421,7 @@ const renderTreemap = (books, topic = null) => {
             currentRange = {
               startVerse: vp.absoluteVerse,
               endVerse: vp.absoluteVerse,
-              verses: [vp],
-              percentage: vp.percentage
+              verses: [vp]
             };
           } else {
             // Extend current range
@@ -1395,16 +1436,8 @@ const renderTreemap = (books, topic = null) => {
           const verseCount = range.verses.length;
           const lineEl = document.createElement("div");
           lineEl.className = "pin-line";
-          lineEl.style.position = "absolute";
-          lineEl.style.top = `${range.percentage}%`;
-          
-          // Calculate line width based on verse count
-          // 1 verse = 20%, scale up to 100% for larger counts
-          const baseWidth = 20;
-          const maxWidth = 100;
-          const width = Math.min(baseWidth + (verseCount - 1) * 8, maxWidth);
-          lineEl.style.width = `${width}%`;
-          
+          lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
+
           // Handle wrapping for very large verse counts (>10 verses)
           if (verseCount > 10) {
             lineEl.classList.add("pin-line-wrapped");
@@ -1761,12 +1794,10 @@ const renderBookView = (bookId, topic = null) => {
       
       const versePositions = sortedEntries.map((entry) => {
         const percentage = (entry.verse / chapterVerseTotal) * 100;
-        const renderTop = Math.max(0.8, Math.min(99.2, percentage));
         return {
           chapter: entry.chapter,
           verse: entry.verse,
           percentage,
-          renderTop,
           subtopics: entry.subtopics,
           refs: entry.refs
         };
@@ -1783,8 +1814,7 @@ const renderBookView = (bookId, topic = null) => {
           currentRange = {
             startVerse: vp.verse,
             endVerse: vp.verse,
-            verses: [vp],
-            renderTop: vp.renderTop
+            verses: [vp]
           };
         } else {
           // Extend current range
@@ -1799,15 +1829,7 @@ const renderBookView = (bookId, topic = null) => {
         const verseCount = range.verses.length;
         const lineEl = document.createElement("div");
         lineEl.className = "pin-line";
-        lineEl.style.position = "absolute";
-        lineEl.style.top = `${range.renderTop}%`;
-
-        // Calculate line width based on verse count
-        // 1 verse = 20%, scale up to 100% for larger counts
-        const baseWidth = 20;
-        const maxWidth = 100;
-        const width = Math.min(baseWidth + (verseCount - 1) * 8, maxWidth);
-        lineEl.style.width = `${width}%`;
+        lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
 
         // Handle wrapping for very large verse counts (>10 verses)
         if (verseCount > 10) {

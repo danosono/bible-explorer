@@ -20,7 +20,10 @@ Static site (vanilla HTML/CSS/JS, no build step) — interactive treemap-style e
 - `FALLBACK_NAV_TOPIC` — used if `DEFAULT_TOPIC` can't be resolved.
 - Topic keys are UPPERCASE strings in `data/topics-with-references.json` (e.g. `"JESUS, THE CHRIST"`, `"LOVE"`, `"FAITH"`).
 - `normalizeTopicKey()` (trim + lowercase) and `resolveTopicKey()` (looks up `topicsIndex` map) handle case-insensitive matching — you can set `DEFAULT_TOPIC` in any case.
-- `DATASET_CONFIG` switches between the "topics" (Nave's) and "prophecy" datasets, each backed by its own JSON file.
+- `DATASET_CONFIG` (~line 34) switches between four datasets, all sharing one `{name, references: {BOOKID: [{verse, subtopics, refs}]}, books}` schema: **Nave's Topics** (`topics`), **BSB Topics** (`bsb-topics`), **Prophecy** (`prophecy`, has its own aggregate-topic logic via `PROPHECY_AGGREGATE_TOPICS`), and **BSB Concordance** (`concordance`, word-level references with a stopword filter). Switching dataset when the current topic doesn't exist in the new one falls back to `allTopicNames[0]` alphabetically (e.g. "AARON") — pre-existing, expected behavior. See `docs/treemap-and-datasets.md` for dataset schemas, source files, and parser scripts.
+
+## Overview treemap sizing (js/app.js)
+- Each book card's height is proportional to its character count (`data/book-character-counts.json`), via `enforceAspectRatios()` (~line 1209): a `value^0.3` weight compresses the ~138x size range to ~4.4x, then items are greedily packed into 14 columns (canonical Genesis→Revelation order) with a binary-searched unit scale so columns absorb however many books fit. `scripts/verify-treemap-packing.js` re-runs this against real data outside the browser. Full algorithm and rationale in `docs/treemap-and-datasets.md`.
 
 ## Header layout (index.html ~line 44-115)
 - `.header` is a flex row, `justify-content: space-between`, with exactly two top-level children: `.title-block` (left: title, "by gospelgo" link, state indicator, Berean source link) and `.header-right` (right: `.controls` block + any standalone header links like `.peruser-link`).

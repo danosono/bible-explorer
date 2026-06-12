@@ -622,6 +622,11 @@ body[data-state="3"] .state--book {
 	min-height: 0;
 }
 
+.treemap-item .card--separator {
+	height: 100%;
+	min-height: 0;
+}
+
 .card-title-bar {
 	position: absolute;
 	top: 0;
@@ -820,8 +825,10 @@ body[data-state="3"] .state--book {
 }
 
 .pin-lines {
-	display: grid;
-	gap: 8px;
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	gap: 4px;
 	margin: 0;
 	position: absolute;
 	top: 32px;
@@ -831,6 +838,7 @@ body[data-state="3"] .state--book {
 	height: auto;
 	min-height: 0;
 	overflow: hidden;
+	isolation: isolate;
 }
 
 .pin-line {
@@ -838,10 +846,9 @@ body[data-state="3"] .state--book {
 	border-radius: 999px;
 	background: linear-gradient(90deg, rgba(157, 227, 212, 0.8), rgba(157, 227, 212, 0.2));
 	box-shadow: 0 0 6px rgba(157, 227, 212, 0.2);
-	width: 100%;
-	position: relative;
-	left: 0;
+	flex: 0 0 auto;
 	transition: height 0.2s ease, box-shadow 0.2s ease;
+	mix-blend-mode: screen;
 }
 
 .pin-line-wrapped {
@@ -867,16 +874,6 @@ body[data-state="3"] .state--book {
 .pin-line--mixed {
 	background: linear-gradient(90deg, rgba(255, 199, 120, 0.82), rgba(130, 220, 205, 0.9), rgba(120, 220, 200, 0.24));
 	box-shadow: 0 0 7px rgba(180, 210, 190, 0.34);
-}
-
-/* Placeholder lines (when no topic selected) */
-/* Dynamic lines (when topic selected) */
-.pin-lines > .pin-line[style*="position: absolute"] {
-	position: absolute !important;
-	left: 0;
-	right: 0;
-	width: 100%;
-	margin: 0;
 }
 
 .expand-indicator {
@@ -1448,6 +1445,7 @@ tip.show {
 	left: 6px;
 	right: 6px;
 	bottom: 6px;
+	gap: 2px;
 }
 
 .state--book #book-grid[data-density="high"] .expand-verses-btn {
