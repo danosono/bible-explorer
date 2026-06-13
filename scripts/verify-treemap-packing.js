@@ -24,6 +24,7 @@ const enforceAspectRatios = (items, width, height) => {
   const cols = 14;
   const colWidth = width / cols;
   const minHeight = 110;
+  const MAX_COLUMN_FILL_FACTOR = 1.3;
 
   items.forEach((item) => {
     item.sizeWeight = Math.pow(item.value, 0.3);
@@ -78,7 +79,9 @@ const enforceAspectRatios = (items, width, height) => {
       (item) => Math.max(minHeight, item.sizeWeight * hi) * scaleFactor
     );
     const columnSum = baseHeights.reduce((sum, h) => sum + h, 0);
-    const fillFactor = columnSum < height ? height / columnSum : 1;
+    const fillFactor = columnSum < height
+      ? Math.min(height / columnSum, MAX_COLUMN_FILL_FACTOR)
+      : 1;
 
     let y = 0;
     column.forEach((item, i) => {
@@ -120,6 +123,11 @@ const run = (label, width, height) => {
   const samIdx = copy.findIndex((it) => it.id === '2SA');
   console.log(`2SA -> col ${copy[samIdx].colIndex}, h=${copy[samIdx].h.toFixed(1)}`);
   console.log(`1KI -> col ${copy[ksaIdx].colIndex}, h=${copy[ksaIdx].h.toFixed(1)}`);
+
+  const revIdx = copy.findIndex((it) => it.id === 'REV');
+  const matIdx = copy.findIndex((it) => it.id === 'MAT');
+  console.log(`REV -> col ${copy[revIdx].colIndex}, h=${copy[revIdx].h.toFixed(1)} (${copy[revIdx].value} chars)`);
+  console.log(`MAT -> col ${copy[matIdx].colIndex}, h=${copy[matIdx].h.toFixed(1)} (${copy[matIdx].value} chars)`);
 };
 
 // Representative HD/4K treemap dimensions (from prior session's hand analysis)

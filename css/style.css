@@ -315,9 +315,15 @@ body::before {
 	box-shadow: 0 0 8px rgba(255, 210, 128, 0.12);
 }
 
+.topic-input-wrap {
+	position: relative;
+	display: block;
+}
+
 .topic-search input {
 	min-width: clamp(242px, 17.5vw, 352px);
-	padding: clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
+	width: 100%;
+	padding: clamp(11px, 0.88vw, 15px) clamp(38px, 3vw, 50px) clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
 	border-radius: 12px;
 	border: 1px solid rgba(95, 200, 255, 0.55);
 	background: rgba(12, 18, 28, 0.9);
@@ -327,6 +333,43 @@ body::before {
 	box-shadow: 0 0 14px rgba(95, 200, 255, 0.25), var(--shadow-1);
 	transition: box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 	animation: topic-glow 5s ease-in-out infinite;
+}
+
+/* Hide the native search-cancel button; .topic-clear-btn replaces it */
+.topic-search input[type="search"]::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	appearance: none;
+}
+
+.topic-clear-btn {
+	position: absolute;
+	top: 50%;
+	right: clamp(6px, 0.6vw, 10px);
+	transform: translateY(-50%);
+	width: clamp(24px, 1.8vw, 32px);
+	height: clamp(24px, 1.8vw, 32px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border-radius: 50%;
+	border: 1px solid rgba(95, 200, 255, 0.45);
+	background: rgba(14, 22, 35, 0.85);
+	color: rgba(95, 200, 255, 0.9);
+	font-size: clamp(1rem, 1vw, 1.3rem);
+	line-height: 1;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-1);
+}
+
+.topic-clear-btn:hover {
+	background: rgba(95, 200, 255, 0.15);
+	box-shadow: 0 0 12px rgba(95, 200, 255, 0.25);
+}
+
+.topic-clear-btn[hidden] {
+	display: none;
 }
 
 .topic-search input:focus {
@@ -354,7 +397,7 @@ body::before {
 @media (min-width: 2560px) {
 	.topic-search input {
 		font-size: 1.05rem;
-		padding: 11px 14px;
+		padding: 11px 44px 11px 14px;
 	}
 	
 	/* Webkit browsers (Chrome, Edge, Safari) */
@@ -368,34 +411,6 @@ body::before {
 			font-size: 1.05rem;
 		}
 	}
-}
-
-.topic-action {
-	align-self: end;
-	padding: clamp(11px, 0.95vw, 16px) clamp(15px, 1.2vw, 22px);
-	border-radius: 12px;
-	border: 1px solid rgba(95, 200, 255, 0.45);
-	background: rgba(14, 22, 35, 0.85);
-	color: rgba(95, 200, 255, 0.9);
-	font-size: clamp(0.9rem, 0.9vw, 1.26rem);
-	font-weight: 600;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	cursor: pointer;
-	transition: all 0.2s ease;
-	box-shadow: var(--shadow-1);
-}
-
-.topic-action:hover {
-	background: rgba(95, 200, 255, 0.15);
-	box-shadow: 0 0 12px rgba(95, 200, 255, 0.25);
-	transform: translateY(-1px);
-}
-
-.topic-action:disabled {
-	opacity: 0.5;
-	cursor: not-allowed;
-	box-shadow: none;
 }
 
 .control-pill {
@@ -826,8 +841,7 @@ body[data-state="3"] .state--book {
 
 .pin-lines {
 	display: flex;
-	flex-wrap: wrap;
-	align-content: flex-start;
+	flex-direction: column;
 	gap: 4px;
 	margin: 0;
 	position: absolute;
@@ -839,6 +853,19 @@ body[data-state="3"] .state--book {
 	min-height: 0;
 	overflow: hidden;
 	isolation: isolate;
+}
+
+/* One vertical slice of a card's pin-lines, representing a band of the
+   book/chapter's verse range. Empty bands render as blank space, which is
+   the visual cue for "no references in this part of the book". */
+.pin-line-band {
+	display: flex;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	gap: 4px;
+	flex: 1;
+	min-height: 0;
+	overflow: hidden;
 }
 
 .pin-line {
@@ -1448,6 +1475,11 @@ tip.show {
 	gap: 2px;
 }
 
+.state--book #book-grid[data-density="high"] .pin-line-band,
+.state--book #book-grid[data-density="ultra"] .pin-line-band {
+	gap: 2px;
+}
+
 .state--book #book-grid[data-density="high"] .expand-verses-btn {
 	width: clamp(18px, 0.9vw, 28px);
 	height: clamp(18px, 0.9vw, 28px);
@@ -1574,8 +1606,14 @@ tip.show {
 	border-radius: 10px;
 	padding: 6px 12px;
 	font-size: 0.95em;
-	color: #555;
 	margin-top: 0.25em;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.chapter-nav-btn:hover:not(:disabled) {
+	border-color: rgba(95, 200, 255, 0.75);
+	background: rgba(14, 22, 35, 0.95);
 }
 
 /* Citation icon styles */
@@ -2064,13 +2102,8 @@ body[data-state="3"] .legend-genre.active {
 
 	.topic-search input {
 		min-width: 230px;
-		padding: 10px 12px;
+		padding: 10px 38px 10px 12px;
 		font-size: 1rem;
-	}
-
-	.topic-action {
-		padding: 10px 13px;
-		font-size: 0.88rem;
 	}
 
 	.control-pill {
@@ -2195,7 +2228,6 @@ body[data-state="3"] .legend-genre.active {
 	}
 
 	/* Make touch targets larger for mobile */
-	.topic-action,
 	.jump-button,
 	.chapter-nav-btn {
 		min-height: 44px;
@@ -2336,12 +2368,19 @@ body[data-state="3"] .legend-genre.active {
 
 	.topic-search input {
 		font-size: 1.32rem;
-		padding: 15px 18px;
+		padding: 15px 50px 15px 18px;
 	}
 
 	.card-title-bar {
 		font-size: 1rem;
 		padding: 10px 12px;
+	}
+
+	/* The larger 4K title bar (above) is taller than the base 32px offset,
+	   so push pin-lines down to clear it. Doesn't affect the more specific
+	   #book-grid[data-density] .pin-lines rules below. */
+	.pin-lines {
+		top: 44px;
 	}
 
 	.state-title {

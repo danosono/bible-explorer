@@ -100,11 +100,11 @@
             <span id="topic-search-label"
               >Nave's Topics <em class="start-hint">Search</em></span
             >
-            <input id="topic-input" type="search" placeholder="Search topics" />
+            <span class="topic-input-wrap">
+              <input id="topic-input" type="search" placeholder="Search topics" />
+              <button class="topic-clear-btn" id="topic-clear-btn" type="button" aria-label="Clear topic">&times;</button>
+            </span>
           </label>
-          <button class="topic-action" id="topic-action" type="button">
-            Reset Topic
-          </button>
           <span class="control-pill"><strong>State</strong> Overview</span>
           </div>
           <a
@@ -330,7 +330,7 @@
       </div>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=45"></script>
+    <script src="js/app.js?v=46"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

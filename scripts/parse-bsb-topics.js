@@ -54,7 +54,26 @@ async function parseTopics(bibleData) {
   const result = {};
   let currentTopicName = null;
   let currentSubtopic = null;
+  // The source spreadsheet is one continuous alphabetical index: between one
+  // [Top] row and the next, [Nav]/[TTT] rows are sometimes genuine subtopics
+  // of the current topic (e.g. "Entertainments: ..." under "Entertainment"),
+  // but sometimes they're unrelated alphabetical entries that never got their
+  // own [Top] row (e.g. "Song of Moses..."/"Envy: ..."/"Ephraim: ..." between
+  // "Son of God" and "Songs"). A [Nav]/[TTT] label is treated as a genuine
+  // subtopic only if its text before the first ":" starts with the current
+  // topic's name (covers plurals like "Entertainment" -> "Entertainments");
+  // otherwise its verses are suppressed until the next genuine subtopic or [Top].
+  let suppressVerses = false;
   let skippedRefs = 0;
+  let suppressedRefs = 0;
+
+  const normalizeForMatch = (value) => String(value || '').trim().toLowerCase();
+
+  const isSubtopicOfCurrentTopic = (label) => {
+    if (!currentTopicName) return false;
+    const prefix = label.split(':')[0].trim();
+    return normalizeForMatch(prefix).startsWith(normalizeForMatch(currentTopicName));
+  };
 
   for (const row of data) {
     const source = row[1];
@@ -64,6 +83,7 @@ async function parseTopics(bibleData) {
     if (source === 'Top') {
       currentTopicName = String(topic).trim();
       currentSubtopic = null;
+      suppressVerses = false;
       if (currentTopicName && !result[currentTopicName]) {
         result[currentTopicName] = { name: currentTopicName, references: {}, books: [] };
       }
@@ -71,11 +91,17 @@ async function parseTopics(bibleData) {
     }
 
     if (source === 'Nav' || source === 'TTT') {
-      currentSubtopic = String(topic).trim();
+      const label = String(topic).trim();
+      currentSubtopic = label;
+      suppressVerses = !isSubtopicOfCurrentTopic(label);
       continue;
     }
 
     if (source === '' && verse && currentTopicName) {
+      if (suppressVerses) {
+        suppressedRefs += 1;
+        continue;
+      }
       const parsed = parseVerseReference(verse);
       if (!parsed) {
         skippedRefs += 1;
@@ -108,6 +134,7 @@ async function parseTopics(bibleData) {
   }
 
   console.log(`Skipped ${skippedRefs} unparseable verse references.`);
+  console.log(`Suppressed ${suppressedRefs} verse references belonging to unrelated alphabetical entries.`);
   return result;
 }
 

@@ -3,7 +3,7 @@ const stateSlider = document.querySelector(".state-slider");
 const stateCaptions = document.querySelectorAll(".state-captions span");
 const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
-const topicAction = document.getElementById("topic-action");
+const topicClearBtn = document.getElementById("topic-clear-btn");
 const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
@@ -35,22 +35,26 @@ const DATASET_CONFIG = {
   topics: {
     file: "data/topics-with-references.json",
     label: "Nave's Topics",
-    placeholder: "Search topics"
+    placeholder: "Search topics",
+    defaultTopic: "JESUS, THE CHRIST"
   },
   "bsb-topics": {
     file: "data/bsb-topics-with-references.json",
     label: "BSB Topics",
-    placeholder: "Search BSB topics"
+    placeholder: "Search BSB topics",
+    defaultTopic: "Blood of Jesus"
   },
   prophecy: {
     file: "data/prophecy-topics-with-references.json",
     label: "Prophecy",
-    placeholder: "Search prophecy references"
+    placeholder: "Search prophecy references",
+    defaultTopic: ""
   },
   concordance: {
     file: "data/bsb-concordance-with-references.json",
     label: "BSB Concordance",
-    placeholder: "Search words"
+    placeholder: "Search words",
+    defaultTopic: "Eternal"
   }
 };
 const PROPHECY_AGGREGATE_TOPICS = [
@@ -71,6 +75,15 @@ const getPreferredTopicFallback = () => {
     if (firstSpecific) return firstSpecific;
   }
   return allTopicNames[0] || "";
+};
+
+// Resolve a dataset's configured default topic. An empty defaultTopic (e.g.
+// Prophecy) means "start blank" rather than falling back to another topic.
+const getDatasetDefaultTopic = (mode) => {
+  const config = DATASET_CONFIG[mode];
+  if (!config) return getPreferredTopicFallback() || null;
+  if (config.defaultTopic === "") return null;
+  return resolveTopicKey(config.defaultTopic) || getPreferredTopicFallback() || null;
 };
 
 const buildAggregateProphecyTopic = (baseTopics, mode, title) => {
@@ -287,6 +300,14 @@ const getPinLineWidthPercent = (verseCount) => {
   if (verseCount <= 6) return 75;
   return 100;
 };
+
+// Number of vertical "bands" pin-lines are grouped into, so a reference's
+// position within a card reflects its position within the book/chapter.
+const PIN_LINE_BANDS = 8;
+
+// Map a 0-100 position percentage to a band index (0..PIN_LINE_BANDS-1).
+const getPinLineBandIndex = (percentage) =>
+  Math.min(PIN_LINE_BANDS - 1, Math.max(0, Math.floor((percentage / 100) * PIN_LINE_BANDS)));
 
 // Verse text caching and tooltip management
 let verseTextCache = {};
@@ -757,11 +778,9 @@ const setStoredTopic = (topicName) => {
   }
 };
 
-const updateTopicActionState = (stateValue = getCurrentState()) => {
-  if (!topicAction) return;
-  const isOverview = stateValue === 1;
-  topicAction.textContent = "Clear Topic";
-  topicAction.disabled = !isOverview && !selectedTopic;
+const updateTopicActionState = () => {
+  if (!topicClearBtn) return;
+  topicClearBtn.hidden = !selectedTopic;
 };
 
 const applyTopicSelection = (topicName, options = {}) => {
@@ -1220,6 +1239,14 @@ const enforceAspectRatios = (items, width, height) => {
   const colWidth = width / cols;
   const minHeight = 110; // Minimum height to show 3 pin lines
 
+  // Cap how much a column's fillFactor can stretch its items. Without this,
+  // a column dominated by floor-clamped tiny books (e.g. 2/3 John, Jude next
+  // to Revelation) gets a much larger fillFactor than every other column,
+  // inflating its one "real" book (Revelation) past the size of books with
+  // far more characters. Columns whose natural fillFactor is below this cap
+  // are unaffected; capped columns leave a small gap at the bottom instead.
+  const MAX_COLUMN_FILL_FACTOR = 1.3;
+
   // Sub-linear weight: compresses the ~138x character-count range (Jeremiah
   // vs. 2 John) down to ~4.4x, so short books differentiate above minHeight
   // instead of nearly all of them clamping to the same floor value.
@@ -1289,7 +1316,9 @@ const enforceAspectRatios = (items, width, height) => {
       (item) => Math.max(minHeight, item.sizeWeight * hi) * scaleFactor
     );
     const columnSum = baseHeights.reduce((sum, h) => sum + h, 0);
-    const fillFactor = columnSum < height ? height / columnSum : 1;
+    const fillFactor = columnSum < height
+      ? Math.min(height / columnSum, MAX_COLUMN_FILL_FACTOR)
+      : 1;
 
     let y = 0;
     column.forEach((item, i) => {
@@ -1431,7 +1460,9 @@ const renderTreemap = (books, topic = null) => {
         });
         if (currentRange) verseRanges.push(currentRange);
         
-        // Render lines for each range with width based on verse count
+        // Render lines for each range with width based on verse count,
+        // grouped into vertical bands by their position in the book.
+        const bands = Array.from({ length: PIN_LINE_BANDS }, () => []);
         verseRanges.forEach((range) => {
           const verseCount = range.verses.length;
           const lineEl = document.createElement("div");
@@ -1444,7 +1475,7 @@ const renderTreemap = (books, topic = null) => {
             // Add visual indicator for wrapped/large groups
             lineEl.style.height = "3px";
           }
-          
+
           // Create tooltip data
           const startRef = range.verses[0].refs && range.verses[0].refs[0];
           const endRef = range.verses[range.verses.length - 1].refs && range.verses[range.verses.length - 1].refs[0];
@@ -1453,7 +1484,7 @@ const renderTreemap = (books, topic = null) => {
           const subtopicText = subtopics.join("; ");
           const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId: item.id });
           applyReferenceKindClass(lineEl, "pin-line", referenceKind);
-          
+
           lineEl.addEventListener('mouseenter', (e) => {
             showTooltip(e, refText, subtopicText, item.id, range.startVerse);
           });
@@ -1461,15 +1492,22 @@ const renderTreemap = (books, topic = null) => {
           lineEl.dataset.verses = refText;
           lineEl.dataset.subtopics = subtopicText;
           lineEl.dataset.bookId = item.id;
-          
+
           // Click handler to show verse modal
           lineEl.style.cursor = "pointer";
           lineEl.addEventListener("click", (e) => {
             e.stopPropagation();
             showVerseModal(item.id, item.displayName, versePositions, topicData.name);
           });
-          
-          lines.appendChild(lineEl);
+
+          bands[getPinLineBandIndex(range.verses[0].percentage)].push(lineEl);
+        });
+
+        bands.forEach((bandLines) => {
+          const bandEl = document.createElement("div");
+          bandEl.className = "pin-line-band";
+          bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
+          lines.appendChild(bandEl);
         });
         
         const verseCount = verseEntries.length;
@@ -1824,7 +1862,9 @@ const renderBookView = (bookId, topic = null) => {
       });
       if (currentRange) verseRanges.push(currentRange);
 
-      // Render lines for each range with width based on verse count
+      // Render lines for each range with width based on verse count,
+      // grouped into vertical bands by their position in the chapter.
+      const bands = Array.from({ length: PIN_LINE_BANDS }, () => []);
       verseRanges.forEach((range) => {
         const verseCount = range.verses.length;
         const lineEl = document.createElement("div");
@@ -1844,7 +1884,7 @@ const renderBookView = (bookId, topic = null) => {
         const subtopicText = subtopics.join("; ");
         const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId });
         applyReferenceKindClass(lineEl, "pin-line", referenceKind);
-        
+
         lineEl.addEventListener("mouseenter", (e) => {
           showTooltip(e, refText, subtopicText, bookId, range.startVerse);
         });
@@ -1863,7 +1903,15 @@ const renderBookView = (bookId, topic = null) => {
             }
           );
         });
-        lines.appendChild(lineEl);
+
+        bands[getPinLineBandIndex(range.verses[0].percentage)].push(lineEl);
+      });
+
+      bands.forEach((bandLines) => {
+        const bandEl = document.createElement("div");
+        bandEl.className = "pin-line-band";
+        bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
+        lines.appendChild(bandEl);
       });
 
       const expandBtn = document.createElement("button");
@@ -2444,10 +2492,17 @@ const boot = async () => {
         await loadTopics();
         selectedTopic = previousTopic && topicsData[previousTopic]
           ? previousTopic
-          : (getPreferredTopicFallback() || null);
+          : getDatasetDefaultTopic(nextMode);
 
         if (topicInput) {
           topicInput.value = selectedTopic || "";
+          // Prophecy (and any other blank-default dataset) lands here with an
+          // empty field. Pre-focus it so the user's next click into the field
+          // is a "click while focused" - the only click that makes browsers
+          // auto-open the datalist dropdown - instead of needing two clicks.
+          if (!selectedTopic) {
+            topicInput.focus();
+          }
         }
         setStoredTopic(selectedTopic);
         renderCurrentState();
@@ -2467,24 +2522,38 @@ const boot = async () => {
       applyTopicSelection(e.target.value, { commit: false });
     });
 
+    // Browsers only auto-open the datalist dropdown on a click that lands on
+    // an *already-focused* field, not the click that focuses it - so an
+    // empty/blank field (e.g. Prophecy's default, or after clearing) needs
+    // two clicks. Opening the picker explicitly on focus fixes that for the
+    // first click too.
+    topicInput.addEventListener("focus", () => {
+      if (typeof topicInput.showPicker === "function") {
+        try {
+          topicInput.showPicker();
+        } catch (err) {
+          // Ignore - showPicker() requires user activation and throws if
+          // called outside one; the native click-to-open still applies.
+        }
+      }
+    });
+
     const storedTopic = resolveTopicKey(getStoredTopic());
     if (storedTopic) {
       applyTopicSelection(storedTopic, { commit: true });
     } else {
-      const initialTopic = resolveTopicKey(DEFAULT_TOPIC) || getPreferredTopicFallback() || "";
+      const initialTopic = getDatasetDefaultTopic(activeDatasetMode) || "";
       applyTopicSelection(initialTopic, { commit: true });
     }
   }
 
-  if (topicAction) {
-    topicAction.addEventListener("click", () => {
-      const stateValue = getCurrentState();
-      if (stateValue === 1) {
-        const resetTopic = resolveTopicKey(DEFAULT_TOPIC) || getPreferredTopicFallback() || "";
-        applyTopicSelection(resetTopic, { commit: true });
-      } else {
-        applyTopicSelection(null, { commit: true });
-      }
+  if (topicClearBtn) {
+    topicClearBtn.addEventListener("click", () => {
+      applyTopicSelection(null, { commit: true });
+      // Focus the now-empty field so the *next* click is a "click while
+      // focused" - browsers only auto-open the datalist dropdown on that,
+      // not on the click that originally focuses the field.
+      if (topicInput) topicInput.focus();
     });
   }
 

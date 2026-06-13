@@ -50,9 +50,15 @@ Current approach:
 5. **Per-column `fillFactor` stretch** — after `scaleFactor`, any column whose
    total height is *less* than `height` (commonly the last column or other
    columns near the start of the search range that ended up sparser) is
-   stretched uniformly so it sums to exactly `height`. This eliminates empty
-   space below the last card in a column (e.g. previously ~345px below
-   Revelation at HD) and gives every card a bit more room for pin lines.
+   stretched uniformly so it sums to exactly `height`, capped at
+   `MAX_COLUMN_FILL_FACTOR = 1.3`. This eliminates empty space below the last
+   card in most columns and gives every card a bit more room for pin lines.
+   The cap exists because the final column (2/3 John, Jude, Revelation at HD)
+   is mostly 110px-floor items, so its uncapped `fillFactor` (~1.7) stretched
+   Revelation to ~268px — taller than Matthew (~217px) despite having half its
+   character count, visually implying Revelation is the longest book. At 1.3,
+   Revelation lands at ~204px (HD) / ~354px (4K), smaller than Matthew/John as
+   expected, leaving a modest gap at the bottom of that one column.
 
 `item.value` (raw character count) is left untouched; `item.sizeWeight` is a
 layout-only derived field. This is resolution-independent (works for both HD
@@ -76,6 +82,12 @@ browser.
 Topic/word references render as small horizontal "pin lines" inside each
 book card, positioned by vertical percentage within the book.
 
+**Recipe note**: this was built for the Bible state (Overview/`renderTreemap`,
+book cards) and the same pattern was mirrored into the Book state
+(`renderBookView`, chapter cards) - both are done and described below. The
+Verse state doesn't use pin-lines at all (it's a text reading view), so this
+recipe doesn't apply there.
+
 - **Overview**: `renderTreemap` (~line 1330-1460+).
 - **Book View**: `renderBookView` has an equivalent block (~line 1798-1845)
   for chapter cards — same logic, mirrored.
@@ -83,13 +95,27 @@ book card, positioned by vertical percentage within the book.
 Mechanics:
 - For each reference, `getAbsoluteVerseIndex(bookId, chapter, verse)` gives an
   absolute verse index within the book; consecutive absolute-verse indices are
-  merged into ranges (no spatial/positional deduplication beyond this).
-- `.pin-lines` is a `flex-wrap` flow container (4 quarter-width "columns" per
-  row). Each range's `.pin-line` gets an inline `flexBasis` from
-  `getPinLineWidthPercent(verseCount)` (~line 283): 1 verse → 25%, 2-3 → 50%,
-  4-6 → 75%, 7+ → 100%. Ranges render in book/chapter reading order (DOM order
-  = `verseRanges` order, already sorted by absolute verse position), so pins
-  flow left-to-right, top-to-bottom like text.
+  merged into ranges (no spatial/positional deduplication beyond this), then
+  each range's first verse gets a `percentage` (`absoluteVerse / totalVerses`
+  for Overview, `entry.verse / chapterVerseTotal` for Book View).
+- **Vertical bands** — `.pin-lines` is a `flex-direction: column` container of
+  `PIN_LINE_BANDS = 8` (~line 285, near `getPinLineWidthPercent`) stacked
+  `.pin-line-band` divs, each `flex: 1` (so they evenly split the card's pin
+  area regardless of how many bands have content). Each range is assigned to
+  `bands[getPinLineBandIndex(range.verses[0].percentage)]` —
+  `getPinLineBandIndex` maps the 0-100 percentage to a 0..7 band index. Empty
+  bands render as blank space, which is the visual cue for "no references in
+  this part of the book/chapter". This makes a topic whose only reference is
+  near the end of a book (e.g. BSB Concordance "Word" in 1 Corinthians 14:36,
+  ~80% through the book → band 6) render near the bottom of the card instead
+  of the top, while a dense topic (e.g. "Lord" in 1 Corinthians, 61 refs)
+  naturally spreads across most/all bands and fills the card as before.
+- Within a band, `.pin-line-band` is a `flex-wrap` flow container (same as the
+  old whole-`.pin-lines` behavior). Each range's `.pin-line` gets an inline
+  `flexBasis` from `getPinLineWidthPercent(verseCount)` (~line 283): 1 verse →
+  25%, 2-3 → 50%, 4-6 → 75%, 7+ → 100%. Ranges within a band render in
+  book/chapter reading order (already sorted by absolute verse position), so
+  pins flow left-to-right, top-to-bottom like text within their band.
 - Ranges >10 verses additionally get `.pin-line-wrapped` (thinner, brighter;
   combined with the 100% flexBasis from the tier above).
 - `.pin-line--ot` / `--nt` / `--mixed` color the line by whether its
@@ -99,16 +125,29 @@ This replaced an earlier absolute-positioned layout (`top: <percentage>%`,
 continuous width formula `Math.min(20 + (verseCount-1)*8, 100)`) that
 left-pinned every range to its own full-width vertical slot regardless of
 verse count - wasting most of the row for the common single-verse case and
-giving high-frequency words no way to show more than one pin per row.
+giving high-frequency words no way to show more than one pin per row. It also
+replaced an intermediate flex-wrap-everything layout that, while solving the
+overlap/width problem, lost positional information entirely - every topic's
+pins started in the top-left of the card regardless of where in the book they
+actually occurred.
 
 ### Overlap handling
-With the flex-wrap layout, pins no longer overlap by default - each occupies
-its own quarter/half/three-quarter/full-width slot and wraps to new rows as
-needed. `.pin-lines` keeps `overflow: hidden`, so very dense topics (many
-ranges in one book) clip extra rows rather than overflowing the card; the
+Within a band, pins no longer overlap by default - each occupies its own
+quarter/half/three-quarter/full-width slot and wraps to new rows as needed.
+`.pin-line-band` keeps `overflow: hidden`, so a band with many ranges clips
+extra rows rather than overflowing into adjacent bands; the
 `expand-verses-btn` remains the full-detail entry point. `isolation: isolate`
 and `.pin-line`'s `mix-blend-mode: screen` are kept for the remaining
 hover-overlap edge cases.
+
+### 4K header clearance
+`.pin-lines` defaults to `top: 32px`, sized for the base `.card-title-bar`
+(~25-28px tall). The `@media (min-width: 2560px)` block enlarges
+`.card-title-bar` (`font-size: 1rem; padding: 10px 12px`, ~40-44px tall), so
+it adds a matching `.pin-lines { top: 44px; }` override in the same media
+query. This is a low-specificity rule and doesn't affect the more specific
+`#book-grid[data-density="high"/"ultra"] .pin-lines` overrides used by
+high-chapter-count books in Book View.
 
 ## The four datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
 
@@ -132,6 +171,22 @@ All four share one schema and are loaded generically by `loadTopics()`:
 | BSB Topics | `bsb-topics` | `data/bsb-topics-with-references.json` | `C:\Unity Projects\_BibleDatasets\Berean\bsb_topical_index.xlsx` via `scripts/parse-bsb-topics.js` |
 | Prophecy | `prophecy` | `data/prophecy-topics-with-references.json` | Prophecy docx parse (separate aggregate-topic logic, `PROPHECY_AGGREGATE_TOPICS`) |
 | BSB Concordance | `concordance` | `data/bsb-concordance-with-references.json` (14.77MB, 14,526 words, 276,602 refs) | `C:\Unity Projects\_BibleDatasets\Berean\bsb_concordance.xlsx` via `scripts/parse-bsb-concordance.js` |
+
+### BSB Topics section-boundary handling (`scripts/parse-bsb-topics.js`)
+The source xlsx is one continuous alphabetical index, not a clean tree: between
+one `[Top]`-marked topic and the next, `[Nav]`/`[TTT]` rows are sometimes
+genuine subtopics of the current topic (e.g. "Entertainments: ..." under
+"Entertainment") but sometimes unrelated alphabetical entries that never got
+their own `[Top]` row (e.g. "Song of Moses..."/"Envy: ..."/"Ephraim: ..."
+appearing between "Son of God" and "Songs"). A `[Nav]`/`[TTT]` label is
+treated as a genuine subtopic only if its text before the first `:` (lowercased)
+`startsWith()` the current topic's name (covers plurals like "Entertainment" →
+"Entertainments"); otherwise `suppressVerses = true` until the next genuine
+subtopic or `[Top]` row, and its verse rows are dropped. Fixed several
+misattributed-verse bugs: "Son of God" (was 60 refs incl. unrelated "Song of..."
+entries, now 10), "Blood of Jesus" (no longer includes a Habakkuk verse from
+"Blood of Judgments"), "Entertainment" (was 680 refs incl. "Envy"/"Ephraim"/
+"Epicurean" subtopics, now 143).
 
 ### Shared helpers: `scripts/lib/bsb-shared.js`
 Used by both `parse-bsb-topics.js` and `parse-bsb-concordance.js`:
@@ -182,11 +237,19 @@ entries downstream. "Son of Man" → 82 references across Matthew, Mark, Luke,
 John, Acts, Daniel, and Revelation (the capitalized Messianic title — the
 lowercase "son of man" address to Ezekiel doesn't match).
 
-## Known pre-existing quirk: dataset-switch fallback topic
-Switching the Dataset dropdown to one where the current topic name doesn't
-exist (e.g. Nave's `"JESUS, THE CHRIST"` isn't a key in BSB Topics or the
-Concordance) falls back to `getPreferredTopicFallback()` →
-`allTopicNames[0]` (alphabetically first topic/word, e.g. "AARON"). This is
-pre-existing behavior (also happens switching Prophecy → Nave's Topics), not a
-regression from adding BSB Topics/Concordance, and no fix is currently
-planned.
+## Per-dataset default topics
+Each `DATASET_CONFIG` entry has a `defaultTopic` (resolved via
+`getDatasetDefaultTopic(mode)`, near `getPreferredTopicFallback()`):
+Nave's Topics → `"JESUS, THE CHRIST"`, BSB Topics → `"Blood of Jesus"`,
+Concordance → `"Eternal"`, Prophecy → `""` (blank - `getDatasetDefaultTopic`
+returns `null` for an empty `defaultTopic` rather than falling back, so
+Prophecy starts with no topic selected and an empty search field).
+`getDatasetDefaultTopic` is used for: initial boot (no stored topic), the
+search field's clear/reset button when on Overview, and the dataset-switch
+handler when the previously-selected topic doesn't exist in the new dataset
+(e.g. Nave's `"JESUS, THE CHRIST"` isn't a key in BSB Topics or the
+Concordance - falls back to that dataset's own default instead of the
+alphabetically-first topic). `loadTopics()` always calls
+`updateTopicOptions("")` after loading, so the `<datalist>` is populated with
+all topic names even when the input is blank (Prophecy) - clicking the field
+shows the full dropdown.
