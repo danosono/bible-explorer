@@ -1151,7 +1151,7 @@ const buildItems = (books) => {
   if (malIndex !== -1) {
     items.splice(malIndex + 1, 0, {
       id: "SEPARATOR",
-      displayName: "0 AD",
+      displayName: "~0 AD",
       value: 100,
       isSeparator: true,
       order: items[malIndex].order + 0.5
@@ -2550,6 +2550,10 @@ const boot = async () => {
   if (topicClearBtn) {
     topicClearBtn.addEventListener("click", () => {
       applyTopicSelection(null, { commit: true });
+      // Repopulate the datalist with the full topic list - the last "input"
+      // event left it filtered down to matches for the selected topic, so
+      // without this only that one topic would show in the dropdown.
+      updateTopicOptions("");
       // Focus the now-empty field so the *next* click is a "click while
       // focused" - browsers only auto-open the datalist dropdown on that,
       // not on the click that originally focuses the field.

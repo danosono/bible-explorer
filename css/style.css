@@ -101,16 +101,22 @@ body::before {
 }
 
 .by-link {
-	font-size: clamp(0.85rem, 1vw, 1.2rem);
-	color: var(--text-3);
-	text-decoration: none;
-	font-weight: 400;
-	letter-spacing: 0.02em;
-	transition: color 0.2s ease;
+	display: inline-flex;
+	align-items: center;
+	vertical-align: middle;
+	margin-left: 0.4em;
 }
 
-.by-link:hover {
-	color: var(--text-2);
+.by-link-icon {
+	width: clamp(25px, 2vw, 39px);
+	height: clamp(25px, 2vw, 39px);
+	border-radius: 4px;
+	opacity: 0.75;
+	transition: opacity 0.2s ease;
+}
+
+.by-link:hover .by-link-icon {
+	opacity: 1;
 }
 
 .state-indicator {
@@ -726,10 +732,10 @@ body[data-state="3"] .state--book {
 }
 
 .separator-text {
-	padding: 28px 12px 12px;
+	padding: 22px 8px 12px;
 	text-align: center;
 	color: var(--text-2);
-	font-size: 0.55rem;
+	font-size: 0.65rem;
 	line-height: 1.5;
 	font-style: italic;
 	letter-spacing: 0.05em;
@@ -2423,7 +2429,9 @@ body[data-state="3"] .legend-genre.active {
 	}
 
 	.separator-text {
-		font-size: 1.1rem;
+		font-size: 0.85rem;
+		line-height: 1.3;
+		padding: 28px 12px 8px;
 	}
 
 	.info-btn {

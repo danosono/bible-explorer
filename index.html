@@ -20,7 +20,7 @@
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>Welcome to Bible Explorer</title>
+    <title>Bible Explorer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="icon" type="image/png" href="Gg.png" />
+    <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
   </head>
   <body>
     <!-- Mobile/Tablet Notice -->
@@ -52,8 +52,12 @@
                 target="_blank"
                 rel="noopener"
                 class="by-link"
-                >by gospelgo</a
-              >
+                title="by gospelgo"
+                ><img
+                  src="images/Gg4_512.png?v=3"
+                  alt="by gospelgo"
+                  class="by-link-icon"
+              /></a>
             </h1>
             <h2 class="state-indicator" id="state-indicator">Bible View</h2>
           </div>
@@ -67,45 +71,56 @@
         </div>
         <div class="header-right">
           <div class="controls">
-          <div class="state-switcher">
-            <div class="state-labels">
-              <span>State 1</span>
-              <span>State 2</span>
-              <span>State 3</span>
+            <div class="state-switcher">
+              <div class="state-labels">
+                <span>State 1</span>
+                <span>State 2</span>
+                <span>State 3</span>
+              </div>
+              <input
+                class="state-slider"
+                type="range"
+                min="1"
+                max="3"
+                value="1"
+                step="1"
+              />
+              <div class="state-captions">
+                <span data-state="1">Bible</span>
+                <span data-state="2">Book</span>
+                <span data-state="3">Verse</span>
+              </div>
             </div>
-            <input
-              class="state-slider"
-              type="range"
-              min="1"
-              max="3"
-              value="1"
-              step="1"
-            />
-            <div class="state-captions">
-              <span data-state="1">Bible</span>
-              <span data-state="2">Book</span>
-              <span data-state="3">Verse</span>
-            </div>
-          </div>
-          <label class="dataset-select" for="dataset-mode">
-            <span>Dataset</span>
-            <select id="dataset-mode" class="jump-select">
-              <option value="topics" selected>Nave's Topics</option>
-              <option value="bsb-topics">BSB Topics</option>
-              <option value="prophecy">Prophecy</option>
-              <option value="concordance">BSB Concordance</option>
-            </select>
-          </label>
-          <label class="topic-search">
-            <span id="topic-search-label"
-              >Nave's Topics <em class="start-hint">Search</em></span
-            >
-            <span class="topic-input-wrap">
-              <input id="topic-input" type="search" placeholder="Search topics" />
-              <button class="topic-clear-btn" id="topic-clear-btn" type="button" aria-label="Clear topic">&times;</button>
-            </span>
-          </label>
-          <span class="control-pill"><strong>State</strong> Overview</span>
+            <label class="dataset-select" for="dataset-mode">
+              <span>Dataset</span>
+              <select id="dataset-mode" class="jump-select">
+                <option value="topics" selected>Nave's Topics</option>
+                <option value="bsb-topics">BSB Topics</option>
+                <option value="prophecy">Prophecy</option>
+                <option value="concordance">BSB Concordance</option>
+              </select>
+            </label>
+            <label class="topic-search">
+              <span id="topic-search-label"
+                >Nave's Topics <em class="start-hint">Search</em></span
+              >
+              <span class="topic-input-wrap">
+                <input
+                  id="topic-input"
+                  type="search"
+                  placeholder="Search topics"
+                />
+                <button
+                  class="topic-clear-btn"
+                  id="topic-clear-btn"
+                  type="button"
+                  aria-label="Clear topic"
+                >
+                  &times;
+                </button>
+              </span>
+            </label>
+            <span class="control-pill"><strong>State</strong> Overview</span>
           </div>
           <a
             href="https://bible-peruser.gospelgo.org"
