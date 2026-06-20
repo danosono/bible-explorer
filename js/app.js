@@ -715,6 +715,24 @@ const setStoredDatasetMode = (mode) => {
   }
 };
 
+// Keeps the URL's ?dataset=&topic= params in sync with the current
+// selection (without pushing history entries) so the address bar is always
+// a shareable deep link back to this exact dataset/topic.
+const syncUrlState = () => {
+  try {
+    const url = new URL(window.location.href);
+    url.searchParams.set("dataset", activeDatasetMode);
+    if (selectedTopic) {
+      url.searchParams.set("topic", selectedTopic);
+    } else {
+      url.searchParams.delete("topic");
+    }
+    history.replaceState(null, "", url);
+  } catch (error) {
+    // Ignore - URL sync is best-effort and shouldn't break selection.
+  }
+};
+
 const updateDatasetUI = () => {
   const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
   if (topicSearchLabel) {
@@ -799,8 +817,15 @@ const applyTopicSelection = (topicName, options = {}) => {
     topicInput.value = selectedTopic || "";
   }
 
-  if (commit) {
+  // Selecting a <datalist> suggestion (click or arrow keys + Enter) only
+  // ever fires "input" - native datalist/autofill popups consume the Enter
+  // keydown themselves, so the page never sees it, and "change" only fires
+  // on blur for text/search inputs. isExactMatch is how we detect that kind
+  // of selection (vs. partial text while still typing), so persist/sync on
+  // it too, not just on a real commit.
+  if (commit || isExactMatch) {
     setStoredTopic(selectedTopic);
+    syncUrlState();
   }
 
   // Only re-render during typing in Overview (state 1) and Book (state 2)
@@ -2463,10 +2488,18 @@ const boot = async () => {
   characterCounts = await loadCharacterCounts();
   bibleData = await loadBible();
   bookSummaries = await loadBookSummaries();
-  
+
+  // Deep-link support: ?dataset=<mode>&topic=<name> overrides whatever was
+  // last stored locally, so a shared link always lands on the right topic.
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlDatasetMode = urlParams.get("dataset");
+  const urlTopic = urlParams.get("topic");
+
   if (topicInput) {
     const storedDatasetMode = getStoredDatasetMode();
-    if (storedDatasetMode && DATASET_CONFIG[storedDatasetMode]) {
+    if (urlDatasetMode && DATASET_CONFIG[urlDatasetMode]) {
+      activeDatasetMode = urlDatasetMode;
+    } else if (storedDatasetMode && DATASET_CONFIG[storedDatasetMode]) {
       activeDatasetMode = storedDatasetMode;
     }
     if (datasetModeSelect) {
@@ -2505,6 +2538,7 @@ const boot = async () => {
           }
         }
         setStoredTopic(selectedTopic);
+        syncUrlState();
         renderCurrentState();
         updateCurrentTopicLabel();
         updateTopicActionState();
@@ -2520,6 +2554,17 @@ const boot = async () => {
     topicInput.addEventListener("input", (e) => {
       updateTopicOptions(e.target.value);
       applyTopicSelection(e.target.value, { commit: false });
+    });
+
+    // Selecting a <datalist> option via arrow keys + Enter updates the
+    // input's value but doesn't fire "change" (that only fires on blur for
+    // text-type inputs) - so it would render the new topic without
+    // persisting/syncing the URL until the user clicked elsewhere. Treat
+    // Enter as an explicit commit regardless.
+    topicInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        applyTopicSelection(e.target.value, { commit: true });
+      }
     });
 
     // Browsers only auto-open the datalist dropdown on a click that lands on
@@ -2538,8 +2583,11 @@ const boot = async () => {
       }
     });
 
+    const linkedTopic = urlTopic ? resolveTopicKey(urlTopic) : null;
     const storedTopic = resolveTopicKey(getStoredTopic());
-    if (storedTopic) {
+    if (linkedTopic) {
+      applyTopicSelection(linkedTopic, { commit: true });
+    } else if (storedTopic) {
       applyTopicSelection(storedTopic, { commit: true });
     } else {
       const initialTopic = getDatasetDefaultTopic(activeDatasetMode) || "";
