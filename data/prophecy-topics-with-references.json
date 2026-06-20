@@ -17,7 +17,7 @@
         {
           "verse": 78,
           "subtopics": [
-            "Fulfillment (NT): Gal 4:4-5 ; Matt 1:18"
+            "Fulfillment (NT): Gal 4:4-5; Matt 1:18"
           ],
           "refs": [
             "Gal 4:4"
@@ -26,7 +26,7 @@
         {
           "verse": 79,
           "subtopics": [
-            "Fulfillment (NT): Gal 4:4-5 ; Matt 1:18"
+            "Fulfillment (NT): Gal 4:4-5; Matt 1:18"
           ],
           "refs": [
             "Gal 4:5"
@@ -37,7 +37,7 @@
         {
           "verse": 18,
           "subtopics": [
-            "Fulfillment (NT): Gal 4:4-5 ; Matt 1:18"
+            "Fulfillment (NT): Gal 4:4-5; Matt 1:18"
           ],
           "refs": [
             "Matt 1:18"
@@ -69,7 +69,7 @@
         {
           "verse": 28,
           "subtopics": [
-            "Fulfillment (NT): Heb 2:14 ; 1 John 3:8"
+            "Fulfillment (NT): Heb 2:14; 1 John 3:8"
           ],
           "refs": [
             "Heb 2:14"
@@ -80,7 +80,7 @@
         {
           "verse": 47,
           "subtopics": [
-            "Fulfillment (NT): Heb 2:14 ; 1 John 3:8"
+            "Fulfillment (NT): Heb 2:14; 1 John 3:8"
           ],
           "refs": [
             "1 John 3:8"
@@ -132,7 +132,7 @@
         {
           "verse": 232,
           "subtopics": [
-            "Prophecy (OT): Gen 9:26 - 27"
+            "Prophecy (OT): Gen 9:26-27"
           ],
           "refs": [
             "Gen 9:26"
@@ -141,7 +141,7 @@
         {
           "verse": 233,
           "subtopics": [
-            "Prophecy (OT): Gen 9:26 - 27"
+            "Prophecy (OT): Gen 9:26-27"
           ],
           "refs": [
             "Gen 9:27"
@@ -183,7 +183,7 @@
         {
           "verse": 53,
           "subtopics": [
-            "Fulfillment (NT): Gal 3:8 ; Acts 3:25 - 26"
+            "Fulfillment (NT): Gal 3:8; Acts 3:25-26"
           ],
           "refs": [
             "Gal 3:8"
@@ -194,7 +194,7 @@
         {
           "verse": 98,
           "subtopics": [
-            "Fulfillment (NT): Gal 3:8 ; Acts 3:25 - 26"
+            "Fulfillment (NT): Gal 3:8; Acts 3:25-26"
           ],
           "refs": [
             "Acts 3:25"
@@ -203,7 +203,7 @@
         {
           "verse": 99,
           "subtopics": [
-            "Fulfillment (NT): Gal 3:8 ; Acts 3:25 - 26"
+            "Fulfillment (NT): Gal 3:8; Acts 3:25-26"
           ],
           "refs": [
             "Acts 3:26"
@@ -883,7 +883,7 @@
         {
           "verse": 138,
           "subtopics": [
-            "Fulfillment (NT): John 4:26 ; 8:58"
+            "Fulfillment (NT): John 4:26; 8:58"
           ],
           "refs": [
             "John 4:26"
@@ -892,7 +892,7 @@
         {
           "verse": 394,
           "subtopics": [
-            "Fulfillment (NT): John 4:26 ; 8:58"
+            "Fulfillment (NT): John 4:26; 8:58"
           ],
           "refs": [
             "John 8:58"
@@ -1158,7 +1158,7 @@
         {
           "verse": 248,
           "subtopics": [
-            "Fulfillment (NT): Acts 7:55 - 56"
+            "Fulfillment (NT): Acts 7:55-56"
           ],
           "refs": [
             "Acts 7:55"
@@ -1167,7 +1167,7 @@
         {
           "verse": 249,
           "subtopics": [
-            "Fulfillment (NT): Acts 7:55 - 56"
+            "Fulfillment (NT): Acts 7:55-56"
           ],
           "refs": [
             "Acts 7:56"
@@ -1570,7 +1570,7 @@
         {
           "verse": 1015,
           "subtopics": [
-            "Fulfillment (NT): Matt 27:33; Heb. 13:11 - 12"
+            "Fulfillment (NT): Matt 27:33; Heb. 13:11-12"
           ],
           "refs": [
             "Matt 27:33"
@@ -1581,7 +1581,7 @@
         {
           "verse": 289,
           "subtopics": [
-            "Fulfillment (NT): Matt 27:33; Heb. 13:11 - 12"
+            "Fulfillment (NT): Matt 27:33; Heb. 13:11-12"
           ],
           "refs": [
             "Heb 13:11"
@@ -1590,7 +1590,7 @@
         {
           "verse": 290,
           "subtopics": [
-            "Fulfillment (NT): Matt 27:33; Heb. 13:11 - 12"
+            "Fulfillment (NT): Matt 27:33; Heb. 13:11-12"
           ],
           "refs": [
             "Heb 13:12"
@@ -1702,6 +1702,26 @@
   "36. The Drink-offering: \"If any man thirst\"": {
     "name": "The Drink-offering: \"If any man thirst\"",
     "references": {
+      "LEV": [
+        {
+          "verse": 693,
+          "subtopics": [
+            "Prophecy (OT): Lev 23:36-37"
+          ],
+          "refs": [
+            "Lev 23:36"
+          ]
+        },
+        {
+          "verse": 694,
+          "subtopics": [
+            "Prophecy (OT): Lev 23:36-37"
+          ],
+          "refs": [
+            "Lev 23:37"
+          ]
+        }
+      ],
       "JHN": [
         {
           "verse": 320,
@@ -1715,7 +1735,8 @@
       ]
     },
     "books": [
-      "JHN"
+      "JHN",
+      "LEV"
     ]
   },
   "37. Not a bone of Him broken": {
@@ -1812,7 +1833,7 @@
         {
           "verse": 90,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 3:14"
@@ -1821,7 +1842,7 @@
         {
           "verse": 91,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 3:15"
@@ -1830,7 +1851,7 @@
         {
           "verse": 92,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 3:16"
@@ -1839,7 +1860,7 @@
         {
           "verse": 93,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 3:17"
@@ -1848,7 +1869,7 @@
         {
           "verse": 94,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 3:18"
@@ -1857,7 +1878,7 @@
         {
           "verse": 567,
           "subtopics": [
-            "Fulfillment (NT): John 3:14-18 ; 12:32"
+            "Fulfillment (NT): John 3:14-18; 12:32"
           ],
           "refs": [
             "John 12:32"
@@ -1913,8 +1934,8 @@
       "NUM"
     ]
   },
-  "40. \" This is of a truth that prophet \"": {
-    "name": "\" This is of a truth that prophet \"",
+  "40. \"This is of a truth that prophet\"": {
+    "name": "\"This is of a truth that prophet\"",
     "references": {
       "DEU": [
         {
@@ -2020,7 +2041,7 @@
         {
           "verse": 364,
           "subtopics": [
-            "Fulfillment (NT): John 8:28 - 29"
+            "Fulfillment (NT): John 8:28-29"
           ],
           "refs": [
             "John 8:28"
@@ -2029,7 +2050,7 @@
         {
           "verse": 365,
           "subtopics": [
-            "Fulfillment (NT): John 8:28 - 29"
+            "Fulfillment (NT): John 8:28-29"
           ],
           "refs": [
             "John 8:29"
@@ -2319,7 +2340,7 @@
         {
           "verse": 31,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 2:17"
@@ -2328,7 +2349,7 @@
         {
           "verse": 33,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 3:1"
@@ -2337,7 +2358,7 @@
         {
           "verse": 34,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 3:2"
@@ -2346,7 +2367,7 @@
         {
           "verse": 35,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 3:3"
@@ -2355,7 +2376,7 @@
         {
           "verse": 38,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 3:6"
@@ -2364,7 +2385,7 @@
         {
           "verse": 125,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 7:24"
@@ -2373,7 +2394,7 @@
         {
           "verse": 126,
           "subtopics": [
-            "Fulfillment (NT): Heb. 2:17 ; 3:1-3 , 6 ; 7:24-25"
+            "Fulfillment (NT): Heb. 2:17; 3:1-3, 6; 7:24-25"
           ],
           "refs": [
             "Heb 7:25"
@@ -2404,7 +2425,7 @@
         {
           "verse": 1066,
           "subtopics": [
-            "Fulfillment (NT): Matt 28:18 ; John 12:15"
+            "Fulfillment (NT): Matt 28:18; John 12:15"
           ],
           "refs": [
             "Matt 28:18"
@@ -2415,7 +2436,7 @@
         {
           "verse": 550,
           "subtopics": [
-            "Fulfillment (NT): Matt 28:18 ; John 12:15"
+            "Fulfillment (NT): Matt 28:18; John 12:15"
           ],
           "refs": [
             "John 12:15"
@@ -2509,7 +2530,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; Rom 1:3-4"
+            "Fulfillment (NT): Luke 1:32; Rom 1:3-4"
           ],
           "refs": [
             "Luke 1:32"
@@ -2520,7 +2541,7 @@
         {
           "verse": 3,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; Rom 1:3-4"
+            "Fulfillment (NT): Luke 1:32; Rom 1:3-4"
           ],
           "refs": [
             "Rom 1:3"
@@ -2529,7 +2550,7 @@
         {
           "verse": 4,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; Rom 1:3-4"
+            "Fulfillment (NT): Luke 1:32; Rom 1:3-4"
           ],
           "refs": [
             "Rom 1:4"
@@ -2589,6 +2610,17 @@
   "53. The bodily ascension to heaven illustrated": {
     "name": "The bodily ascension to heaven illustrated",
     "references": {
+      "2KI": [
+        {
+          "verse": 29,
+          "subtopics": [
+            "Prophecy (OT): 2 Ki 2:11"
+          ],
+          "refs": [
+            "2 Kgs 2:11"
+          ]
+        }
+      ],
       "LUK": [
         {
           "verse": 1147,
@@ -2602,6 +2634,7 @@
       ]
     },
     "books": [
+      "2KI",
       "LUK"
     ]
   },
@@ -2623,7 +2656,7 @@
         {
           "verse": 1,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:1 ; 9:27"
+            "Fulfillment (NT): Matt 1:1; 9:27"
           ],
           "refs": [
             "Matt 1:1"
@@ -2632,7 +2665,7 @@
         {
           "verse": 262,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:1 ; 9:27"
+            "Fulfillment (NT): Matt 1:1; 9:27"
           ],
           "refs": [
             "Matt 9:27"
@@ -2672,7 +2705,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:32"
@@ -2681,7 +2714,7 @@
         {
           "verse": 33,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:33"
@@ -2971,7 +3004,7 @@
         {
           "verse": 41,
           "subtopics": [
-            "Fulfillment (NT): John 1:41 ; Acts 2:36"
+            "Fulfillment (NT): John 1:41; Acts 2:36"
           ],
           "refs": [
             "John 1:41"
@@ -2982,7 +3015,7 @@
         {
           "verse": 62,
           "subtopics": [
-            "Fulfillment (NT): John 1:41 ; Acts 2:36"
+            "Fulfillment (NT): John 1:41; Acts 2:36"
           ],
           "refs": [
             "Acts 2:36"
@@ -3088,7 +3121,7 @@
         {
           "verse": 65,
           "subtopics": [
-            "Fulfillment (NT): Matt 3:17 ; Rom 1:4"
+            "Fulfillment (NT): Matt 3:17; Rom 1:4"
           ],
           "refs": [
             "Matt 3:17"
@@ -3099,7 +3132,7 @@
         {
           "verse": 4,
           "subtopics": [
-            "Fulfillment (NT): Matt 3:17 ; Rom 1:4"
+            "Fulfillment (NT): Matt 3:17; Rom 1:4"
           ],
           "refs": [
             "Rom 1:4"
@@ -3120,7 +3153,7 @@
         {
           "verse": 13,
           "subtopics": [
-            "Prophecy (OT): Psa 2:7 - 8"
+            "Prophecy (OT): Psa 2:7-8"
           ],
           "refs": [
             "Ps 2:7"
@@ -3129,7 +3162,7 @@
         {
           "verse": 14,
           "subtopics": [
-            "Prophecy (OT): Psa 2:7 - 8"
+            "Prophecy (OT): Psa 2:7-8"
           ],
           "refs": [
             "Ps 2:8"
@@ -3196,7 +3229,7 @@
         {
           "verse": 14,
           "subtopics": [
-            "Prophecy (OT): Psa 2:8 - 9"
+            "Prophecy (OT): Psa 2:8-9"
           ],
           "refs": [
             "Ps 2:8"
@@ -3205,7 +3238,7 @@
         {
           "verse": 15,
           "subtopics": [
-            "Prophecy (OT): Psa 2:8 - 9"
+            "Prophecy (OT): Psa 2:8-9"
           ],
           "refs": [
             "Ps 2:9"
@@ -3216,7 +3249,7 @@
         {
           "verse": 47,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:27 ; 12:5 ; 19:15"
+            "Fulfillment (NT): Rev 2:27; 12:5; 19:15"
           ],
           "refs": [
             "Rev 2:27"
@@ -3225,7 +3258,7 @@
         {
           "verse": 199,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:27 ; 12:5 ; 19:15"
+            "Fulfillment (NT): Rev 2:27; 12:5; 19:15"
           ],
           "refs": [
             "Rev 12:5"
@@ -3234,7 +3267,7 @@
         {
           "verse": 335,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:27 ; 12:5 ; 19:15"
+            "Fulfillment (NT): Rev 2:27; 12:5; 19:15"
           ],
           "refs": [
             "Rev 19:15"
@@ -3316,7 +3349,7 @@
         {
           "verse": 78,
           "subtopics": [
-            "Prophecy (OT): Psa 8:5 - 6"
+            "Prophecy (OT): Psa 8:5-6"
           ],
           "refs": [
             "Ps 8:5"
@@ -3325,7 +3358,7 @@
         {
           "verse": 79,
           "subtopics": [
-            "Prophecy (OT): Psa 8:5 - 6"
+            "Prophecy (OT): Psa 8:5-6"
           ],
           "refs": [
             "Ps 8:6"
@@ -3461,7 +3494,7 @@
         {
           "verse": 57,
           "subtopics": [
-            "Fulfillment (NT): Acts 2:31 ; 13:35"
+            "Fulfillment (NT): Acts 2:31; 13:35"
           ],
           "refs": [
             "Acts 2:31"
@@ -3470,7 +3503,7 @@
         {
           "verse": 473,
           "subtopics": [
-            "Fulfillment (NT): Acts 2:31 ; 13:35"
+            "Fulfillment (NT): Acts 2:31; 13:35"
           ],
           "refs": [
             "Acts 13:35"
@@ -3939,7 +3972,7 @@
         {
           "verse": 279,
           "subtopics": [
-            "Prophecy (OT): Psa 22:14 - 15"
+            "Prophecy (OT): Psa 22:14-15"
           ],
           "refs": [
             "Ps 22:14"
@@ -3948,7 +3981,7 @@
         {
           "verse": 280,
           "subtopics": [
-            "Prophecy (OT): Psa 22:14 - 15"
+            "Prophecy (OT): Psa 22:14-15"
           ],
           "refs": [
             "Ps 22:15"
@@ -4048,7 +4081,7 @@
         {
           "verse": 814,
           "subtopics": [
-            "Fulfillment (NT): John 19:34 - 37; 20:27"
+            "Fulfillment (NT): John 19:34-37; 20:27"
           ],
           "refs": [
             "John 19:34"
@@ -4057,7 +4090,7 @@
         {
           "verse": 815,
           "subtopics": [
-            "Fulfillment (NT): John 19:34 - 37; 20:27"
+            "Fulfillment (NT): John 19:34-37; 20:27"
           ],
           "refs": [
             "John 19:35"
@@ -4066,7 +4099,7 @@
         {
           "verse": 816,
           "subtopics": [
-            "Fulfillment (NT): John 19:34 - 37; 20:27"
+            "Fulfillment (NT): John 19:34-37; 20:27"
           ],
           "refs": [
             "John 19:36"
@@ -4075,7 +4108,7 @@
         {
           "verse": 817,
           "subtopics": [
-            "Fulfillment (NT): John 19:34 - 37; 20:27"
+            "Fulfillment (NT): John 19:34-37; 20:27"
           ],
           "refs": [
             "John 19:37"
@@ -4084,7 +4117,7 @@
         {
           "verse": 849,
           "subtopics": [
-            "Fulfillment (NT): John 19:34 - 37; 20:27"
+            "Fulfillment (NT): John 19:34-37; 20:27"
           ],
           "refs": [
             "John 20:27"
@@ -4104,7 +4137,7 @@
         {
           "verse": 282,
           "subtopics": [
-            "Prophecy (OT): Psa 22:17 - 18"
+            "Prophecy (OT): Psa 22:17-18"
           ],
           "refs": [
             "Ps 22:17"
@@ -4113,7 +4146,7 @@
         {
           "verse": 283,
           "subtopics": [
-            "Prophecy (OT): Psa 22:17 - 18"
+            "Prophecy (OT): Psa 22:17-18"
           ],
           "refs": [
             "Ps 22:18"
@@ -4124,7 +4157,7 @@
         {
           "verse": 1074,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:34 - 35"
+            "Fulfillment (NT): Luke 23:34-35"
           ],
           "refs": [
             "Luke 23:34"
@@ -4133,7 +4166,7 @@
         {
           "verse": 1075,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:34 - 35"
+            "Fulfillment (NT): Luke 23:34-35"
           ],
           "refs": [
             "Luke 23:35"
@@ -4164,7 +4197,7 @@
         {
           "verse": 803,
           "subtopics": [
-            "Fulfillment (NT): John 19:23 - 24"
+            "Fulfillment (NT): John 19:23-24"
           ],
           "refs": [
             "John 19:23"
@@ -4173,7 +4206,7 @@
         {
           "verse": 804,
           "subtopics": [
-            "Fulfillment (NT): John 19:23 - 24"
+            "Fulfillment (NT): John 19:23-24"
           ],
           "refs": [
             "John 19:24"
@@ -4193,7 +4226,7 @@
         {
           "verse": 285,
           "subtopics": [
-            "Prophecy (OT): Psa 22:20 - 21"
+            "Prophecy (OT): Psa 22:20-21"
           ],
           "refs": [
             "Ps 22:20"
@@ -4202,7 +4235,7 @@
         {
           "verse": 286,
           "subtopics": [
-            "Prophecy (OT): Psa 22:20 - 21"
+            "Prophecy (OT): Psa 22:20-21"
           ],
           "refs": [
             "Ps 22:21"
@@ -4233,7 +4266,7 @@
         {
           "verse": 285,
           "subtopics": [
-            "Prophecy (OT): Psa 22:20 - 21"
+            "Prophecy (OT): Psa 22:20-21"
           ],
           "refs": [
             "Ps 22:20"
@@ -4242,7 +4275,7 @@
         {
           "verse": 286,
           "subtopics": [
-            "Prophecy (OT): Psa 22:20 - 21"
+            "Prophecy (OT): Psa 22:20-21"
           ],
           "refs": [
             "Ps 22:21"
@@ -4355,7 +4388,7 @@
         {
           "verse": 810,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "John 19:30"
@@ -4366,7 +4399,7 @@
         {
           "verse": 180,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "Heb 10:10"
@@ -4375,7 +4408,7 @@
         {
           "verse": 181,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "Heb 10:11"
@@ -4384,7 +4417,7 @@
         {
           "verse": 182,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "Heb 10:12"
@@ -4393,7 +4426,7 @@
         {
           "verse": 184,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "Heb 10:14"
@@ -4402,7 +4435,7 @@
         {
           "verse": 188,
           "subtopics": [
-            "Fulfillment (NT): John 19:30; Heb 10:10 - 12, 14, 18"
+            "Fulfillment (NT): John 19:30; Heb 10:10-12, 14, 18"
           ],
           "refs": [
             "Heb 10:18"
@@ -4613,7 +4646,7 @@
         {
           "verse": 983,
           "subtopics": [
-            "Fulfillment (NT): Matt 27:1 ; John 11:53"
+            "Fulfillment (NT): Matt 27:1; John 11:53"
           ],
           "refs": [
             "Matt 27:1"
@@ -4624,7 +4657,7 @@
         {
           "verse": 531,
           "subtopics": [
-            "Fulfillment (NT): Matt 27:1 ; John 11:53"
+            "Fulfillment (NT): Matt 27:1; John 11:53"
           ],
           "refs": [
             "John 11:53"
@@ -4645,7 +4678,7 @@
         {
           "verse": 406,
           "subtopics": [
-            "Prophecy (OT): Psa 31:14 - 15"
+            "Prophecy (OT): Psa 31:14-15"
           ],
           "refs": [
             "Ps 31:14"
@@ -4654,7 +4687,7 @@
         {
           "verse": 407,
           "subtopics": [
-            "Prophecy (OT): Psa 31:14 - 15"
+            "Prophecy (OT): Psa 31:14-15"
           ],
           "refs": [
             "Ps 31:15"
@@ -4681,6 +4714,17 @@
   "99. Not a bone of Him broken": {
     "name": "Not a bone of Him broken",
     "references": {
+      "PSA": [
+        {
+          "verse": 469,
+          "subtopics": [
+            "Prophecy (OT): Psa 34:20"
+          ],
+          "refs": [
+            "Ps 34:20"
+          ]
+        }
+      ],
       "JHN": [
         {
           "verse": 811,
@@ -4739,7 +4783,8 @@
       ]
     },
     "books": [
-      "JHN"
+      "JHN",
+      "PSA"
     ]
   },
   "100. False witnesses rose up against Him": {
@@ -4853,7 +4898,7 @@
         {
           "verse": 536,
           "subtopics": [
-            "Fulfillment (NT): Mark 14:1 ; Matt 22:15"
+            "Fulfillment (NT): Mark 14:1; Matt 22:15"
           ],
           "refs": [
             "Mark 14:1"
@@ -4864,7 +4909,7 @@
         {
           "verse": 741,
           "subtopics": [
-            "Fulfillment (NT): Mark 14:1 ; Matt 22:15"
+            "Fulfillment (NT): Mark 14:1; Matt 22:15"
           ],
           "refs": [
             "Matt 22:15"
@@ -5061,7 +5106,7 @@
         {
           "verse": 146,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "John 4:34"
@@ -5072,7 +5117,7 @@
         {
           "verse": 175,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:5"
@@ -5081,7 +5126,7 @@
         {
           "verse": 176,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:6"
@@ -5090,7 +5135,7 @@
         {
           "verse": 177,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:7"
@@ -5099,7 +5144,7 @@
         {
           "verse": 178,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:8"
@@ -5108,7 +5153,7 @@
         {
           "verse": 179,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:9"
@@ -5117,7 +5162,7 @@
         {
           "verse": 180,
           "subtopics": [
-            "Fulfillment (NT): John 4:34 ; Heb 10:5-10"
+            "Fulfillment (NT): John 4:34; Heb 10:5-10"
           ],
           "refs": [
             "Heb 10:10"
@@ -5260,7 +5305,7 @@
         {
           "verse": 17,
           "subtopics": [
-            "Fulfillment (NT): John 1:17 ; Luke 4:22"
+            "Fulfillment (NT): John 1:17; Luke 4:22"
           ],
           "refs": [
             "John 1:17"
@@ -5271,7 +5316,7 @@
         {
           "verse": 192,
           "subtopics": [
-            "Fulfillment (NT): John 1:17 ; Luke 4:22"
+            "Fulfillment (NT): John 1:17; Luke 4:22"
           ],
           "refs": [
             "Luke 4:22"
@@ -5366,7 +5411,7 @@
         {
           "verse": 665,
           "subtopics": [
-            "Prophecy (OT): Psa 45:7 - 8"
+            "Prophecy (OT): Psa 45:7-8"
           ],
           "refs": [
             "Ps 45:7"
@@ -5375,7 +5420,7 @@
         {
           "verse": 666,
           "subtopics": [
-            "Prophecy (OT): Psa 45:7 - 8"
+            "Prophecy (OT): Psa 45:7-8"
           ],
           "refs": [
             "Ps 45:8"
@@ -5417,7 +5462,7 @@
         {
           "verse": 20,
           "subtopics": [
-            "Fulfillment (NT): Eph 1:20-21 ; Heb. 1:8"
+            "Fulfillment (NT): Eph 1:20-21; Heb. 1:8"
           ],
           "refs": [
             "Eph 1:20"
@@ -5426,7 +5471,7 @@
         {
           "verse": 21,
           "subtopics": [
-            "Fulfillment (NT): Eph 1:20-21 ; Heb. 1:8"
+            "Fulfillment (NT): Eph 1:20-21; Heb. 1:8"
           ],
           "refs": [
             "Eph 1:21"
@@ -5437,7 +5482,7 @@
         {
           "verse": 8,
           "subtopics": [
-            "Fulfillment (NT): Eph 1:20-21 ; Heb. 1:8"
+            "Fulfillment (NT): Eph 1:20-21; Heb. 1:8"
           ],
           "refs": [
             "Heb 1:8"
@@ -5780,7 +5825,7 @@
         {
           "verse": 11,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 7:5"
+            "Fulfillment (NT): John 1:11; 7:5"
           ],
           "refs": [
             "John 1:11"
@@ -5789,7 +5834,7 @@
         {
           "verse": 288,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 7:5"
+            "Fulfillment (NT): John 1:11; 7:5"
           ],
           "refs": [
             "John 7:5"
@@ -6108,7 +6153,7 @@
         {
           "verse": 1071,
           "subtopics": [
-            "Prophecy (OT): Psa 72:10 - 11"
+            "Prophecy (OT): Psa 72:10-11"
           ],
           "refs": [
             "Ps 72:10"
@@ -6117,7 +6162,7 @@
         {
           "verse": 1072,
           "subtopics": [
-            "Prophecy (OT): Psa 72:10 - 11"
+            "Prophecy (OT): Psa 72:10-11"
           ],
           "refs": [
             "Ps 72:11"
@@ -6234,6 +6279,17 @@
   "128. The corn of wheat to fall into the Ground": {
     "name": "The corn of wheat to fall into the Ground",
     "references": {
+      "PSA": [
+        {
+          "verse": 1077,
+          "subtopics": [
+            "Prophecy (OT): Psa 72:16"
+          ],
+          "refs": [
+            "Ps 72:16"
+          ]
+        }
+      ],
       "JHN": [
         {
           "verse": 559,
@@ -6256,17 +6312,29 @@
       ]
     },
     "books": [
-      "JHN"
+      "JHN",
+      "PSA"
     ]
   },
   "129. Belief on His name will produce offspring": {
     "name": "Belief on His name will produce offspring",
     "references": {
+      "PSA": [
+        {
+          "verse": 1078,
+          "subtopics": [
+            "Prophecy (OT): Psa 72:17"
+          ],
+          "refs": [
+            "Ps 72:17"
+          ]
+        }
+      ],
       "JHN": [
         {
           "verse": 12,
           "subtopics": [
-            "Fulfillment (NT): John 1:12 - 13"
+            "Fulfillment (NT): John 1:12-13"
           ],
           "refs": [
             "John 1:12"
@@ -6275,7 +6343,7 @@
         {
           "verse": 13,
           "subtopics": [
-            "Fulfillment (NT): John 1:12 - 13"
+            "Fulfillment (NT): John 1:12-13"
           ],
           "refs": [
             "John 1:13"
@@ -6284,12 +6352,24 @@
       ]
     },
     "books": [
-      "JHN"
+      "JHN",
+      "PSA"
     ]
   },
   "130. All nations shall be blessed by Him": {
     "name": "All nations shall be blessed by Him",
     "references": {
+      "PSA": [
+        {
+          "verse": 1078,
+          "subtopics": [
+            "Prophecy (OT): Psa 72:17"
+          ],
+          "refs": [
+            "Ps 72:17"
+          ]
+        }
+      ],
       "GAL": [
         {
           "verse": 53,
@@ -6303,17 +6383,29 @@
       ]
     },
     "books": [
-      "GAL"
+      "GAL",
+      "PSA"
     ]
   },
   "131. All nations shall call Him blessed": {
     "name": "All nations shall call Him blessed",
     "references": {
+      "PSA": [
+        {
+          "verse": 1078,
+          "subtopics": [
+            "Prophecy (OT): Psa 72:17"
+          ],
+          "refs": [
+            "Ps 72:17"
+          ]
+        }
+      ],
       "JHN": [
         {
           "verse": 548,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "John 12:13"
@@ -6324,7 +6416,7 @@
         {
           "verse": 90,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "Rev 5:8"
@@ -6333,7 +6425,7 @@
         {
           "verse": 91,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "Rev 5:9"
@@ -6342,7 +6434,7 @@
         {
           "verse": 92,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "Rev 5:10"
@@ -6351,7 +6443,7 @@
         {
           "verse": 93,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "Rev 5:11"
@@ -6360,7 +6452,7 @@
         {
           "verse": 94,
           "subtopics": [
-            "Fulfillment (NT): John 12:13 ; Rev 5:8-12"
+            "Fulfillment (NT): John 12:13; Rev 5:8-12"
           ],
           "refs": [
             "Rev 5:12"
@@ -6370,6 +6462,7 @@
     },
     "books": [
       "JHN",
+      "PSA",
       "REV"
     ]
   },
@@ -6942,7 +7035,7 @@
         {
           "verse": 15,
           "subtopics": [
-            "Fulfillment (NT): Col 1:15 - 18"
+            "Fulfillment (NT): Col 1:15-18"
           ],
           "refs": [
             "Col 1:15"
@@ -6951,7 +7044,7 @@
         {
           "verse": 16,
           "subtopics": [
-            "Fulfillment (NT): Col 1:15 - 18"
+            "Fulfillment (NT): Col 1:15-18"
           ],
           "refs": [
             "Col 1:16"
@@ -6960,7 +7053,7 @@
         {
           "verse": 17,
           "subtopics": [
-            "Fulfillment (NT): Col 1:15 - 18"
+            "Fulfillment (NT): Col 1:15-18"
           ],
           "refs": [
             "Col 1:17"
@@ -6969,7 +7062,7 @@
         {
           "verse": 18,
           "subtopics": [
-            "Fulfillment (NT): Col 1:15 - 18"
+            "Fulfillment (NT): Col 1:15-18"
           ],
           "refs": [
             "Col 1:18"
@@ -7000,7 +7093,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:32"
@@ -7009,7 +7102,7 @@
         {
           "verse": 33,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:33"
@@ -7058,7 +7151,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:32"
@@ -7067,7 +7160,7 @@
         {
           "verse": 33,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 - 33"
+            "Fulfillment (NT): Luke 1:32-33"
           ],
           "refs": [
             "Luke 1:33"
@@ -7107,7 +7200,7 @@
         {
           "verse": 5,
           "subtopics": [
-            "Fulfillment (NT): Rev 1:5 ; 19:11"
+            "Fulfillment (NT): Rev 1:5; 19:11"
           ],
           "refs": [
             "Rev 1:5"
@@ -7116,7 +7209,7 @@
         {
           "verse": 331,
           "subtopics": [
-            "Fulfillment (NT): Rev 1:5 ; 19:11"
+            "Fulfillment (NT): Rev 1:5; 19:11"
           ],
           "refs": [
             "Rev 19:11"
@@ -7160,14 +7253,14 @@
       "PSA"
     ]
   },
-  "142. Identified as Messianic , used to tempt Christ": {
-    "name": "Identified as Messianic , used to tempt Christ",
+  "142. Identified as Messianic, used to tempt Christ": {
+    "name": "Identified as Messianic, used to tempt Christ",
     "references": {
       "PSA": [
         {
           "verse": 1467,
           "subtopics": [
-            "Prophecy (OT): Psa 91:11 - 12"
+            "Prophecy (OT): Psa 91:11-12"
           ],
           "refs": [
             "Ps 91:11"
@@ -7176,7 +7269,7 @@
         {
           "verse": 1468,
           "subtopics": [
-            "Prophecy (OT): Psa 91:11 - 12"
+            "Prophecy (OT): Psa 91:11-12"
           ],
           "refs": [
             "Ps 91:12"
@@ -7187,7 +7280,7 @@
         {
           "verse": 180,
           "subtopics": [
-            "Fulfillment (NT): Luke 4:10 - 11"
+            "Fulfillment (NT): Luke 4:10-11"
           ],
           "refs": [
             "Luke 4:10"
@@ -7196,7 +7289,7 @@
         {
           "verse": 181,
           "subtopics": [
-            "Fulfillment (NT): Luke 4:10 - 11"
+            "Fulfillment (NT): Luke 4:10-11"
           ],
           "refs": [
             "Luke 4:11"
@@ -7270,7 +7363,7 @@
         {
           "verse": 632,
           "subtopics": [
-            "Fulfillment (NT): Matt 19:16 - 17"
+            "Fulfillment (NT): Matt 19:16-17"
           ],
           "refs": [
             "Matt 19:16"
@@ -7279,7 +7372,7 @@
         {
           "verse": 633,
           "subtopics": [
-            "Fulfillment (NT): Matt 19:16 - 17"
+            "Fulfillment (NT): Matt 19:16-17"
           ],
           "refs": [
             "Matt 19:17"
@@ -7726,7 +7819,7 @@
         {
           "verse": 770,
           "subtopics": [
-            "Fulfillment (NT): Matt 22:44 - 45"
+            "Fulfillment (NT): Matt 22:44-45"
           ],
           "refs": [
             "Matt 22:44"
@@ -7735,7 +7828,7 @@
         {
           "verse": 771,
           "subtopics": [
-            "Fulfillment (NT): Matt 22:44 - 45"
+            "Fulfillment (NT): Matt 22:44-45"
           ],
           "refs": [
             "Matt 22:45"
@@ -7817,7 +7910,7 @@
         {
           "verse": 1947,
           "subtopics": [
-            "Prophecy (OT): Psa 118:17 - 18"
+            "Prophecy (OT): Psa 118:17-18"
           ],
           "refs": [
             "Ps 118:17"
@@ -7826,7 +7919,7 @@
         {
           "verse": 1948,
           "subtopics": [
-            "Prophecy (OT): Psa 118:17 - 18"
+            "Prophecy (OT): Psa 118:17-18"
           ],
           "refs": [
             "Ps 118:18"
@@ -7887,7 +7980,7 @@
         {
           "verse": 1952,
           "subtopics": [
-            "Prophecy (OT): Psa 118:22 - 23"
+            "Prophecy (OT): Psa 118:22-23"
           ],
           "refs": [
             "Ps 118:22"
@@ -7896,7 +7989,7 @@
         {
           "verse": 1953,
           "subtopics": [
-            "Prophecy (OT): Psa 118:22 - 23"
+            "Prophecy (OT): Psa 118:22-23"
           ],
           "refs": [
             "Ps 118:23"
@@ -7907,7 +8000,7 @@
         {
           "verse": 722,
           "subtopics": [
-            "Fulfillment (NT): Matt 21:42 - 43"
+            "Fulfillment (NT): Matt 21:42-43"
           ],
           "refs": [
             "Matt 21:42"
@@ -7916,7 +8009,7 @@
         {
           "verse": 723,
           "subtopics": [
-            "Fulfillment (NT): Matt 21:42 - 43"
+            "Fulfillment (NT): Matt 21:42-43"
           ],
           "refs": [
             "Matt 21:43"
@@ -8036,7 +8129,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; Act 2:30"
+            "Fulfillment (NT): Luke 1:32; Act 2:30"
           ],
           "refs": [
             "Luke 1:32"
@@ -8047,7 +8140,7 @@
         {
           "verse": 56,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; Act 2:30"
+            "Fulfillment (NT): Luke 1:32; Act 2:30"
           ],
           "refs": [
             "Acts 2:30"
@@ -8211,7 +8304,7 @@
         {
           "verse": 2415,
           "subtopics": [
-            "Prophecy (OT): Psa 147:3 - 6"
+            "Prophecy (OT): Psa 147:3-6"
           ],
           "refs": [
             "Ps 147:3"
@@ -8220,7 +8313,7 @@
         {
           "verse": 2416,
           "subtopics": [
-            "Prophecy (OT): Psa 147:3 - 6"
+            "Prophecy (OT): Psa 147:3-6"
           ],
           "refs": [
             "Ps 147:4"
@@ -8229,7 +8322,7 @@
         {
           "verse": 2417,
           "subtopics": [
-            "Prophecy (OT): Psa 147:3 - 6"
+            "Prophecy (OT): Psa 147:3-6"
           ],
           "refs": [
             "Ps 147:5"
@@ -8238,7 +8331,7 @@
         {
           "verse": 2418,
           "subtopics": [
-            "Prophecy (OT): Psa 147:3 - 6"
+            "Prophecy (OT): Psa 147:3-6"
           ],
           "refs": [
             "Ps 147:6"
@@ -8311,7 +8404,7 @@
         {
           "verse": 219,
           "subtopics": [
-            "Fulfillment (NT): Rev 13:8 ; 1 Pet 1:19-20"
+            "Fulfillment (NT): Rev 13:8; 1 Pet 1:19-20"
           ],
           "refs": [
             "Rev 13:8"
@@ -8322,7 +8415,7 @@
         {
           "verse": 19,
           "subtopics": [
-            "Fulfillment (NT): Rev 13:8 ; 1 Pet 1:19-20"
+            "Fulfillment (NT): Rev 13:8; 1 Pet 1:19-20"
           ],
           "refs": [
             "1 Pet 1:19"
@@ -8331,7 +8424,7 @@
         {
           "verse": 20,
           "subtopics": [
-            "Fulfillment (NT): Rev 13:8 ; 1 Pet 1:19-20"
+            "Fulfillment (NT): Rev 13:8; 1 Pet 1:19-20"
           ],
           "refs": [
             "1 Pet 1:20"
@@ -8782,7 +8875,7 @@
         {
           "verse": 18,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:18"
@@ -8791,7 +8884,7 @@
         {
           "verse": 19,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:19"
@@ -8800,7 +8893,7 @@
         {
           "verse": 20,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:20"
@@ -8809,7 +8902,7 @@
         {
           "verse": 21,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:21"
@@ -8818,7 +8911,7 @@
         {
           "verse": 22,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:22"
@@ -8827,7 +8920,7 @@
         {
           "verse": 23,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "Matt 1:23"
@@ -8838,7 +8931,7 @@
         {
           "verse": 51,
           "subtopics": [
-            "Fulfillment (NT): Matt 1:18-23 ; 1 Tim 3:16"
+            "Fulfillment (NT): Matt 1:18-23; 1 Tim 3:16"
           ],
           "refs": [
             "1 Tim 3:16"
@@ -8921,7 +9014,7 @@
         {
           "verse": 176,
           "subtopics": [
-            "Prophecy (OT): Isa 9:1 - 2"
+            "Prophecy (OT): Isa 9:1-2"
           ],
           "refs": [
             "Isa 9:1"
@@ -8930,7 +9023,7 @@
         {
           "verse": 177,
           "subtopics": [
-            "Prophecy (OT): Isa 9:1 - 2"
+            "Prophecy (OT): Isa 9:1-2"
           ],
           "refs": [
             "Isa 9:2"
@@ -9048,7 +9141,7 @@
         {
           "verse": 32,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; John 1:14 ; 1 Tim 3:16"
+            "Fulfillment (NT): Luke 1:32; John 1:14; 1 Tim 3:16"
           ],
           "refs": [
             "Luke 1:32"
@@ -9059,7 +9152,7 @@
         {
           "verse": 14,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; John 1:14 ; 1 Tim 3:16"
+            "Fulfillment (NT): Luke 1:32; John 1:14; 1 Tim 3:16"
           ],
           "refs": [
             "John 1:14"
@@ -9070,7 +9163,7 @@
         {
           "verse": 51,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:32 ; John 1:14 ; 1 Tim 3:16"
+            "Fulfillment (NT): Luke 1:32; John 1:14; 1 Tim 3:16"
           ],
           "refs": [
             "1 Tim 3:16"
@@ -9103,7 +9196,7 @@
         {
           "verse": 3,
           "subtopics": [
-            "Fulfillment (NT): Rom 1:3 - 4"
+            "Fulfillment (NT): Rom 1:3-4"
           ],
           "refs": [
             "Rom 1:3"
@@ -9112,7 +9205,7 @@
         {
           "verse": 4,
           "subtopics": [
-            "Fulfillment (NT): Rom 1:3 - 4"
+            "Fulfillment (NT): Rom 1:3-4"
           ],
           "refs": [
             "Rom 1:4"
@@ -9156,8 +9249,8 @@
       "LUK"
     ]
   },
-  "179. The Counselor , Yaatz": {
-    "name": "The Counselor , Yaatz",
+  "179. The Counselor, Yaatz": {
+    "name": "The Counselor, Yaatz",
     "references": {
       "ISA": [
         {
@@ -9205,7 +9298,7 @@
         {
           "verse": 24,
           "subtopics": [
-            "Fulfillment (NT): 1 Cor 1:24 ; Titus 2:3"
+            "Fulfillment (NT): 1 Cor 1:24; Titus 2:3"
           ],
           "refs": [
             "1 Cor 1:24"
@@ -9216,7 +9309,7 @@
         {
           "verse": 19,
           "subtopics": [
-            "Fulfillment (NT): 1 Cor 1:24 ; Titus 2:3"
+            "Fulfillment (NT): 1 Cor 1:24; Titus 2:3"
           ],
           "refs": [
             "Titus 2:3"
@@ -9248,7 +9341,7 @@
         {
           "verse": 394,
           "subtopics": [
-            "Fulfillment (NT): John 8:58 ; 10:30"
+            "Fulfillment (NT): John 8:58; 10:30"
           ],
           "refs": [
             "John 8:58"
@@ -9257,7 +9350,7 @@
         {
           "verse": 466,
           "subtopics": [
-            "Fulfillment (NT): John 8:58 ; 10:30"
+            "Fulfillment (NT): John 8:58; 10:30"
           ],
           "refs": [
             "John 10:30"
@@ -9461,7 +9554,7 @@
         {
           "verse": 155,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:23"
@@ -9470,7 +9563,7 @@
         {
           "verse": 156,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:24"
@@ -9479,7 +9572,7 @@
         {
           "verse": 157,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:25"
@@ -9488,7 +9581,7 @@
         {
           "verse": 158,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:26"
@@ -9497,7 +9590,7 @@
         {
           "verse": 159,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:27"
@@ -9506,7 +9599,7 @@
         {
           "verse": 160,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:28"
@@ -9515,7 +9608,7 @@
         {
           "verse": 161,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:29"
@@ -9524,7 +9617,7 @@
         {
           "verse": 162,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:30"
@@ -9533,7 +9626,7 @@
         {
           "verse": 163,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:31"
@@ -9542,7 +9635,7 @@
         {
           "verse": 164,
           "subtopics": [
-            "Fulfillment (NT): Luke 3:23 - 32"
+            "Fulfillment (NT): Luke 3:23-32"
           ],
           "refs": [
             "Luke 3:32"
@@ -9573,7 +9666,7 @@
         {
           "verse": 64,
           "subtopics": [
-            "Fulfillment (NT): Matt 3:16 - 17 ; Acts 10:38"
+            "Fulfillment (NT): Matt 3:16-17; Acts 10:38"
           ],
           "refs": [
             "Matt 3:16"
@@ -9582,7 +9675,7 @@
         {
           "verse": 65,
           "subtopics": [
-            "Fulfillment (NT): Matt 3:16 - 17 ; Acts 10:38"
+            "Fulfillment (NT): Matt 3:16-17; Acts 10:38"
           ],
           "refs": [
             "Matt 3:17"
@@ -9593,7 +9686,7 @@
         {
           "verse": 373,
           "subtopics": [
-            "Fulfillment (NT): Matt 3:16 - 17 ; Acts 10:38"
+            "Fulfillment (NT): Matt 3:16-17; Acts 10:38"
           ],
           "refs": [
             "Acts 10:38"
@@ -9656,7 +9749,7 @@
         {
           "verse": 261,
           "subtopics": [
-            "Fulfillment (NT): Luke 6:8 ; John 2:25"
+            "Fulfillment (NT): Luke 6:8; John 2:25"
           ],
           "refs": [
             "Luke 6:8"
@@ -9667,7 +9760,7 @@
         {
           "verse": 76,
           "subtopics": [
-            "Fulfillment (NT): Luke 6:8 ; John 2:25"
+            "Fulfillment (NT): Luke 6:8; John 2:25"
           ],
           "refs": [
             "John 2:25"
@@ -9730,7 +9823,7 @@
         {
           "verse": 36,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:16 ; 19:11, 15"
+            "Fulfillment (NT): Rev 2:16; 19:11, 15"
           ],
           "refs": [
             "Rev 2:16"
@@ -9739,7 +9832,7 @@
         {
           "verse": 331,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:16 ; 19:11, 15"
+            "Fulfillment (NT): Rev 2:16; 19:11, 15"
           ],
           "refs": [
             "Rev 19:11"
@@ -9748,7 +9841,7 @@
         {
           "verse": 335,
           "subtopics": [
-            "Fulfillment (NT): Rev 2:16 ; 19:11, 15"
+            "Fulfillment (NT): Rev 2:16; 19:11, 15"
           ],
           "refs": [
             "Rev 19:15"
@@ -9850,8 +9943,8 @@
       "JHN"
     ]
   },
-  "195. Called Jesus- Yeshua": {
-    "name": "Called Jesus- Yeshua",
+  "195. Called Jesus-Yeshua": {
+    "name": "Called Jesus-Yeshua",
     "references": {
       "ISA": [
         {
@@ -10028,7 +10121,7 @@
         {
           "verse": 110,
           "subtopics": [
-            "Fulfillment (NT): Acts 4:11 - 12"
+            "Fulfillment (NT): Acts 4:11-12"
           ],
           "refs": [
             "Acts 4:11"
@@ -10037,7 +10130,7 @@
         {
           "verse": 111,
           "subtopics": [
-            "Fulfillment (NT): Acts 4:11 - 12"
+            "Fulfillment (NT): Acts 4:11-12"
           ],
           "refs": [
             "Acts 4:12"
@@ -10068,7 +10161,7 @@
         {
           "verse": 58,
           "subtopics": [
-            "Fulfillment (NT): 1 Cor 3:11 ; Matt 16:18"
+            "Fulfillment (NT): 1 Cor 3:11; Matt 16:18"
           ],
           "refs": [
             "1 Cor 3:11"
@@ -10079,7 +10172,7 @@
         {
           "verse": 546,
           "subtopics": [
-            "Fulfillment (NT): 1 Cor 3:11 ; Matt 16:18"
+            "Fulfillment (NT): 1 Cor 3:11; Matt 16:18"
           ],
           "refs": [
             "Matt 16:18"
@@ -10435,7 +10528,7 @@
         {
           "verse": 769,
           "subtopics": [
-            "Prophecy (OT): Isa 40:3 - 4"
+            "Prophecy (OT): Isa 40:3-4"
           ],
           "refs": [
             "Isa 40:3"
@@ -10444,7 +10537,7 @@
         {
           "verse": 770,
           "subtopics": [
-            "Prophecy (OT): Isa 40:3 - 4"
+            "Prophecy (OT): Isa 40:3-4"
           ],
           "refs": [
             "Isa 40:4"
@@ -11407,7 +11500,7 @@
         {
           "verse": 827,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:1"
@@ -11416,7 +11509,7 @@
         {
           "verse": 828,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:2"
@@ -11425,7 +11518,7 @@
         {
           "verse": 829,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:3"
@@ -11434,7 +11527,7 @@
         {
           "verse": 830,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:4"
@@ -11443,7 +11536,7 @@
         {
           "verse": 831,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:5"
@@ -11452,7 +11545,7 @@
         {
           "verse": 832,
           "subtopics": [
-            "Prophecy (OT): Isa 42:1 - 6"
+            "Prophecy (OT): Isa 42:1-6"
           ],
           "refs": [
             "Isa 42:6"
@@ -11463,7 +11556,7 @@
         {
           "verse": 1067,
           "subtopics": [
-            "Fulfillment (NT): Matt 28:19 - 20"
+            "Fulfillment (NT): Matt 28:19-20"
           ],
           "refs": [
             "Matt 28:19"
@@ -11472,7 +11565,7 @@
         {
           "verse": 1068,
           "subtopics": [
-            "Fulfillment (NT): Matt 28:19 - 20"
+            "Fulfillment (NT): Matt 28:19-20"
           ],
           "refs": [
             "Matt 28:20"
@@ -11682,7 +11775,7 @@
         {
           "verse": 688,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:7"
@@ -11691,7 +11784,7 @@
         {
           "verse": 689,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:8"
@@ -11700,7 +11793,7 @@
         {
           "verse": 690,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:9"
@@ -11709,7 +11802,7 @@
         {
           "verse": 691,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:10"
@@ -11718,7 +11811,7 @@
         {
           "verse": 692,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:11"
@@ -11727,7 +11820,7 @@
         {
           "verse": 693,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:12"
@@ -11736,7 +11829,7 @@
         {
           "verse": 694,
           "subtopics": [
-            "Fulfillment (NT): John 16:7 - 13"
+            "Fulfillment (NT): John 16:7-13"
           ],
           "refs": [
             "John 16:13"
@@ -11803,7 +11896,7 @@
         {
           "verse": 80,
           "subtopics": [
-            "Fulfillment (NT): Phil 3:20 ; Titus 2:13"
+            "Fulfillment (NT): Phil 3:20; Titus 2:13"
           ],
           "refs": [
             "Phil 3:20"
@@ -11814,7 +11907,7 @@
         {
           "verse": 29,
           "subtopics": [
-            "Fulfillment (NT): Phil 3:20 ; Titus 2:13"
+            "Fulfillment (NT): Phil 3:20; Titus 2:13"
           ],
           "refs": [
             "Titus 2:13"
@@ -11878,7 +11971,7 @@
         {
           "verse": 941,
           "subtopics": [
-            "Prophecy (OT): Isa 46:9 - 10"
+            "Prophecy (OT): Isa 46:9-10"
           ],
           "refs": [
             "Isa 46:9"
@@ -11887,7 +11980,7 @@
         {
           "verse": 942,
           "subtopics": [
-            "Prophecy (OT): Isa 46:9 - 10"
+            "Prophecy (OT): Isa 46:9-10"
           ],
           "refs": [
             "Isa 46:10"
@@ -11929,7 +12022,7 @@
         {
           "verse": 30,
           "subtopics": [
-            "Fulfillment (NT): John 1:30 ; Rev 1:8, 17"
+            "Fulfillment (NT): John 1:30; Rev 1:8, 17"
           ],
           "refs": [
             "John 1:30"
@@ -11940,7 +12033,7 @@
         {
           "verse": 8,
           "subtopics": [
-            "Fulfillment (NT): John 1:30 ; Rev 1:8, 17"
+            "Fulfillment (NT): John 1:30; Rev 1:8, 17"
           ],
           "refs": [
             "Rev 1:8"
@@ -11949,7 +12042,7 @@
         {
           "verse": 17,
           "subtopics": [
-            "Fulfillment (NT): John 1:30 ; Rev 1:8, 17"
+            "Fulfillment (NT): John 1:30; Rev 1:8, 17"
           ],
           "refs": [
             "Rev 1:17"
@@ -11970,7 +12063,7 @@
         {
           "verse": 976,
           "subtopics": [
-            "Prophecy (OT): Isa 48:16 - 17"
+            "Prophecy (OT): Isa 48:16-17"
           ],
           "refs": [
             "Isa 48:16"
@@ -11979,7 +12072,7 @@
         {
           "verse": 977,
           "subtopics": [
-            "Prophecy (OT): Isa 48:16 - 17"
+            "Prophecy (OT): Isa 48:16-17"
           ],
           "refs": [
             "Isa 48:17"
@@ -12052,7 +12145,7 @@
         {
           "verse": 31,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:31 ; Phil 2:7"
+            "Fulfillment (NT): Luke 1:31; Phil 2:7"
           ],
           "refs": [
             "Luke 1:31"
@@ -12063,7 +12156,7 @@
         {
           "verse": 37,
           "subtopics": [
-            "Fulfillment (NT): Luke 1:31 ; Phil 2:7"
+            "Fulfillment (NT): Luke 1:31; Phil 2:7"
           ],
           "refs": [
             "Phil 2:7"
@@ -12095,7 +12188,7 @@
         {
           "verse": 92,
           "subtopics": [
-            "Fulfillment (NT): Acts 3:19-21 ; 15:16-17"
+            "Fulfillment (NT): Acts 3:19-21; 15:16-17"
           ],
           "refs": [
             "Acts 3:19"
@@ -12104,7 +12197,7 @@
         {
           "verse": 93,
           "subtopics": [
-            "Fulfillment (NT): Acts 3:19-21 ; 15:16-17"
+            "Fulfillment (NT): Acts 3:19-21; 15:16-17"
           ],
           "refs": [
             "Acts 3:20"
@@ -12113,7 +12206,7 @@
         {
           "verse": 94,
           "subtopics": [
-            "Fulfillment (NT): Acts 3:19-21 ; 15:16-17"
+            "Fulfillment (NT): Acts 3:19-21; 15:16-17"
           ],
           "refs": [
             "Acts 3:21"
@@ -12122,7 +12215,7 @@
         {
           "verse": 534,
           "subtopics": [
-            "Fulfillment (NT): Acts 3:19-21 ; 15:16-17"
+            "Fulfillment (NT): Acts 3:19-21; 15:16-17"
           ],
           "refs": [
             "Acts 15:16"
@@ -12131,7 +12224,7 @@
         {
           "verse": 535,
           "subtopics": [
-            "Fulfillment (NT): Acts 3:19-21 ; 15:16-17"
+            "Fulfillment (NT): Acts 3:19-21; 15:16-17"
           ],
           "refs": [
             "Acts 15:17"
@@ -12220,7 +12313,7 @@
         {
           "verse": 348,
           "subtopics": [
-            "Fulfillment (NT): John 8:12 ; Acts 13:47"
+            "Fulfillment (NT): John 8:12; Acts 13:47"
           ],
           "refs": [
             "John 8:12"
@@ -12231,7 +12324,7 @@
         {
           "verse": 485,
           "subtopics": [
-            "Fulfillment (NT): John 8:12 ; Acts 13:47"
+            "Fulfillment (NT): John 8:12; Acts 13:47"
           ],
           "refs": [
             "Acts 13:47"
@@ -12393,7 +12486,7 @@
         {
           "verse": 11,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 8:48-49 ; 19:14-15"
+            "Fulfillment (NT): John 1:11; 8:48-49; 19:14-15"
           ],
           "refs": [
             "John 1:11"
@@ -12402,7 +12495,7 @@
         {
           "verse": 384,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 8:48-49 ; 19:14-15"
+            "Fulfillment (NT): John 1:11; 8:48-49; 19:14-15"
           ],
           "refs": [
             "John 8:48"
@@ -12411,7 +12504,7 @@
         {
           "verse": 385,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 8:48-49 ; 19:14-15"
+            "Fulfillment (NT): John 1:11; 8:48-49; 19:14-15"
           ],
           "refs": [
             "John 8:49"
@@ -12420,7 +12513,7 @@
         {
           "verse": 794,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 8:48-49 ; 19:14-15"
+            "Fulfillment (NT): John 1:11; 8:48-49; 19:14-15"
           ],
           "refs": [
             "John 19:14"
@@ -12429,7 +12522,7 @@
         {
           "verse": 795,
           "subtopics": [
-            "Fulfillment (NT): John 1:11 ; 8:48-49 ; 19:14-15"
+            "Fulfillment (NT): John 1:11; 8:48-49; 19:14-15"
           ],
           "refs": [
             "John 19:15"
@@ -12460,7 +12553,7 @@
         {
           "verse": 1084,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:44 - 45"
+            "Fulfillment (NT): Luke 23:44-45"
           ],
           "refs": [
             "Luke 23:44"
@@ -12469,7 +12562,7 @@
         {
           "verse": 1085,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:44 - 45"
+            "Fulfillment (NT): Luke 23:44-45"
           ],
           "refs": [
             "Luke 23:45"
@@ -12500,7 +12593,7 @@
         {
           "verse": 201,
           "subtopics": [
-            "Fulfillment (NT): Matt 7:29 ; 11:28 - 29"
+            "Fulfillment (NT): Matt 7:29; 11:28-29"
           ],
           "refs": [
             "Matt 7:29"
@@ -12509,7 +12602,7 @@
         {
           "verse": 343,
           "subtopics": [
-            "Fulfillment (NT): Matt 7:29 ; 11:28 - 29"
+            "Fulfillment (NT): Matt 7:29; 11:28-29"
           ],
           "refs": [
             "Matt 11:28"
@@ -12518,7 +12611,7 @@
         {
           "verse": 344,
           "subtopics": [
-            "Fulfillment (NT): Matt 7:29 ; 11:28 - 29"
+            "Fulfillment (NT): Matt 7:29; 11:28-29"
           ],
           "refs": [
             "Matt 11:29"
@@ -12562,8 +12655,8 @@
       "MAT"
     ]
   },
-  "234. \"I gave my back to those who struck Me \"": {
-    "name": "\"I gave my back to those who struck Me \"",
+  "234. \"I gave my back to those who struck Me\"": {
+    "name": "\"I gave my back to those who struck Me\"",
     "references": {
       "ISA": [
         {
@@ -12722,7 +12815,7 @@
         {
           "verse": 8,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Acts 1:8"
@@ -12731,7 +12824,7 @@
         {
           "verse": 9,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Acts 1:9"
@@ -12740,7 +12833,7 @@
         {
           "verse": 10,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Acts 1:10"
@@ -12749,7 +12842,7 @@
         {
           "verse": 11,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Acts 1:11"
@@ -12760,7 +12853,7 @@
         {
           "verse": 19,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Eph 1:19"
@@ -12769,7 +12862,7 @@
         {
           "verse": 20,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Eph 1:20"
@@ -12778,7 +12871,7 @@
         {
           "verse": 21,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Eph 1:21"
@@ -12787,7 +12880,7 @@
         {
           "verse": 22,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Eph 1:22"
@@ -12798,7 +12891,7 @@
         {
           "verse": 35,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Phil 2:5"
@@ -12807,7 +12900,7 @@
         {
           "verse": 36,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Phil 2:6"
@@ -12816,7 +12909,7 @@
         {
           "verse": 37,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Phil 2:7"
@@ -12825,7 +12918,7 @@
         {
           "verse": 38,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Phil 2:8"
@@ -12834,7 +12927,7 @@
         {
           "verse": 39,
           "subtopics": [
-            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22 ; Phil 2:5-9"
+            "Fulfillment (NT): Acts 1:8-11; Eph 1:19-22; Phil 2:5-9"
           ],
           "refs": [
             "Phil 2:9"
@@ -12867,7 +12960,7 @@
         {
           "verse": 825,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:31"
@@ -12876,7 +12969,7 @@
         {
           "verse": 826,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:32"
@@ -12885,7 +12978,7 @@
         {
           "verse": 827,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:33"
@@ -12894,7 +12987,7 @@
         {
           "verse": 828,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:34"
@@ -12905,7 +12998,7 @@
         {
           "verse": 974,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Matt 26:67"
@@ -12914,7 +13007,7 @@
         {
           "verse": 975,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Matt 26:68"
@@ -12946,7 +13039,7 @@
         {
           "verse": 825,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:31"
@@ -12955,7 +13048,7 @@
         {
           "verse": 826,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:32"
@@ -12964,7 +13057,7 @@
         {
           "verse": 827,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:33"
@@ -12973,7 +13066,7 @@
         {
           "verse": 828,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Luke 18:34"
@@ -12984,7 +13077,7 @@
         {
           "verse": 974,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Matt 26:67"
@@ -12993,7 +13086,7 @@
         {
           "verse": 975,
           "subtopics": [
-            "Fulfillment (NT): Luke 18:31-34; Matt 26:67 - 68"
+            "Fulfillment (NT): Luke 18:31-34; Matt 26:67-68"
           ],
           "refs": [
             "Matt 26:68"
@@ -13025,7 +13118,7 @@
         {
           "verse": 155,
           "subtopics": [
-            "Fulfillment (NT): Heb 9:13-14 ; Rev 1:5"
+            "Fulfillment (NT): Heb 9:13-14; Rev 1:5"
           ],
           "refs": [
             "Heb 9:13"
@@ -13034,7 +13127,7 @@
         {
           "verse": 156,
           "subtopics": [
-            "Fulfillment (NT): Heb 9:13-14 ; Rev 1:5"
+            "Fulfillment (NT): Heb 9:13-14; Rev 1:5"
           ],
           "refs": [
             "Heb 9:14"
@@ -13045,7 +13138,7 @@
         {
           "verse": 5,
           "subtopics": [
-            "Fulfillment (NT): Heb 9:13-14 ; Rev 1:5"
+            "Fulfillment (NT): Heb 9:13-14; Rev 1:5"
           ],
           "refs": [
             "Rev 1:5"
@@ -13255,7 +13348,7 @@
         {
           "verse": 944,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:37-38 ; Luke 19:41 ; Heb 4:15"
+            "Fulfillment (NT): Matt 26:37-38; Luke 19:41; Heb 4:15"
           ],
           "refs": [
             "Matt 26:37"
@@ -13264,7 +13357,7 @@
         {
           "verse": 945,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:37-38 ; Luke 19:41 ; Heb 4:15"
+            "Fulfillment (NT): Matt 26:37-38; Luke 19:41; Heb 4:15"
           ],
           "refs": [
             "Matt 26:38"
@@ -13275,7 +13368,7 @@
         {
           "verse": 878,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:37-38 ; Luke 19:41 ; Heb 4:15"
+            "Fulfillment (NT): Matt 26:37-38; Luke 19:41; Heb 4:15"
           ],
           "refs": [
             "Luke 19:41"
@@ -13286,7 +13379,7 @@
         {
           "verse": 66,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:37-38 ; Luke 19:41 ; Heb 4:15"
+            "Fulfillment (NT): Matt 26:37-38; Luke 19:41; Heb 4:15"
           ],
           "refs": [
             "Heb 4:15"
@@ -13408,7 +13501,7 @@
         {
           "verse": 973,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:66 ; 27:41-43"
+            "Fulfillment (NT): Matt 26:66; 27:41-43"
           ],
           "refs": [
             "Matt 26:66"
@@ -13417,7 +13510,7 @@
         {
           "verse": 1023,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:66 ; 27:41-43"
+            "Fulfillment (NT): Matt 26:66; 27:41-43"
           ],
           "refs": [
             "Matt 27:41"
@@ -13426,7 +13519,7 @@
         {
           "verse": 1024,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:66 ; 27:41-43"
+            "Fulfillment (NT): Matt 26:66; 27:41-43"
           ],
           "refs": [
             "Matt 27:42"
@@ -13435,7 +13528,7 @@
         {
           "verse": 1025,
           "subtopics": [
-            "Fulfillment (NT): Matt 26:66 ; 27:41-43"
+            "Fulfillment (NT): Matt 26:66; 27:41-43"
           ],
           "refs": [
             "Matt 27:43"
@@ -13466,7 +13559,7 @@
         {
           "verse": 98,
           "subtopics": [
-            "Fulfillment (NT): 2 Cor 5:21 ; Heb 2:9"
+            "Fulfillment (NT): 2 Cor 5:21; Heb 2:9"
           ],
           "refs": [
             "2 Cor 5:21"
@@ -13477,7 +13570,7 @@
         {
           "verse": 23,
           "subtopics": [
-            "Fulfillment (NT): 2 Cor 5:21 ; Heb 2:9"
+            "Fulfillment (NT): 2 Cor 5:21; Heb 2:9"
           ],
           "refs": [
             "Heb 2:9"
@@ -13571,7 +13664,7 @@
         {
           "verse": 12,
           "subtopics": [
-            "Fulfillment (NT): 1 John 2:2 ; 4:10"
+            "Fulfillment (NT): 1 John 2:2; 4:10"
           ],
           "refs": [
             "1 John 2:2"
@@ -13580,7 +13673,7 @@
         {
           "verse": 73,
           "subtopics": [
-            "Fulfillment (NT): 1 John 2:2 ; 4:10"
+            "Fulfillment (NT): 1 John 2:2; 4:10"
           ],
           "refs": [
             "1 John 4:10"
@@ -13758,7 +13851,7 @@
         {
           "verse": 29,
           "subtopics": [
-            "Fulfillment (NT): John 1:29 ; 1 Pet 1:18-19"
+            "Fulfillment (NT): John 1:29; 1 Pet 1:18-19"
           ],
           "refs": [
             "John 1:29"
@@ -13769,7 +13862,7 @@
         {
           "verse": 18,
           "subtopics": [
-            "Fulfillment (NT): John 1:29 ; 1 Pet 1:18-19"
+            "Fulfillment (NT): John 1:29; 1 Pet 1:18-19"
           ],
           "refs": [
             "1 Pet 1:18"
@@ -13778,7 +13871,7 @@
         {
           "verse": 19,
           "subtopics": [
-            "Fulfillment (NT): John 1:29 ; 1 Pet 1:18-19"
+            "Fulfillment (NT): John 1:29; 1 Pet 1:18-19"
           ],
           "refs": [
             "1 Pet 1:19"
@@ -14226,7 +14319,7 @@
         {
           "verse": 1081,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:41 ; John 18:38"
+            "Fulfillment (NT): Luke 23:41; John 18:38"
           ],
           "refs": [
             "Luke 23:41"
@@ -14237,7 +14330,7 @@
         {
           "verse": 778,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:41 ; John 18:38"
+            "Fulfillment (NT): Luke 23:41; John 18:38"
           ],
           "refs": [
             "John 18:38"
@@ -14331,7 +14424,7 @@
         {
           "verse": 674,
           "subtopics": [
-            "Fulfillment (NT): Matt 20:28 ; Gal 3:13"
+            "Fulfillment (NT): Matt 20:28; Gal 3:13"
           ],
           "refs": [
             "Matt 20:28"
@@ -14342,7 +14435,7 @@
         {
           "verse": 58,
           "subtopics": [
-            "Fulfillment (NT): Matt 20:28 ; Gal 3:13"
+            "Fulfillment (NT): Matt 20:28; Gal 3:13"
           ],
           "refs": [
             "Gal 3:13"
@@ -14716,7 +14809,7 @@
         {
           "verse": 1074,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:34 ; Rom 8:34"
+            "Fulfillment (NT): Luke 23:34; Rom 8:34"
           ],
           "refs": [
             "Luke 23:34"
@@ -14727,7 +14820,7 @@
         {
           "verse": 220,
           "subtopics": [
-            "Fulfillment (NT): Luke 23:34 ; Rom 8:34"
+            "Fulfillment (NT): Luke 23:34; Rom 8:34"
           ],
           "refs": [
             "Rom 8:34"
@@ -14958,8 +15051,8 @@
       "LUK"
     ]
   },
-  "284. He would sh o w light to the Gentiles": {
-    "name": "He would sh o w light to the Gentiles",
+  "284. He would show light to the Gentiles": {
+    "name": "He would show light to the Gentiles",
     "references": {
       "ISA": [
         {
@@ -15387,7 +15480,7 @@
         {
           "verse": 598,
           "subtopics": [
-            "Fulfillment (NT): John 13:13 ; 1 Tim 3:16"
+            "Fulfillment (NT): John 13:13; 1 Tim 3:16"
           ],
           "refs": [
             "John 13:13"
@@ -15398,7 +15491,7 @@
         {
           "verse": 51,
           "subtopics": [
-            "Fulfillment (NT): John 13:13 ; 1 Tim 3:16"
+            "Fulfillment (NT): John 13:13; 1 Tim 3:16"
           ],
           "refs": [
             "1 Tim 3:16"
@@ -15607,6 +15700,26 @@
   "294. Descendant of David": {
     "name": "Descendant of David",
     "references": {
+      "EZK": [
+        {
+          "verse": 872,
+          "subtopics": [
+            "Prophecy (OT): Ezek 34:23-24"
+          ],
+          "refs": [
+            "Ezek 34:23"
+          ]
+        },
+        {
+          "verse": 873,
+          "subtopics": [
+            "Prophecy (OT): Ezek 34:23-24"
+          ],
+          "refs": [
+            "Ezek 34:24"
+          ]
+        }
+      ],
       "MAT": [
         {
           "verse": 1,
@@ -15620,12 +15733,33 @@
       ]
     },
     "books": [
+      "EZK",
       "MAT"
     ]
   },
   "295. Descendant of David": {
     "name": "Descendant of David",
     "references": {
+      "EZK": [
+        {
+          "verse": 957,
+          "subtopics": [
+            "Prophecy (OT): Ezek 37:24-25"
+          ],
+          "refs": [
+            "Ezek 37:24"
+          ]
+        },
+        {
+          "verse": 958,
+          "subtopics": [
+            "Prophecy (OT): Ezek 37:24-25"
+          ],
+          "refs": [
+            "Ezek 37:25"
+          ]
+        }
+      ],
       "LUK": [
         {
           "verse": 31,
@@ -15657,6 +15791,7 @@
       ]
     },
     "books": [
+      "EZK",
       "LUK"
     ]
   },
@@ -15941,7 +16076,7 @@
         {
           "verse": 127,
           "subtopics": [
-            "Fulfillment (NT): Rom 5:10 ; 2 Cor 5:18-21"
+            "Fulfillment (NT): Rom 5:10; 2 Cor 5:18-21"
           ],
           "refs": [
             "Rom 5:10"
@@ -15952,7 +16087,7 @@
         {
           "verse": 95,
           "subtopics": [
-            "Fulfillment (NT): Rom 5:10 ; 2 Cor 5:18-21"
+            "Fulfillment (NT): Rom 5:10; 2 Cor 5:18-21"
           ],
           "refs": [
             "2 Cor 5:18"
@@ -15961,7 +16096,7 @@
         {
           "verse": 96,
           "subtopics": [
-            "Fulfillment (NT): Rom 5:10 ; 2 Cor 5:18-21"
+            "Fulfillment (NT): Rom 5:10; 2 Cor 5:18-21"
           ],
           "refs": [
             "2 Cor 5:19"
@@ -15970,7 +16105,7 @@
         {
           "verse": 97,
           "subtopics": [
-            "Fulfillment (NT): Rom 5:10 ; 2 Cor 5:18-21"
+            "Fulfillment (NT): Rom 5:10; 2 Cor 5:18-21"
           ],
           "refs": [
             "2 Cor 5:20"
@@ -15979,7 +16114,7 @@
         {
           "verse": 98,
           "subtopics": [
-            "Fulfillment (NT): Rom 5:10 ; 2 Cor 5:18-21"
+            "Fulfillment (NT): Rom 5:10; 2 Cor 5:18-21"
           ],
           "refs": [
             "2 Cor 5:21"
@@ -16082,7 +16217,7 @@
         {
           "verse": 549,
           "subtopics": [
-            "Fulfillment (NT): Matt 16:21 ; 21:38-39"
+            "Fulfillment (NT): Matt 16:21; 21:38-39"
           ],
           "refs": [
             "Matt 16:21"
@@ -16091,7 +16226,7 @@
         {
           "verse": 718,
           "subtopics": [
-            "Fulfillment (NT): Matt 16:21 ; 21:38-39"
+            "Fulfillment (NT): Matt 16:21; 21:38-39"
           ],
           "refs": [
             "Matt 21:38"
@@ -16100,7 +16235,7 @@
         {
           "verse": 719,
           "subtopics": [
-            "Fulfillment (NT): Matt 16:21 ; 21:38-39"
+            "Fulfillment (NT): Matt 16:21; 21:38-39"
           ],
           "refs": [
             "Matt 21:39"
@@ -16416,7 +16551,7 @@
         {
           "verse": 385,
           "subtopics": [
-            "Fulfillment (NT): Matt 12:40 ; 16:4"
+            "Fulfillment (NT): Matt 12:40; 16:4"
           ],
           "refs": [
             "Matt 12:40"
@@ -16425,7 +16560,7 @@
         {
           "verse": 532,
           "subtopics": [
-            "Fulfillment (NT): Matt 12:40 ; 16:4"
+            "Fulfillment (NT): Matt 12:40; 16:4"
           ],
           "refs": [
             "Matt 16:4"

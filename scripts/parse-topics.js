@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path');
+const { BOOK_IDS } = require('./lib/naves-book-ids');
 
 // Book verse counts (from your BSB data)
 const BOOK_VERSE_COUNTS = {
@@ -19,90 +20,41 @@ const BOOK_VERSE_COUNTS = {
   JUD: 25, REV: 404
 };
 
-// Book ID to abbreviation mapping
-const BOOK_IDS = {
-  'Gen': 'GEN', 'Ge': 'GEN', 'Gn': 'GEN', 'Genesis': 'GEN',
-  'Exodus': 'EXO', 'Exod': 'EXO', 'Ex': 'EXO',
-  'Leviticus': 'LEV', 'Lev': 'LEV', 'Le': 'LEV',
-  'Numbers': 'NUM', 'Num': 'NUM', 'Nu': 'NUM',
-  'Deuteronomy': 'DEU', 'Deut': 'DEU', 'De': 'DEU', 'Dt': 'DEU',
-  'Joshua': 'JOS', 'Josh': 'JOS', 'Jos': 'JOS',
-  'Judges': 'JDG', 'Judg': 'JDG', 'Jdg': 'JDG',
-  'Ruth': 'RUT', 'Ru': 'RUT',
-  '1 Samuel': '1SA', '1SA': '1SA', '1 Sam': '1SA',
-  '2 Samuel': '2SA', '2SA': '2SA', '2 Sam': '2SA',
-  '1 Kings': '1KI', '1Kgs': '1KI', '1 Kgs': '1KI',
-  '2 Kings': '2KI', '2Kgs': '2KI', '2 Kgs': '2KI',
-  '1 Chronicles': '1CH', '1Chr': '1CH', '1 Chr': '1CH',
-  '2 Chronicles': '2CH', '2Chr': '2CH', '2 Chr': '2CH',
-  'Ezra': 'EZR', 'Ezr': 'EZR', 'Nehemiah': 'NEH', 'Neh': 'NEH', 'Ne': 'NEH',
-  'Esther': 'EST', 'Est': 'EST',
-  'Job': 'JOB',
-  'Psalms': 'PSA', 'Psalm': 'PSA', 'Psa': 'PSA', 'Ps': 'PSA',
-  'Proverbs': 'PRO', 'Pro': 'PRO', 'Pr': 'PRO',
-  'Ecclesiastes': 'ECC', 'Eccl': 'ECC', 'Ec': 'ECC',
-  'Song of Songs': 'SNG', 'Song': 'SNG', 'So': 'SNG', 'Cant': 'SNG',
-  'Isaiah': 'ISA', 'Isa': 'ISA',
-  'Jeremiah': 'JER', 'Jer': 'JER',
-  'Lamentations': 'LAM', 'Lam': 'LAM', 'La': 'LAM',
-  'Ezekiel': 'EZK', 'Ezek': 'EZK', 'Eze': 'EZK',
-  'Daniel': 'DAN', 'Dan': 'DAN', 'Da': 'DAN',
-  'Hosea': 'HOS', 'Hos': 'HOS', 'Ho': 'HOS',
-  'Joel': 'JOL', 'Joe': 'JOL',
-  'Amos': 'AMO', 'Am': 'AMO',
-  'Obadiah': 'OBA', 'Oba': 'OBA', 'Ob': 'OBA',
-  'Jonah': 'JON', 'Jon': 'JON',
-  'Micah': 'MIC', 'Mic': 'MIC',
-  'Nahum': 'NAM', 'Nahm': 'NAM', 'Na': 'NAM',
-  'Habakkuk': 'HAB', 'Hab': 'HAB',
-  'Zephaniah': 'ZEP', 'Zeph': 'ZEP', 'Zep': 'ZEP',
-  'Haggai': 'HAG', 'Hag': 'HAG',
-  'Zechariah': 'ZEC', 'Zech': 'ZEC', 'Zec': 'ZEC',
-  'Malachi': 'MAL', 'Mal': 'MAL',
-  'Matthew': 'MAT', 'Matt': 'MAT', 'Mt': 'MAT',
-  'Mark': 'MRK', 'Mr': 'MRK', 'Mk': 'MRK',
-  'Luke': 'LUK', 'Lu': 'LUK', 'Lk': 'LUK',
-  'John': 'JHN', 'Jn': 'JHN', 'Jno': 'JHN', 'Joh': 'JHN',
-  'Acts': 'ACT', 'Act': 'ACT', 'Ac': 'ACT',
-  'Romans': 'ROM', 'Rom': 'ROM', 'Ro': 'ROM', 'Rm': 'ROM',
-  '1 Corinthians': '1CO', '1Cor': '1CO', '1 Cor': '1CO', '1 Co': '1CO',
-  '2 Corinthians': '2CO', '2Cor': '2CO', '2 Cor': '2CO', '2 Co': '2CO',
-  'Galatians': 'GAL', 'Gal': 'GAL', 'Ga': 'GAL',
-  'Ephesians': 'EPH', 'Eph': 'EPH', 'Ep': 'EPH',
-  'Philippians': 'PHP', 'Phil': 'PHP', 'Php': 'PHP',
-  'Colossians': 'COL', 'Col': 'COL',
-  '1 Thessalonians': '1TH', '1Thess': '1TH', '1 Thess': '1TH', '1 Th': '1TH',
-  '2 Thessalonians': '2TH', '2Thess': '2TH', '2 Thess': '2TH', '2 Th': '2TH',
-  '1 Timothy': '1TI', '1Tim': '1TI', '1 Tim': '1TI', '1 Ti': '1TI',
-  '2 Timothy': '2TI', '2Tim': '2TI', '2 Tim': '2TI', '2 Ti': '2TI',
-  'Titus': 'TIT', 'Tit': 'TIT',
-  'Philemon': 'PHM', 'Phm': 'PHM',
-  'Hebrews': 'HEB', 'Heb': 'HEB',
-  'James': 'JAS', 'Jas': 'JAS', 'Jm': 'JAS',
-  '1 Peter': '1PE', '1Pet': '1PE', '1 Pet': '1PE', '1 Pe': '1PE',
-  '2 Peter': '2PE', '2Pet': '2PE', '2 Pet': '2PE', '2 Pe': '2PE',
-  '1 John': '1JN', '1Jn': '1JN', '1 Jn': '1JN', '1 Jo': '1JN',
-  '2 John': '2JN', '2Jn': '2JN', '2 Jn': '2JN', '2 Jo': '2JN',
-  '3 John': '3JN', '3Jn': '3JN', '3 Jn': '3JN', '3 Jo': '3JN',
-  'Jude': 'JUD', 'Jud': 'JUD',
-  'Revelation': 'REV', 'Rev': 'REV', 'Re': 'REV'
-};
-
 const unknownBookCounts = new Map();
+
+// Nave's (at least this digitized source) cites these one-chapter books by
+// chapter number alone - e.g. "Jude 1", "Phm 1" - instead of "Jude 1:1". The
+// bare number is the verse, with chapter always implicitly 1.
+const SINGLE_CHAPTER_BOOK_IDS = new Set(['OBA', 'PHM', '2JN', '3JN', 'JUD']);
 
 function parseVerseReference(ref) {
   // Parses "Gen. 3:15" or "Matt. 1:18, 23" or "Luke 1:26–35, 38–56"
   // Returns { bookId, verses: [15] } or { bookId, verses: [18, 23] } or { bookId, verses: [26-35, 38-56] }
-  
-  const match = ref.trim().match(/^([A-Za-z\s\.]+?)\s+(\d+):(.+)$/);
-  if (!match) return null;
-  
-  const bookName = match[1].trim();
+
+  const trimmed = ref.trim();
+  let bookNameRaw;
+  let chapter;
+  let verseStr;
+
+  const colonMatch = trimmed.match(/^([1-3]?\s?[A-Za-z\s\.]+?)\s+(\d+):(.+)$/);
+  if (colonMatch) {
+    bookNameRaw = colonMatch[1];
+    chapter = parseInt(colonMatch[2]);
+    verseStr = colonMatch[3];
+  } else {
+    // No "chapter:verse" colon - only safe to resolve for one-chapter books
+    // (see SINGLE_CHAPTER_BOOK_IDS below); bail out for everything else.
+    const bareMatch = trimmed.match(/^([1-3]?\s?[A-Za-z\s\.]+?)\s+(\d[\d\-,]*)$/);
+    if (!bareMatch) return null;
+    bookNameRaw = bareMatch[1];
+    chapter = null;
+    verseStr = bareMatch[2];
+  }
+
+  const bookName = bookNameRaw.trim();
   const bookLabel = bookName.replace(/\.$/, "");
   const bookKey = bookLabel;
-  const chapter = parseInt(match[2]);
-  const verseStr = match[3];
-  
+
   // Find book ID
   let bookId = BOOK_IDS[bookKey];
   if (!bookId) {
@@ -111,13 +63,18 @@ function parseVerseReference(ref) {
     const found = keys.find(k => bookKey.includes(k) || k.includes(bookKey));
     if (found) bookId = BOOK_IDS[found];
   }
-  
+
   if (!bookId) {
     const key = bookKey || bookName || 'UNKNOWN';
     unknownBookCounts.set(key, (unknownBookCounts.get(key) || 0) + 1);
     return null;
   }
-  
+
+  if (chapter === null) {
+    if (!SINGLE_CHAPTER_BOOK_IDS.has(bookId)) return null;
+    chapter = 1;
+  }
+
   // Parse verse numbers
   const verses = [];
   const parts = verseStr.split(',').map(p => p.trim());

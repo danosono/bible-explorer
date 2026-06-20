@@ -19,8 +19,8 @@ const BOOK_IDS = {
   "Ruth": "RUT", "Ru": "RUT",
   "1 Samuel": "1SA", "1Sam": "1SA", "1 Sam": "1SA", "I Samuel": "1SA",
   "2 Samuel": "2SA", "2Sam": "2SA", "2 Sam": "2SA", "II Samuel": "2SA",
-  "1 Kings": "1KI", "1Kgs": "1KI", "1 Kgs": "1KI", "I Kings": "1KI",
-  "2 Kings": "2KI", "2Kgs": "2KI", "2 Kgs": "2KI", "II Kings": "2KI",
+  "1 Kings": "1KI", "1Kgs": "1KI", "1 Kgs": "1KI", "1 Ki": "1KI", "I Kings": "1KI",
+  "2 Kings": "2KI", "2Kgs": "2KI", "2 Kgs": "2KI", "2 Ki": "2KI", "II Kings": "2KI",
   "1 Chronicles": "1CH", "1Chr": "1CH", "1 Chr": "1CH", "I Chronicles": "1CH",
   "2 Chronicles": "2CH", "2Chr": "2CH", "2 Chr": "2CH", "II Chronicles": "2CH",
   "Ezra": "EZR", "Ezr": "EZR",
@@ -122,8 +122,13 @@ const extractDocxXml = (docxPath) => {
 };
 
 const getCellText = (cellXml) => {
+  // Word sometimes splits a single word/number across multiple <w:t> runs
+  // (e.g. a spell-check flag mid-word), with any real whitespace already
+  // preserved inside the run text itself (xml:space="preserve") - joining
+  // with "" reconstructs the original text; joining with an extra space
+  // would turn e.g. "Eze" + "k " + "34:23-24" into "Eze k 34:23-24".
   const textNodes = [...cellXml.matchAll(/<w:t(?:\s[^>]*)?>([\s\S]*?)<\/w:t>/g)].map((m) => decodeXml(m[1]));
-  return normalizeWhitespace(textNodes.join(" "));
+  return normalizeWhitespace(textNodes.join(""));
 };
 
 const parseTableRows = (xml) => {
