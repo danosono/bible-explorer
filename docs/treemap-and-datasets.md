@@ -167,10 +167,110 @@ All four share one schema and are loaded generically by `loadTopics()`:
 
 | Dropdown label | `DATASET_CONFIG` key | File | Source |
 |---|---|---|---|
-| Nave's Topics | `topics` | `data/topics-with-references.json` (~19MB) | Nave's Topical Bible (`scripts/parse-topics.js`) |
+| Nave's Topics | `topics` | `data/topics-with-references.json` (~19MB) | `source/Naves.txt` via `scripts/parse-naves-text.js` → `scripts/parse-topics.js` |
 | BSB Topics | `bsb-topics` | `data/bsb-topics-with-references.json` | `C:\Unity Projects\_BibleDatasets\Berean\bsb_topical_index.xlsx` via `scripts/parse-bsb-topics.js` |
 | Prophecy | `prophecy` | `data/prophecy-topics-with-references.json` | Prophecy docx parse (separate aggregate-topic logic, `PROPHECY_AGGREGATE_TOPICS`) |
 | BSB Concordance | `concordance` | `data/bsb-concordance-with-references.json` (14.77MB, 14,526 words, 276,602 refs) | `C:\Unity Projects\_BibleDatasets\Berean\bsb_concordance.xlsx` via `scripts/parse-bsb-concordance.js` |
+
+### Nave's Topics pipeline (`source/Naves.txt` → `scripts/parse-naves-text.js` → `scripts/parse-topics.js`)
+Two-stage pipeline, same as the other three datasets' "raw source → intermediate
+JSON → final JSON" shape: `parse-naves-text.js` reads the source and writes
+`data/topics-input.json` (`{ topics: [{ name, verses }] }`, `name` like
+`"TERM - subtopic"`); `parse-topics.js` resolves book IDs, expands verse
+ranges/positions, and writes the final `data/topics-with-references.json`.
+Both stages share `scripts/lib/naves-book-ids.js`'s `BOOK_IDS` map.
+
+**Why a plain-text source instead of the original THML/XML.** The original
+source (`C:\Unity Projects\_BibleDatasets\Naves\Naves.xml`, a CCEL THML
+export, parsed by a now-deleted `scripts/parse-naves-thml.js`) had three
+data-loss bugs discovered while investigating a user report that topic
+"JOSIAH" was missing `2 Kings 21:24-26`:
+1. The old `parseVerseReference` regex excluded leading digits from the book
+   group, so **every** reference to a `1`/`2`/`3`-prefixed book abbreviation
+   (`1Sa`, `2Ki`, `1Ch`, `2Co`, `1Th`, `1Ti`, `1Pe`, `1Jo`/`2Jo`/`3Jo`) was
+   silently dropped, across every topic in the dataset.
+2. `BOOK_IDS` mapped `'Jud'` (the actual abbreviation for **Judges**) to
+   Jude's book code, so ~2,400 Judges verse-refs were filed under the
+   25-verse epistle of Jude instead.
+3. The THML edition itself had lost per-verse granularity for the five
+   one-chapter books (Obadiah, Philemon, 2 John, 3 John, Jude) - every single
+   citation to them, across the whole file, collapsed to chapter 1 verse 1
+   (`parsed="|Jude|1|1|0|0"` for all 115 Jude citations, etc.) - a
+   limitation of that specific digitization, unrecoverable from that source.
+
+Switching to the CCEL plain-text edition (`source/Naves.txt`, fetched
+separately, **not** derived from the XML) fixed all three: bugs 1-2 were
+parser bugs (now fixed in `BOOK_IDS`/the regex regardless of source), and the
+plain text turned out to retain real verse numbers for the one-chapter books
+(e.g. distinct `Jude 1:7`, `1:9`, `1:14`, `1:24`, ... - all 25 verses
+eventually cited) that the XML had lost. `parseVerseReference` in
+`parse-topics.js` still has a `SINGLE_CHAPTER_BOOK_IDS` allowance for a bare
+`Book N` (no colon) on those five books specifically, treating `N` as the
+verse in chapter 1 - now mostly unused since the text source has real
+verses, but kept as a safety net.
+
+**Text format parsing (`parse-naves-text.js`).** The CCEL plain-text export
+has three indentation levels: term headings (3-space indent, e.g. `   AARON`),
+`-`/`.` bullets (10-space indent, `-` = top-level, `.` = nested), and
+wrapped continuation lines (also 10-space indent, no `-`/`.` prefix - appended
+to the previous bullet with a single space). A handful of entries add a
+fourth, unmarked level: a `-`/`.` header with no refs of its own, followed by
+several blank-line-separated paragraphs with no `-`/`.` prefix at all, one
+per sub-item (e.g. ARMIES' ".Methods employed in effecting" → "Sounding a
+trumpet ..." / "Cutting oxen in pieces ..."). A blank line immediately before
+such a line means "new sub-item," not "continuation of the previous
+line" - that distinction is what `precededByBlank` tracks.
+
+Within each bullet, `splitLabelAndRefs()` finds where the descriptive label
+ends and the first scripture reference begins via `FIRST_REF_BOUNDARY`, a
+regex built from `BOOK_IDS` keys - but restricted to short/digit-prefixed/
+abbreviation-shaped keys only (`Ex`, `2Ki`, `1Co`, ...), excluding full
+spelled-out names (`Jonah`, `Micah`, `Amos`, `Mark`, `Luke`, `John`, `James`,
+`Titus`, ...) because those double as ordinary person/place names within
+label text (e.g. "Father of **Jonah**" was mis-split before this exclusion,
+since the regex matched "Jonah" as if it were the book). `Jude` is kept as a
+special case since it has no shorter alias. Two genuinely irreducible
+collisions remain and are accepted as a known limit: `So` (Song of Songs
+abbreviation *and* the Egyptian king's name in 2 Ki 17:4) and `Dan`
+(Daniel abbreviation *and* the tribe of Dan) - both are too short to safely
+exclude without breaking far more legitimate citations than the 1-2 false
+positives each causes.
+
+`normalizeReferenceSequence()` also handles: `with X` as a "same book,
+compare also" connector rather than label text (e.g. `1Sa 22:20-23; with
+22:6-19`); line-wrap artifacts where a long comma list got rejoined with a
+stray space (`84, 107` → `84,107`); and `.`-as-row-separator in two large
+OT/NT cross-reference tables (`QUOTATIONS AND ALLUSIONS...`, `PROPHECY -
+OLD TESTAMENT MESSIANIC PASSAGES...`) that use periods instead of semicolons
+between rows. Pure `-See [N]TARGET` cross-reference redirects are parsed but
+discarded (no scripture refs to show) - not wired up as search aliases.
+
+**Numbered-sense disambiguation.** Some terms have multiple numbered
+top-level senses, each a distinct person/place, e.g.:
+```
+   JOHN
+          -1. The Baptist          <- header, no refs of its own
+          .Prophecies concerning Isa 40:3; ...   <- belongs to sense 1
+          -2. The Apostle          <- header, no refs of its own
+          .Intimately associated with Jesus Joh 13:23-26; 21:20   <- belongs to sense 2
+```
+Found via `grep` to affect 125+ terms (ISRAEL has 21 senses, EPHRAIM 3, plus
+DANIEL, ELIJAH, AZARIAH, BABYLON, ...). Two strategies, both tracked via
+`activeSense` (the active `-N. Label` header) in the per-term bullet loop:
+- **General case**: the active sense is folded into the **subtopic** label
+  (e.g. JOSIAH's `.Ancestor of Jesus` → `1. King of Judah - .Ancestor of
+  Jesus`), so tooltips disambiguate. No `js/app.js` changes needed -
+  tooltips just render whatever string is in a verse's `subtopics` array.
+- **`SPLIT_NUMBERED_SENSE_TERMS`** (`JOHN`, `JAMES`, `MARY`, `SIMON`,
+  `PHILIP` - cherry-picked, not auto-detected): the active sense is folded
+  into the **term** instead, using `": "` rather than `" - "` so
+  `parse-topics.js`'s `splitTopicName` (which splits on the first `" - "`)
+  doesn't re-merge it back into the base term. Each sense becomes its own
+  top-level dropdown entry (`"JOHN: 1. The Baptist"`, `"JOHN: 2. The
+  Apostle"`, and a `"JOHN: 3. A relative of Annas the high priest"` nobody
+  had noticed) - there is intentionally **no bare `"JOHN"` entry** anymore.
+  Extending this list is a one-line change to the `SPLIT_NUMBERED_SENSE_TERMS`
+  `Set` near the top of `parse-naves-text.js`.
 
 ### BSB Topics section-boundary handling (`scripts/parse-bsb-topics.js`)
 The source xlsx is one continuous alphabetical index, not a clean tree: between

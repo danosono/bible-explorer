@@ -21,6 +21,16 @@ const BOOK_TOKEN_PATTERN = Object.keys(BOOK_IDS)
   .join("|");
 const FIRST_REF_BOUNDARY = new RegExp(`\\b(?:${BOOK_TOKEN_PATTERN})\\b\\s+\\d`);
 
+// A term can have multiple numbered top-level senses with no refs of their
+// own, e.g. JOHN has "-1. The Baptist" and "-2. The Apostle" as bare headers,
+// each followed by several "."-prefixed bullets that belong to that sense.
+// For most terms we fold the active sense into the subtopic label so
+// tooltips disambiguate (e.g. "1. The Baptist - .Prophecies concerning").
+// For these specific terms - distinct, commonly-searched people, not just
+// label variations - each numbered sense becomes its own top-level topic
+// instead, so the dropdown itself disambiguates.
+const SPLIT_NUMBERED_SENSE_TERMS = new Set(["JOHN", "JAMES", "MARY", "SIMON", "PHILIP"]);
+
 // Given a list of raw ref fragments (book may be omitted when it's the same as the prior
 // fragment, e.g. "Ex 6:23,25; 1Ch 6:3" -> ["Ex 6:23,25", "1Ch 6:3"], or just
 // "23:13" continuing the same book), reconstructs fully-qualified
@@ -175,6 +185,9 @@ const parse = (text) => {
   const seen = new Map();
 
   for (const term of termOrder) {
+    let activeSense = null;
+    const splitSenses = SPLIT_NUMBERED_SENSE_TERMS.has(term);
+
     for (const bulletRaw of termBullets.get(term)) {
       const withoutFootnotes = bulletRaw.replace(/\[\d+\]/g, "");
       const isTopLevel = withoutFootnotes.startsWith("-");
@@ -183,9 +196,28 @@ const parse = (text) => {
       if (/^See\b/i.test(bulletBody)) continue; // pure cross-reference redirect, no scripture refs
 
       const { label, refs } = splitLabelAndRefs(bulletBody);
+
+      // A bare "-1. Label" / "-2. Label" header (no refs of its own, or with
+      // refs - either way it starts a new numbered sense) updates the active
+      // sense for every bullet that follows, until the next one.
+      const isNumberedHeader = isTopLevel && /^\d+\.\s/.test(label);
+      if (isNumberedHeader) {
+        activeSense = label;
+      }
+
       if (!refs.length) continue;
 
-      const topicName = label ? `${term} - ${label}` : term;
+      let topicName;
+      if (splitSenses && activeSense) {
+        const effectiveTerm = `${term}: ${activeSense}`;
+        topicName = isNumberedHeader || !label ? effectiveTerm : `${effectiveTerm} - ${label}`;
+      } else {
+        const effectiveLabel = !isNumberedHeader && activeSense
+          ? (label ? `${activeSense} - ${label}` : activeSense)
+          : label;
+        topicName = effectiveLabel ? `${term} - ${effectiveLabel}` : term;
+      }
+
       const verseString = Array.from(new Set(refs)).join("; ");
       const key = topicName.toLowerCase();
       const existingCount = seen.get(key) || 0;
