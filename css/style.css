@@ -1141,6 +1141,18 @@ body[data-state="3"] .state--book {
 	border-color: rgba(80, 235, 255, 0.52);
 }
 
+.ref-badge--naves {
+	color: rgba(190, 255, 200, 0.96);
+	background: rgba(95, 215, 130, 0.22);
+	border-color: rgba(95, 215, 130, 0.48);
+}
+
+.ref-badge--torreys {
+	color: rgba(225, 200, 255, 0.97);
+	background: rgba(170, 120, 255, 0.24);
+	border-color: rgba(170, 120, 255, 0.52);
+}
+
 .verse-modal-close {
 	position: absolute;
 	top: 12px;

@@ -7,6 +7,12 @@ const INPUT_PATH = 'C:/Unity Projects/_BibleDatasets/Berean/bsb_topical_index.xl
 
 const unknownBookCounts = new Map();
 
+// Duplicated verbatim in js/app.js (same convention as PROPHECY_OT_PREFIX/
+// PROPHECY_NT_PREFIX there, also duplicated from parse-prophecy-docx.js) -
+// js/app.js detects these via substring match to render a source badge.
+const BSB_NAVES_SOURCE_TAG = " — Nave's";
+const BSB_TORREYS_SOURCE_TAG = " — Torrey's";
+
 // "Revelation 13:16–18" / "1 John 2:16, 17" / "Psalm 119:9, 11–12" -> { bookId, bookLabel, chapter, verses: [...] }
 function parseVerseReference(ref) {
   const match = String(ref).trim().match(/^(.+?)\s+(\d+):(.+)$/);
@@ -56,16 +62,17 @@ async function parseTopics(bibleData) {
   let currentSubtopic = null;
   // The source spreadsheet is one continuous alphabetical index: between one
   // [Top] row and the next, [Nav]/[TTT] rows are sometimes genuine subtopics
-  // of the current topic (e.g. "Entertainments: ..." under "Entertainment"),
-  // but sometimes they're unrelated alphabetical entries that never got their
-  // own [Top] row (e.g. "Song of Moses..."/"Envy: ..."/"Ephraim: ..." between
-  // "Son of God" and "Songs"). A [Nav]/[TTT] label is treated as a genuine
-  // subtopic only if its text before the first ":" starts with the current
-  // topic's name (covers plurals like "Entertainment" -> "Entertainments");
-  // otherwise its verses are suppressed until the next genuine subtopic or [Top].
-  let suppressVerses = false;
+  // of the current topic (e.g. "Entertainments: ..." under "Entertainment" -
+  // its text before ":" starts with the current topic's name, covering
+  // plurals), but most of the time they're entries from Nave's/Torrey's own
+  // index that never got a [Top] row of their own (e.g. "God: ...", "Jesus,
+  // the Christ: ...", "Gentiles: ..." - thousands of them). Those become
+  // their own topic, keyed by the text before ":" (or the whole label if
+  // there's no ":"), exactly like a [Top] row would - this is reusing the
+  // identical create-if-absent pattern as the Top branch below, so the same
+  // prefix re-encountered later (even non-adjacently) merges back into the
+  // same topic instead of creating a duplicate.
   let skippedRefs = 0;
-  let suppressedRefs = 0;
 
   const normalizeForMatch = (value) => String(value || '').trim().toLowerCase();
 
@@ -83,7 +90,6 @@ async function parseTopics(bibleData) {
     if (source === 'Top') {
       currentTopicName = String(topic).trim();
       currentSubtopic = null;
-      suppressVerses = false;
       if (currentTopicName && !result[currentTopicName]) {
         result[currentTopicName] = { name: currentTopicName, references: {}, books: [] };
       }
@@ -92,16 +98,19 @@ async function parseTopics(bibleData) {
 
     if (source === 'Nav' || source === 'TTT') {
       const label = String(topic).trim();
-      currentSubtopic = label;
-      suppressVerses = !isSubtopicOfCurrentTopic(label);
+      if (!isSubtopicOfCurrentTopic(label)) {
+        const prefix = label.split(':')[0].trim() || label;
+        currentTopicName = prefix;
+        if (!result[currentTopicName]) {
+          result[currentTopicName] = { name: currentTopicName, references: {}, books: [] };
+        }
+      }
+      const sourceTag = source === 'Nav' ? BSB_NAVES_SOURCE_TAG : BSB_TORREYS_SOURCE_TAG;
+      currentSubtopic = `${label}${sourceTag}`;
       continue;
     }
 
     if (source === '' && verse && currentTopicName) {
-      if (suppressVerses) {
-        suppressedRefs += 1;
-        continue;
-      }
       const parsed = parseVerseReference(verse);
       if (!parsed) {
         skippedRefs += 1;
@@ -134,7 +143,6 @@ async function parseTopics(bibleData) {
   }
 
   console.log(`Skipped ${skippedRefs} unparseable verse references.`);
-  console.log(`Suppressed ${suppressedRefs} verse references belonging to unrelated alphabetical entries.`);
   return result;
 }
 

@@ -48,7 +48,12 @@ const DATASET_CONFIG = {
     file: "data/prophecy-topics-with-references.json",
     label: "Prophecy",
     placeholder: "Search prophecy references",
-    defaultTopic: ""
+    defaultTopic: "",
+    // Entries are numbered 1-351 - the default 200-item cap (MAX_TOPIC_OPTIONS)
+    // cut the list off mid-list with no indication there was more, since
+    // unlike the other datasets there's no obviously-truncated alphabetical
+    // pattern to hint at it.
+    maxOptions: 400
   },
   concordance: {
     file: "data/bsb-concordance-with-references.json",
@@ -64,6 +69,10 @@ const PROPHECY_AGGREGATE_TOPICS = [
 ];
 const PROPHECY_OT_PREFIX = "Prophecy (OT):";
 const PROPHECY_NT_PREFIX = "Fulfillment (NT):";
+// Duplicated verbatim from scripts/parse-bsb-topics.js (same convention as
+// the PROPHECY_*_PREFIX constants above, duplicated from parse-prophecy-docx.js).
+const BSB_NAVES_SOURCE_TAG = " — Nave's";
+const BSB_TORREYS_SOURCE_TAG = " — Torrey's";
 
 const isProphecyAggregateTopic = (name) => {
   return PROPHECY_AGGREGATE_TOPICS.some((item) => item.key === name);
@@ -840,9 +849,10 @@ const applyTopicSelection = (topicName, options = {}) => {
 };
 
 const getTopicOptions = (filterValue) => {
+  const maxOptions = DATASET_CONFIG[activeDatasetMode]?.maxOptions || MAX_TOPIC_OPTIONS;
   const normalized = normalizeTopicKey(filterValue);
   if (!normalized) {
-    return allTopicNames.slice(0, MAX_TOPIC_OPTIONS);
+    return allTopicNames.slice(0, maxOptions);
   }
   const startsWithMatches = [];
   const containsMatches = [];
@@ -853,14 +863,14 @@ const getTopicOptions = (filterValue) => {
     } else if (candidate.includes(normalized)) {
       containsMatches.push(name);
     }
-    if (startsWithMatches.length >= MAX_TOPIC_OPTIONS) break;
+    if (startsWithMatches.length >= maxOptions) break;
   }
-  if (startsWithMatches.length >= MAX_TOPIC_OPTIONS) {
-    return startsWithMatches.slice(0, MAX_TOPIC_OPTIONS);
+  if (startsWithMatches.length >= maxOptions) {
+    return startsWithMatches.slice(0, maxOptions);
   }
   const combined = startsWithMatches.concat(containsMatches);
-  if (combined.length > MAX_TOPIC_OPTIONS) {
-    return combined.slice(0, MAX_TOPIC_OPTIONS);
+  if (combined.length > maxOptions) {
+    return combined.slice(0, maxOptions);
   }
   return combined;
 };
@@ -2788,6 +2798,7 @@ const showBookSummaryModal = (bookId, bookName) => {
 const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {
   const { chapterNumber = null, initialVerse = null } = options;
   const isProphecyMode = activeDatasetMode === "prophecy";
+  const isBsbTopicsMode = activeDatasetMode === "bsb-topics";
   
   // Get book statistics
   const book = bibleData[bookId];
@@ -2995,13 +3006,22 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
   };
 
   const getReferenceBadges = (subtopicText = "") => {
-    if (!isProphecyMode || !subtopicText) return [];
+    if (!subtopicText) return [];
     const badges = [];
-    if (subtopicText.includes(PROPHECY_OT_PREFIX)) {
-      badges.push({ label: "OT Prophecy", className: "ref-badge--ot" });
-    }
-    if (subtopicText.includes(PROPHECY_NT_PREFIX)) {
-      badges.push({ label: "NT Fulfillment", className: "ref-badge--nt" });
+    if (isProphecyMode) {
+      if (subtopicText.includes(PROPHECY_OT_PREFIX)) {
+        badges.push({ label: "OT Prophecy", className: "ref-badge--ot" });
+      }
+      if (subtopicText.includes(PROPHECY_NT_PREFIX)) {
+        badges.push({ label: "NT Fulfillment", className: "ref-badge--nt" });
+      }
+    } else if (isBsbTopicsMode) {
+      if (subtopicText.includes(BSB_NAVES_SOURCE_TAG)) {
+        badges.push({ label: "Nave's", className: "ref-badge--naves" });
+      }
+      if (subtopicText.includes(BSB_TORREYS_SOURCE_TAG)) {
+        badges.push({ label: "Torrey's", className: "ref-badge--torreys" });
+      }
     }
     return badges;
   };
