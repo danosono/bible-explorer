@@ -1272,7 +1272,9 @@ const squarify = (items, width, height) => {
 const enforceAspectRatios = (items, width, height) => {
   const cols = 14;
   const colWidth = width / cols;
-  const minHeight = 110; // Minimum height to show 3 pin lines
+  // Scales down at small heights so the packing algorithm distributes books
+  // evenly rather than overloading the last column with dozens of 3px items.
+  const minHeight = height >= 700 ? 110 : Math.max(40, Math.floor(height / 7));
 
   // Cap how much a column's fillFactor can stretch its items. Without this,
   // a column dominated by floor-clamped tiny books (e.g. 2/3 John, Jude next

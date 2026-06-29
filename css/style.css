@@ -2348,6 +2348,119 @@ body[data-state="3"] .legend-genre.active {
 	}
 }
 
+/* Compact layout when viewport height is reduced (high browser zoom or Windows DPI scaling).
+   These breakpoints fire when the effective CSS viewport height shrinks below usable thresholds,
+   preventing the header from wrapping and stealing vertical space from the treemap. */
+@media (max-height: 740px) {
+	#app {
+		padding: 12px 24px 8px;
+		gap: 8px;
+	}
+
+	.app-title {
+		font-size: clamp(1.5rem, 2.2vw, 2.2rem);
+	}
+
+	.state-switcher {
+		padding: 6px 12px 7px;
+		gap: 4px;
+	}
+
+	.source {
+		display: none;
+	}
+
+	.footer {
+		height: 24px;
+		min-height: 24px;
+		max-height: 24px;
+	}
+
+	.state {
+		gap: 10px;
+	}
+}
+
+@media (max-height: 620px) {
+	#app {
+		padding: 8px 20px 6px;
+		gap: 6px;
+	}
+
+	.app-title {
+		font-size: clamp(1.3rem, 2vw, 1.8rem);
+	}
+
+	.state-switcher {
+		padding: 4px 10px 5px;
+		gap: 3px;
+	}
+
+	.state-captions {
+		font-size: clamp(0.74rem, 0.8vw, 0.95rem);
+	}
+
+	/* Shrink min-widths so controls don't wrap to a second row at narrow viewports */
+	.topic-search input {
+		min-width: clamp(170px, 14vw, 250px);
+	}
+
+	.dataset-select .jump-select {
+		min-width: clamp(100px, 9vw, 160px);
+	}
+
+	.peruser-link {
+		display: none;
+	}
+
+	.footer {
+		height: 20px;
+		min-height: 20px;
+		max-height: 20px;
+	}
+
+	.state {
+		gap: 8px;
+	}
+}
+
+@media (max-height: 500px) {
+	#app {
+		padding: 6px 16px 4px;
+		gap: 4px;
+	}
+
+	.app-title {
+		font-size: clamp(1.1rem, 1.8vw, 1.5rem);
+	}
+
+	.state-indicator {
+		display: none;
+	}
+
+	.control-pill {
+		display: none;
+	}
+
+	.state-switcher {
+		padding: 3px 8px 4px;
+	}
+
+	.footer {
+		height: 16px;
+		min-height: 16px;
+		max-height: 16px;
+	}
+
+	.state {
+		gap: 5px;
+	}
+
+	.treemap-item {
+		padding: 4px;
+	}
+}
+
 @media (min-width: 2560px) {
 	.peruser-link {
 		font-size: 1.15rem;
