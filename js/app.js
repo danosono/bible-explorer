@@ -950,6 +950,16 @@ stateCaptions.forEach(caption => {
   });
 });
 
+document.querySelectorAll(".mini-state-switcher button").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const targetState = Number(btn.dataset.state);
+    if (targetState) {
+      setState(targetState);
+      closeMobileMenu();
+    }
+  });
+});
+
 const goToBookView = (bookId) => {
   if (!bookId) return;
   console.log('[goToBookView] Setting selectedBookId to:', bookId);

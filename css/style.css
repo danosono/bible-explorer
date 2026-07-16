@@ -171,6 +171,11 @@ body::before {
 	display: none;
 }
 
+/* Header mini state switcher — mobile only (shown in the <900px block) */
+.mini-state-switcher {
+	display: none;
+}
+
 .peruser-link {
 	font-size: clamp(0.85rem, 1vw, 1.2rem);
 	color: var(--text-3);
@@ -2526,10 +2531,46 @@ body[data-state="3"] .legend-genre.active {
 	.header-main {
 		gap: 10px;
 		flex-wrap: wrap;
+		align-items: center;
 	}
 
 	.state-indicator {
 		font-size: 0.85rem;
+	}
+
+	/* Always-visible compact Bible/Book/Verse switcher on header row 2;
+	   active segment tracks the existing body[data-state] attribute. */
+	.mini-state-switcher {
+		display: inline-flex;
+		border: 1px solid rgba(96, 130, 168, 0.35);
+		border-radius: 999px;
+		overflow: hidden;
+		margin-left: auto;
+	}
+
+	.mini-state-switcher button {
+		padding: 6px 12px;
+		min-height: 32px;
+		font-size: 0.75rem;
+		font-weight: 600;
+		letter-spacing: 0.02em;
+		font-family: var(--font-body);
+		color: var(--text-3);
+		background: transparent;
+		border: none;
+		border-left: 1px solid rgba(96, 130, 168, 0.25);
+		cursor: pointer;
+	}
+
+	.mini-state-switcher button:first-child {
+		border-left: none;
+	}
+
+	body[data-state="1"] .mini-state-switcher button[data-state="1"],
+	body[data-state="2"] .mini-state-switcher button[data-state="2"],
+	body[data-state="3"] .mini-state-switcher button[data-state="3"] {
+		background: rgba(116, 176, 195, 0.22);
+		color: var(--text-1);
 	}
 
 	.source {
