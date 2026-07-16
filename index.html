@@ -28,19 +28,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=1" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
   </head>
   <body>
-    <!-- Mobile/Tablet Notice -->
-    <div id="mobile-notice" class="mobile-notice">
-      <div class="mobile-notice-content">
-        <p class="mobile-notice-text">Visit on desktop for best experience</p>
-        <button id="mobile-notice-dismiss" class="mobile-notice-btn">OK</button>
-      </div>
-    </div>
-
     <div id="app">
       <header class="header">
         <div class="title-block">
@@ -69,7 +61,17 @@
             >Berean Standard Bible</a
           >
         </div>
-        <div class="header-right">
+        <button
+          id="menu-toggle"
+          class="menu-toggle"
+          type="button"
+          aria-label="Menu"
+          aria-expanded="false"
+          aria-controls="header-menu"
+        >
+          &#9776;
+        </button>
+        <div class="header-right" id="header-menu">
           <div class="controls">
             <div class="state-switcher">
               <div class="state-labels">
@@ -287,134 +289,11 @@
         <div class="legend" id="genre-legend"></div>
       </footer>
     </div>
-    <div id="width-warning" style="display: none">
-      <div
-        style="
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          background: #0b0e14ee;
-          z-index: 9999;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          color: #fff;
-        "
-      >
-        <h2>Bible Explorer requires at least 900 pixels width.</h2>
-        <button
-          id="share-link-btn"
-          style="
-            padding: 0.7em 1.5em;
-            font-size: 1.1em;
-            border-radius: 8px;
-            border: none;
-            background: #74b0c3;
-            color: #0b0e14;
-            cursor: pointer;
-            margin-top: 1em;
-            margin-left: 0.7em;
-          "
-        >
-          Share site link
-        </button>
-        <button
-          id="copy-link-btn"
-          style="
-            padding: 0.7em 1.5em;
-            font-size: 1.1em;
-            border-radius: 8px;
-            border: none;
-            background: #2f7f8f;
-            color: #fff;
-            cursor: pointer;
-            margin-top: 1em;
-          "
-        >
-          Copy site link
-        </button>
-        <div
-          id="copy-confirm"
-          style="margin-top: 0.7em; color: #9de3d4; display: none"
-        >
-          Link copied!
-        </div>
-      </div>
-    </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=46"></script>
+    <script src="js/app.js?v=47"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
-      function checkWidthWarning() {
-        var warning = document.getElementById("width-warning");
-        var app = document.getElementById("app");
-        if (window.innerWidth < 900) {
-          warning.style.display = "block";
-          if (app) app.style.display = "none";
-        } else {
-          warning.style.display = "none";
-          if (app) app.style.display = "";
-        }
-      }
-      window.addEventListener("resize", checkWidthWarning);
-      window.addEventListener("DOMContentLoaded", function () {
-        checkWidthWarning();
-        var url = "https://bible-explorer.gospelgo.org/";
-        var copyBtn = document.getElementById("copy-link-btn");
-        var shareBtn = document.getElementById("share-link-btn");
-        if (copyBtn) {
-          copyBtn.onclick = function () {
-            if (navigator.clipboard && window.isSecureContext) {
-              navigator.clipboard.writeText(url).then(function () {
-                showCopyConfirm();
-              }, fallbackCopy);
-            } else {
-              fallbackCopy();
-            }
-            function fallbackCopy() {
-              var textarea = document.createElement("textarea");
-              textarea.value = url;
-              textarea.style.position = "fixed";
-              textarea.style.left = "-9999px";
-              document.body.appendChild(textarea);
-              textarea.focus();
-              textarea.select();
-              try {
-                document.execCommand("copy");
-                showCopyConfirm();
-              } catch (err) {}
-              document.body.removeChild(textarea);
-            }
-            function showCopyConfirm() {
-              var confirm = document.getElementById("copy-confirm");
-              if (confirm) {
-                confirm.style.display = "block";
-                setTimeout(function () {
-                  confirm.style.display = "none";
-                }, 2000);
-              }
-            }
-          };
-        }
-        if (shareBtn) {
-          shareBtn.onclick = function () {
-            if (navigator.share) {
-              navigator.share({
-                title: "Bible Explorer",
-                text: "Check out Bible Explorer!",
-                url: url,
-              });
-            } else {
-              // fallback to copy
-              if (copyBtn) copyBtn.click();
-            }
-          };
-        }
-      });
     </script>
   </body>
 </html>

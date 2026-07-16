@@ -9,6 +9,32 @@ const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
 const topicSearchLabel = document.getElementById("topic-search-label");
 
+// Mobile layout mode — must match the @media (max-width: 899.98px) block in style.css
+const MOBILE_LAYOUT_QUERY = window.matchMedia("(max-width: 899.98px)");
+const isMobileLayout = () => MOBILE_LAYOUT_QUERY.matches;
+
+// Mobile slide-down menu (hamburger repositions .header-right via CSS below 900px)
+const menuToggle = document.getElementById("menu-toggle");
+const setMenuOpen = (open) => {
+  document.body.classList.toggle("menu-open", open);
+  if (menuToggle) menuToggle.setAttribute("aria-expanded", String(open));
+};
+const closeMobileMenu = () => setMenuOpen(false);
+if (menuToggle) {
+  menuToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    setMenuOpen(!document.body.classList.contains("menu-open"));
+  });
+  document.addEventListener("click", (e) => {
+    if (!document.body.classList.contains("menu-open")) return;
+    if (e.target.closest("#header-menu") || e.target.closest("#menu-toggle")) return;
+    closeMobileMenu();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMobileMenu();
+  });
+}
+
 // Global state for topics
 let topicsData = {};
 let verseCounts = {}; // Book verse counts for percentage calculation
@@ -365,6 +391,8 @@ const updateTooltipPosition = (e) => {
 };
 
 const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
+  // Touch devices have no hover; a tap would leave the tooltip stuck open.
+  if (window.matchMedia("(hover: none)").matches) return;
   // Build text
   let text = refText;
   if (subtopicText) {
@@ -907,6 +935,8 @@ if (stateSlider && statePill) {
     const value = Number(stateSlider.value) || 1;
     setState(value);
   });
+  // "change" (release), not "input", so the mobile menu doesn't vanish mid-drag
+  stateSlider.addEventListener("change", closeMobileMenu);
   updateStateUI(Number(stateSlider.value) || 1);
 }
 
@@ -915,6 +945,7 @@ stateCaptions.forEach(caption => {
     const targetState = Number(caption.dataset.state);
     if (targetState) {
       setState(targetState);
+      closeMobileMenu();
     }
   });
 });
@@ -1370,18 +1401,99 @@ const enforceAspectRatios = (items, width, height) => {
   });
 };
 
+// Mobile Overview packing: fixed column count from width, canonical order
+// (Genesis -> Revelation, top-to-bottom then left-to-right); total height is
+// an OUTPUT the page scrolls through, unlike the desktop fixed-height pack.
+// Returns the treemap pixel height.
+const packTreemapMobile = (items, width) => {
+  const cols = Math.max(2, Math.min(4, Math.floor(width / 170)));
+  const colWidth = width / cols;
+  const MIN_TILE_HEIGHT = 110; // title offset + 8 pin bands stay legible
+  const TARGET_AVG_HEIGHT = 128;
+  const MAX_COLUMN_FILL_FACTOR = 1.3;
+
+  items.forEach((item) => {
+    item.sizeWeight = Math.pow(item.value, 0.3);
+  });
+
+  const totalWeight = items.reduce((sum, item) => sum + item.sizeWeight, 0);
+  const unit = (TARGET_AVG_HEIGHT * items.length) / totalWeight;
+  const heights = items.map((item) => Math.max(MIN_TILE_HEIGHT, item.sizeWeight * unit));
+
+  // Linear partition: split the canonical sequence into `cols` contiguous
+  // runs minimizing the tallest column (same DP as the Book-state chapters).
+  const n = heights.length;
+  const prefix = new Array(n + 1).fill(0);
+  for (let i = 1; i <= n; i += 1) prefix[i] = prefix[i - 1] + heights[i - 1];
+  const rangeSum = (a, b) => prefix[b] - prefix[a];
+  const dp = Array.from({ length: cols + 1 }, () => new Array(n + 1).fill(Number.POSITIVE_INFINITY));
+  const split = Array.from({ length: cols + 1 }, () => new Array(n + 1).fill(0));
+  for (let i = 1; i <= n; i += 1) dp[1][i] = rangeSum(0, i);
+  for (let c = 2; c <= cols; c += 1) {
+    for (let i = c; i <= n; i += 1) {
+      for (let j = c - 1; j < i; j += 1) {
+        const candidate = Math.max(dp[c - 1][j], rangeSum(j, i));
+        if (candidate < dp[c][i]) {
+          dp[c][i] = candidate;
+          split[c][i] = j;
+        }
+      }
+    }
+  }
+  const bounds = [];
+  let cursor = n;
+  for (let c = cols; c > 1; c -= 1) {
+    bounds.push(split[c][cursor]);
+    cursor = bounds[bounds.length - 1];
+  }
+  bounds.reverse();
+
+  const runs = [];
+  let start = 0;
+  for (let c = 0; c < cols; c += 1) {
+    const end = c < bounds.length ? bounds[c] : n;
+    runs.push([start, end]);
+    start = end;
+  }
+  const columnSums = runs.map(([a, b]) => rangeSum(a, b));
+  const treemapHeight = Math.max(...columnSums);
+
+  runs.forEach(([a, b], colIndex) => {
+    const fill = columnSums[colIndex] > 0
+      ? Math.min(treemapHeight / columnSums[colIndex], MAX_COLUMN_FILL_FACTOR)
+      : 1;
+    let y = 0;
+    for (let i = a; i < b; i += 1) {
+      const item = items[i];
+      item.w = colWidth;
+      item.h = heights[i] * fill;
+      item.x = colIndex * colWidth;
+      item.y = y;
+      item.colIndex = colIndex;
+      y += item.h;
+    }
+  });
+  return Math.ceil(treemapHeight);
+};
+
 const renderTreemap = (books, topic = null) => {
   if (!treemapEl) return;
   setSourceLabel("Berean Standard Bible");
   setPinnedLegendGenre(null);
   const rect = treemapEl.getBoundingClientRect();
   const width = Math.max(rect.width, 320);
-  const height = Math.max(rect.height, 320);
 
   const items = buildItems(books);
-  normalizeAreas(items, width, height);
-  squarify(items, width, height);
-  enforceAspectRatios(items, width, height);
+  if (isMobileLayout()) {
+    const totalHeight = packTreemapMobile(items, width);
+    treemapEl.style.height = `${totalHeight}px`; // container grows; page scrolls
+  } else {
+    treemapEl.style.height = ""; // clear stale mobile inline height
+    const height = Math.max(rect.height, 320);
+    normalizeAreas(items, width, height);
+    squarify(items, width, height);
+    enforceAspectRatios(items, width, height);
+  }
 
   // Get topic data if selected
   const topicData = topic && topicsData[topic] ? topicsData[topic] : null;
@@ -1713,8 +1825,9 @@ const renderBookView = (bookId, topic = null) => {
 
   const rect = grid.getBoundingClientRect();
   const width = Math.max(rect.width, 320);
-  const height = Math.max(rect.height, 320);
+  let height = Math.max(rect.height, 320);
   const is4k = window.innerWidth >= 2560;
+  const mobile = isMobileLayout();
 
   let columnCount = 4;
   if (chapterCount >= 150) {
@@ -1724,7 +1837,22 @@ const renderBookView = (bookId, topic = null) => {
   } else if (chapterCount >= 29) {
     columnCount = 8;
   }
+  if (mobile) {
+    // Fewer, wider columns; tiles must stay tappable (>=72px wide).
+    columnCount = chapterCount >= 51
+      ? Math.min(6, Math.max(4, Math.floor(width / 72)))
+      : Math.min(4, Math.max(3, Math.floor(width / 110)));
+  }
   columnCount = clamp(columnCount, 2, Math.max(2, chapterCount));
+
+  if (mobile) {
+    // Height is an output on mobile: the grid grows and the page scrolls.
+    const avgTile = chapterDensity === "ultra" ? 56 : chapterDensity === "high" ? 72 : 96;
+    height = Math.ceil(chapterCount / columnCount) * avgTile;
+    grid.style.height = `${height}px`;
+  } else {
+    grid.style.height = "";
+  }
 
   const booksPerCol = Math.ceil(chapterItems.length / columnCount);
   const minHeightFloor = chapterDensity === "ultra"
@@ -2554,12 +2682,14 @@ const boot = async () => {
         renderCurrentState();
         updateCurrentTopicLabel();
         updateTopicActionState();
+        closeMobileMenu();
       });
     }
     
     // Listen for topic selection changes
     topicInput.addEventListener("change", (e) => {
       applyTopicSelection(e.target.value, { commit: true });
+      closeMobileMenu();
     });
     
     // Also listen for input changes (for autocomplete)
@@ -2576,6 +2706,7 @@ const boot = async () => {
     topicInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter") {
         applyTopicSelection(e.target.value, { commit: true });
+        closeMobileMenu();
       }
     });
 
@@ -2709,14 +2840,32 @@ const boot = async () => {
   renderCurrentState();
   attachGenreLegend();
 
-  const observer = new ResizeObserver(() => {
-    renderCurrentState();
+  // Mobile renders SET the container height, which re-fires this observer —
+  // key on width only in mobile mode so those height writes don't loop.
+  const lastObservedRenderKeys = new Map();
+  const observer = new ResizeObserver((entries) => {
+    let needsRender = false;
+    entries.forEach((entry) => {
+      const w = Math.round(entry.contentRect.width);
+      const h = Math.round(entry.contentRect.height);
+      const key = isMobileLayout() ? `m${w}` : `d${w}x${h}`;
+      if (lastObservedRenderKeys.get(entry.target) !== key) {
+        lastObservedRenderKeys.set(entry.target, key);
+        needsRender = true;
+      }
+    });
+    if (needsRender) renderCurrentState();
   });
   observer.observe(treemapEl);
   const bookGridEl = document.getElementById("book-grid");
   if (bookGridEl) {
     observer.observe(bookGridEl);
   }
+
+  MOBILE_LAYOUT_QUERY.addEventListener("change", () => {
+    closeMobileMenu();
+    renderCurrentState();
+  });
 };
 
 
@@ -3297,47 +3446,6 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 };
 
 boot();
-
-// Handle mobile/tablet notice
-const mobileNotice = document.getElementById('mobile-notice');
-const mobileNoticeDismiss = document.getElementById('mobile-notice-dismiss');
-
-if (mobileNotice && mobileNoticeDismiss) {
-  // Check if user has already dismissed the notice
-  const dismissed = localStorage.getItem('mobile-notice-dismissed');
-  
-  if (dismissed === 'true') {
-    mobileNotice.classList.add('dismissed');
-  }
-  
-  // Handle dismiss button click
-  mobileNoticeDismiss.addEventListener('click', () => {
-    mobileNotice.classList.add('dismissed');
-    localStorage.setItem('mobile-notice-dismissed', 'true');
-    
-    // Fade out animation
-    mobileNotice.style.animation = 'slideUp 0.3s ease-out forwards';
-    setTimeout(() => {
-      mobileNotice.style.display = 'none';
-    }, 300);
-  });
-}
-
-// Add slideUp animation for dismissal
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes slideUp {
-    from {
-      transform: translateY(0);
-      opacity: 1;
-    }
-    to {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-  }
-`;
-document.head.appendChild(style);
 
 // Handle mouse back/forward buttons for state navigation
 let lastNavigationTime = 0;

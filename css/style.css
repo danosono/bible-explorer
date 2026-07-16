@@ -166,6 +166,11 @@ body::before {
 	justify-content: flex-end;
 }
 
+/* Hamburger toggle — mobile only (shown in the <900px block at end of file) */
+.menu-toggle {
+	display: none;
+}
+
 .peruser-link {
 	font-size: clamp(0.85rem, 1vw, 1.2rem);
 	color: var(--text-3);
@@ -1195,8 +1200,19 @@ body[data-state="3"] .state--book {
 
 @media (max-width: 700px) {
 	.verse-modal-content {
-		grid-template-columns: 1fr;
+		flex-direction: column;
 		gap: 15px;
+	}
+
+	.verse-visualization {
+		min-height: 220px;
+		flex: 0 0 auto;
+		height: auto;
+	}
+
+	.verse-detail-pop {
+		width: calc(100% - 40px);
+		max-width: none;
 	}
 }
 
@@ -2150,198 +2166,6 @@ body[data-state="3"] .legend-genre.active {
 	}
 }
 
-/* Mobile Notice Popup */
-.mobile-notice {
-	display: none;
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 10000;
-	background: linear-gradient(135deg, rgba(31, 91, 138, 0.95), rgba(47, 127, 143, 0.95));
-	backdrop-filter: blur(10px);
-	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-	animation: slideDown 0.3s ease-out;
-}
-
-.mobile-notice-content {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 12px;
-	padding: 16px 20px;
-	max-width: 600px;
-	margin: 0 auto;
-}
-
-.mobile-notice-text {
-	flex: 1;
-	margin: 0;
-	color: var(--text-1);
-	font-size: clamp(0.9rem, 3.5vw, 1rem);
-	font-weight: 500;
-	letter-spacing: 0.01em;
-}
-
-.mobile-notice-btn {
-	flex-shrink: 0;
-	padding: 8px 20px;
-	background: rgba(255, 255, 255, 0.2);
-	border: 1px solid rgba(255, 255, 255, 0.3);
-	border-radius: 6px;
-	color: var(--text-1);
-	font-size: 0.95rem;
-	font-weight: 600;
-	font-family: var(--font-body);
-	cursor: pointer;
-	transition: all 0.2s ease;
-	min-height: 44px;
-	min-width: 60px;
-}
-
-.mobile-notice-btn:hover {
-	background: rgba(255, 255, 255, 0.3);
-	border-color: rgba(255, 255, 255, 0.5);
-	transform: scale(1.05);
-}
-
-.mobile-notice-btn:active {
-	transform: scale(0.98);
-}
-
-@keyframes slideDown {
-	from {
-		transform: translateY(-100%);
-		opacity: 0;
-	}
-	to {
-		transform: translateY(0);
-		opacity: 1;
-	}
-}
-
-@media (max-width: 780px) {
-	body {
-		overflow: auto;
-	}
-
-	#app {
-		grid-template-rows: auto 1fr;
-		padding: 12px;
-	}
-
-	.viewport {
-		min-height: 520px;
-	}
-
-	/* Show mobile notice on tablets and phones */
-	.mobile-notice:not(.dismissed) {
-		display: block;
-	}
-
-	.controls {
-		justify-content: flex-start;
-		flex-wrap: wrap;
-		gap: 8px;
-	}
-
-	/* Make touch targets larger for mobile */
-	.jump-button,
-	.chapter-nav-btn {
-		min-height: 44px;
-		min-width: 44px;
-		padding: 10px 16px;
-		font-size: clamp(0.85rem, 3vw, 1rem);
-	}
-
-	/* Adjust header for mobile */
-	.header {
-		padding: 12px 8px;
-	}
-
-	.title {
-		font-size: clamp(1.5rem, 5vw, 2rem);
-	}
-
-	.subtitle {
-		font-size: clamp(0.8rem, 3vw, 1rem);
-	}
-
-	/* Make card titles more readable */
-	:root {
-		--card-min: 75px;
-		--grid-gap: 8px;
-	}
-
-	/* Adjust reading pane max-width for mobile */
-	.reading-pane {
-		max-width: 100%;
-		padding: 12px;
-	}
-
-	/* Stack verse modal content vertically on mobile */
-	.verse-modal-content {
-		padding: 12px;
-	}
-
-	/* Improve topic search on mobile */
-	.topic-search input {
-		font-size: 16px; /* Prevents iOS zoom on focus */
-		min-height: 44px;
-	}
-
-	/* Make control pills more touch-friendly */
-	.control-pill {
-		padding: 8px 14px;
-		font-size: clamp(0.8rem, 3vw, 0.95rem);
-	}
-
-	/* Hide info button on tablets and mobile */
-	.info-btn {
-		display: none;
-	}
-}
-
-/* Extra small screens (phones in portrait) */
-@media (max-width: 480px) {
-	:root {
-		--card-min: 60px;
-		--grid-gap: 6px;
-	}
-
-	#app {
-		padding: 8px;
-	}
-
-	.header {
-		padding: 8px 6px;
-	}
-
-	.title {
-		font-size: clamp(1.2rem, 6vw, 1.8rem);
-	}
-
-	.controls {
-		gap: 6px;
-	}
-
-	/* Hide less critical elements on very small screens */
-	.control-pill {
-		display: none;
-	}
-
-	/* Make jump controls stack better */
-	.jump-controls {
-		flex-wrap: wrap;
-		gap: 6px;
-	}
-
-	.jump-select {
-		min-width: 100px;
-		font-size: 14px;
-	}
-}
-
 @media (prefers-reduced-motion: reduce) {
 	* {
 		transition: none !important;
@@ -2643,5 +2467,234 @@ body[data-state="3"] .legend-genre.active {
 
 	.chapter-verses {
 		max-height: min(75vh, 900px);
+	}
+}
+
+/* ============================================================
+   Mobile layout (<900px) — must match MOBILE_LAYOUT_QUERY in app.js.
+   The page becomes a normal scrolling document: the treemap and
+   book grid set their own pixel heights from JS and the user
+   scrolls through them; header collapses to a sticky bar with a
+   hamburger that slides down the .header-right controls panel.
+   ============================================================ */
+@media (max-width: 899.98px) {
+	/* Page scrolls; app is a normal flow column */
+	html,
+	body {
+		height: auto;
+	}
+
+	body {
+		overflow-x: hidden;
+		overflow-y: auto;
+	}
+
+	#app {
+		height: auto;
+		min-height: 100vh;
+		min-height: 100dvh; /* iOS URL-bar-safe; vh line above is the fallback */
+		display: flex;
+		flex-direction: column;
+		gap: 10px;
+		padding: 0 10px 12px;
+		overflow: visible;
+	}
+
+	/* Sticky compact header */
+	.header {
+		position: sticky;
+		top: 0;
+		z-index: 600;
+		margin: 0 -10px;
+		padding: 10px 14px;
+		background: rgba(11, 14, 20, 0.94);
+		backdrop-filter: blur(8px);
+		border-bottom: 1px solid var(--line-1);
+		flex-wrap: nowrap;
+		gap: 10px;
+	}
+
+	.app-title {
+		font-size: 1.45rem;
+	}
+
+	.by-link-icon {
+		width: 22px;
+		height: 22px;
+	}
+
+	.header-main {
+		gap: 10px;
+		flex-wrap: wrap;
+	}
+
+	.state-indicator {
+		font-size: 0.85rem;
+	}
+
+	.source {
+		display: none;
+	}
+
+	.menu-toggle {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		flex-shrink: 0;
+		font-size: 1.4rem;
+		color: var(--text-1);
+		cursor: pointer;
+		background: rgba(14, 22, 35, 0.85);
+		border: 1px solid rgba(96, 130, 168, 0.35);
+		border-radius: 10px;
+	}
+
+	/* Slide-down controls panel (same DOM as the desktop header-right) */
+	.header-right {
+		display: none;
+		position: absolute;
+		top: 100%;
+		left: 0;
+		right: 0;
+		flex-direction: column;
+		align-items: stretch;
+		gap: 14px;
+		padding: 16px 14px 20px;
+		background: rgba(10, 15, 24, 0.98);
+		border-bottom: 1px solid var(--line-2);
+		box-shadow: var(--shadow-2);
+		max-height: calc(100vh - 70px);
+		max-height: calc(100dvh - 70px);
+		overflow-y: auto;
+		z-index: 550;
+	}
+
+	body.menu-open .header-right {
+		display: flex;
+	}
+
+	.controls {
+		flex-direction: column;
+		align-items: stretch;
+		gap: 14px;
+	}
+
+	.state-switcher {
+		min-width: 0;
+		width: 100%;
+	}
+
+	.dataset-select .jump-select {
+		min-width: 0;
+		width: 100%;
+		font-size: 16px; /* 16px stops iOS zoom-on-focus */
+	}
+
+	.topic-search input {
+		min-width: 0;
+		font-size: 16px;
+	}
+
+	.control-pill {
+		display: none;
+	}
+
+	.peruser-link {
+		text-align: center;
+	}
+
+	/* Canvas grows with content instead of clipping to the viewport */
+	.viewport {
+		overflow: visible;
+	}
+
+	.canvas {
+		position: static;
+		overflow: visible;
+		padding: 10px;
+		display: block;
+		transform: none;
+	}
+
+	.state {
+		height: auto;
+		display: grid;
+		grid-template-rows: auto auto;
+		gap: 12px;
+	}
+
+	.treemap {
+		height: auto; /* JS sets an explicit px height */
+		min-height: 320px;
+	}
+
+	.state--book #book-grid {
+		height: auto; /* JS sets an explicit px height */
+		min-height: 320px;
+	}
+
+	/* State headers stack */
+	.state-header {
+		grid-template-columns: 1fr;
+		gap: 6px;
+	}
+
+	.state-current-topic {
+		max-width: 100%;
+		text-align: left;
+	}
+
+	.state-topic-group {
+		justify-self: start;
+	}
+
+	.state-meta,
+	.jump-control {
+		justify-self: start;
+	}
+
+	#book-meta {
+		justify-content: flex-start;
+	}
+
+	/* Touch targets */
+	.jump-select,
+	.jump-button,
+	.book-nav-btn,
+	.chapter-nav-btn {
+		min-height: 44px;
+	}
+
+	/* Read state: single column, full width (sidebars already hidden <=1400px) */
+	.state--read {
+		padding: 10px;
+	}
+
+	.reading-container {
+		display: block;
+	}
+
+	.verse-content-wrapper {
+		flex-direction: column;
+	}
+
+	.chapter-verses {
+		max-height: none;
+		overflow-y: visible;
+		padding-right: 0;
+	}
+
+	.chapter-nav {
+		flex-wrap: wrap;
+	}
+
+	/* Verse modal at phone widths */
+	.verse-modal {
+		width: 100%;
+		max-height: 94vh;
+		max-height: 94dvh;
+		border-radius: 10px;
 	}
 }
