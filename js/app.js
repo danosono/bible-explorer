@@ -1402,78 +1402,39 @@ const enforceAspectRatios = (items, width, height) => {
 };
 
 // Mobile Overview packing: fixed column count from width, canonical order
-// (Genesis -> Revelation, top-to-bottom then left-to-right); total height is
-// an OUTPUT the page scrolls through, unlike the desktop fixed-height pack.
+// reading like text (Genesis top-left, left-to-right then down); total height
+// is an OUTPUT the page scrolls through, unlike the desktop fixed-height pack.
 // Returns the treemap pixel height.
 const packTreemapMobile = (items, width) => {
   const cols = Math.max(2, Math.min(4, Math.floor(width / 170)));
-  const colWidth = width / cols;
   const MIN_TILE_HEIGHT = 110; // title offset + 8 pin bands stay legible
   const TARGET_AVG_HEIGHT = 128;
-  const MAX_COLUMN_FILL_FACTOR = 1.3;
 
   items.forEach((item) => {
     item.sizeWeight = Math.pow(item.value, 0.3);
   });
-
   const totalWeight = items.reduce((sum, item) => sum + item.sizeWeight, 0);
   const unit = (TARGET_AVG_HEIGHT * items.length) / totalWeight;
-  const heights = items.map((item) => Math.max(MIN_TILE_HEIGHT, item.sizeWeight * unit));
 
-  // Linear partition: split the canonical sequence into `cols` contiguous
-  // runs minimizing the tallest column (same DP as the Book-state chapters).
-  const n = heights.length;
-  const prefix = new Array(n + 1).fill(0);
-  for (let i = 1; i <= n; i += 1) prefix[i] = prefix[i - 1] + heights[i - 1];
-  const rangeSum = (a, b) => prefix[b] - prefix[a];
-  const dp = Array.from({ length: cols + 1 }, () => new Array(n + 1).fill(Number.POSITIVE_INFINITY));
-  const split = Array.from({ length: cols + 1 }, () => new Array(n + 1).fill(0));
-  for (let i = 1; i <= n; i += 1) dp[1][i] = rangeSum(0, i);
-  for (let c = 2; c <= cols; c += 1) {
-    for (let i = c; i <= n; i += 1) {
-      for (let j = c - 1; j < i; j += 1) {
-        const candidate = Math.max(dp[c - 1][j], rangeSum(j, i));
-        if (candidate < dp[c][i]) {
-          dp[c][i] = candidate;
-          split[c][i] = j;
-        }
-      }
-    }
-  }
-  const bounds = [];
-  let cursor = n;
-  for (let c = cols; c > 1; c -= 1) {
-    bounds.push(split[c][cursor]);
-    cursor = bounds[bounds.length - 1];
-  }
-  bounds.reverse();
-
-  const runs = [];
-  let start = 0;
-  for (let c = 0; c < cols; c += 1) {
-    const end = c < bounds.length ? bounds[c] : n;
-    runs.push([start, end]);
-    start = end;
-  }
-  const columnSums = runs.map(([a, b]) => rangeSum(a, b));
-  const treemapHeight = Math.max(...columnSums);
-
-  runs.forEach(([a, b], colIndex) => {
-    const fill = columnSums[colIndex] > 0
-      ? Math.min(treemapHeight / columnSums[colIndex], MAX_COLUMN_FILL_FACTOR)
-      : 1;
-    let y = 0;
-    for (let i = a; i < b; i += 1) {
-      const item = items[i];
-      item.w = colWidth;
-      item.h = heights[i] * fill;
-      item.x = colIndex * colWidth;
+  // Each row's height = tallest tile in it, so rows stay aligned; the
+  // final partial row stretches its tiles to fill the full width.
+  let y = 0;
+  for (let start = 0; start < items.length; start += cols) {
+    const row = items.slice(start, start + cols);
+    const tileWidth = width / row.length;
+    const rowHeight = Math.max(
+      ...row.map((item) => Math.max(MIN_TILE_HEIGHT, item.sizeWeight * unit))
+    );
+    row.forEach((item, i) => {
+      item.x = i * tileWidth;
       item.y = y;
-      item.colIndex = colIndex;
-      y += item.h;
-    }
-  });
-  return Math.ceil(treemapHeight);
+      item.w = tileWidth;
+      item.h = rowHeight;
+      item.colIndex = i;
+    });
+    y += rowHeight;
+  }
+  return Math.ceil(y);
 };
 
 const renderTreemap = (books, topic = null) => {
@@ -1847,107 +1808,116 @@ const renderBookView = (bookId, topic = null) => {
 
   if (mobile) {
     // Height is an output on mobile: the grid grows and the page scrolls.
+    // Row-major, uniform tile height: chapters 1,2,3 read across the top row.
     const avgTile = chapterDensity === "ultra" ? 56 : chapterDensity === "high" ? 72 : 96;
     height = Math.ceil(chapterCount / columnCount) * avgTile;
     grid.style.height = `${height}px`;
+
+    const columnWidth = width / columnCount;
+    chapterItems.forEach((item, idx) => {
+      item.x = (idx % columnCount) * columnWidth;
+      item.y = Math.floor(idx / columnCount) * avgTile;
+      item.w = columnWidth;
+      item.h = avgTile;
+    });
   } else {
     grid.style.height = "";
-  }
 
-  const booksPerCol = Math.ceil(chapterItems.length / columnCount);
-  const minHeightFloor = chapterDensity === "ultra"
-    ? (is4k ? 24 : 18)
-    : chapterDensity === "high"
-      ? (is4k ? 28 : 22)
-      : (is4k ? 34 : 26);
-  const minHeightCeiling = chapterDensity === "ultra"
-    ? (is4k ? 86 : 70)
-    : chapterDensity === "high"
-      ? (is4k ? 100 : 84)
-      : (is4k ? 120 : 96);
-  const dynamicMinHeight = clamp(
-    Math.floor(height / Math.max(booksPerCol + 1, 2)),
-    minHeightFloor,
-    minHeightCeiling
-  );
-  const columnWidth = width / columnCount;
-  const columns = Array.from({ length: columnCount }, () => []);
-  const effectiveColumns = Math.min(columnCount, chapterItems.length);
-  const chapterWeights = chapterItems.map((item) => item.value);
-  const chapterCountTotal = chapterItems.length;
+    const booksPerCol = Math.ceil(chapterItems.length / columnCount);
+    const minHeightFloor = chapterDensity === "ultra"
+      ? (is4k ? 24 : 18)
+      : chapterDensity === "high"
+        ? (is4k ? 28 : 22)
+        : (is4k ? 34 : 26);
+    const minHeightCeiling = chapterDensity === "ultra"
+      ? (is4k ? 86 : 70)
+      : chapterDensity === "high"
+        ? (is4k ? 100 : 84)
+        : (is4k ? 120 : 96);
+    const dynamicMinHeight = clamp(
+      Math.floor(height / Math.max(booksPerCol + 1, 2)),
+      minHeightFloor,
+      minHeightCeiling
+    );
+    const columnWidth = width / columnCount;
+    const columns = Array.from({ length: columnCount }, () => []);
+    const effectiveColumns = Math.min(columnCount, chapterItems.length);
+    const chapterWeights = chapterItems.map((item) => item.value);
+    const chapterCountTotal = chapterItems.length;
 
-  const prefixSums = new Array(chapterCountTotal + 1).fill(0);
-  for (let i = 1; i <= chapterCountTotal; i += 1) {
-    prefixSums[i] = prefixSums[i - 1] + chapterWeights[i - 1];
-  }
+    const prefixSums = new Array(chapterCountTotal + 1).fill(0);
+    for (let i = 1; i <= chapterCountTotal; i += 1) {
+      prefixSums[i] = prefixSums[i - 1] + chapterWeights[i - 1];
+    }
 
-  const rangeSum = (startIndex, endIndex) => prefixSums[endIndex] - prefixSums[startIndex];
+    const rangeSum = (startIndex, endIndex) => prefixSums[endIndex] - prefixSums[startIndex];
 
-  const dp = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(Number.POSITIVE_INFINITY));
-  const split = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(0));
+    const dp = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(Number.POSITIVE_INFINITY));
+    const split = Array.from({ length: effectiveColumns + 1 }, () => new Array(chapterCountTotal + 1).fill(0));
 
-  dp[0][0] = 0;
-  for (let i = 1; i <= chapterCountTotal; i += 1) {
-    dp[1][i] = rangeSum(0, i);
-  }
+    dp[0][0] = 0;
+    for (let i = 1; i <= chapterCountTotal; i += 1) {
+      dp[1][i] = rangeSum(0, i);
+    }
 
-  for (let col = 2; col <= effectiveColumns; col += 1) {
-    for (let i = col; i <= chapterCountTotal; i += 1) {
-      for (let j = col - 1; j < i; j += 1) {
-        const candidate = Math.max(dp[col - 1][j], rangeSum(j, i));
-        if (candidate < dp[col][i]) {
-          dp[col][i] = candidate;
-          split[col][i] = j;
+    for (let col = 2; col <= effectiveColumns; col += 1) {
+      for (let i = col; i <= chapterCountTotal; i += 1) {
+        for (let j = col - 1; j < i; j += 1) {
+          const candidate = Math.max(dp[col - 1][j], rangeSum(j, i));
+          if (candidate < dp[col][i]) {
+            dp[col][i] = candidate;
+            split[col][i] = j;
+          }
         }
       }
     }
-  }
 
-  const boundaries = [];
-  let currentI = chapterCountTotal;
-  for (let col = effectiveColumns; col > 1; col -= 1) {
-    const boundary = split[col][currentI];
-    boundaries.push(boundary);
-    currentI = boundary;
-  }
-  boundaries.reverse();
-
-  let start = 0;
-  for (let col = 0; col < effectiveColumns; col += 1) {
-    const end = col < boundaries.length ? boundaries[col] : chapterCountTotal;
-    columns[col] = chapterItems.slice(start, end);
-    start = end;
-  }
-
-  columns.forEach((column, colIndex) => {
-    if (column.length === 0) return;
-    const x = colIndex * columnWidth;
-    const columnValue = column.reduce((sum, item) => sum + item.value, 0);
-    const baseHeightTotal = dynamicMinHeight * column.length;
-    const extraHeight = Math.max(0, height - baseHeightTotal);
-    let y = 0;
-
-    column.forEach((item) => {
-      const valueRatio = columnValue > 0 ? (item.value / columnValue) : (1 / column.length);
-      const proportionalHeight = baseHeightTotal > height
-        ? height * valueRatio
-        : dynamicMinHeight + (extraHeight * valueRatio);
-      item.x = x;
-      item.y = y;
-      item.w = columnWidth;
-      item.h = Math.max(1, proportionalHeight);
-      y += item.h;
-    });
-
-    if (column.length > 0) {
-      const usedHeight = y;
-      const delta = height - usedHeight;
-      if (Math.abs(delta) > 0.1) {
-        const last = column[column.length - 1];
-        last.h = Math.max(1, last.h + delta);
-      }
+    const boundaries = [];
+    let currentI = chapterCountTotal;
+    for (let col = effectiveColumns; col > 1; col -= 1) {
+      const boundary = split[col][currentI];
+      boundaries.push(boundary);
+      currentI = boundary;
     }
-  });
+    boundaries.reverse();
+
+    let start = 0;
+    for (let col = 0; col < effectiveColumns; col += 1) {
+      const end = col < boundaries.length ? boundaries[col] : chapterCountTotal;
+      columns[col] = chapterItems.slice(start, end);
+      start = end;
+    }
+
+    columns.forEach((column, colIndex) => {
+      if (column.length === 0) return;
+      const x = colIndex * columnWidth;
+      const columnValue = column.reduce((sum, item) => sum + item.value, 0);
+      const baseHeightTotal = dynamicMinHeight * column.length;
+      const extraHeight = Math.max(0, height - baseHeightTotal);
+      let y = 0;
+
+      column.forEach((item) => {
+        const valueRatio = columnValue > 0 ? (item.value / columnValue) : (1 / column.length);
+        const proportionalHeight = baseHeightTotal > height
+          ? height * valueRatio
+          : dynamicMinHeight + (extraHeight * valueRatio);
+        item.x = x;
+        item.y = y;
+        item.w = columnWidth;
+        item.h = Math.max(1, proportionalHeight);
+        y += item.h;
+      });
+
+      if (column.length > 0) {
+        const usedHeight = y;
+        const delta = height - usedHeight;
+        if (Math.abs(delta) > 0.1) {
+          const last = column[column.length - 1];
+          last.h = Math.max(1, last.h + delta);
+        }
+      }
+    });
+  }
 
   const fragment = document.createDocumentFragment();
   chapterItems.forEach((item) => {
