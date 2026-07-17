@@ -47,6 +47,7 @@ let selectedBookId = null;
 let selectedReadReference = null;
 let preserveSelectedBookForNextRender = false;
 let isRenderingStateTransition = false;
+let isRestoringHistory = false;
 let pinnedLegendGenre = null;
 let activeDatasetMode = "topics";
 const DEFAULT_TOPIC = "JESUS, THE CHRIST";
@@ -547,7 +548,7 @@ const openBookInState2 = (bookId) => {
 
 const openChapterInState3 = (bookId, chapterNumber, verseNumber = 1) => {
   const book = bibleData[bookId];
-  const bookName = book?.name || BOOK_NAMES[bookId] || bookId;
+  const bookName = BOOK_NAMES[bookId] || book?.name || bookId;
   selectedBookId = bookId;
   selectedReadReference = {
     refText: `${bookName} ${chapterNumber}:${verseNumber}`,
@@ -719,6 +720,10 @@ const setState = (nextState) => {
   }
   updateStateUI(stateValue);
   renderCurrentState();
+  // Push after the render so ensureNavigationContext has already resolved
+  // any fallback book/verse into the URL. Re-selecting the current state is
+  // deduped inside syncHistory (identical URL -> no entry).
+  syncHistory({ push: true });
 };
 
 const updateCurrentTopicLabel = () => {
@@ -752,22 +757,100 @@ const setStoredDatasetMode = (mode) => {
   }
 };
 
-// Keeps the URL's ?dataset=&topic= params in sync with the current
-// selection (without pushing history entries) so the address bar is always
-// a shareable deep link back to this exact dataset/topic.
-const syncUrlState = () => {
-  try {
-    const url = new URL(window.location.href);
-    url.searchParams.set("dataset", activeDatasetMode);
-    if (selectedTopic) {
-      url.searchParams.set("topic", selectedTopic);
-    } else {
-      url.searchParams.delete("topic");
-    }
-    history.replaceState(null, "", url);
-  } catch (error) {
-    // Ignore - URL sync is best-effort and shouldn't break selection.
+// Serializes the full app position into the URL: ?dataset=&topic= plus
+// &state=&book= (states 2-3) and &ch=&v= (state 3). State 1 carries no nav
+// params so the root URL stays clean and shareable.
+const buildStateUrl = () => {
+  const url = new URL(window.location.href);
+  url.searchParams.set("dataset", activeDatasetMode);
+  if (selectedTopic) {
+    url.searchParams.set("topic", selectedTopic);
+  } else {
+    url.searchParams.delete("topic");
   }
+
+  const stateValue = getCurrentState();
+  if (stateValue >= 2 && selectedBookId) {
+    url.searchParams.set("state", String(stateValue));
+    url.searchParams.set("book", selectedBookId);
+  } else {
+    url.searchParams.delete("state");
+    url.searchParams.delete("book");
+  }
+  if (stateValue === 3 && selectedReadReference) {
+    url.searchParams.set("ch", String(selectedReadReference.chapter));
+    url.searchParams.set("v", String(selectedReadReference.verse));
+  } else {
+    url.searchParams.delete("ch");
+    url.searchParams.delete("v");
+  }
+  return url;
+};
+
+// push: state/book/chapter transitions (browser back/forward retraces them).
+// replace: topic/dataset changes and in-chapter verse hops (no history spam).
+const syncHistory = ({ push = false } = {}) => {
+  if (isRestoringHistory) return;
+  try {
+    const url = buildStateUrl();
+    if (url.href === window.location.href) return;
+    if (push) {
+      history.pushState(null, "", url);
+    } else {
+      history.replaceState(null, "", url);
+    }
+  } catch (error) {
+    // Ignore - URL sync is best-effort and shouldn't break navigation.
+  }
+};
+
+// Reads &state=&book=&ch=&v= back out of a URL, validating against loaded
+// data so a bad deep link degrades to the Overview instead of a blank view.
+const parseUrlNavState = (params) => {
+  const stateParam = Number(params.get("state"));
+  let stateValue = stateParam === 2 || stateParam === 3 ? stateParam : 1;
+  const rawBook = params.get("book");
+  const bookId = rawBook && (bibleData[rawBook] || BOOK_NAMES[rawBook]) ? rawBook : null;
+  if (stateValue >= 2 && !bookId) {
+    stateValue = 1;
+  }
+  let readRef = null;
+  if (stateValue === 3) {
+    const book = bibleData[bookId];
+    const chapterCount = Array.isArray(book?.chapters) ? book.chapters.length : 0;
+    let chapter = Number(params.get("ch"));
+    let verse = Number(params.get("v"));
+    chapter = Number.isFinite(chapter) && chapter >= 1 ? Math.floor(chapter) : 1;
+    if (chapterCount > 0) {
+      chapter = Math.min(chapter, chapterCount);
+    }
+    verse = Number.isFinite(verse) && verse >= 1 ? Math.floor(verse) : 1;
+    // BOOK_NAMES first: bible.json's per-book "name" field is a parsing
+    // artifact ("- Berean Standard Bible"), same ordering as renderReadView.
+    const bookName = BOOK_NAMES[bookId] || book?.name || bookId;
+    readRef = { refText: `${bookName} ${chapter}:${verse}`, chapter, verse };
+  }
+  return { stateValue, bookId, readRef };
+};
+
+// Applies a parsed URL position to the app (popstate + boot deep links).
+// Callers set isRestoringHistory around this so the renders it triggers
+// can't push new entries mid-restore.
+const applyUrlNavState = (params) => {
+  const { stateValue, bookId, readRef } = parseUrlNavState(params);
+  if (stateValue >= 2) {
+    selectedBookId = bookId;
+    selectedReadReference = readRef;
+    preserveSelectedBookForNextRender = true;
+    isRenderingStateTransition = true;
+  } else {
+    selectedReadReference = null;
+  }
+  if (stateSlider) {
+    stateSlider.value = String(stateValue);
+  }
+  updateStateUI(stateValue);
+  renderCurrentState();
 };
 
 const updateDatasetUI = () => {
@@ -862,7 +945,6 @@ const applyTopicSelection = (topicName, options = {}) => {
   // it too, not just on a real commit.
   if (commit || isExactMatch) {
     setStoredTopic(selectedTopic);
-    syncUrlState();
   }
 
   // Only re-render during typing in Overview (state 1) and Book (state 2)
@@ -871,7 +953,13 @@ const applyTopicSelection = (topicName, options = {}) => {
   if (commit || currentState <= 2) {
     renderCurrentState();
   }
-  
+
+  // Sync after the render: in states 2-3 the render can swap selectedBookId
+  // to a fallback, and the URL must reflect what actually got drawn.
+  if (commit || isExactMatch) {
+    syncHistory();
+  }
+
   updateCurrentTopicLabel();
   updateTopicActionState();
 };
@@ -2198,6 +2286,8 @@ const renderReadView = (bookId, topic = null) => {
       verse: verseNum
     };
     renderReadView(bookId, selectedTopic);
+    // Chapter changes are history entries; back retraces them.
+    syncHistory({ push: true });
   };
   
   const updateVerseHighlight = (verseList, targetVerseNum) => {
@@ -2229,6 +2319,10 @@ const renderReadView = (bookId, topic = null) => {
     const newIndex = highlightedVersesArray.indexOf(targetVerseNum);
     prevVerseBtn.disabled = newIndex === 0;
     nextVerseBtn.disabled = newIndex === highlightedVersesArray.length - 1;
+
+    // Verse hops within a chapter only replace the URL - a single browser
+    // Back skips past them to the previous chapter/state.
+    syncHistory();
   };
 
   const scrollToVerse = (container, target) => {
@@ -2658,8 +2752,8 @@ const boot = async () => {
           }
         }
         setStoredTopic(selectedTopic);
-        syncUrlState();
         renderCurrentState();
+        syncHistory();
         updateCurrentTopicLabel();
         updateTopicActionState();
         closeMobileMenu();
@@ -2816,8 +2910,40 @@ const boot = async () => {
   }
 
   populateBookDropdowns();
-  
-  renderCurrentState();
+
+  // Deep-link restore: &state=&book=&ch=&v= re-open the exact Book/Verse
+  // view (refresh in state 2/3 comes back where you were). Then normalize
+  // the initial entry via replace so invalid nav params get cleaned and
+  // dataset/topic are always stamped on. Uses urlParams captured at boot
+  // start - the topic-selection sync above already rewrote location.search
+  // (still state 1 at that point, so it strips the nav params).
+  const navParams = urlParams;
+  if (navParams.get("state") || navParams.get("book")) {
+    isRestoringHistory = true;
+    try {
+      applyUrlNavState(navParams);
+    } finally {
+      isRestoringHistory = false;
+    }
+  } else {
+    renderCurrentState();
+  }
+  syncHistory();
+
+  // Browser back/forward: restore the app position from the URL. Registered
+  // here (not top-level) so bibleData is guaranteed loaded before a restore.
+  window.addEventListener("popstate", () => {
+    isRestoringHistory = true;
+    try {
+      applyUrlNavState(new URLSearchParams(window.location.search));
+    } finally {
+      isRestoringHistory = false;
+    }
+    // Older entries can carry a stale topic/dataset (those only ever
+    // replaceState the newest entry) - re-stamp the current ones.
+    syncHistory();
+  });
+
   attachGenreLegend();
 
   // Mobile renders SET the container height, which re-fires this observer —
@@ -3426,50 +3552,8 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
 };
 
 boot();
-
-// Handle mouse back/forward buttons for state navigation
-let lastNavigationTime = 0;
-const handleMouseNavigation = (event) => {
-  // Prevent duplicate events (Edge fires both mouseup and auxclick)
-  const now = Date.now();
-  if (now - lastNavigationTime < 100) {
-    return;
-  }
-  
-  // Check for back/forward buttons
-  // Firefox uses button 3/4 in mouseup, Edge/Chrome use button 3/4 in auxclick
-  // Some mice/browsers might also use button 7/8
-  const isBack = event.button === 3 || event.button === 8;
-  const isForward = event.button === 4 || event.button === 7;
-  
-  if (isBack) {
-    // Back: go to previous state (but not below 1)
-    const currentState = getCurrentState();
-    if (currentState > 1) {
-      event.preventDefault();
-      event.stopPropagation();
-      lastNavigationTime = now;
-      setState(currentState - 1);
-      return false;
-    }
-    // If we're at State 1, let browser handle it (go to previous page)
-  } else if (isForward) {
-    // Forward: go to next state (but not above 3)
-    const currentState = getCurrentState();
-    if (currentState < 3) {
-      event.preventDefault();
-      event.stopPropagation();
-      lastNavigationTime = now;
-      setState(currentState + 1);
-      return false;
-    }
-    // If we're at State 3, let browser handle it (go forward in history if available)
-  }
-};
-
-// Listen for both mouseup and auxclick to support different browsers
-document.addEventListener('mouseup', handleMouseNavigation, true);
-document.addEventListener('auxclick', handleMouseNavigation, true);
+// Mouse thumb buttons (back/forward) are handled natively by the browser now
+// that app states are real history entries - popstate above restores them.
 
 const loadTopics = async () => {
   try {
