@@ -409,23 +409,55 @@ body::before {
 	color: var(--text-3);
 }
 
-/* Datalist dropdown styling for 4K */
+/* Custom topic suggestion dropdown - replaces native <input list>/<datalist>,
+   whose autocomplete popup is unreliable on mobile (iOS Safari doesn't render
+   it at all; Android Chrome doesn't reliably re-filter it as options mutate). */
+.topic-suggestions {
+	position: absolute;
+	top: calc(100% + 6px);
+	left: 0;
+	right: 0;
+	z-index: 30;
+	margin: 0;
+	padding: 6px;
+	list-style: none;
+	max-height: 320px;
+	overflow-y: auto;
+	background: rgba(12, 18, 28, 0.97);
+	border: 1px solid rgba(95, 200, 255, 0.45);
+	border-radius: 12px;
+	box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), var(--shadow-2);
+}
+
+.topic-suggestions[hidden] {
+	display: none;
+}
+
+.topic-suggestion-item {
+	padding: 9px 12px;
+	border-radius: 8px;
+	color: var(--text-1);
+	font-size: 0.95rem;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	cursor: pointer;
+}
+
+.topic-suggestion-item:hover,
+.topic-suggestion-item.active {
+	background: rgba(95, 200, 255, 0.18);
+}
+
+/* Suggestion dropdown styling for 4K */
 @media (min-width: 2560px) {
 	.topic-search input {
 		font-size: 1.05rem;
 		padding: 11px 44px 11px 14px;
 	}
-	
-	/* Webkit browsers (Chrome, Edge, Safari) */
-	.topic-datalist option {
+
+	.topic-suggestion-item {
 		font-size: 1.05rem;
-	}
-	
-	/* Firefox */
-	@-moz-document url-prefix() {
-		.topic-datalist option {
-			font-size: 1.05rem;
-		}
 	}
 }
 
@@ -2635,6 +2667,18 @@ body[data-state="3"] .legend-genre.active {
 
 	.topic-search input {
 		min-width: 0;
+		font-size: 16px;
+	}
+
+	/* Smaller cap than desktop - the dropdown lives inside the scrollable
+	   slide-down controls panel (.header-right), not the full viewport - and
+	   taller touch targets since items aren't hover-selectable here. */
+	.topic-suggestions {
+		max-height: 40vh;
+	}
+
+	.topic-suggestion-item {
+		padding: 12px 14px;
 		font-size: 16px;
 	}
 

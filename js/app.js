@@ -937,12 +937,10 @@ const applyTopicSelection = (topicName, options = {}) => {
     topicInput.value = selectedTopic || "";
   }
 
-  // Selecting a <datalist> suggestion (click or arrow keys + Enter) only
-  // ever fires "input" - native datalist/autofill popups consume the Enter
-  // keydown themselves, so the page never sees it, and "change" only fires
-  // on blur for text/search inputs. isExactMatch is how we detect that kind
-  // of selection (vs. partial text while still typing), so persist/sync on
-  // it too, not just on a real commit.
+  // Typing out a topic's exact name (without pressing Enter or picking a
+  // suggestion) never calls this with commit:true - only the "input" event
+  // does, uncommitted. isExactMatch is how that case still persists/syncs
+  // immediately instead of waiting for blur.
   if (commit || isExactMatch) {
     setStoredTopic(selectedTopic);
   }
@@ -991,25 +989,99 @@ const getTopicOptions = (filterValue) => {
   return combined;
 };
 
-const updateTopicOptions = (filterValue) => {
-  if (!topicInput) return;
-  const listId = "topic-list";
-  let list = document.getElementById(listId);
-  if (!list) {
-    list = document.createElement("datalist");
-    list.id = listId;
-    list.className = "topic-datalist";
-    topicInput.parentElement.appendChild(list);
-    topicInput.setAttribute("list", listId);
+// Custom suggestion dropdown, replacing the native <input list> + <datalist>
+// combo. Native datalist autocomplete is unreliable on mobile - iOS Safari
+// doesn't render its popup at all, and Android Chrome doesn't reliably
+// re-filter it as the underlying <option> list is mutated on each keystroke.
+// This renders/filters/positions the list ourselves so behavior is identical
+// on desktop and mobile.
+let topicSuggestionNames = [];
+let topicSuggestionActiveIndex = -1;
+
+const getTopicSuggestionsList = () => document.getElementById("topic-suggestions");
+
+const hideTopicSuggestions = () => {
+  const list = getTopicSuggestionsList();
+  if (list) {
+    list.hidden = true;
+    list.innerHTML = "";
   }
+  topicSuggestionNames = [];
+  topicSuggestionActiveIndex = -1;
+  if (topicInput) topicInput.setAttribute("aria-expanded", "false");
+};
+
+const highlightTopicSuggestion = (index) => {
+  const list = getTopicSuggestionsList();
+  if (!list) return;
+  const items = list.querySelectorAll(".topic-suggestion-item");
+  items.forEach((item, i) => {
+    item.classList.toggle("active", i === index);
+    item.setAttribute("aria-selected", i === index ? "true" : "false");
+  });
+  if (index >= 0 && items[index]) {
+    items[index].scrollIntoView({ block: "nearest" });
+  }
+  topicSuggestionActiveIndex = index;
+};
+
+const selectTopicSuggestion = (topicName) => {
+  applyTopicSelection(topicName, { commit: true });
+  hideTopicSuggestions();
+  closeMobileMenu();
+};
+
+const renderTopicSuggestions = (filterValue) => {
+  if (!topicInput) return;
+  let list = getTopicSuggestionsList();
+  if (!list) {
+    list = document.createElement("ul");
+    list.id = "topic-suggestions";
+    list.className = "topic-suggestions";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+    // mousedown (not click) with preventDefault, so the browser's default
+    // "clicking outside a focused text input blurs it" action never runs -
+    // the input stays focused straight through the selection. Reacting on
+    // click instead raced the "input" event's own DOM rebuild of this list
+    // and the blur/change that firing outside-click-closes-menu logic could
+    // trigger, occasionally clearing the field instead of selecting.
+    list.addEventListener("mousedown", (e) => {
+      const item = e.target.closest(".topic-suggestion-item");
+      if (!item) return;
+      e.preventDefault();
+      selectTopicSuggestion(item.textContent);
+    });
+    topicInput.parentElement.appendChild(list);
+    topicInput.setAttribute("role", "combobox");
+    topicInput.setAttribute("aria-autocomplete", "list");
+    topicInput.setAttribute("aria-controls", "topic-suggestions");
+    topicInput.setAttribute("aria-expanded", "false");
+  }
+
+  topicSuggestionNames = getTopicOptions(filterValue);
+  topicSuggestionActiveIndex = -1;
   list.innerHTML = "";
+
+  if (topicSuggestionNames.length === 0) {
+    list.hidden = true;
+    topicInput.setAttribute("aria-expanded", "false");
+    return;
+  }
+
   const fragment = document.createDocumentFragment();
-  getTopicOptions(filterValue).forEach((topic) => {
-    const option = document.createElement("option");
-    option.value = String(topic);
-    fragment.appendChild(option);
+  topicSuggestionNames.forEach((topic, index) => {
+    const item = document.createElement("li");
+    item.className = "topic-suggestion-item";
+    item.id = `topic-suggestion-${index}`;
+    item.textContent = String(topic);
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", "false");
+    fragment.appendChild(item);
   });
   list.appendChild(fragment);
+  list.hidden = false;
+  topicInput.setAttribute("aria-expanded", "true");
 };
 
 const stateNames = {
@@ -2744,9 +2816,8 @@ const boot = async () => {
         if (topicInput) {
           topicInput.value = selectedTopic || "";
           // Prophecy (and any other blank-default dataset) lands here with an
-          // empty field. Pre-focus it so the user's next click into the field
-          // is a "click while focused" - the only click that makes browsers
-          // auto-open the datalist dropdown - instead of needing two clicks.
+          // empty field - focus it so the suggestion dropdown is already open
+          // for the user's next interaction.
           if (!selectedTopic) {
             topicInput.focus();
           }
@@ -2765,39 +2836,60 @@ const boot = async () => {
       applyTopicSelection(e.target.value, { commit: true });
       closeMobileMenu();
     });
-    
-    // Also listen for input changes (for autocomplete)
+
+    // Also listen for input changes (for the suggestion dropdown)
     topicInput.addEventListener("input", (e) => {
-      updateTopicOptions(e.target.value);
+      renderTopicSuggestions(e.target.value);
       applyTopicSelection(e.target.value, { commit: false });
     });
 
-    // Selecting a <datalist> option via arrow keys + Enter updates the
-    // input's value but doesn't fire "change" (that only fires on blur for
-    // text-type inputs) - so it would render the new topic without
-    // persisting/syncing the URL until the user clicked elsewhere. Treat
-    // Enter as an explicit commit regardless.
+    // Arrow keys move the highlighted suggestion; Enter selects it (or, with
+    // nothing highlighted, commits whatever text is currently typed - this
+    // covers the exact-match-by-typing case, not just picking from the list).
     topicInput.addEventListener("keydown", (e) => {
+      const list = getTopicSuggestionsList();
+      const isOpen = list && !list.hidden;
+      if (e.key === "ArrowDown") {
+        if (!isOpen) renderTopicSuggestions(topicInput.value);
+        if (topicSuggestionNames.length > 0) {
+          e.preventDefault();
+          const next = topicSuggestionActiveIndex + 1 >= topicSuggestionNames.length ? 0 : topicSuggestionActiveIndex + 1;
+          highlightTopicSuggestion(next);
+        }
+        return;
+      }
+      if (e.key === "ArrowUp") {
+        if (isOpen && topicSuggestionNames.length > 0) {
+          e.preventDefault();
+          const next = topicSuggestionActiveIndex - 1 < 0 ? topicSuggestionNames.length - 1 : topicSuggestionActiveIndex - 1;
+          highlightTopicSuggestion(next);
+        }
+        return;
+      }
+      if (e.key === "Escape") {
+        if (isOpen) hideTopicSuggestions();
+        return;
+      }
       if (e.key === "Enter") {
+        if (isOpen && topicSuggestionActiveIndex >= 0 && topicSuggestionNames[topicSuggestionActiveIndex]) {
+          e.preventDefault();
+          selectTopicSuggestion(topicSuggestionNames[topicSuggestionActiveIndex]);
+          return;
+        }
         applyTopicSelection(e.target.value, { commit: true });
+        hideTopicSuggestions();
         closeMobileMenu();
       }
     });
 
-    // Browsers only auto-open the datalist dropdown on a click that lands on
-    // an *already-focused* field, not the click that focuses it - so an
-    // empty/blank field (e.g. Prophecy's default, or after clearing) needs
-    // two clicks. Opening the picker explicitly on focus fixes that for the
-    // first click too.
+    // Show suggestions on focus. Hide on blur, but delayed - a tap/click on a
+    // suggestion fires its own click handler right after this blur, and the
+    // list needs to still be in the DOM for that click to land.
     topicInput.addEventListener("focus", () => {
-      if (typeof topicInput.showPicker === "function") {
-        try {
-          topicInput.showPicker();
-        } catch (err) {
-          // Ignore - showPicker() requires user activation and throws if
-          // called outside one; the native click-to-open still applies.
-        }
-      }
+      renderTopicSuggestions(topicInput.value);
+    });
+    topicInput.addEventListener("blur", () => {
+      window.setTimeout(hideTopicSuggestions, 150);
     });
 
     const linkedTopic = urlTopic ? resolveTopicKey(urlTopic) : null;
@@ -2815,13 +2907,8 @@ const boot = async () => {
   if (topicClearBtn) {
     topicClearBtn.addEventListener("click", () => {
       applyTopicSelection(null, { commit: true });
-      // Repopulate the datalist with the full topic list - the last "input"
-      // event left it filtered down to matches for the selected topic, so
-      // without this only that one topic would show in the dropdown.
-      updateTopicOptions("");
-      // Focus the now-empty field so the *next* click is a "click while
-      // focused" - browsers only auto-open the datalist dropdown on that,
-      // not on the click that originally focuses the field.
+      // Focus the now-empty field - the focus handler renders the
+      // suggestion dropdown fresh with the full topic list.
       if (topicInput) topicInput.focus();
     });
   }
@@ -3572,7 +3659,7 @@ const loadTopics = async () => {
       topicsIndex.set(normalizeTopicKey(name), name);
     });
     allTopicNames = topicNames;
-    updateTopicOptions("");
+    hideTopicSuggestions();
   } catch (error) {
     console.warn(`Failed to load ${activeDatasetMode} data, using fallback`);
     const fallbackTopics = ["angels", "birth of Jesus Christ", "crucifixion of Jesus Christ", "demons", "appearance of Jesus", "paradise", "resurrection", "Son of man", "transfiguration"];
@@ -3585,7 +3672,7 @@ const loadTopics = async () => {
       topicsIndex.set(normalizeTopicKey(name), name);
     });
     allTopicNames = fallbackTopics;
-    updateTopicOptions("");
+    hideTopicSuggestions();
   }
 };
 
