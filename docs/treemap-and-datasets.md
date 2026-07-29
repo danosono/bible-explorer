@@ -149,9 +149,9 @@ query. This is a low-specificity rule and doesn't affect the more specific
 `#book-grid[data-density="high"/"ultra"] .pin-lines` overrides used by
 high-chapter-count books in Book View.
 
-## The four datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
+## The five datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
 
-All four share one schema and are loaded generically by `loadTopics()`:
+All five share one schema and are loaded generically by `loadTopics()`:
 
 ```json
 {
@@ -171,6 +171,21 @@ All four share one schema and are loaded generically by `loadTopics()`:
 | BSB Topics | `bsb-topics` | `data/bsb-topics-with-references.json` | `C:\Unity Projects\_BibleDatasets\Berean\bsb_topical_index.xlsx` via `scripts/parse-bsb-topics.js` |
 | Prophecy | `prophecy` | `data/prophecy-topics-with-references.json` | Prophecy docx parse (separate aggregate-topic logic, `PROPHECY_AGGREGATE_TOPICS`) |
 | BSB Concordance | `concordance` | `data/bsb-concordance-with-references.json` (14.77MB, 14,526 words, 276,602 refs) | `C:\Unity Projects\_BibleDatasets\Berean\bsb_concordance.xlsx` via `scripts/parse-bsb-concordance.js` |
+| Custom Dataset | `custom` | `data/custom-topics-with-references.json` | `source/custom-topics.json` via `scripts/build-custom-dataset.js` |
+
+### Custom Dataset pipeline (`source/custom-topics.json` → `scripts/build-custom-dataset.js`)
+The only dataset the developer hand-authors rather than parses from a third-party
+source — for personal study (e.g. "Jesus is God" with supporting verses), added to
+over time. `source/custom-topics.json` is a flat `{ "Topic Name": ["Book Ch:V", ...] }`
+map kept deliberately simple to hand-edit; each ref string may be a single verse
+("John 1:1"), a verse range ("John 1:1-3"), a comma list ("John 1:1,3"), and/or end
+with `| a note` (becomes that verse's `subtopics` entry). Workflow: edit
+`source/custom-topics.json`, run `node scripts/build-custom-dataset.js` to regenerate
+`data/custom-topics-with-references.json` (computing each absolute verse index against
+`data/bible.json`, same approach as `scripts/parse-prophecy-docx.js`), then commit both
+files. `DATASET_CONFIG.custom` also carries a `note` string, surfaced next to the
+dataset label in the UI (`updateDatasetUI()`, `js/app.js` ~line 856) so it's clear this
+dataset isn't a sourced text like the other four.
 
 ### Nave's Topics pipeline (`source/Naves.txt` → `scripts/parse-naves-text.js` → `scripts/parse-topics.js`)
 Two-stage pipeline, same as the other three datasets' "raw source → intermediate
@@ -340,7 +355,7 @@ lowercase "son of man" address to Ezekiel doesn't match).
 ## Per-dataset default topics
 Each `DATASET_CONFIG` entry has a `defaultTopic` (resolved via
 `getDatasetDefaultTopic(mode)`, near `getPreferredTopicFallback()`):
-Nave's Topics → `"JESUS, THE CHRIST"`, BSB Topics → `"Blood of Jesus"`,
+Nave's Topics → `"JESUS, THE CHRIST"`, BSB Topics → `"Light"`,
 Concordance → `"Eternal"`, Prophecy → `""` (blank - `getDatasetDefaultTopic`
 returns `null` for an empty `defaultTopic` rather than falling back, so
 Prophecy starts with no topic selected and an empty search field).

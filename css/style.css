@@ -177,15 +177,20 @@ body::before {
 }
 
 .peruser-link {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	text-align: center;
+	line-height: 1.25;
 	font-size: clamp(0.85rem, 1vw, 1.2rem);
 	color: var(--text-3);
 	text-decoration: none;
 	font-weight: 500;
 	letter-spacing: 0.02em;
-	white-space: nowrap;
-	padding: 6px 12px;
+	padding: 6px 14px;
 	border: 1px solid rgba(96, 130, 168, 0.35);
-	border-radius: 999px;
+	border-radius: 14px;
 	transition: color 0.2s ease, border-color 0.2s ease;
 }
 
@@ -317,23 +322,55 @@ body::before {
 	font-size: clamp(0.95rem, 0.9vw, 1.2rem);
 }
 
-.topic-search .start-hint {
-	margin-left: 8px;
-	font-style: normal;
-	font-size: clamp(0.7rem, 0.75vw, 0.95rem);
-	letter-spacing: 0.08em;
-	text-transform: none;
-	color: rgba(255, 210, 128, 0.6);
-	background: rgba(255, 210, 128, 0.12);
-	border: 1px solid rgba(255, 210, 128, 0.25);
-	border-radius: 999px;
-	padding: 2px 8px;
-	box-shadow: 0 0 8px rgba(255, 210, 128, 0.12);
+.topic-search-label-row {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.topic-search-controls {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	position: relative;
 }
 
 .topic-input-wrap {
 	position: relative;
 	display: block;
+	flex: 1;
+	min-width: 0;
+}
+
+.topic-random-btn {
+	flex: none;
+	width: clamp(18px, 1.5vw, 24px);
+	height: clamp(18px, 1.5vw, 24px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border-radius: 50%;
+	border: 1px solid rgba(95, 200, 255, 0.45);
+	background: rgba(14, 22, 35, 0.85);
+	color: rgba(95, 200, 255, 0.9);
+	font-size: clamp(0.68rem, 0.75vw, 0.92rem);
+	line-height: 1;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-1);
+}
+
+.topic-random-btn:hover {
+	background: rgba(95, 200, 255, 0.15);
+	box-shadow: 0 0 12px rgba(95, 200, 255, 0.25);
+	transform: rotate(15deg);
+}
+
+.topic-random-btn:disabled {
+	opacity: 0.4;
+	cursor: default;
+	pointer-events: none;
 }
 
 .topic-search input {
@@ -341,12 +378,12 @@ body::before {
 	width: 100%;
 	padding: clamp(11px, 0.88vw, 15px) clamp(38px, 3vw, 50px) clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
 	border-radius: 12px;
-	border: 1px solid rgba(95, 200, 255, 0.55);
+	border: 1px solid rgba(255, 210, 128, 0.45);
 	background: rgba(12, 18, 28, 0.9);
 	color: var(--text-1);
 	font-size: clamp(1.05rem, 1.05vw, 1.43rem);
 	font-family: var(--font-body);
-	box-shadow: 0 0 14px rgba(95, 200, 255, 0.25), var(--shadow-1);
+	box-shadow: 0 0 12px rgba(255, 210, 128, 0.18), var(--shadow-1);
 	transition: box-shadow 0.25s ease, border-color 0.25s ease, background 0.25s ease;
 	animation: topic-glow 5s ease-in-out infinite;
 }
@@ -357,6 +394,9 @@ body::before {
 	appearance: none;
 }
 
+/* An overlay inside the input again (not a flex sibling) so showing/hiding
+   it never resizes or repositions the input - it just fades in on hover or
+   focus, staying out of the way of typed text the rest of the time. */
 .topic-clear-btn {
 	position: absolute;
 	top: 50%;
@@ -375,8 +415,16 @@ body::before {
 	font-size: clamp(1rem, 1vw, 1.3rem);
 	line-height: 1;
 	cursor: pointer;
-	transition: all 0.2s ease;
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
 	box-shadow: var(--shadow-1);
+}
+
+.topic-input-wrap:hover .topic-clear-btn:not([hidden]),
+.topic-input-wrap:focus-within .topic-clear-btn:not([hidden]) {
+	opacity: 1;
+	pointer-events: auto;
 }
 
 .topic-clear-btn:hover {
@@ -389,8 +437,8 @@ body::before {
 }
 
 .topic-search input:focus {
-	box-shadow: 0 0 20px rgba(95, 200, 255, 0.45), var(--shadow-1);
-	border-color: rgba(95, 200, 255, 0.9);
+	box-shadow: 0 0 18px rgba(255, 210, 128, 0.35), var(--shadow-1);
+	border-color: rgba(255, 210, 128, 0.85);
 	background: rgba(12, 18, 28, 0.95);
 	animation: none;
 }
@@ -398,10 +446,10 @@ body::before {
 @keyframes topic-glow {
 	0%,
 	100% {
-		box-shadow: 0 0 10px rgba(95, 200, 255, 0.2), var(--shadow-1);
+		box-shadow: 0 0 8px rgba(255, 210, 128, 0.15), var(--shadow-1);
 	}
 	50% {
-		box-shadow: 0 0 18px rgba(95, 200, 255, 0.35), var(--shadow-1);
+		box-shadow: 0 0 14px rgba(255, 210, 128, 0.28), var(--shadow-1);
 	}
 }
 
@@ -756,7 +804,7 @@ body[data-state="3"] .state--book {
 	min-height: 90px;
 	box-shadow: inset 0 0 0 1px rgba(12, 18, 28, 0.9), var(--shadow-1);
 	overflow: hidden;
-	transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+	transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .card--separator {
@@ -791,6 +839,25 @@ body[data-state="3"] .state--book {
 	transform: translateY(-2px);
 	border-color: rgba(143, 198, 215, 0.5);
 	box-shadow: 0 14px 28px rgba(5, 11, 20, 0.7);
+}
+
+/* The card body (not just its title bar) opens Book view too - cursor is
+   missing here today, which is likely why that isn't obvious. */
+.card.is-clickable {
+	cursor: pointer;
+}
+
+/* Overview only - a distinct signal for the card body specifically
+   (:not(:has(...)) suppresses it while the title bar or a pin-line is the
+   thing actually under the cursor, since those already have their own
+   hover treatment and clicking them does something different from clicking
+   the body). Color-only, no transform: the cursor drifting across a
+   line/body boundary flips this on and off rapidly, and a size change
+   there reads as jittery growing/shrinking - a color swap doesn't. Book
+   view's card already has consistent header/body hover behavior and wasn't
+   asked to change. */
+.state--overview .card.is-clickable:hover:not(:has(.card-title-bar:hover)):not(:has(.pin-line:hover)) {
+	background: linear-gradient(160deg, rgba(40, 56, 82, 0.92), rgba(22, 33, 51, 0.95));
 }
 
 .card.genre-highlighted {
@@ -890,7 +957,13 @@ body[data-state="3"] .state--book {
 .pin-lines {
 	display: flex;
 	flex-direction: column;
-	gap: 4px;
+	/* This gap is paid 7 times (8 bands) out of a small card's tiny content
+	   budget - at a ~76px HD card that's 28px of fixed overhead against only
+	   ~34px of pin-lines area, leaving almost nothing for the bands'
+	   flex-grow share regardless of how tall .pin-line itself is set. 1px
+	   keeps bands visually separated without eating the budget a taller
+	   pin-line needs to actually be visible instead of overflow:hidden-clipped. */
+	gap: 1px;
 	margin: 0;
 	position: absolute;
 	top: 32px;
@@ -916,13 +989,20 @@ body[data-state="3"] .state--book {
 	overflow: hidden;
 }
 
+/* Doesn't compete for the flex:1 share above - collapses to 0 so populated
+   bands can use the height it would have otherwise reserved. */
+.pin-line-band--empty {
+	flex: 0 0 0;
+	min-height: 0;
+}
+
 .pin-line {
-	height: 6px;
+	height: 8px;
 	border-radius: 999px;
 	background: linear-gradient(90deg, rgba(157, 227, 212, 0.8), rgba(157, 227, 212, 0.2));
 	box-shadow: 0 0 6px rgba(157, 227, 212, 0.2);
 	flex: 0 0 auto;
-	transition: height 0.2s ease, box-shadow 0.2s ease;
+	transition: height 0.2s ease, box-shadow 0.15s ease, transform 0.15s ease, filter 0.15s ease;
 	mix-blend-mode: screen;
 }
 
@@ -931,9 +1011,13 @@ body[data-state="3"] .state--book {
 	box-shadow: 0 0 10px rgba(157, 227, 212, 0.4);
 }
 
+/* Brightness/shadow are the reliable hover cue - they read clearly even in
+   the smallest book cards, where a tiny pin-line-band's overflow:hidden can
+   clip most of the scaleY growth before it's visible. */
 .pin-line:hover {
-	box-shadow: 0 0 12px rgba(157, 227, 212, 0.6);
-	transform: scaleY(1.3);
+	box-shadow: 0 0 16px rgba(157, 227, 212, 0.85);
+	transform: scaleY(1.5);
+	filter: brightness(1.55) saturate(1.2);
 }
 
 .pin-line--ot {
@@ -1195,6 +1279,31 @@ body[data-state="3"] .state--book {
 	border-color: rgba(170, 120, 255, 0.52);
 }
 
+/* Prophecy dataset only: hints at the OT/NT counterpart verse(s) sharing a
+   verse's prophecy topic (see getProphecyCounterpartRefs, js/app.js). */
+.prophecy-counterpart-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 1.4em;
+	height: 1.4em;
+	margin-left: 6px;
+	border-radius: 50%;
+	border: 1px solid rgba(200, 160, 255, 0.45);
+	background: rgba(200, 160, 255, 0.14);
+	color: rgba(220, 190, 255, 0.95);
+	font-size: clamp(0.7rem, 0.8vw, 0.95rem);
+	line-height: 1;
+	cursor: help;
+	vertical-align: middle;
+	transition: all 0.2s ease;
+}
+
+.prophecy-counterpart-icon:hover {
+	background: rgba(200, 160, 255, 0.28);
+	box-shadow: 0 0 10px rgba(200, 160, 255, 0.35);
+}
+
 .verse-modal-close {
 	position: absolute;
 	top: 12px;
@@ -1429,7 +1538,7 @@ tip {
   font-size: 0.85rem;
   line-height: 1.5;
   color: var(--text-2);
-  max-width: 420px;
+  max-width: min(560px, 90vw);
   white-space: pre-wrap;
   word-wrap: break-word;
   z-index: 2000;
@@ -1450,7 +1559,7 @@ tip.show {
   tip {
     padding: 16px 20px;
     font-size: 1.6rem;
-    max-width: 500px;
+    max-width: 680px;
     line-height: 1.6;
   }
 }

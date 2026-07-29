@@ -4,6 +4,7 @@ const stateCaptions = document.querySelectorAll(".state-captions span");
 const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
 const topicClearBtn = document.getElementById("topic-clear-btn");
+const topicRandomBtn = document.getElementById("topic-random-btn");
 const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
@@ -69,7 +70,7 @@ const DATASET_CONFIG = {
     file: "data/bsb-topics-with-references.json",
     label: "BSB Topics",
     placeholder: "Search BSB topics",
-    defaultTopic: "Blood of Jesus"
+    defaultTopic: "Light"
   },
   prophecy: {
     file: "data/prophecy-topics-with-references.json",
@@ -87,6 +88,13 @@ const DATASET_CONFIG = {
     label: "BSB Concordance",
     placeholder: "Search words",
     defaultTopic: "Eternal"
+  },
+  custom: {
+    file: "data/custom-topics-with-references.json",
+    label: "Custom Dataset",
+    placeholder: "Search custom topics",
+    defaultTopic: "",
+    note: "Custom dataset — from the developer's own study and observations."
   }
 };
 const PROPHECY_AGGREGATE_TOPICS = [
@@ -111,6 +119,19 @@ const getPreferredTopicFallback = () => {
     if (firstSpecific) return firstSpecific;
   }
   return allTopicNames[0] || "";
+};
+
+// Picks a topic at random from the currently active dataset, skipping the
+// synthetic Prophecy "[All] ..." aggregate topics and (when possible)
+// avoiding re-picking the topic that's already selected.
+const pickRandomTopic = () => {
+  const candidates = allTopicNames.filter((name) => !isProphecyAggregateTopic(name));
+  if (candidates.length === 0) return null;
+  const pool = candidates.length > 1
+    ? candidates.filter((name) => name !== selectedTopic)
+    : candidates;
+  const finalPool = pool.length > 0 ? pool : candidates;
+  return finalPool[Math.floor(Math.random() * finalPool.length)];
 };
 
 // Resolve a dataset's configured default topic. An empty defaultTopic (e.g.
@@ -328,6 +349,67 @@ const applyReferenceKindClass = (element, baseClassName, kind) => {
   element.classList.add(`${baseClassName}--${kind}`);
 };
 
+// The Prophecy dataset's "[All] ..." aggregate topics (PROPHECY_AGGREGATE_TOPICS)
+// merge every real prophecy topic together, prefixing each subtopic string
+// "RealTopicName — Prophecy (OT): ..." (see buildAggregateProphecyTopic). To
+// find a verse's OT/NT counterpart while viewing an aggregate topic, recover
+// the real topic name from that prefix so the lookup can use the real
+// topic's own reference list instead of the aggregate's mixed-together one.
+const resolveRealProphecyTopicName = (topicName, subtopicText) => {
+  if (!isProphecyAggregateTopic(topicName)) return topicName;
+  const first = String(subtopicText || "").split(";")[0].trim();
+  const idx = first.indexOf(" — ");
+  return idx === -1 ? null : first.slice(0, idx).trim();
+};
+
+// Prophecy topic keys are "N. <name>" (see scripts/parse-prophecy-docx.js),
+// but showVerseModal/renderReadView only carry the topic's plain `.name`
+// (no index prefix) - so a lookup by key alone misses. Fall back to scanning
+// by `.name` field; this also covers datasets where key === name already.
+const findTopicDataByName = (name) => {
+  if (!name) return null;
+  if (topicsData[name]) return topicsData[name];
+  return Object.values(topicsData).find((entry) => entry && entry.name === name) || null;
+};
+
+// Returns reference strings for the "opposite side" (OT<->NT) verse(s)
+// sharing this verse's real prophecy topic - e.g. an OT verse's icon reveals
+// its NT fulfillment ref(s), and vice versa. No counterpart is resolved for
+// "mixed" verses, since both sides are already shown there.
+const getProphecyCounterpartRefs = (topicName, kind) => {
+  if (!topicName || (kind !== "ot" && kind !== "nt")) return [];
+  const topicData = findTopicDataByName(topicName);
+  if (!topicData || !topicData.references) return [];
+  const opposite = kind === "ot" ? "nt" : "ot";
+  const refs = new Set();
+  Object.entries(topicData.references).forEach(([entryBookId, entries]) => {
+    (Array.isArray(entries) ? entries : []).forEach((entry) => {
+      const entryKind = getReferenceKindFromData({
+        subtopics: entry.subtopics,
+        refs: entry.refs,
+        bookId: entryBookId
+      });
+      if (entryKind === opposite || entryKind === "mixed") {
+        (Array.isArray(entry.refs) ? entry.refs : []).forEach((ref) => refs.add(ref));
+      }
+    });
+  });
+  return Array.from(refs);
+};
+
+// Builds the OT/NT counterpart tooltip text, pairing each counterpart
+// reference with its verse text (when resolvable) so the hint is useful
+// without needing to open the verse detail popup separately.
+const buildCounterpartTooltipText = (label, refs) => {
+  const lines = refs.map((ref) => {
+    const bookId = getBookIdFromRef(ref);
+    const parsed = parseChapterVerse(ref);
+    const verseText = bookId && parsed ? getVerseText(bookId, parsed.chapter, parsed.verse) : null;
+    return verseText ? `${ref} — ${verseText}` : ref;
+  });
+  return `${label}:\n${lines.join("\n")}`;
+};
+
 // Map a verse-range's verse count to a flex-basis percentage, implementing a
 // 4-columns-per-row pin-line layout (1/2/3/4 quarter-slots).
 const getPinLineWidthPercent = (verseCount) => {
@@ -464,6 +546,28 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
   if (currentTooltip) currentTooltip.remove();
 
   // Create tooltip element
+  const tooltip = document.createElement('tip');
+  tooltip.textContent = text;
+  tooltip.dataset.content = text;
+  document.body.appendChild(tooltip);
+  currentTooltip = tooltip;
+
+  requestAnimationFrame(() => {
+    positionTooltip(tooltip, e);
+  });
+};
+
+// A lighter tooltip than showTooltip() - no ref-text parsing, no verse-preview
+// lookup, no "Click to view full range" suffix. Used for hints that are just
+// a fixed line of text (e.g. the Prophecy OT/NT counterpart icon).
+const showPlainTooltip = (e, text) => {
+  if (window.matchMedia("(hover: none)").matches) return;
+  if (currentTooltip && currentTooltip.dataset.content === text) {
+    positionTooltip(currentTooltip, e);
+    return;
+  }
+  if (currentTooltip) currentTooltip.remove();
+
   const tooltip = document.createElement('tip');
   tooltip.textContent = text;
   tooltip.dataset.content = text;
@@ -856,7 +960,12 @@ const applyUrlNavState = (params) => {
 const updateDatasetUI = () => {
   const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
   if (topicSearchLabel) {
-    topicSearchLabel.innerHTML = `${config.label} <em class="start-hint">Search</em>`;
+    topicSearchLabel.textContent = config.label;
+    if (config.note) {
+      topicSearchLabel.title = config.note;
+    } else {
+      topicSearchLabel.removeAttribute("title");
+    }
   }
   if (topicInput) {
     topicInput.placeholder = config.placeholder;
@@ -917,8 +1026,13 @@ const setStoredTopic = (topicName) => {
 };
 
 const updateTopicActionState = () => {
-  if (!topicClearBtn) return;
-  topicClearBtn.hidden = !selectedTopic;
+  if (topicClearBtn) {
+    topicClearBtn.hidden = !selectedTopic;
+  }
+  if (topicRandomBtn) {
+    const hasEligibleTopics = allTopicNames.some((name) => !isProphecyAggregateTopic(name));
+    topicRandomBtn.disabled = !hasEligibleTopics;
+  }
 };
 
 const applyTopicSelection = (topicName, options = {}) => {
@@ -1090,7 +1204,7 @@ const stateNames = {
   3: "Verse"
 };
 
-if (stateSlider && statePill) {
+if (stateSlider) {
   stateSlider.addEventListener("input", () => {
     const value = Number(stateSlider.value) || 1;
     setState(value);
@@ -1785,7 +1899,12 @@ const renderTreemap = (books, topic = null) => {
 
         bands.forEach((bandLines) => {
           const bandEl = document.createElement("div");
-          bandEl.className = "pin-line-band";
+          // Empty bands collapse to 0 height instead of reserving an equal
+          // 1/8 share like populated ones - on a small book's card, most
+          // bands are empty, and reclaiming their space is what lets the
+          // few real pin-lines render at full height instead of getting
+          // clipped by pin-line-band's overflow:hidden.
+          bandEl.className = bandLines.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
           bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
           lines.appendChild(bandEl);
         });
@@ -2214,7 +2333,9 @@ const renderBookView = (bookId, topic = null) => {
 
       bands.forEach((bandLines) => {
         const bandEl = document.createElement("div");
-        bandEl.className = "pin-line-band";
+        // See the matching comment in renderTreemap - empty bands collapse
+        // so populated ones can use the reclaimed height.
+        bandEl.className = bandLines.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
         bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
         lines.appendChild(bandEl);
       });
@@ -2283,6 +2404,10 @@ const renderReadView = (bookId, topic = null) => {
   const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
   const chapterVerseMap = new Map();
   const chapterVerseKinds = new Map();
+  // Prophecy dataset only: raw subtopic text per verse, needed to resolve
+  // OT/NT counterparts when `topic` is an aggregate "[All] ..." topic (see
+  // resolveRealProphecyTopicName).
+  const chapterVerseSubtopics = new Map();
 
   if (Array.isArray(bookEntries)) {
     bookEntries.forEach((entry) => {
@@ -2304,6 +2429,11 @@ const renderReadView = (bookId, topic = null) => {
       const existingKind = verseKindMap.get(verseNumber) || null;
       const nextKind = getReferenceKindFromData({ subtopics: entry.subtopics || [], refs, bookId });
       verseKindMap.set(verseNumber, mergeReferenceKinds(existingKind, nextKind));
+
+      if (!chapterVerseSubtopics.has(chapterNumber)) {
+        chapterVerseSubtopics.set(chapterNumber, new Map());
+      }
+      chapterVerseSubtopics.get(chapterNumber).set(verseNumber, (entry.subtopics || []).join("; "));
     });
   }
 
@@ -2321,6 +2451,7 @@ const renderReadView = (bookId, topic = null) => {
   const verses = Array.isArray(chapter?.verses) ? chapter.verses : [];
   const highlightedVerses = chapterVerseMap.get(chapterNumber) || new Set();
   const highlightedVerseKinds = chapterVerseKinds.get(chapterNumber) || new Map();
+  const highlightedVerseSubtopics = chapterVerseSubtopics.get(chapterNumber) || new Map();
   const highlightedVersesArray = Array.from(highlightedVerses).sort((a, b) => a - b);
   
   // Update verse count display for current chapter
@@ -2493,6 +2624,8 @@ const renderReadView = (bookId, topic = null) => {
       && selectedReadReference.chapter === chapterNumber
       && selectedReadReference.verse === verseNumber;
 
+    let counterpartIcon = null;
+
     if (isHighlighted) {
       verseRow.classList.add("is-topic");
       const verseKind = highlightedVerseKinds.get(verseNumber) || null;
@@ -2505,11 +2638,31 @@ const renderReadView = (bookId, topic = null) => {
         verseRow.classList.add("is-current");
         selectedRow = verseRow;
       }
+
+      if (activeDatasetMode === "prophecy" && (verseKind === "ot" || verseKind === "nt")) {
+        const subtopicText = highlightedVerseSubtopics.get(verseNumber) || "";
+        const realTopic = resolveRealProphecyTopicName(topic, subtopicText);
+        const counterpartRefs = realTopic ? getProphecyCounterpartRefs(realTopic, verseKind) : [];
+        if (counterpartRefs.length) {
+          const counterpartLabel = verseKind === "ot" ? "NT Fulfillment" : "OT Prophecy";
+          const tooltipText = buildCounterpartTooltipText(counterpartLabel, counterpartRefs);
+          counterpartIcon = document.createElement("span");
+          counterpartIcon.className = "prophecy-counterpart-icon";
+          counterpartIcon.textContent = "⇄";
+          counterpartIcon.setAttribute("aria-label", `Show ${counterpartLabel.toLowerCase()} reference`);
+          counterpartIcon.addEventListener("mouseenter", (e) => showPlainTooltip(e, tooltipText));
+          counterpartIcon.addEventListener("mousemove", updateTooltipPosition);
+          counterpartIcon.addEventListener("mouseleave", hideTooltip);
+        }
+      }
     }
 
     const numberEl = document.createElement("span");
     numberEl.className = "chapter-verse-number";
     numberEl.textContent = `${verseNumber}`;
+    if (counterpartIcon) {
+      numberEl.appendChild(counterpartIcon);
+    }
 
     const textEl = document.createElement("span");
     textEl.className = "chapter-verse-text";
@@ -2885,11 +3038,24 @@ const boot = async () => {
     // Show suggestions on focus. Hide on blur, but delayed - a tap/click on a
     // suggestion fires its own click handler right after this blur, and the
     // list needs to still be in the DOM for that click to land.
+    //
+    // The delayed hide is cancelled on the next focus so it can't fire after
+    // the input has already been refocused (e.g. clicking the clear button
+    // blurs the input, then immediately refocuses it) - otherwise the
+    // freshly-rendered list would flash open and then vanish 150ms later.
+    let topicSuggestionsHideTimer = null;
     topicInput.addEventListener("focus", () => {
+      if (topicSuggestionsHideTimer) {
+        window.clearTimeout(topicSuggestionsHideTimer);
+        topicSuggestionsHideTimer = null;
+      }
       renderTopicSuggestions(topicInput.value);
     });
     topicInput.addEventListener("blur", () => {
-      window.setTimeout(hideTopicSuggestions, 150);
+      topicSuggestionsHideTimer = window.setTimeout(() => {
+        hideTopicSuggestions();
+        topicSuggestionsHideTimer = null;
+      }, 150);
     });
 
     const linkedTopic = urlTopic ? resolveTopicKey(urlTopic) : null;
@@ -2910,6 +3076,15 @@ const boot = async () => {
       // Focus the now-empty field - the focus handler renders the
       // suggestion dropdown fresh with the full topic list.
       if (topicInput) topicInput.focus();
+    });
+  }
+
+  if (topicRandomBtn) {
+    topicRandomBtn.addEventListener("click", () => {
+      const randomTopic = pickRandomTopic();
+      if (randomTopic) {
+        applyTopicSelection(randomTopic, { commit: true });
+      }
     });
   }
 
@@ -3370,19 +3545,36 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     return badges;
   };
 
-  const appendReferenceBadges = (container, subtopicText = "") => {
+  const appendReferenceBadges = (container, subtopicText = "", kind = null) => {
     const badges = getReferenceBadges(subtopicText);
-    if (!badges.length) return;
+    if (badges.length) {
+      const badgeRow = document.createElement("div");
+      badgeRow.className = "ref-badge-row";
+      badges.forEach((badge) => {
+        const el = document.createElement("span");
+        el.className = `ref-badge ${badge.className}`;
+        el.textContent = badge.label;
+        badgeRow.appendChild(el);
+      });
+      container.appendChild(badgeRow);
+    }
 
-    const badgeRow = document.createElement("div");
-    badgeRow.className = "ref-badge-row";
-    badges.forEach((badge) => {
-      const el = document.createElement("span");
-      el.className = `ref-badge ${badge.className}`;
-      el.textContent = badge.label;
-      badgeRow.appendChild(el);
-    });
-    container.appendChild(badgeRow);
+    if (isProphecyMode && (kind === "ot" || kind === "nt")) {
+      const realTopic = resolveRealProphecyTopicName(topicName, subtopicText);
+      const counterpartRefs = realTopic ? getProphecyCounterpartRefs(realTopic, kind) : [];
+      if (counterpartRefs.length) {
+        const counterpartLabel = kind === "ot" ? "NT Fulfillment" : "OT Prophecy";
+        const tooltipText = buildCounterpartTooltipText(counterpartLabel, counterpartRefs);
+        const icon = document.createElement("span");
+        icon.className = "prophecy-counterpart-icon";
+        icon.textContent = "⇄";
+        icon.setAttribute("aria-label", `Show ${counterpartLabel.toLowerCase()} reference`);
+        icon.addEventListener("mouseenter", (e) => showPlainTooltip(e, tooltipText));
+        icon.addEventListener("mousemove", updateTooltipPosition);
+        icon.addEventListener("mouseleave", hideTooltip);
+        container.appendChild(icon);
+      }
+    }
   };
   
   // Create visual representation with separated lines
@@ -3428,7 +3620,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
       subtitle.className = "verse-detail-subtopic";
       subtitle.textContent = group.subtopicText;
       header.appendChild(subtitle);
-      appendReferenceBadges(header, group.subtopicText);
+      appendReferenceBadges(header, group.subtopicText, group.referenceKind);
     }
 
     const closeBtn = document.createElement("button");
@@ -3549,7 +3741,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     const subtopicText = group.subtopicText;
     const refText = group.rangeLabel;
     item.innerHTML = `<strong>${refText}</strong>`;
-    appendReferenceBadges(item, subtopicText);
+    appendReferenceBadges(item, subtopicText, group.referenceKind);
     if (subtopicText) {
       const detail = document.createElement("span");
       detail.className = "verse-subtopic";

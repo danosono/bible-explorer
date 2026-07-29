@@ -1,0 +1,72 @@
+{
+  "Jesus is God": {
+    "name": "Jesus is God",
+    "references": {
+      "JHN": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "the Word was God"
+          ],
+          "refs": [
+            "John 1:1"
+          ]
+        },
+        {
+          "verse": 394,
+          "subtopics": [
+            "before Abraham was, I am"
+          ],
+          "refs": [
+            "John 8:58"
+          ]
+        },
+        {
+          "verse": 466,
+          "subtopics": [
+            "I and the Father are one"
+          ],
+          "refs": [
+            "John 10:30"
+          ]
+        },
+        {
+          "verse": 850,
+          "subtopics": [
+            "Thomas: my Lord and my God"
+          ],
+          "refs": [
+            "John 20:28"
+          ]
+        }
+      ],
+      "TIT": [
+        {
+          "verse": 29,
+          "subtopics": [
+            "our great God and Savior, Jesus Christ"
+          ],
+          "refs": [
+            "Titus 2:13"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 38,
+          "subtopics": [
+            "the fullness of Deity dwells in Him"
+          ],
+          "refs": [
+            "Col 2:9"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "COL",
+      "JHN",
+      "TIT"
+    ]
+  }
+}

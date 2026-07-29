@@ -28,7 +28,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=1" />
+    <link rel="stylesheet" href="css/style.css?v=7" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
   </head>
@@ -105,36 +105,50 @@
                 <option value="bsb-topics">BSB Topics</option>
                 <option value="prophecy">Prophecy</option>
                 <option value="concordance">BSB Concordance</option>
+                <option value="custom">Custom Dataset</option>
               </select>
             </label>
             <div class="topic-search">
-              <label id="topic-search-label" for="topic-input"
-                >Nave's Topics <em class="start-hint">Search</em></label
-              >
-              <span class="topic-input-wrap">
-                <input
-                  id="topic-input"
-                  type="search"
-                  placeholder="Search topics"
-                />
-                <button
-                  class="topic-clear-btn"
-                  id="topic-clear-btn"
-                  type="button"
-                  aria-label="Clear topic"
+              <span class="topic-search-label-row">
+                <label id="topic-search-label" for="topic-input"
+                  >Nave's Topics</label
                 >
-                  &times;
+                <button
+                  class="topic-random-btn"
+                  id="topic-random-btn"
+                  type="button"
+                  aria-label="Random topic"
+                  title="Jump to a random topic"
+                >
+                  🎲
                 </button>
               </span>
+              <span class="topic-search-controls">
+                <span class="topic-input-wrap">
+                  <input
+                    id="topic-input"
+                    type="search"
+                    placeholder="Search topics"
+                  />
+                  <button
+                    class="topic-clear-btn"
+                    id="topic-clear-btn"
+                    type="button"
+                    aria-label="Clear topic"
+                  >
+                    &times;
+                  </button>
+                </span>
+              </span>
             </div>
-            <span class="control-pill"><strong>State</strong> Overview</span>
           </div>
           <a
             href="https://bible-peruser.gospelgo.org"
             target="_blank"
             rel="noopener"
             class="peruser-link"
-            >Try Bible Peruser</a
+            title="Try Bible Peruser"
+            >Bible<br />Peruser</a
           >
         </div>
       </header>
@@ -295,7 +309,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=48"></script>
+    <script src="js/app.js?v=54"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
