@@ -615,6 +615,11 @@ body[data-state="3"] .state--book {
 	text-transform: uppercase;
 	text-align: center;
 	max-width: min(52vw, 900px);
+	/* Grid items default to min-width: auto, which lets nowrap text's full
+	   intrinsic width win over max-width and overflow into neighboring grid
+	   tracks (a classic CSS Grid gotcha) - without this, a long topic name
+	   visually collided with .state-meta regardless of the max-width cap. */
+	min-width: 0;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -633,6 +638,9 @@ body[data-state="3"] .state--book {
 	color: var(--text-3);
 	font-size: clamp(0.8rem, 1vw, 1.4rem);
 	justify-self: end;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .jump-control {
@@ -848,15 +856,25 @@ body[data-state="3"] .state--book {
 }
 
 /* Overview only - a distinct signal for the card body specifically
-   (:not(:has(...)) suppresses it while the title bar or a pin-line is the
-   thing actually under the cursor, since those already have their own
-   hover treatment and clicking them does something different from clicking
-   the body). Color-only, no transform: the cursor drifting across a
-   line/body boundary flips this on and off rapidly, and a size change
-   there reads as jittery growing/shrinking - a color swap doesn't. Book
-   view's card already has consistent header/body hover behavior and wasn't
-   asked to change. */
-.state--overview .card.is-clickable:hover:not(:has(.card-title-bar:hover)):not(:has(.pin-line:hover)) {
+   (:not(:has(...))/:not(.pin-line-hover-active) suppresses it while the
+   title bar or a pin-line is the thing actually under the cursor, since
+   those already have their own hover treatment and clicking them does
+   something different from clicking the body). Color-only, no transform:
+   the cursor drifting across a line/body boundary flips this on and off
+   rapidly, and a size change there reads as jittery growing/shrinking - a
+   color swap doesn't. Book view's card already has consistent
+   header/body hover behavior and wasn't asked to change.
+
+   Pin-line hover is tracked via the JS-toggled .pin-line-hover-active class
+   (see the mouseenter/mouseleave wiring in renderTreemap/renderBookView),
+   not a live :has(.pin-line:hover) - that selector re-evaluates on every
+   pixel of cursor movement, and on a small/cramped card's tightly-packed
+   lines, ordinary mouse jitter at a line's tiny hit-area edge rapidly
+   toggled this rule's background swap, which combined with .pin-line's own
+   mix-blend-mode: screen made the line appear to flicker. The JS class is
+   debounced on removal so it doesn't re-trigger from that same jitter. The
+   title bar is a much larger, stabler target, so :has() is fine there. */
+.state--overview .card.is-clickable:hover:not(:has(.card-title-bar:hover)):not(.pin-line-hover-active) {
 	background: linear-gradient(160deg, rgba(40, 56, 82, 0.92), rgba(22, 33, 51, 0.95));
 }
 

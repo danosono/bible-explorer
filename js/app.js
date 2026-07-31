@@ -349,6 +349,28 @@ const applyReferenceKindClass = (element, baseClassName, kind) => {
   element.classList.add(`${baseClassName}--${kind}`);
 };
 
+// Tracks "a pin-line inside this card is hovered" via a JS-toggled class
+// rather than a live :has(.pin-line:hover) CSS selector (see the
+// .pin-line-hover-active comment in css/style.css for why) - removal is
+// debounced so ordinary mouse jitter at a tiny line's hit-area edge doesn't
+// rapidly toggle the class on and off.
+const markCardPinLineHover = (card) => {
+  if (!card) return;
+  if (card._pinLineHoverResetTimer) {
+    clearTimeout(card._pinLineHoverResetTimer);
+    card._pinLineHoverResetTimer = null;
+  }
+  card.classList.add("pin-line-hover-active");
+};
+
+const clearCardPinLineHoverSoon = (card) => {
+  if (!card) return;
+  card._pinLineHoverResetTimer = setTimeout(() => {
+    card.classList.remove("pin-line-hover-active");
+    card._pinLineHoverResetTimer = null;
+  }, 120);
+};
+
 // The Prophecy dataset's "[All] ..." aggregate topics (PROPHECY_AGGREGATE_TOPICS)
 // merge every real prophecy topic together, prefixing each subtopic string
 // "RealTopicName — Prophecy (OT): ..." (see buildAggregateProphecyTopic). To
@@ -426,6 +448,96 @@ const PIN_LINE_BANDS = 8;
 // Map a 0-100 position percentage to a band index (0..PIN_LINE_BANDS-1).
 const getPinLineBandIndex = (percentage) =>
   Math.min(PIN_LINE_BANDS - 1, Math.max(0, Math.floor((percentage / 100) * PIN_LINE_BANDS)));
+
+// Approximate budget for how many of the PIN_LINE_BANDS bands can actually
+// be populated and stay usable on a given card height, before .pin-line-band's
+// overflow:hidden starts clipping them - see the .pin-lines/.pin-line-band
+// CSS this mirrors (css/style.css). Deliberately approximate (a fixed
+// overhead rather than exactly matching every density/viewport variant) -
+// being off by a band just shifts the clustering threshold slightly, which
+// isn't a correctness issue here.
+const PIN_LINES_VERTICAL_OVERHEAD = 42; // ~top(32) + bottom(10)
+const PIN_LINE_BAND_GAP = 1; // .pin-lines gap
+const PIN_LINE_MIN_USABLE_HEIGHT = 8; // matches .pin-line height
+
+const getMaxPopulatedPinLineBands = (cardHeight) => Math.max(1, Math.floor(
+  (cardHeight - PIN_LINES_VERTICAL_OVERHEAD - (PIN_LINE_BANDS - 1) * PIN_LINE_BAND_GAP) / PIN_LINE_MIN_USABLE_HEIGHT
+));
+
+// Repeatedly merges the two position-adjacent groups with the smallest
+// percentage gap (simple 1-D nearest-neighbor agglomeration) until at most
+// maxGroups remain. Used only when a card doesn't have room to show every
+// distinct verse-reference position as its own pin-line - merges verses
+// that are already close together, so "all near the end of the book"
+// converges toward one line near the end, weighted by how many verses are
+// on each side.
+const clusterPinLineGroups = (groups, maxGroups) => {
+  const clusters = groups.map((g) => ({ percentage: g.percentage, verses: g.verses, isCluster: false }));
+  while (clusters.length > maxGroups) {
+    let minGap = Infinity;
+    let minIndex = 0;
+    for (let i = 0; i < clusters.length - 1; i += 1) {
+      const gap = clusters[i + 1].percentage - clusters[i].percentage;
+      if (gap < minGap) {
+        minGap = gap;
+        minIndex = i;
+      }
+    }
+    const a = clusters[minIndex];
+    const b = clusters[minIndex + 1];
+    const aCount = a.verses.length;
+    const bCount = b.verses.length;
+    const mergedPercentage = (a.percentage * aCount + b.percentage * bCount) / (aCount + bCount);
+    clusters.splice(minIndex, 2, {
+      percentage: mergedPercentage,
+      verses: [...a.verses, ...b.verses],
+      isCluster: true
+    });
+  }
+  return clusters;
+};
+
+// Shared by renderTreemap (Overview state) and renderBookView (Book state):
+// turns a book/chapter's versePositions into PIN_LINE_BANDS bands of
+// "line group" descriptors ({ verses, isCluster }), adaptively clustering
+// nearby groups together when the card doesn't have room to show every
+// position as its own hoverable line. `getPositionValue(vp)` returns the
+// integer used for the adjacent-verse merge step (absoluteVerse for
+// Overview, verse for Book state - the two states number positions
+// differently, everything else about the pipeline is identical).
+const buildPinLineGroups = (versePositions, cardHeight, getPositionValue) => {
+  const verseRanges = [];
+  let currentRange = null;
+  versePositions.forEach((vp) => {
+    const positionValue = getPositionValue(vp);
+    if (!currentRange || positionValue > currentRange.endPosition + 1) {
+      if (currentRange) verseRanges.push(currentRange);
+      currentRange = { endPosition: positionValue, verses: [vp] };
+    } else {
+      currentRange.endPosition = positionValue;
+      currentRange.verses.push(vp);
+    }
+  });
+  if (currentRange) verseRanges.push(currentRange);
+
+  let groups = verseRanges.map((range) => ({
+    percentage: (range.verses[0].percentage + range.verses[range.verses.length - 1].percentage) / 2,
+    verses: range.verses,
+    isCluster: false
+  }));
+
+  const populatedBandCount = new Set(groups.map((g) => getPinLineBandIndex(g.percentage))).size;
+  const maxPopulatedBands = getMaxPopulatedPinLineBands(cardHeight);
+  if (populatedBandCount > maxPopulatedBands) {
+    groups = clusterPinLineGroups(groups, maxPopulatedBands);
+  }
+
+  const bands = Array.from({ length: PIN_LINE_BANDS }, () => []);
+  groups.forEach((group) => {
+    bands[getPinLineBandIndex(group.percentage)].push(group);
+  });
+  return bands;
+};
 
 // Verse text caching and tooltip management
 let verseTextCache = {};
@@ -841,11 +953,67 @@ const getCurrentTopicDisplayText = () => {
   return `${config.label} • ${topicText}`;
 };
 
+// Shrinks an element's width, then its font-size, until its text fits
+// without overlapping the next header sibling and without relying on
+// ellipsis to truncate it. Resets both overrides to the CSS default
+// first, so a later, shorter string isn't left artificially shrunk from
+// a previous call.
+const fitTextToWidth = (el, { minScale = 0.6 } = {}) => {
+  if (!el) return;
+  el.style.width = "";
+  el.style.fontSize = "";
+
+  // .state-current-topic sits in a CSS Grid auto-track. Verified
+  // empirically: that track's boundary doesn't reliably shrink to match
+  // the element's own current rendered width (whether that's narrowed via
+  // font-size or max-width) - it can stay wide enough that a neighboring
+  // 1fr sibling (.state-meta, justify-self: end) ends up positioned
+  // *before* this element's own right edge, i.e. a visual overlap that
+  // persists no matter how small this element's own box claims to be.
+  // A single analytical "available space" calculation isn't reliable
+  // either (also verified empirically - sibling widths measured up front
+  // don't always predict the real boundary). So: measure the actual gap
+  // to the next sibling directly and iteratively shrink an explicit
+  // `width` (not max-width - only an explicit width reliably narrows this
+  // track) until it's verified non-overlapping, then shrink font-size to
+  // fit the text within that now-correct box.
+  const header = el.closest(".state-header");
+  const nextSibling = header && Array.from(header.children).includes(el) ? el.nextElementSibling : null;
+  if (nextSibling) {
+    for (let attempt = 0; attempt < 10; attempt += 1) {
+      const elRect = el.getBoundingClientRect();
+      const overflowPx = elRect.right - nextSibling.getBoundingClientRect().left;
+      if (overflowPx <= 0) break;
+      const newWidth = elRect.width - overflowPx - 4;
+      if (newWidth < 20) {
+        el.style.width = "20px";
+        break;
+      }
+      el.style.width = `${newWidth}px`;
+    }
+  }
+
+  if (el.scrollWidth <= el.clientWidth) return;
+  const naturalFontSize = parseFloat(getComputedStyle(el).fontSize);
+  const minFontSize = naturalFontSize * minScale;
+  const scale = Math.max(minScale, el.clientWidth / el.scrollWidth);
+  el.style.fontSize = `${Math.max(minFontSize, naturalFontSize * scale)}px`;
+
+  // One re-check/nudge in case the linear estimate wasn't quite enough
+  // (e.g. letter-spacing rounding).
+  if (el.scrollWidth > el.clientWidth) {
+    const currentFontSize = parseFloat(el.style.fontSize);
+    const refinedFontSize = Math.max(minFontSize, currentFontSize * (el.clientWidth / el.scrollWidth));
+    el.style.fontSize = `${refinedFontSize}px`;
+  }
+};
+
 const updateCurrentTopicLabel = () => {
   if (!currentTopicEl) return;
   const label = getCurrentTopicDisplayText();
   currentTopicEl.textContent = label;
   currentTopicEl.title = label;
+  fitTextToWidth(currentTopicEl);
 };
 
 const getStoredTopic = () => {
@@ -1070,6 +1238,12 @@ const applyTopicSelection = (topicName, options = {}) => {
     setStoredTopic(selectedTopic);
   }
 
+  // Update the header label BEFORE rendering, not after - otherwise the
+  // treemap sizes itself against the header's old (possibly shorter)
+  // height, then the label grows the header a moment later, which trips
+  // the #treemap ResizeObserver into a visible second, shrinking re-render.
+  updateCurrentTopicLabel();
+
   // Only re-render during typing in Overview (state 1) and Book (state 2)
   // For Verse view (state 3), wait for commit to avoid scroll jumping
   const currentState = getCurrentState();
@@ -1083,7 +1257,6 @@ const applyTopicSelection = (topicName, options = {}) => {
     syncHistory();
   }
 
-  updateCurrentTopicLabel();
   updateTopicActionState();
 };
 
@@ -1844,82 +2017,91 @@ const renderTreemap = (books, topic = null) => {
         // Sort by absolute verse position
         versePositions.sort((a, b) => a.absoluteVerse - b.absoluteVerse);
         
-        // Group adjacent verses into ranges
-        const verseRanges = [];
-        let currentRange = null;
-        
-        versePositions.forEach((vp) => {
-          if (!currentRange || vp.absoluteVerse > currentRange.endVerse + 1) {
-            // Start new range
-            if (currentRange) verseRanges.push(currentRange);
-            currentRange = {
-              startVerse: vp.absoluteVerse,
-              endVerse: vp.absoluteVerse,
-              verses: [vp]
-            };
-          } else {
-            // Extend current range
-            currentRange.endVerse = vp.absoluteVerse;
-            currentRange.verses.push(vp);
-          }
-        });
-        if (currentRange) verseRanges.push(currentRange);
-        
-        // Render lines for each range with width based on verse count,
-        // grouped into vertical bands by their position in the book.
-        const bands = Array.from({ length: PIN_LINE_BANDS }, () => []);
-        verseRanges.forEach((range) => {
-          const verseCount = range.verses.length;
-          const lineEl = document.createElement("div");
-          lineEl.className = "pin-line";
-          lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
-
-          // Handle wrapping for very large verse counts (>10 verses)
-          if (verseCount > 10) {
-            lineEl.classList.add("pin-line-wrapped");
-            // Add visual indicator for wrapped/large groups
-            lineEl.style.height = "3px";
-          }
-
-          // Create tooltip data
-          const startRef = range.verses[0].refs && range.verses[0].refs[0];
-          const endRef = range.verses[range.verses.length - 1].refs && range.verses[range.verses.length - 1].refs[0];
-          const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
-          const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
-          const subtopicText = subtopics.join("; ");
-          const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId: item.id });
-          applyReferenceKindClass(lineEl, "pin-line", referenceKind);
-
-          lineEl.addEventListener('mouseenter', (e) => {
-            showTooltip(e, refText, subtopicText, item.id, range.startVerse);
-          });
-          lineEl.addEventListener('mouseleave', hideTooltip);
-          lineEl.dataset.verses = refText;
-          lineEl.dataset.subtopics = subtopicText;
-          lineEl.dataset.bookId = item.id;
-
-          // Click handler to show verse modal
-          lineEl.style.cursor = "pointer";
-          lineEl.addEventListener("click", (e) => {
-            e.stopPropagation();
-            showVerseModal(item.id, item.displayName, versePositions, topicData.name);
-          });
-
-          bands[getPinLineBandIndex(range.verses[0].percentage)].push(lineEl);
-        });
-
-        bands.forEach((bandLines) => {
+        // Grouped into vertical bands by position in the book, adaptively
+        // clustering nearby groups together when the card doesn't have
+        // room to show every distinct position as its own hoverable line
+        // (see buildPinLineGroups).
+        const bands = buildPinLineGroups(versePositions, item.h, (vp) => vp.absoluteVerse);
+        bands.forEach((bandGroups) => {
           const bandEl = document.createElement("div");
           // Empty bands collapse to 0 height instead of reserving an equal
           // 1/8 share like populated ones - on a small book's card, most
           // bands are empty, and reclaiming their space is what lets the
           // few real pin-lines render at full height instead of getting
           // clipped by pin-line-band's overflow:hidden.
-          bandEl.className = bandLines.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
-          bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
+          bandEl.className = bandGroups.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
+
+          bandGroups.forEach((group) => {
+            const verses = group.verses;
+            const verseCount = verses.length;
+            const lineEl = document.createElement("div");
+            lineEl.className = "pin-line";
+            lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
+
+            if (group.isCluster) {
+              // Several distinct, non-adjacent verse positions merged into
+              // one line because the card didn't have room to show them
+              // individually - same "denser than normal" look as a single
+              // large range, but without forcing it thin (there's nothing
+              // to save room from here - it already IS the space-saving).
+              lineEl.classList.add("pin-line-wrapped");
+            } else if (verseCount > 10) {
+              lineEl.classList.add("pin-line-wrapped");
+              lineEl.style.height = "3px";
+            }
+
+            const subtopics = [...new Set(verses.flatMap((v) => v.subtopics))];
+            const subtopicText = subtopics.join("; ");
+            const allRefs = verses.flatMap((v) => v.refs || []);
+            const referenceKind = getReferenceKindFromData({ subtopics, refs: allRefs, bookId: item.id });
+            applyReferenceKindClass(lineEl, "pin-line", referenceKind);
+
+            if (group.isCluster) {
+              const cappedRefs = allRefs.slice(0, 6);
+              let tooltipText = buildCounterpartTooltipText(`${verseCount} verses`, cappedRefs);
+              if (allRefs.length > cappedRefs.length) {
+                tooltipText += `\n+${allRefs.length - cappedRefs.length} more`;
+              }
+              lineEl.addEventListener("mouseenter", (e) => {
+                showPlainTooltip(e, tooltipText);
+                markCardPinLineHover(card);
+              });
+              lineEl.addEventListener("mousemove", updateTooltipPosition);
+              lineEl.addEventListener("mouseleave", () => {
+                hideTooltip();
+                clearCardPinLineHoverSoon(card);
+              });
+              lineEl.dataset.bookId = item.id;
+            } else {
+              const startRef = verses[0].refs && verses[0].refs[0];
+              const endRef = verses[verses.length - 1].refs && verses[verses.length - 1].refs[0];
+              const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+              lineEl.addEventListener('mouseenter', (e) => {
+                showTooltip(e, refText, subtopicText, item.id, verses[0].absoluteVerse);
+                markCardPinLineHover(card);
+              });
+              lineEl.addEventListener('mouseleave', () => {
+                hideTooltip();
+                clearCardPinLineHoverSoon(card);
+              });
+              lineEl.dataset.verses = refText;
+              lineEl.dataset.subtopics = subtopicText;
+              lineEl.dataset.bookId = item.id;
+            }
+
+            // Click handler to show verse modal
+            lineEl.style.cursor = "pointer";
+            lineEl.addEventListener("click", (e) => {
+              e.stopPropagation();
+              showVerseModal(item.id, item.displayName, versePositions, topicData.name);
+            });
+
+            bandEl.appendChild(lineEl);
+          });
+
           lines.appendChild(bandEl);
         });
-        
+
         const verseCount = verseEntries.length;
 
         // Add expand button
@@ -1974,6 +2156,7 @@ const renderBookView = (bookId, topic = null) => {
 
   grid.innerHTML = "";
   topicEl.textContent = getCurrentTopicDisplayText();
+  fitTextToWidth(topicEl);
 
   const book = bookId ? bibleData[bookId] : null;
   if (!book || !Array.isArray(book.chapters)) {
@@ -2276,78 +2459,85 @@ const renderBookView = (bookId, topic = null) => {
         };
       });
 
-      // Group adjacent verses into ranges
-      const verseRanges = [];
-      let currentRange = null;
-      
-      versePositions.forEach((vp) => {
-        if (!currentRange || vp.verse > currentRange.endVerse + 1) {
-          // Start new range
-          if (currentRange) verseRanges.push(currentRange);
-          currentRange = {
-            startVerse: vp.verse,
-            endVerse: vp.verse,
-            verses: [vp]
-          };
-        } else {
-          // Extend current range
-          currentRange.endVerse = vp.verse;
-          currentRange.verses.push(vp);
-        }
-      });
-      if (currentRange) verseRanges.push(currentRange);
-
-      // Render lines for each range with width based on verse count,
-      // grouped into vertical bands by their position in the chapter.
-      const bands = Array.from({ length: PIN_LINE_BANDS }, () => []);
-      verseRanges.forEach((range) => {
-        const verseCount = range.verses.length;
-        const lineEl = document.createElement("div");
-        lineEl.className = "pin-line";
-        lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
-
-        // Handle wrapping for very large verse counts (>10 verses)
-        if (verseCount > 10) {
-          lineEl.classList.add("pin-line-wrapped");
-          lineEl.style.height = "3px";
-        }
-
-        const startRef = range.verses[0].refs && range.verses[0].refs[0];
-        const endRef = range.verses[range.verses.length - 1].refs && range.verses[range.verses.length - 1].refs[0];
-        const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
-        const subtopics = [...new Set(range.verses.flatMap(v => v.subtopics))];
-        const subtopicText = subtopics.join("; ");
-        const referenceKind = getReferenceKindFromData({ subtopics, refs: range.verses.flatMap((v) => v.refs || []), bookId });
-        applyReferenceKindClass(lineEl, "pin-line", referenceKind);
-
-        lineEl.addEventListener("mouseenter", (e) => {
-          showTooltip(e, refText, subtopicText, bookId, range.startVerse);
-        });
-        lineEl.addEventListener("mouseleave", hideTooltip);
-        lineEl.style.cursor = "pointer";
-        lineEl.addEventListener("click", (e) => {
-          e.stopPropagation();
-          showVerseModal(
-            bookId,
-            bookName,
-            versePositions,
-            topicData?.name || "Chapter references",
-            {
-              chapterNumber,
-              initialVerse: range.startVerse
-            }
-          );
-        });
-
-        bands[getPinLineBandIndex(range.verses[0].percentage)].push(lineEl);
-      });
-
-      bands.forEach((bandLines) => {
+      // Grouped into vertical bands by position in the chapter, adaptively
+      // clustering nearby groups together when the card doesn't have room
+      // to show every distinct position as its own hoverable line (see
+      // buildPinLineGroups).
+      const bands = buildPinLineGroups(versePositions, item.h, (vp) => vp.verse);
+      bands.forEach((bandGroups) => {
         const bandEl = document.createElement("div");
         // See the matching comment in renderTreemap - empty bands collapse
         // so populated ones can use the reclaimed height.
-        bandEl.className = bandLines.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
-        bandLines.forEach((lineEl) => bandEl.appendChild(lineEl));
+        bandEl.className = bandGroups.length > 0 ? "pin-line-band" : "pin-line-band pin-line-band--empty";
+
+        bandGroups.forEach((group) => {
+          const verses = group.verses;
+          const verseCount = verses.length;
+          const lineEl = document.createElement("div");
+          lineEl.className = "pin-line";
+          lineEl.style.flexBasis = `${getPinLineWidthPercent(verseCount)}%`;
+
+          if (group.isCluster) {
+            // See the matching comment in renderTreemap.
+            lineEl.classList.add("pin-line-wrapped");
+          } else if (verseCount > 10) {
+            lineEl.classList.add("pin-line-wrapped");
+            lineEl.style.height = "3px";
+          }
+
+          const subtopics = [...new Set(verses.flatMap((v) => v.subtopics))];
+          const subtopicText = subtopics.join("; ");
+          const allRefs = verses.flatMap((v) => v.refs || []);
+          const referenceKind = getReferenceKindFromData({ subtopics, refs: allRefs, bookId });
+          applyReferenceKindClass(lineEl, "pin-line", referenceKind);
+
+          if (group.isCluster) {
+            const cappedRefs = allRefs.slice(0, 6);
+            let tooltipText = buildCounterpartTooltipText(`${verseCount} verses`, cappedRefs);
+            if (allRefs.length > cappedRefs.length) {
+              tooltipText += `\n+${allRefs.length - cappedRefs.length} more`;
+            }
+            lineEl.addEventListener("mouseenter", (e) => {
+              showPlainTooltip(e, tooltipText);
+              markCardPinLineHover(card);
+            });
+            lineEl.addEventListener("mousemove", updateTooltipPosition);
+            lineEl.addEventListener("mouseleave", () => {
+              hideTooltip();
+              clearCardPinLineHoverSoon(card);
+            });
+          } else {
+            const startRef = verses[0].refs && verses[0].refs[0];
+            const endRef = verses[verses.length - 1].refs && verses[verses.length - 1].refs[0];
+            const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+            lineEl.addEventListener("mouseenter", (e) => {
+              showTooltip(e, refText, subtopicText, bookId, verses[0].verse);
+              markCardPinLineHover(card);
+            });
+            lineEl.addEventListener("mouseleave", () => {
+              hideTooltip();
+              clearCardPinLineHoverSoon(card);
+            });
+          }
+
+          lineEl.style.cursor = "pointer";
+          lineEl.addEventListener("click", (e) => {
+            e.stopPropagation();
+            showVerseModal(
+              bookId,
+              bookName,
+              versePositions,
+              topicData?.name || "Chapter references",
+              {
+                chapterNumber,
+                initialVerse: verses[0].verse
+              }
+            );
+          });
+
+          bandEl.appendChild(lineEl);
+        });
+
         lines.appendChild(bandEl);
       });
 
@@ -2396,6 +2586,7 @@ const renderReadView = (bookId, topic = null) => {
   updateBookGenreFooter(book && Array.isArray(book.chapters) ? bookGenre : null, bookName);
   readTitle.textContent = bookName;
   readTopic.textContent = getCurrentTopicDisplayText();
+  fitTextToWidth(readTopic);
 
   readingBlock.innerHTML = "";
 
@@ -2987,9 +3178,10 @@ const boot = async () => {
           }
         }
         setStoredTopic(selectedTopic);
+        // Label before render - see the comment in applyTopicSelection.
+        updateCurrentTopicLabel();
         renderCurrentState();
         syncHistory();
-        updateCurrentTopicLabel();
         updateTopicActionState();
         closeMobileMenu();
       });
