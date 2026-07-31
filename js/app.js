@@ -432,6 +432,26 @@ const buildCounterpartTooltipText = (label, refs) => {
   return `${label}:\n${lines.join("\n")}`;
 };
 
+// Builds a human-readable ref string for a pin-line range: "Book Ch:V" for
+// a single verse, or a condensed "Book Ch:V-V" for a same-book-chapter
+// range. Deliberately NOT a naive "${startRef} - ${endRef}" concatenation
+// for multi-verse ranges - with both refs already full "Book Ch:V" strings,
+// that produces e.g. "1 Tim 1:18 - 1 Tim 1:19", which showTooltip's
+// regex-based preview parser can misread (it can grab the leading "1" from
+// the second "1 Tim" as if it were the end verse, showing a reversed
+// 18-down-to-1 countdown instead of verses 18-19).
+const buildRangeRefText = (startVp, endVp, verseCount) => {
+  const startRef = startVp.refs && startVp.refs[0];
+  const endRef = endVp.refs && endVp.refs[0];
+  if (verseCount === 1 || !startRef || !endRef) return startRef;
+  const startPrefix = startRef.includes(":") ? startRef.split(":")[0] : null;
+  const endPrefix = endRef.includes(":") ? endRef.split(":")[0] : null;
+  if (startVp.chapter && endVp.chapter && startVp.chapter === endVp.chapter && startPrefix && startPrefix === endPrefix) {
+    return `${startPrefix}:${startVp.verse}-${endVp.verse}`;
+  }
+  return `${startRef} - ${endRef}`;
+};
+
 // Map a verse-range's verse count to a flex-basis percentage, implementing a
 // 4-columns-per-row pin-line layout (1/2/3/4 quarter-slots).
 const getPinLineWidthPercent = (verseCount) => {
@@ -456,7 +476,7 @@ const getPinLineBandIndex = (percentage) =>
 // overhead rather than exactly matching every density/viewport variant) -
 // being off by a band just shifts the clustering threshold slightly, which
 // isn't a correctness issue here.
-const PIN_LINES_VERTICAL_OVERHEAD = 42; // ~top(32) + bottom(10)
+const PIN_LINES_VERTICAL_OVERHEAD = 44; // ~top(34) + bottom(10)
 const PIN_LINE_BAND_GAP = 1; // .pin-lines gap
 const PIN_LINE_MIN_USABLE_HEIGHT = 8; // matches .pin-line height
 
@@ -694,9 +714,20 @@ const showPlainTooltip = (e, text) => {
 const hideTooltip = () => {
   if (currentTooltip) {
     currentTooltip.classList.remove('show');
+    // Capture which element this timeout is for - if the user quickly moves
+    // to an adjacent pin-line before this fires, showTooltip/showPlainTooltip
+    // will have already replaced currentTooltip with a new element. Without
+    // this check, this stale timeout would remove that NEW tooltip and null
+    // out the live reference instead of just finishing this old one's
+    // cleanup - which read as the tooltip "not showing" when hovering
+    // quickly between adjacent lines, since it would appear then vanish
+    // moments later.
+    const tooltipToRemove = currentTooltip;
     setTimeout(() => {
-      if (currentTooltip) currentTooltip.remove();
-      currentTooltip = null;
+      tooltipToRemove.remove();
+      if (currentTooltip === tooltipToRemove) {
+        currentTooltip = null;
+      }
     }, 150);
   }
 };
@@ -2073,9 +2104,7 @@ const renderTreemap = (books, topic = null) => {
               });
               lineEl.dataset.bookId = item.id;
             } else {
-              const startRef = verses[0].refs && verses[0].refs[0];
-              const endRef = verses[verses.length - 1].refs && verses[verses.length - 1].refs[0];
-              const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+              const refText = buildRangeRefText(verses[0], verses[verses.length - 1], verseCount);
               lineEl.addEventListener('mouseenter', (e) => {
                 showTooltip(e, refText, subtopicText, item.id, verses[0].absoluteVerse);
                 markCardPinLineHover(card);
@@ -2507,9 +2536,7 @@ const renderBookView = (bookId, topic = null) => {
               clearCardPinLineHoverSoon(card);
             });
           } else {
-            const startRef = verses[0].refs && verses[0].refs[0];
-            const endRef = verses[verses.length - 1].refs && verses[verses.length - 1].refs[0];
-            const refText = verseCount === 1 ? startRef : `${startRef} - ${endRef}`;
+            const refText = buildRangeRefText(verses[0], verses[verses.length - 1], verseCount);
             lineEl.addEventListener("mouseenter", (e) => {
               showTooltip(e, refText, subtopicText, bookId, verses[0].verse);
               markCardPinLineHover(card);

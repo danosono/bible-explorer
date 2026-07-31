@@ -94,7 +94,7 @@ body::before {
 
 .app-title {
 	font-family: var(--font-display);
-	font-size: clamp(2.4rem, 3vw, 3.8rem);
+	font-size: clamp(1.7rem, 2vw, 2.6rem);
 	margin: 0;
 	letter-spacing: 0.03em;
 	font-weight: 700;
@@ -753,7 +753,12 @@ body[data-state="3"] .state--book {
 	right: 0;
 	padding: 6px 32px 6px 8px;
 	background: rgba(8, 12, 20, 0.75);
-	border-bottom: 1px solid rgba(96, 130, 168, 0.2);
+	/* Brighter border + a downward shadow (rather than more top offset on
+	   .pin-lines, which would eat into the tight per-band height budget
+	   the clustering logic already fights for) so the header reads as
+	   clearly separate from the pin-lines instead of blending into them. */
+	border-bottom: 1px solid rgba(149, 190, 225, 0.55);
+	box-shadow: 0 4px 6px -2px rgba(0, 0, 0, 0.6);
 	font-size: 0.7rem;
 	font-weight: 600;
 	color: var(--text-1);
@@ -984,7 +989,7 @@ body[data-state="3"] .state--book {
 	gap: 1px;
 	margin: 0;
 	position: absolute;
-	top: 32px;
+	top: 34px;
 	left: 10px;
 	right: 10px;
 	bottom: 10px;
@@ -2133,15 +2138,24 @@ tip.show {
 .footer {
 	display: flex;
 	align-items: center;
-	justify-content: flex-start;
+	justify-content: space-between;
+	gap: 16px;
 	color: var(--text-3);
 	font-size: clamp(0.72rem, 0.78vw, 1rem);
-	padding: 0;
+	padding: 0 16px 0 0;
 	height: clamp(30px, 2.2vh, 42px);
 	min-height: clamp(30px, 2.2vh, 42px);
 	max-height: clamp(30px, 2.2vh, 42px);
 	overflow: hidden;
 	flex-shrink: 0;
+}
+
+/* Moved here from the header (was next to the app title) to free up
+   vertical space there - anchored to the right, offset from the edge via
+   .footer's own right padding above. */
+.footer .source {
+	flex-shrink: 0;
+	white-space: nowrap;
 }
 
 .legend {
