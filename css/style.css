@@ -1952,6 +1952,12 @@ tip.show {
 }
 
 .sidebar-link {
+	/* Reset for the Contact <button> (a copy-to-clipboard action, not a
+	   navigation link) so it's visually identical to its <a> siblings. */
+	background: none;
+	border: none;
+	font-family: inherit;
+	cursor: pointer;
 	color: var(--text-3);
 	text-decoration: none;
 	font-size: clamp(0.75rem, 0.85vw, 0.95rem);

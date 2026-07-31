@@ -28,7 +28,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=7" />
+    <link rel="stylesheet" href="css/style.css?v=8" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
   </head>
@@ -276,14 +276,17 @@
                     title="Support the project"
                     >Donate</a
                   >
-                  <a
-                    href="mailto:admin@gospelgo.org"
+                  <button
+                    type="button"
                     class="sidebar-link"
-                    title="Contact us"
-                    >Contact</a
+                    id="contact-copy-btn"
+                    data-default-text="Contact"
+                    data-copy-value="admin@gospelgo.org"
+                    title="Copy admin@gospelgo.org to clipboard"
+                    >Contact</button
                   >
                   <a
-                    href="https://gospelgo.kit.com/eb2e49985a"
+                    href="https://gospelgo.org/mailing-list/"
                     target="_blank"
                     rel="noopener"
                     class="sidebar-link"
@@ -309,7 +312,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=54"></script>
+    <script src="js/app.js?v=55"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

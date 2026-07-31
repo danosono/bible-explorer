@@ -76,7 +76,7 @@ const DATASET_CONFIG = {
     file: "data/prophecy-topics-with-references.json",
     label: "Prophecy",
     placeholder: "Search prophecy references",
-    defaultTopic: "",
+    defaultTopic: "[All] OT + NT Combined",
     // Entries are numbered 1-351 - the default 200-item cap (MAX_TOPIC_OPTIONS)
     // cut the list off mid-list with no indication there was more, since
     // unlike the other datasets there's no obviously-truncated alphabetical
@@ -93,7 +93,7 @@ const DATASET_CONFIG = {
     file: "data/custom-topics-with-references.json",
     label: "Custom Dataset",
     placeholder: "Search custom topics",
-    defaultTopic: "",
+    defaultTopic: "Jesus is God",
     note: "Custom dataset — from the developer's own study and observations."
   }
 };
@@ -830,9 +830,20 @@ const setState = (nextState) => {
   syncHistory({ push: true });
 };
 
+const NO_TOPIC_SELECTED_TEXT = "No Topic Selected";
+
+// Dataset before topic (not just the topic name) so mobile - where the
+// dataset dropdown itself is hidden off-canvas - can still tell which
+// dataset is active from this label alone.
+const getCurrentTopicDisplayText = () => {
+  const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
+  const topicText = selectedTopic || NO_TOPIC_SELECTED_TEXT;
+  return `${config.label} • ${topicText}`;
+};
+
 const updateCurrentTopicLabel = () => {
   if (!currentTopicEl) return;
-  const label = selectedTopic || "All topics";
+  const label = getCurrentTopicDisplayText();
   currentTopicEl.textContent = label;
   currentTopicEl.title = label;
 };
@@ -1962,7 +1973,7 @@ const renderBookView = (bookId, topic = null) => {
   if (!grid || !titleEl || !metaEl || !topicEl) return;
 
   grid.innerHTML = "";
-  topicEl.textContent = selectedTopic || "All topics";
+  topicEl.textContent = getCurrentTopicDisplayText();
 
   const book = bookId ? bibleData[bookId] : null;
   if (!book || !Array.isArray(book.chapters)) {
@@ -2384,7 +2395,7 @@ const renderReadView = (bookId, topic = null) => {
   setPinnedLegendGenre(book && Array.isArray(book.chapters) ? bookGenre : null);
   updateBookGenreFooter(book && Array.isArray(book.chapters) ? bookGenre : null, bookName);
   readTitle.textContent = bookName;
-  readTopic.textContent = selectedTopic || "No topic selected";
+  readTopic.textContent = getCurrentTopicDisplayText();
 
   readingBlock.innerHTML = "";
 
@@ -3085,6 +3096,27 @@ const boot = async () => {
       if (randomTopic) {
         applyTopicSelection(randomTopic, { commit: true });
       }
+    });
+  }
+
+  const contactCopyBtn = document.getElementById("contact-copy-btn");
+  if (contactCopyBtn) {
+    const defaultText = contactCopyBtn.dataset.defaultText || contactCopyBtn.textContent;
+    const emailToCopy = contactCopyBtn.dataset.copyValue || "";
+    let contactCopyResetTimer = null;
+    contactCopyBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(emailToCopy);
+        contactCopyBtn.textContent = "Copied!";
+      } catch (error) {
+        // Clipboard API unavailable/denied - show the address itself so the
+        // user can still select and copy it manually.
+        contactCopyBtn.textContent = emailToCopy;
+      }
+      if (contactCopyResetTimer) clearTimeout(contactCopyResetTimer);
+      contactCopyResetTimer = setTimeout(() => {
+        contactCopyBtn.textContent = defaultText;
+      }, 1500);
     });
   }
 
