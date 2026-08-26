@@ -68,5 +68,153 @@
       "JHN",
       "TIT"
     ]
+  },
+  "Third Day": {
+    "name": "Third Day",
+    "references": {
+      "MAT": [
+        {
+          "verse": 549,
+          "subtopics": [
+            "Jesus first foretells He must be raised on the third day"
+          ],
+          "refs": [
+            "Matt 16:21"
+          ]
+        },
+        {
+          "verse": 578,
+          "subtopics": [
+            "Jesus tells the disciples He will be raised on the third day"
+          ],
+          "refs": [
+            "Matt 17:23"
+          ]
+        },
+        {
+          "verse": 665,
+          "subtopics": [
+            "Jesus foretells being mocked, crucified, and raised on the third day"
+          ],
+          "refs": [
+            "Matt 20:19"
+          ]
+        },
+        {
+          "verse": 1046,
+          "subtopics": [
+            "Pilate orders the tomb secured until the third day"
+          ],
+          "refs": [
+            "Matt 27:64"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 430,
+          "subtopics": [
+            "the Son of Man must be killed and on the third day raised"
+          ],
+          "refs": [
+            "Luke 9:22"
+          ]
+        },
+        {
+          "verse": 657,
+          "subtopics": [
+            "on the third day I will reach My goal"
+          ],
+          "refs": [
+            "Luke 13:32"
+          ]
+        },
+        {
+          "verse": 827,
+          "subtopics": [
+            "He will be flogged, killed, and on the third day rise again"
+          ],
+          "refs": [
+            "Luke 18:33"
+          ]
+        },
+        {
+          "verse": 1103,
+          "subtopics": [
+            "the angels recall Jesus' words: crucified, and on the third day rise again"
+          ],
+          "refs": [
+            "Luke 24:7"
+          ]
+        },
+        {
+          "verse": 1117,
+          "subtopics": [
+            "the Emmaus disciples note it is the third day since His death"
+          ],
+          "refs": [
+            "Luke 24:21"
+          ]
+        },
+        {
+          "verse": 1142,
+          "subtopics": [
+            "the risen Christ explains He would rise on the third day"
+          ],
+          "refs": [
+            "Luke 24:46"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 52,
+          "subtopics": [
+            "on the third day, a wedding took place at Cana in Galilee"
+          ],
+          "refs": [
+            "John 2:1"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 375,
+          "subtopics": [
+            "God raised Him up on the third day"
+          ],
+          "refs": [
+            "Acts 10:40"
+          ]
+        },
+        {
+          "verse": 948,
+          "subtopics": [
+            "on the third day they threw the ship's tackle overboard"
+          ],
+          "refs": [
+            "Acts 27:19"
+          ]
+        }
+      ],
+      "1CO": [
+        {
+          "verse": 359,
+          "subtopics": [
+            "He was raised on the third day according to the Scriptures"
+          ],
+          "refs": [
+            "1 Cor 15:4"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1CO",
+      "ACT",
+      "JHN",
+      "LUK",
+      "MAT"
+    ]
   }
 }

@@ -461,6 +461,15 @@ const getPinLineWidthPercent = (verseCount) => {
   return 100;
 };
 
+// Trailing hint line for the pin-line hover tooltip, shown before any modal
+// is open - explains what each of the two click targets (the pin itself vs.
+// the card behind it) does, since that's not otherwise obvious. showTooltip's
+// default ("Click to view full range") is used instead once a modal is
+// already open (e.g. hovering a verse-line/list-item inside it), where
+// there's no card-click action to describe.
+const OVERVIEW_PIN_CLICK_HINT = "Click pin to view a list of verses in this book.\nClick the book card to view verses separated into chapter cards.";
+const BOOK_VIEW_PIN_CLICK_HINT = "Click pin to view a list of all verses in this chapter.\nClick the chapter card to view topic verses in context with all verses in this chapter.";
+
 // Number of vertical "bands" pin-lines are grouped into, so a reference's
 // position within a card reflects its position within the book/chapter.
 const PIN_LINE_BANDS = 8;
@@ -526,9 +535,26 @@ const clusterPinLineGroups = (groups, maxGroups) => {
 // Overview, verse for Book state - the two states number positions
 // differently, everything else about the pipeline is identical).
 const buildPinLineGroups = (versePositions, cardHeight, getPositionValue) => {
+  // The same verse can appear more than once in versePositions (e.g. tagged
+  // under both a Nave's and a Torrey's subtopic for the same topic) - collapse
+  // those duplicates into one position first, merging their subtopics/refs, so
+  // they can't be mistaken for a second, adjacent verse below and inflate a
+  // single verse into a false range like "27:1-1" with a stretched-out line.
+  const collapsedPositions = [];
+  versePositions.forEach((vp) => {
+    const positionValue = getPositionValue(vp);
+    const last = collapsedPositions[collapsedPositions.length - 1];
+    if (last && getPositionValue(last) === positionValue) {
+      last.subtopics = [...new Set([...(last.subtopics || []), ...(vp.subtopics || [])])];
+      last.refs = [...new Set([...(last.refs || []), ...(vp.refs || [])])];
+    } else {
+      collapsedPositions.push({ ...vp });
+    }
+  });
+
   const verseRanges = [];
   let currentRange = null;
-  versePositions.forEach((vp) => {
+  collapsedPositions.forEach((vp) => {
     const positionValue = getPositionValue(vp);
     if (!currentRange || positionValue > currentRange.endPosition + 1) {
       if (currentRange) verseRanges.push(currentRange);
@@ -605,7 +631,7 @@ const updateTooltipPosition = (e) => {
   positionTooltip(currentTooltip, e);
 };
 
-const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
+const showTooltip = (e, refText, subtopicText, bookId, verseNumber, clickHint = "Click to view full range") => {
   // Touch devices have no hover; a tap would leave the tooltip stuck open.
   if (window.matchMedia("(hover: none)").matches) return;
   // Build text
@@ -658,17 +684,17 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber) => {
         }
       }
       if (lines.length > 0) {
-        text += `\n${lines.join("\n")}`;
+        text += `\n\n${lines.join("\n")}`;
       }
     } else {
       const verseText = getVerseText(bookId, startChapter, startVerse);
       if (verseText) {
-        text += `\n${verseText}`;
+        text += `\n\n${verseText}`;
       }
     }
   }
 
-  text += "\nClick to view full range";
+  text += `\n\n${clickHint}`;
 
   if (currentTooltip && currentTooltip.dataset.content === text) {
     positionTooltip(currentTooltip, e);
@@ -2106,7 +2132,7 @@ const renderTreemap = (books, topic = null) => {
             } else {
               const refText = buildRangeRefText(verses[0], verses[verses.length - 1], verseCount);
               lineEl.addEventListener('mouseenter', (e) => {
-                showTooltip(e, refText, subtopicText, item.id, verses[0].absoluteVerse);
+                showTooltip(e, refText, subtopicText, item.id, verses[0].absoluteVerse, OVERVIEW_PIN_CLICK_HINT);
                 markCardPinLineHover(card);
               });
               lineEl.addEventListener('mouseleave', () => {
@@ -2538,7 +2564,7 @@ const renderBookView = (bookId, topic = null) => {
           } else {
             const refText = buildRangeRefText(verses[0], verses[verses.length - 1], verseCount);
             lineEl.addEventListener("mouseenter", (e) => {
-              showTooltip(e, refText, subtopicText, bookId, verses[0].verse);
+              showTooltip(e, refText, subtopicText, bookId, verses[0].verse, BOOK_VIEW_PIN_CLICK_HINT);
               markCardPinLineHover(card);
             });
             lineEl.addEventListener("mouseleave", () => {
