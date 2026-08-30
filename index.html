@@ -55,7 +55,8 @@
             <nav class="mini-state-switcher" aria-label="Switch view">
               <button type="button" data-state="1">Bible</button>
               <button type="button" data-state="2">Book</button>
-              <button type="button" data-state="3">Verse</button>
+              <button type="button" data-state="3">Chapter</button>
+              <button type="button" data-state="4">Verses</button>
             </nav>
           </div>
         </div>
@@ -76,19 +77,21 @@
                 <span>State 1</span>
                 <span>State 2</span>
                 <span>State 3</span>
+                <span>State 4</span>
               </div>
               <input
                 class="state-slider"
                 type="range"
                 min="1"
-                max="3"
+                max="4"
                 value="1"
                 step="1"
               />
               <div class="state-captions">
                 <span data-state="1">Bible</span>
                 <span data-state="2">Book</span>
-                <span data-state="3">Verse</span>
+                <span data-state="3">Chapter</span>
+                <span data-state="4">Verses</span>
               </div>
             </div>
             <label class="dataset-select" for="dataset-mode">
@@ -135,6 +138,15 @@
               </span>
             </div>
           </div>
+          <button
+            type="button"
+            class="share-link"
+            id="share-link-btn"
+            aria-label="Copy link to this page"
+            title="Copy link to this page"
+          >
+            🔗
+          </button>
           <a
             href="https://bible-peruser.gospelgo.org"
             target="_blank"
@@ -256,7 +268,7 @@
                 </nav>
               </aside>
               <div class="reading-block">
-                <h3>Verse Reader</h3>
+                <h3>Chapter Reader</h3>
                 <p>Choose a verse from Book view to read full text here.</p>
               </div>
               <aside class="reading-sidebar reading-sidebar--right">
@@ -298,6 +310,96 @@
               </aside>
             </div>
           </div>
+          <div class="state state--verses">
+            <div class="state-header">
+              <h2 class="state-title">Verses</h2>
+              <div class="state-topic-group">
+                <div class="state-current-topic" id="verses-current-topic">
+                  All topics
+                </div>
+                <div class="verse-count" id="verses-total-count"></div>
+              </div>
+              <div class="state-meta" id="verses-meta">
+                Select a topic to see every verse in Bible order
+              </div>
+            </div>
+            <div class="reading-container">
+              <aside class="reading-sidebar reading-sidebar--left">
+                <nav class="sidebar-nav">
+                  <a
+                    href="https://gospelgo.org/bible-explorer/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="About Bible Explorer"
+                    >About</a
+                  >
+                  <a
+                    href="https://gospelgo.org/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Visit GospelGo"
+                    >GospelGo</a
+                  >
+                  <a
+                    href="https://gospelgo.org/feedback/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Send feedback"
+                    >Feedback</a
+                  >
+                  <a
+                    href="https://discord.gg/x9chq2cw2P"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Join our Discord"
+                    >Discord</a
+                  >
+                </nav>
+              </aside>
+              <div class="verses-list" id="verses-list"></div>
+              <aside class="reading-sidebar reading-sidebar--right">
+                <nav class="sidebar-nav">
+                  <a
+                    href="https://gospelgo.org/donate/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Support the project"
+                    >Donate</a
+                  >
+                  <button
+                    type="button"
+                    class="sidebar-link"
+                    id="contact-copy-btn-verses"
+                    data-default-text="Contact"
+                    data-copy-value="admin@gospelgo.org"
+                    title="Copy admin@gospelgo.org to clipboard"
+                    >Contact</button
+                  >
+                  <a
+                    href="https://gospelgo.org/mailing-list/"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link"
+                    title="Join our mailing list"
+                    >Mailing List</a
+                  >
+                  <a
+                    href="https://github.com/danosono/bible-explorer"
+                    target="_blank"
+                    rel="noopener"
+                    class="sidebar-link sidebar-link--subtle"
+                    title="View source code"
+                    >GitHub</a
+                  >
+                </nav>
+              </aside>
+            </div>
+          </div>
         </div>
       </section>
       <footer class="footer">
@@ -312,7 +414,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=60"></script>
+    <script src="js/app.js?v=62"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();

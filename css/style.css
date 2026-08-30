@@ -199,6 +199,29 @@ body::before {
 	border-color: rgba(157, 227, 212, 0.5);
 }
 
+/* Single-glyph badge - line-height:1 and tight padding keep it shorter than
+   .peruser-link, so it adds no height to .header-right's centered flex row. */
+.share-link {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	line-height: 1;
+	font-size: clamp(0.95rem, 1.05vw, 1.3rem);
+	color: var(--text-3);
+	background: none;
+	font-family: inherit;
+	cursor: pointer;
+	padding: 6px 10px;
+	border: 1px solid rgba(96, 130, 168, 0.35);
+	border-radius: 14px;
+	transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.share-link:hover {
+	color: var(--text-2);
+	border-color: rgba(157, 227, 212, 0.5);
+}
+
 .controls {
 	display: flex;
 	align-items: center;
@@ -220,7 +243,7 @@ body::before {
 .state-labels,
 .state-captions {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
+	grid-template-columns: repeat(4, 1fr);
 	gap: 4px;
 	font-size: clamp(0.68rem, 0.7vw, 1rem);
 	text-transform: uppercase;
@@ -263,6 +286,11 @@ body::before {
 }
 
 .state-captions > span:nth-child(3) {
+	justify-self: center;
+	text-align: center;
+}
+
+.state-captions > span:nth-child(4) {
 	justify-self: end;
 	text-align: right;
 }
@@ -577,17 +605,26 @@ body::before {
 }
 
 body[data-state="1"] .state--book,
-body[data-state="1"] .state--read {
+body[data-state="1"] .state--read,
+body[data-state="1"] .state--verses {
 	display: none;
 }
 
 body[data-state="2"] .state--overview,
-body[data-state="2"] .state--read {
+body[data-state="2"] .state--read,
+body[data-state="2"] .state--verses {
 	display: none;
 }
 
 body[data-state="3"] .state--overview,
-body[data-state="3"] .state--book {
+body[data-state="3"] .state--book,
+body[data-state="3"] .state--verses {
+	display: none;
+}
+
+body[data-state="4"] .state--overview,
+body[data-state="4"] .state--book,
+body[data-state="4"] .state--read {
 	display: none;
 }
 
@@ -1755,6 +1792,133 @@ tip.show {
 	gap: 16px;
 }
 
+.state--verses {
+	background: rgba(8, 12, 20, 0.6);
+	border: 1px solid rgba(68, 96, 126, 0.35);
+	border-radius: var(--radius-2);
+	padding: 16px;
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	min-height: 0;
+}
+
+/* Without flex:1 + min-height:0 here, this row has no bounded height to hand
+   down to #verses-list, so #verses-list's own overflow-y:auto never kicks in
+   - the whole panel (border included) grows to fit every verse and the page
+   itself scrolls, instead of #verses-list scrolling internally. */
+.state--verses .reading-container {
+	flex: 1;
+	min-height: 0;
+}
+
+.verses-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	flex: 1;
+	min-height: 0;
+	/* .reading-container uses align-items:flex-start (so the shorter
+	   sidebars don't stretch to its height) - this opts #verses-list back
+	   into stretching to the container's full height, which it needs so its
+	   own overflow-y:auto has a bounded height to clip against. */
+	align-self: stretch;
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-gutter: stable;
+	padding-right: clamp(10px, 0.9vw, 16px);
+	scrollbar-width: thin;
+	scrollbar-color: rgba(95, 200, 255, 0.45) transparent;
+}
+
+.verses-list::-webkit-scrollbar {
+	width: 10px;
+}
+
+.verses-list::-webkit-scrollbar-track {
+	background: transparent;
+}
+
+.verses-list::-webkit-scrollbar-thumb {
+	background: rgba(95, 200, 255, 0.45);
+	border-radius: 999px;
+	border: 2px solid transparent;
+	background-clip: content-box;
+}
+
+.verses-book-heading {
+	position: sticky;
+	top: 0;
+	z-index: 1;
+	margin: 6px 0 0;
+	padding: 6px 10px;
+	background: rgba(14, 22, 35, 0.95);
+	border: 1px solid rgba(96, 130, 168, 0.35);
+	border-radius: 6px;
+	font-size: clamp(0.85rem, 1vw, 1.4rem);
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	color: var(--text-1);
+}
+
+.verses-book-heading:first-child {
+	margin-top: 0;
+}
+
+.verses-list-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	padding: 10px 12px;
+	margin-right: clamp(2px, 0.35vw, 6px);
+	background: rgba(95, 200, 255, 0.08);
+	border: 1px solid rgba(95, 200, 255, 0.2);
+	border-left: 3px solid rgba(95, 200, 255, 0.35);
+	border-radius: 6px;
+	cursor: pointer;
+	transition: all 0.2s ease;
+}
+
+.verses-list-item:hover,
+.verses-list-item:focus-visible {
+	background: rgba(95, 200, 255, 0.15);
+	border-color: rgba(95, 200, 255, 0.4);
+	box-shadow: 0 0 8px rgba(95, 200, 255, 0.2);
+	outline: none;
+}
+
+.verses-list-item--ot {
+	border-left-color: rgba(255, 186, 90, 0.85);
+}
+
+.verses-list-item--nt {
+	border-left-color: rgba(80, 235, 255, 0.85);
+}
+
+.verses-list-item--mixed {
+	border-left-color: rgba(150, 210, 195, 0.85);
+}
+
+.verses-list-ref {
+	font-size: clamp(0.8rem, 0.95vw, 1.3rem);
+	font-weight: 700;
+	color: var(--accent-2);
+}
+
+.verses-list-text {
+	font-size: clamp(0.85rem, 1vw, 1.5rem);
+	color: var(--text-1);
+	line-height: 1.5;
+}
+
+.verses-list-note {
+	font-size: clamp(0.72rem, 0.85vw, 1.1rem);
+	color: var(--text-3);
+	font-style: italic;
+	padding-top: 4px;
+	border-top: 1px dashed rgba(147, 162, 184, 0.25);
+}
+
 .reading-container {
 	display: flex;
 	align-items: flex-start;
@@ -2319,7 +2483,7 @@ body[data-state="3"] .legend-genre.active {
 	}
 
 	.topic-search input {
-		min-width: 230px;
+		min-width: clamp(230px, calc(30.5vw - 106px), 480px);
 		padding: 10px 38px 10px 12px;
 		font-size: 1rem;
 	}
@@ -2337,7 +2501,8 @@ body[data-state="3"] .legend-genre.active {
 		max-width: 1620px;
 	}
 
-	.state--read {
+	.state--read,
+	.state--verses {
 		padding: 12px;
 	}
 
@@ -2506,6 +2671,7 @@ body[data-state="3"] .legend-genre.active {
 	}
 
 	.topic-search input {
+		min-width: clamp(500px, 22vw, 800px);
 		font-size: 1.32rem;
 		padding: 15px 50px 15px 18px;
 	}
@@ -2645,7 +2811,8 @@ body[data-state="3"] .legend-genre.active {
 		font-size: 1.6rem;
 	}
 
-	.state--read {
+	.state--read,
+	.state--verses {
 		padding: 21px;
 	}
 
@@ -2747,7 +2914,8 @@ body[data-state="3"] .legend-genre.active {
 
 	body[data-state="1"] .mini-state-switcher button[data-state="1"],
 	body[data-state="2"] .mini-state-switcher button[data-state="2"],
-	body[data-state="3"] .mini-state-switcher button[data-state="3"] {
+	body[data-state="3"] .mini-state-switcher button[data-state="3"],
+	body[data-state="4"] .mini-state-switcher button[data-state="4"] {
 		background: rgba(116, 176, 195, 0.22);
 		color: var(--text-1);
 	}
@@ -2900,7 +3068,8 @@ body[data-state="3"] .legend-genre.active {
 	}
 
 	/* Read state: single column, full width (sidebars already hidden <=1400px) */
-	.state--read {
+	.state--read,
+	.state--verses {
 		padding: 10px;
 	}
 

@@ -84,9 +84,10 @@ book card, positioned by vertical percentage within the book.
 
 **Recipe note**: this was built for the Bible state (Overview/`renderTreemap`,
 book cards) and the same pattern was mirrored into the Book state
-(`renderBookView`, chapter cards) - both are done and described below. The
-Verse state doesn't use pin-lines at all (it's a text reading view), so this
-recipe doesn't apply there.
+(`renderBookView`, chapter cards) - both are done and described below. Neither
+the Chapter state (`renderReadView`, a single-chapter text reading view) nor
+the Verses state (`renderVersesView`, a flat cross-book list of every verse
+for the topic) uses pin-lines, so this recipe doesn't apply to either.
 
 - **Overview**: `renderTreemap` (~line 1330-1460+).
 - **Book View**: `renderBookView` has an equivalent block (~line 1798-1845)

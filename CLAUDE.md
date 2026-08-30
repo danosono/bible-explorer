@@ -3,7 +3,7 @@
 Static site (vanilla HTML/CSS/JS, no build step) — interactive treemap-style explorer of the Bible by topic/prophecy. Live at https://bible-explorer.gospelgo.org.
 
 ## Stack & entry points
-- `index.html` — single page, all views (Bible/Book/Verse "states") live in here.
+- `index.html` — single page, all views (Bible/Book/Chapter/Verses "states") live in here.
 - `js/app.js` — all application logic (~3000 lines). `js/book-metadata.js` is static per-book metadata (genre, author, etc.).
 - `css/style.css` — the **only** active stylesheet (loaded with `css/normalize.css`). It's plain CSS with custom properties (`--text-1`, `--accent-1`, etc. in `:root`).
 - `data/` — large JSON datasets: `bible.json`, `data/books/`, `data/chapters/` (full text), `topics-with-references.json` (~19MB, Nave's Topics), `prophecy-topics-with-references.json`.
@@ -29,15 +29,17 @@ Static site (vanilla HTML/CSS/JS, no build step) — interactive treemap-style e
 - Each book card's height is proportional to its character count (`data/book-character-counts.json`), via `enforceAspectRatios()` (~line 1209): a `value^0.3` weight compresses the ~138x size range to ~4.4x, then items are greedily packed into 14 columns (canonical Genesis→Revelation order) with a binary-searched unit scale so columns absorb however many books fit, with each column's fill stretch capped at `MAX_COLUMN_FILL_FACTOR = 1.3` (keeps Revelation from being stretched larger than Matthew in the sparse last column). `scripts/verify-treemap-packing.js` re-runs this against real data outside the browser. Full algorithm and rationale in `docs/treemap-and-datasets.md`.
 
 ## Pin-line bands (js/app.js)
-- Topic/word references inside each book/chapter card render as `.pin-line` elements grouped into `PIN_LINE_BANDS = 8` vertical `.pin-line-band` rows (`getPinLineBandIndex()`, ~line 290), based on each reference's position (0-100%) within the book/chapter. A reference near the end of a book renders near the bottom of the card; empty bands render as blank space. Used in both the Bible state (`renderTreemap`, book cards) and Book state (`renderBookView`, chapter cards) — same recipe, mirrored. The Verse state doesn't use pin-lines (text reading view). Full details in `docs/treemap-and-datasets.md`.
+- Topic/word references inside each book/chapter card render as `.pin-line` elements grouped into `PIN_LINE_BANDS = 8` vertical `.pin-line-band` rows (`getPinLineBandIndex()`, ~line 290), based on each reference's position (0-100%) within the book/chapter. A reference near the end of a book renders near the bottom of the card; empty bands render as blank space. Used in both the Bible state (`renderTreemap`, book cards) and Book state (`renderBookView`, chapter cards) — same recipe, mirrored. Neither the Chapter state (`renderReadView`, single-chapter text reading view) nor the Verses state (`renderVersesView`, flat cross-book verse list) uses pin-lines. Full details in `docs/treemap-and-datasets.md`.
 
 ## Header layout (index.html ~line 44-115)
-- `.header` is a flex row, `justify-content: space-between`, with exactly two top-level children: `.title-block` (left: title, "by gospelgo" link, state indicator, Berean source link) and `.header-right` (right: `.controls` block + any standalone header links like `.peruser-link`).
-- To add a new top-right header link/badge, append it as a sibling **after** `.controls` inside `.header-right` — that's what places it in the far top-right corner.
+- `.header` is a flex row, `justify-content: space-between`, with exactly two top-level children: `.title-block` (left: title, "by gospelgo" link, state indicator, Berean source link) and `.header-right` (right: `.controls` block + any standalone header links like `.peruser-link` and the `.share-link` copy-deeplink button).
+- To add a new top-right header link/badge, append it as a sibling **after** `.controls` inside `.header-right` — that's what places it in the far top-right corner. `#share-link-btn` (🔗, copies `buildStateUrl().href` to the clipboard) is wired this way — a single-glyph button with `line-height: 1` so it doesn't add height to the row.
+- The Chapter and Verses states both flank their content with `.reading-sidebar--left`/`--right` panels of GospelGo cross-promotion links (About/GospelGo/Feedback/Discord and Donate/Contact/Mailing List/GitHub) — narrows the reading column on wide screens and gives other GospelGo projects exposure. Each state's sidebar has its own Contact button id (`#contact-copy-btn` / `#contact-copy-btn-verses`) since ids must be unique; the copy-to-clipboard wiring in `js/app.js` targets `[data-copy-value]` generically so both work.
 
 ## Responsive breakpoints (css/style.css)
-- `< 900px`: entire `#app` is hidden behind a full-screen "width too small" overlay (`#width-warning`, logic in `index.html` inline script) with share/copy-link buttons. Anything inside `#app` doesn't need mobile styling.
-- `max-width: 780px`: tablet tweaks (mostly moot since covered by the 900px overlay).
+- `max-width: 899.98px`: real mobile layout (not an overlay — `#app` reflows into a normal scrolling column). The `.mini-state-switcher` buttons replace the slider, `.reading-sidebar` panels are hidden (see below), and `.header-right` collapses into the hamburger menu (`#menu-toggle`).
+- `max-width: 780px`: tablet tweaks, layered on top of the 899.98px block above.
+- `max-width: 1400px`: `.reading-sidebar` (Chapter/Verses states) is hidden — a narrower-desktop breakpoint, well above the 900px mobile cutoff.
 - `min-width: 1101px and max-width: 1920px`: HD — tighter spacing/sizes for header controls.
 - `min-width: 2560px`: 4K — larger fonts/padding throughout (lots of breathing room).
 

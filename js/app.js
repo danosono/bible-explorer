@@ -962,7 +962,8 @@ const updateStateIndicator = (state) => {
   const labels = {
     1: 'Bible View',
     2: 'Book View',
-    3: 'Verse View'
+    3: 'Chapter View',
+    4: 'Verses View'
   };
   indicator.textContent = labels[state] || 'Bible View';
 };
@@ -973,6 +974,11 @@ const renderCurrentState = () => {
   if (stateValue === 1) {
     isRenderingStateTransition = false;
     renderTreemap(booksData, selectedTopic);
+    return;
+  }
+  if (stateValue === 4) {
+    isRenderingStateTransition = false;
+    renderVersesView(selectedTopic);
     return;
   }
   if (!isRenderingStateTransition) {
@@ -1099,7 +1105,8 @@ const setStoredDatasetMode = (mode) => {
 
 // Serializes the full app position into the URL: ?dataset=&topic= plus
 // &state=&book= (states 2-3) and &ch=&v= (state 3). State 1 carries no nav
-// params so the root URL stays clean and shareable.
+// params so the root URL stays clean and shareable. State 4 (Verses) spans
+// every book for the topic, so it sets only &state=4, with no book/ch/v.
 const buildStateUrl = () => {
   const url = new URL(window.location.href);
   url.searchParams.set("dataset", activeDatasetMode);
@@ -1110,7 +1117,10 @@ const buildStateUrl = () => {
   }
 
   const stateValue = getCurrentState();
-  if (stateValue >= 2 && selectedBookId) {
+  if (stateValue === 4) {
+    url.searchParams.set("state", "4");
+    url.searchParams.delete("book");
+  } else if (stateValue >= 2 && selectedBookId) {
     url.searchParams.set("state", String(stateValue));
     url.searchParams.set("book", selectedBookId);
   } else {
@@ -1148,10 +1158,10 @@ const syncHistory = ({ push = false } = {}) => {
 // data so a bad deep link degrades to the Overview instead of a blank view.
 const parseUrlNavState = (params) => {
   const stateParam = Number(params.get("state"));
-  let stateValue = stateParam === 2 || stateParam === 3 ? stateParam : 1;
+  let stateValue = stateParam === 2 || stateParam === 3 || stateParam === 4 ? stateParam : 1;
   const rawBook = params.get("book");
   const bookId = rawBook && (bibleData[rawBook] || BOOK_NAMES[rawBook]) ? rawBook : null;
-  if (stateValue >= 2 && !bookId) {
+  if (stateValue >= 2 && stateValue !== 4 && !bookId) {
     stateValue = 1;
   }
   let readRef = null;
@@ -1442,7 +1452,8 @@ const renderTopicSuggestions = (filterValue) => {
 const stateNames = {
   1: "Bible",
   2: "Book",
-  3: "Verse"
+  3: "Chapter",
+  4: "Verses"
 };
 
 if (stateSlider) {
@@ -2647,7 +2658,7 @@ const renderReadView = (bookId, topic = null) => {
     readMeta.textContent = "Select a book first";
     if (verseCount) verseCount.textContent = "";
     const title = document.createElement("h3");
-    title.textContent = "Verse Reader";
+    title.textContent = "Chapter Reader";
     const hint = document.createElement("p");
     hint.textContent = "Choose a verse from Book view to read full text here.";
     readingBlock.appendChild(title);
@@ -2958,6 +2969,128 @@ const renderReadView = (bookId, topic = null) => {
   });
 
   scrollToVerse(verseList, selectedRow || firstTopicRow);
+};
+
+// Verses state: a flat, book-grouped reading list of every verse for the
+// current topic across the whole Bible (canonical Genesis -> Revelation
+// order), with no pin-lines - just the verses themselves. Each row jumps to
+// the Chapter state at that exact verse when clicked.
+const renderVersesView = (topic = null) => {
+  const listEl = document.getElementById("verses-list");
+  const topicEl = document.getElementById("verses-current-topic");
+  const countEl = document.getElementById("verses-total-count");
+  const metaEl = document.getElementById("verses-meta");
+  if (!listEl || !topicEl || !countEl || !metaEl) return;
+
+  topicEl.textContent = getCurrentTopicDisplayText();
+  fitTextToWidth(topicEl);
+  setSourceLabel("Berean Standard Bible");
+  setPinnedLegendGenre(null);
+
+  listEl.innerHTML = "";
+
+  const topicData = topic ? topicsData[topic] : null;
+  if (!topicData || !topicData.references) {
+    countEl.textContent = "";
+    metaEl.textContent = topic
+      ? "No verses found for this topic."
+      : "Select a topic to see every verse in Bible order";
+    return;
+  }
+
+  const orderedBookIds = getOrderedReferencedBookIds(topic);
+  const fragment = document.createDocumentFragment();
+  let totalCount = 0;
+
+  orderedBookIds.forEach((bookId) => {
+    const entries = topicData.references[bookId];
+    if (!Array.isArray(entries) || entries.length === 0) return;
+
+    // Multiple entries can point at the same verse (e.g. several Nave's
+    // subtopics on one verse) - merge by chapter:verse so each verse
+    // appears once, with all of its notes combined.
+    const mergedByRef = new Map();
+    entries.forEach((entry) => {
+      const refText = Array.isArray(entry.refs) ? entry.refs[0] : null;
+      const parsed = parseChapterVerse(refText);
+      if (!refText || !parsed) return;
+      const key = `${parsed.chapter}:${parsed.verse}`;
+      if (!mergedByRef.has(key)) {
+        mergedByRef.set(key, {
+          refText,
+          chapter: parsed.chapter,
+          verse: parsed.verse,
+          absoluteVerse: Number(entry.verse) || 0,
+          subtopics: [],
+          rawRefs: entry.refs || []
+        });
+      }
+      const merged = mergedByRef.get(key);
+      (entry.subtopics || []).forEach((note) => {
+        if (note && !merged.subtopics.includes(note)) merged.subtopics.push(note);
+      });
+    });
+
+    const sortedVerses = Array.from(mergedByRef.values()).sort((a, b) => a.absoluteVerse - b.absoluteVerse);
+    if (!sortedVerses.length) return;
+
+    const heading = document.createElement("h3");
+    heading.className = "verses-book-heading";
+    heading.textContent = BOOK_NAMES[bookId] || bookId;
+    fragment.appendChild(heading);
+
+    sortedVerses.forEach((v) => {
+      totalCount += 1;
+      const verseText = getVerseText(bookId, v.chapter, v.verse);
+      const subtopicText = v.subtopics.join("; ");
+
+      const item = document.createElement("div");
+      item.className = "verses-list-item";
+      item.tabIndex = 0;
+      item.setAttribute("role", "button");
+      const kind = getReferenceKindFromData({ subtopics: v.subtopics, refs: v.rawRefs, bookId });
+      applyReferenceKindClass(item, "verses-list-item", kind);
+
+      const refEl = document.createElement("div");
+      refEl.className = "verses-list-ref";
+      refEl.textContent = v.refText;
+      item.appendChild(refEl);
+
+      const textEl = document.createElement("div");
+      textEl.className = "verses-list-text";
+      textEl.textContent = verseText || "Verse text unavailable.";
+      item.appendChild(textEl);
+
+      if (subtopicText) {
+        const noteEl = document.createElement("div");
+        noteEl.className = "verses-list-note";
+        noteEl.textContent = subtopicText;
+        item.appendChild(noteEl);
+      }
+
+      const jumpToChapter = () => openChapterInState3(bookId, v.chapter, v.verse);
+      item.addEventListener("click", jumpToChapter);
+      item.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          jumpToChapter();
+        }
+      });
+
+      fragment.appendChild(item);
+    });
+  });
+
+  listEl.appendChild(fragment);
+
+  const bookCount = orderedBookIds.length;
+  if (totalCount > 0) {
+    countEl.textContent = `${totalCount} verse${totalCount !== 1 ? "s" : ""}`;
+    metaEl.textContent = `${totalCount} verse${totalCount !== 1 ? "s" : ""} across ${bookCount} book${bookCount !== 1 ? "s" : ""}`;
+  } else {
+    countEl.textContent = "";
+    metaEl.textContent = "No verses found for this topic.";
+  }
 };
 
 const renderChapterNavSidebar = (verses, highlightedVerses, highlightedVerseKinds, chapterNumber, verseList, updateVerseHighlight) => {
@@ -3344,23 +3477,44 @@ const boot = async () => {
     });
   }
 
-  const contactCopyBtn = document.getElementById("contact-copy-btn");
-  if (contactCopyBtn) {
-    const defaultText = contactCopyBtn.dataset.defaultText || contactCopyBtn.textContent;
-    const emailToCopy = contactCopyBtn.dataset.copyValue || "";
-    let contactCopyResetTimer = null;
-    contactCopyBtn.addEventListener("click", async () => {
+  // Any button with data-copy-value gets the same click-to-copy behavior -
+  // the Chapter and Verses reading sidebars each have their own Contact
+  // button (distinct ids, same data-copy-value), so this wires all of them.
+  document.querySelectorAll("[data-copy-value]").forEach((copyBtn) => {
+    const defaultText = copyBtn.dataset.defaultText || copyBtn.textContent;
+    const valueToCopy = copyBtn.dataset.copyValue || "";
+    let copyResetTimer = null;
+    copyBtn.addEventListener("click", async () => {
       try {
-        await navigator.clipboard.writeText(emailToCopy);
-        contactCopyBtn.textContent = "Copied!";
+        await navigator.clipboard.writeText(valueToCopy);
+        copyBtn.textContent = "Copied!";
       } catch (error) {
-        // Clipboard API unavailable/denied - show the address itself so the
+        // Clipboard API unavailable/denied - show the value itself so the
         // user can still select and copy it manually.
-        contactCopyBtn.textContent = emailToCopy;
+        copyBtn.textContent = valueToCopy;
       }
-      if (contactCopyResetTimer) clearTimeout(contactCopyResetTimer);
-      contactCopyResetTimer = setTimeout(() => {
-        contactCopyBtn.textContent = defaultText;
+      if (copyResetTimer) clearTimeout(copyResetTimer);
+      copyResetTimer = setTimeout(() => {
+        copyBtn.textContent = defaultText;
+      }, 1500);
+    });
+  });
+
+  const shareLinkBtn = document.getElementById("share-link-btn");
+  if (shareLinkBtn) {
+    const shareDefaultText = shareLinkBtn.textContent;
+    let shareResetTimer = null;
+    shareLinkBtn.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(buildStateUrl().href);
+        shareLinkBtn.textContent = "✅";
+      } catch (error) {
+        // Clipboard API unavailable/denied - leave the icon as-is; there's
+        // no text field here to fall back to showing the link in.
+      }
+      if (shareResetTimer) clearTimeout(shareResetTimer);
+      shareResetTimer = setTimeout(() => {
+        shareLinkBtn.textContent = shareDefaultText;
       }, 1500);
     });
   }
@@ -4064,7 +4218,7 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
   footer.className = "verse-modal-footer";
   const state3Btn = document.createElement("button");
   state3Btn.className = "state3-nav-btn";
-  state3Btn.textContent = chapterNumber ? "Open Chapter in Verse View" : "View Full Verse Text";
+  state3Btn.textContent = chapterNumber ? "Open in Chapter View" : "View Full Verse Text";
   state3Btn.disabled = groupedPositions.length === 0;
   state3Btn.addEventListener("click", () => {
     const targetGroup = selectedGroup || initialGroup;
