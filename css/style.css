@@ -199,14 +199,14 @@ body::before {
 	border-color: rgba(157, 227, 212, 0.5);
 }
 
-/* Single-glyph badge - line-height:1 and tight padding keep it shorter than
+/* Compact icon badge - line-height:1 and tight padding keep it shorter than
    .peruser-link, so it adds no height to .header-right's centered flex row. */
 .share-link {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	line-height: 1;
-	font-size: clamp(0.95rem, 1.05vw, 1.3rem);
+	font-size: clamp(0.85rem, 0.95vw, 1.15rem);
 	color: var(--text-3);
 	background: none;
 	font-family: inherit;
@@ -215,6 +215,12 @@ body::before {
 	border: 1px solid rgba(96, 130, 168, 0.35);
 	border-radius: 14px;
 	transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.share-link svg {
+	width: clamp(15px, 1vw, 19px);
+	height: clamp(15px, 1vw, 19px);
+	display: block;
 }
 
 .share-link:hover {
@@ -382,6 +388,72 @@ body::before {
 	opacity: 0.4;
 	cursor: default;
 	pointer-events: none;
+}
+
+.topic-nav-group {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+/* A little extra breathing room after the dice button, beyond the row's
+   normal 8px gap, so the two arrow groups read as separate from it. */
+.topic-nav-group:first-of-type {
+	margin-left: 6px;
+}
+
+.topic-nav-divider {
+	flex: none;
+	width: 1px;
+	height: 16px;
+	background: rgba(96, 130, 168, 0.35);
+}
+
+.topic-nav-btn {
+	flex: none;
+	width: clamp(18px, 1.5vw, 24px);
+	height: clamp(18px, 1.5vw, 24px);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	border-radius: 50%;
+	border: 1px solid rgba(95, 200, 255, 0.45);
+	background: rgba(14, 22, 35, 0.85);
+	color: rgba(95, 200, 255, 0.9);
+	cursor: pointer;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-1);
+}
+
+.topic-nav-btn svg {
+	width: 60%;
+	height: 60%;
+}
+
+.topic-nav-btn:hover:not(:disabled) {
+	background: rgba(95, 200, 255, 0.15);
+	box-shadow: 0 0 12px rgba(95, 200, 255, 0.25);
+}
+
+.topic-nav-btn:disabled {
+	opacity: 0.35;
+	cursor: default;
+	pointer-events: none;
+}
+
+/* Bigger tap targets for the dice button + all 4 arrows everywhere below the
+   HD range (1101px floor) - both the 900-1100px band and the fully-reflowed
+   mobile layout below 900px, since vertical space is cheap there (the page
+   already scrolls) and these are otherwise the smallest circular buttons in
+   the header at those widths. */
+@media (max-width: 1100.98px) {
+	.topic-random-btn,
+	.topic-nav-btn {
+		width: 34px;
+		height: 34px;
+		font-size: 1.05rem;
+	}
 }
 
 .topic-search input {

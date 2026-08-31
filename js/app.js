@@ -5,6 +5,10 @@ const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
 const topicClearBtn = document.getElementById("topic-clear-btn");
 const topicRandomBtn = document.getElementById("topic-random-btn");
+const topicBackBtn = document.getElementById("topic-back-btn");
+const topicForwardBtn = document.getElementById("topic-forward-btn");
+const topicPrevBtn = document.getElementById("topic-prev-btn");
+const topicNextBtn = document.getElementById("topic-next-btn");
 const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
@@ -51,6 +55,10 @@ let isRenderingStateTransition = false;
 let isRestoringHistory = false;
 let pinnedLegendGenre = null;
 let activeDatasetMode = "topics";
+// Back/Forward through the user's own topic selections, spanning dataset
+// switches - entries are { mode, topic } so going back can restore both.
+let topicHistoryStack = [];
+let topicHistoryIndex = -1;
 const DEFAULT_TOPIC = "JESUS, THE CHRIST";
 const FALLBACK_NAV_TOPIC = "Love";
 const FALLBACK_NAV_BOOK = "JHN";
@@ -1279,10 +1287,34 @@ const updateTopicActionState = () => {
     const hasEligibleTopics = allTopicNames.some((name) => !isProphecyAggregateTopic(name));
     topicRandomBtn.disabled = !hasEligibleTopics;
   }
+  if (topicBackBtn) {
+    topicBackBtn.disabled = topicHistoryIndex <= 0;
+  }
+  if (topicForwardBtn) {
+    topicForwardBtn.disabled = topicHistoryIndex >= topicHistoryStack.length - 1;
+  }
+  if (topicPrevBtn || topicNextBtn) {
+    const eligible = allTopicNames.filter((name) => !isProphecyAggregateTopic(name));
+    const currentIndex = selectedTopic ? eligible.indexOf(selectedTopic) : -1;
+    if (topicPrevBtn) topicPrevBtn.disabled = currentIndex <= 0;
+    if (topicNextBtn) topicNextBtn.disabled = currentIndex === -1 || currentIndex >= eligible.length - 1;
+  }
+};
+
+// Records the current (dataset, topic) pair as a Back/Forward history entry.
+// Dedupes an immediate repeat, and - like real browser history - discards
+// any "forward" entries once a new selection is made from a stepped-back
+// position.
+const pushTopicHistory = () => {
+  const top = topicHistoryStack[topicHistoryIndex];
+  if (top && top.mode === activeDatasetMode && top.topic === selectedTopic) return;
+  topicHistoryStack = topicHistoryStack.slice(0, topicHistoryIndex + 1);
+  topicHistoryStack.push({ mode: activeDatasetMode, topic: selectedTopic });
+  topicHistoryIndex = topicHistoryStack.length - 1;
 };
 
 const applyTopicSelection = (topicName, options = {}) => {
-  const { commit = false } = options;
+  const { commit = false, skipHistoryPush = false } = options;
   const resolved = resolveTopicKey(topicName);
   const normalizedInput = normalizeTopicKey(topicName);
   const isExactMatch = resolved && normalizeTopicKey(resolved) === normalizedInput;
@@ -1324,6 +1356,10 @@ const applyTopicSelection = (topicName, options = {}) => {
     syncHistory();
   }
 
+  if ((commit || isExactMatch) && !skipHistoryPush) {
+    pushTopicHistory();
+  }
+
   updateTopicActionState();
 };
 
@@ -1352,6 +1388,59 @@ const getTopicOptions = (filterValue) => {
     return combined.slice(0, maxOptions);
   }
   return combined;
+};
+
+// Switches the active dataset. Normally (forceTopic omitted) it tries to
+// carry the current search term over into the new dataset - an exact
+// case-insensitive match first, then the same startsWith/contains matcher
+// the suggestion dropdown uses, and only then that dataset's configured
+// default topic. forceTopic (used by the Back/Forward history buttons to
+// restore an exact prior dataset+topic pair) skips all of that and just
+// uses the given topic if it still exists.
+const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } = {}) => {
+  if (!DATASET_CONFIG[nextMode]) return;
+
+  activeDatasetMode = nextMode;
+  setStoredDatasetMode(nextMode);
+  updateDatasetUI();
+
+  const carrySearchTerm = (topicInput && topicInput.value) || selectedTopic;
+  await loadTopics();
+
+  let nextTopic;
+  if (forceTopic !== undefined) {
+    nextTopic = forceTopic && topicsData[forceTopic] ? forceTopic : getDatasetDefaultTopic(nextMode);
+  } else {
+    const exactMatch = resolveTopicKey(carrySearchTerm);
+    if (exactMatch && topicsData[exactMatch] && !isProphecyAggregateTopic(exactMatch)) {
+      nextTopic = exactMatch;
+    } else {
+      const fuzzyMatches = getTopicOptions(carrySearchTerm || "").filter((name) => !isProphecyAggregateTopic(name));
+      nextTopic = fuzzyMatches[0] || getDatasetDefaultTopic(nextMode);
+    }
+  }
+  selectedTopic = nextTopic;
+
+  if (topicInput) {
+    topicInput.value = selectedTopic || "";
+    // Prophecy (and any other blank-default dataset) lands here with an
+    // empty field - focus it so the suggestion dropdown is already open for
+    // the user's next interaction.
+    if (!selectedTopic) {
+      topicInput.focus();
+    }
+  }
+  setStoredTopic(selectedTopic);
+  // Label before render - see the comment in applyTopicSelection.
+  updateCurrentTopicLabel();
+  renderCurrentState();
+  syncHistory();
+
+  if (!skipHistoryPush) {
+    pushTopicHistory();
+  }
+  updateTopicActionState();
+  closeMobileMenu();
 };
 
 // Custom suggestion dropdown, replacing the native <input list> + <datalist>
@@ -3337,39 +3426,13 @@ const boot = async () => {
     await loadTopics();
 
     if (datasetModeSelect) {
-      datasetModeSelect.addEventListener("change", async (e) => {
+      datasetModeSelect.addEventListener("change", (e) => {
         const nextMode = e.target.value;
         if (!DATASET_CONFIG[nextMode]) {
           e.target.value = activeDatasetMode;
           return;
         }
-
-        activeDatasetMode = nextMode;
-        setStoredDatasetMode(nextMode);
-        updateDatasetUI();
-
-        const previousTopic = selectedTopic;
-        await loadTopics();
-        selectedTopic = previousTopic && topicsData[previousTopic]
-          ? previousTopic
-          : getDatasetDefaultTopic(nextMode);
-
-        if (topicInput) {
-          topicInput.value = selectedTopic || "";
-          // Prophecy (and any other blank-default dataset) lands here with an
-          // empty field - focus it so the suggestion dropdown is already open
-          // for the user's next interaction.
-          if (!selectedTopic) {
-            topicInput.focus();
-          }
-        }
-        setStoredTopic(selectedTopic);
-        // Label before render - see the comment in applyTopicSelection.
-        updateCurrentTopicLabel();
-        renderCurrentState();
-        syncHistory();
-        updateTopicActionState();
-        closeMobileMenu();
+        switchDataset(nextMode);
       });
     }
     
@@ -3477,6 +3540,54 @@ const boot = async () => {
     });
   }
 
+  // Steps to a Back/Forward history entry, switching dataset first if that
+  // entry belongs to a different one.
+  const goToTopicHistoryEntry = (entry) => {
+    if (entry.mode !== activeDatasetMode) {
+      if (datasetModeSelect) datasetModeSelect.value = entry.mode;
+      switchDataset(entry.mode, { forceTopic: entry.topic, skipHistoryPush: true });
+    } else {
+      applyTopicSelection(entry.topic, { commit: true, skipHistoryPush: true });
+    }
+    closeMobileMenu();
+  };
+
+  if (topicBackBtn) {
+    topicBackBtn.addEventListener("click", () => {
+      if (topicHistoryIndex <= 0) return;
+      topicHistoryIndex -= 1;
+      goToTopicHistoryEntry(topicHistoryStack[topicHistoryIndex]);
+    });
+  }
+
+  if (topicForwardBtn) {
+    topicForwardBtn.addEventListener("click", () => {
+      if (topicHistoryIndex >= topicHistoryStack.length - 1) return;
+      topicHistoryIndex += 1;
+      goToTopicHistoryEntry(topicHistoryStack[topicHistoryIndex]);
+    });
+  }
+
+  if (topicPrevBtn) {
+    topicPrevBtn.addEventListener("click", () => {
+      const eligible = allTopicNames.filter((name) => !isProphecyAggregateTopic(name));
+      const currentIndex = selectedTopic ? eligible.indexOf(selectedTopic) : -1;
+      if (currentIndex <= 0) return;
+      applyTopicSelection(eligible[currentIndex - 1], { commit: true });
+      closeMobileMenu();
+    });
+  }
+
+  if (topicNextBtn) {
+    topicNextBtn.addEventListener("click", () => {
+      const eligible = allTopicNames.filter((name) => !isProphecyAggregateTopic(name));
+      const currentIndex = selectedTopic ? eligible.indexOf(selectedTopic) : -1;
+      if (currentIndex === -1 || currentIndex >= eligible.length - 1) return;
+      applyTopicSelection(eligible[currentIndex + 1], { commit: true });
+      closeMobileMenu();
+    });
+  }
+
   // Any button with data-copy-value gets the same click-to-copy behavior -
   // the Chapter and Verses reading sidebars each have their own Contact
   // button (distinct ids, same data-copy-value), so this wires all of them.
@@ -3502,7 +3613,9 @@ const boot = async () => {
 
   const shareLinkBtn = document.getElementById("share-link-btn");
   if (shareLinkBtn) {
-    const shareDefaultText = shareLinkBtn.textContent;
+    // innerHTML (not textContent) so the SVG icon markup survives the
+    // temporary "copied" swap below and can be restored afterward.
+    const shareDefaultMarkup = shareLinkBtn.innerHTML;
     let shareResetTimer = null;
     shareLinkBtn.addEventListener("click", async () => {
       try {
@@ -3514,7 +3627,7 @@ const boot = async () => {
       }
       if (shareResetTimer) clearTimeout(shareResetTimer);
       shareResetTimer = setTimeout(() => {
-        shareLinkBtn.textContent = shareDefaultText;
+        shareLinkBtn.innerHTML = shareDefaultMarkup;
       }, 1500);
     });
   }

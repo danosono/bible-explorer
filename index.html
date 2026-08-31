@@ -28,7 +28,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=12" />
+    <link rel="stylesheet" href="css/style.css?v=14" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
   </head>
@@ -118,6 +118,89 @@
                 >
                   🎲
                 </button>
+                <span class="topic-nav-group">
+                  <button
+                    class="topic-nav-btn"
+                    id="topic-back-btn"
+                    type="button"
+                    aria-label="Go back"
+                    title="Go back"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M15 6l-6 6 6 6"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="topic-nav-btn"
+                    id="topic-forward-btn"
+                    type="button"
+                    aria-label="Go forward"
+                    title="Go forward"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M9 6l6 6-6 6"></path>
+                    </svg>
+                  </button>
+                </span>
+                <span class="topic-nav-divider" aria-hidden="true"></span>
+                <span class="topic-nav-group">
+                  <button
+                    class="topic-nav-btn"
+                    id="topic-prev-btn"
+                    type="button"
+                    aria-label="Previous topic"
+                    title="Previous topic"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M18 6l-6 6 6 6"></path>
+                      <path d="M12 6l-6 6 6 6"></path>
+                    </svg>
+                  </button>
+                  <button
+                    class="topic-nav-btn"
+                    id="topic-next-btn"
+                    type="button"
+                    aria-label="Next topic"
+                    title="Next topic"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M6 6l6 6-6 6"></path>
+                      <path d="M12 6l6 6-6 6"></path>
+                    </svg>
+                  </button>
+                </span>
               </span>
               <span class="topic-search-controls">
                 <span class="topic-input-wrap">
@@ -137,24 +220,39 @@
                 </span>
               </span>
             </div>
+            <button
+              type="button"
+              class="share-link"
+              id="share-link-btn"
+              aria-label="Copy link to this page"
+              title="Copy link to this page"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                aria-hidden="true"
+              >
+                <path
+                  d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                ></path>
+                <path
+                  d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                ></path>
+              </svg>
+            </button>
+            <a
+              href="https://bible-peruser.gospelgo.org"
+              target="_blank"
+              rel="noopener"
+              class="peruser-link"
+              title="Try Bible Peruser"
+              >Bible<br />Peruser</a
+            >
           </div>
-          <button
-            type="button"
-            class="share-link"
-            id="share-link-btn"
-            aria-label="Copy link to this page"
-            title="Copy link to this page"
-          >
-            🔗
-          </button>
-          <a
-            href="https://bible-peruser.gospelgo.org"
-            target="_blank"
-            rel="noopener"
-            class="peruser-link"
-            title="Try Bible Peruser"
-            >Bible<br />Peruser</a
-          >
         </div>
       </header>
       <section class="viewport">
@@ -414,7 +512,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=62"></script>
+    <script src="js/app.js?v=64"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
