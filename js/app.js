@@ -2435,6 +2435,13 @@ const renderBookView = (bookId, topic = null) => {
     columnCount = 12;
   } else if (chapterCount >= 29) {
     columnCount = 8;
+  } else if (chapterCount >= 20) {
+    // Books like Matthew/Acts (28) and Luke/Joshua/John (21-24) fall just
+    // short of the 8-column tier above and would otherwise be stuck at 4
+    // columns - the same as a 16-chapter book like Mark - stacking many
+    // more rows per column and squeezing every card's height. A narrower
+    // in-between tier keeps their cards a usable height.
+    columnCount = 6;
   }
   if (mobile) {
     // Fewer, wider columns; tiles must stay tappable (>=72px wide).
@@ -2554,6 +2561,45 @@ const renderBookView = (bookId, topic = null) => {
           last.h = Math.max(1, last.h + delta);
         }
       }
+    });
+
+    // When a column has too many chapters to fit at the density floor, the
+    // sizing above falls back to pure proportional-by-verse-count with no
+    // floor at all, which can squeeze a low-verse chapter's card under
+    // .pin-lines' fixed top(34)+bottom(10) offset (PIN_LINES_VERTICAL_OVERHEAD)
+    // - its pin-lines container ends up with ~0 usable height, hiding its
+    // references entirely even though it has topic entries. Borrow height
+    // from taller siblings in the same column so any chapter with entries
+    // gets enough room for at least one visible pin-line.
+    const minPinLineCardHeight = PIN_LINES_VERTICAL_OVERHEAD + PIN_LINE_MIN_USABLE_HEIGHT;
+    columns.forEach((column) => {
+      if (column.length === 0) return;
+      const needsBoost = column.filter((item) =>
+        entriesByChapter.has(item.chapterNumber) && item.h < minPinLineCardHeight
+      );
+      if (needsBoost.length === 0) return;
+
+      needsBoost.forEach((item) => {
+        let deficit = minPinLineCardHeight - item.h;
+        if (deficit <= 0) return;
+        const donors = column
+          .filter((other) => other !== item && !needsBoost.includes(other))
+          .sort((a, b) => b.h - a.h);
+        donors.forEach((donor) => {
+          if (deficit <= 0) return;
+          const available = Math.max(0, donor.h - minPinLineCardHeight);
+          const take = Math.min(available, deficit);
+          donor.h -= take;
+          item.h += take;
+          deficit -= take;
+        });
+      });
+
+      let y = 0;
+      column.forEach((item) => {
+        item.y = y;
+        y += item.h;
+      });
     });
   }
 
