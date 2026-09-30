@@ -9,6 +9,8 @@ const topicBackBtn = document.getElementById("topic-back-btn");
 const topicForwardBtn = document.getElementById("topic-forward-btn");
 const topicPrevBtn = document.getElementById("topic-prev-btn");
 const topicNextBtn = document.getElementById("topic-next-btn");
+const topicCopyVersesBtn = document.getElementById("topic-copy-verses-btn");
+const topicVerseListBtn = document.getElementById("topic-verselist-btn");
 const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
@@ -120,6 +122,13 @@ const BSB_TORREYS_SOURCE_TAG = " — Torrey's";
 const isProphecyAggregateTopic = (name) => {
   return PROPHECY_AGGREGATE_TOPICS.some((item) => item.key === name);
 };
+
+// Cap on how many verse refs the "Open in Verse List" button will send in its
+// deep link - very large topics (e.g. the Prophecy "[All] OT + NT Combined"
+// aggregate) could otherwise produce an excessively long URL. The Copy button
+// has no such cap since clipboard text has no practical size concern here.
+const VERSELIST_MAX_REFS = 300;
+const VERSELIST_BASE_URL = "https://verselist.gospelgo.org/";
 
 const getPreferredTopicFallback = () => {
   if (activeDatasetMode === "prophecy") {
@@ -475,8 +484,8 @@ const getPinLineWidthPercent = (verseCount) => {
 // default ("Click to view full range") is used instead once a modal is
 // already open (e.g. hovering a verse-line/list-item inside it), where
 // there's no card-click action to describe.
-const OVERVIEW_PIN_CLICK_HINT = "Click pin to view a list of verses in this book.\nClick the book card to view verses separated into chapter cards.";
-const BOOK_VIEW_PIN_CLICK_HINT = "Click pin to view a list of all verses in this chapter.\nClick the chapter card to view topic verses in context with all verses in this chapter.";
+const OVERVIEW_PIN_CLICK_HINT = "Click this line indicator to view a list of verses in this book.\nClick the book card to view verses separated into chapter cards.";
+const BOOK_VIEW_PIN_CLICK_HINT = "Click this line indicator to view a list of all verses in this chapter.\nClick the chapter card to view topic verses in context with all verses in this chapter.";
 
 // Number of vertical "bands" pin-lines are grouped into, so a reference's
 // position within a card reflects its position within the book/chapter.
@@ -898,6 +907,55 @@ const getOrderedReferencedBookIds = (topicName) => {
   return ordered;
 };
 
+// Flattens a topic's references into one Bible-ordered list of merged verse
+// records (Genesis -> Revelation, chapter:verse ascending within each book).
+// Multiple subtopics on the same verse are merged into one record. Note
+// entry.verse (-> absoluteVerse) is only monotonic within a single book, not
+// Bible-wide, so books must be sorted first via getOrderedReferencedBookIds
+// and verses sorted only within each book - not by a single flat sort.
+// Each record: { bookId, refText, chapter, verse, absoluteVerse, subtopics, rawRefs }
+const getTopicVerseRefs = (topicName) => {
+  const topicData = topicName ? topicsData[topicName] : null;
+  if (!topicData || !topicData.references) return [];
+
+  const orderedBookIds = getOrderedReferencedBookIds(topicName);
+  const result = [];
+
+  orderedBookIds.forEach((bookId) => {
+    const entries = topicData.references[bookId];
+    if (!Array.isArray(entries) || entries.length === 0) return;
+
+    const mergedByRef = new Map();
+    entries.forEach((entry) => {
+      const refText = Array.isArray(entry.refs) ? entry.refs[0] : null;
+      const parsed = parseChapterVerse(refText);
+      if (!refText || !parsed) return;
+      const key = `${parsed.chapter}:${parsed.verse}`;
+      if (!mergedByRef.has(key)) {
+        mergedByRef.set(key, {
+          bookId,
+          refText,
+          chapter: parsed.chapter,
+          verse: parsed.verse,
+          absoluteVerse: Number(entry.verse) || 0,
+          subtopics: [],
+          rawRefs: entry.refs || []
+        });
+      }
+      const merged = mergedByRef.get(key);
+      (entry.subtopics || []).forEach((note) => {
+        if (note && !merged.subtopics.includes(note)) merged.subtopics.push(note);
+      });
+    });
+
+    Array.from(mergedByRef.values())
+      .sort((a, b) => a.absoluteVerse - b.absoluteVerse)
+      .forEach((v) => result.push(v));
+  });
+
+  return result;
+};
+
 const getFirstReferenceForBook = (topicName, bookId) => {
   const entries = topicName && topicsData[topicName] && topicsData[topicName].references
     ? topicsData[topicName].references[bookId]
@@ -1298,6 +1356,12 @@ const updateTopicActionState = () => {
     const currentIndex = selectedTopic ? eligible.indexOf(selectedTopic) : -1;
     if (topicPrevBtn) topicPrevBtn.disabled = currentIndex <= 0;
     if (topicNextBtn) topicNextBtn.disabled = currentIndex === -1 || currentIndex >= eligible.length - 1;
+  }
+  if (topicCopyVersesBtn) {
+    topicCopyVersesBtn.disabled = !selectedTopic;
+  }
+  if (topicVerseListBtn) {
+    topicVerseListBtn.disabled = !selectedTopic;
   }
 };
 
@@ -3134,86 +3198,58 @@ const renderVersesView = (topic = null) => {
   }
 
   const orderedBookIds = getOrderedReferencedBookIds(topic);
+  const flatVerses = getTopicVerseRefs(topic);
   const fragment = document.createDocumentFragment();
   let totalCount = 0;
+  let currentBookId = null;
 
-  orderedBookIds.forEach((bookId) => {
-    const entries = topicData.references[bookId];
-    if (!Array.isArray(entries) || entries.length === 0) return;
+  flatVerses.forEach((v) => {
+    if (v.bookId !== currentBookId) {
+      currentBookId = v.bookId;
+      const heading = document.createElement("h3");
+      heading.className = "verses-book-heading";
+      heading.textContent = BOOK_NAMES[currentBookId] || currentBookId;
+      fragment.appendChild(heading);
+    }
 
-    // Multiple entries can point at the same verse (e.g. several Nave's
-    // subtopics on one verse) - merge by chapter:verse so each verse
-    // appears once, with all of its notes combined.
-    const mergedByRef = new Map();
-    entries.forEach((entry) => {
-      const refText = Array.isArray(entry.refs) ? entry.refs[0] : null;
-      const parsed = parseChapterVerse(refText);
-      if (!refText || !parsed) return;
-      const key = `${parsed.chapter}:${parsed.verse}`;
-      if (!mergedByRef.has(key)) {
-        mergedByRef.set(key, {
-          refText,
-          chapter: parsed.chapter,
-          verse: parsed.verse,
-          absoluteVerse: Number(entry.verse) || 0,
-          subtopics: [],
-          rawRefs: entry.refs || []
-        });
+    totalCount += 1;
+    const verseText = getVerseText(v.bookId, v.chapter, v.verse);
+    const subtopicText = v.subtopics.join("; ");
+
+    const item = document.createElement("div");
+    item.className = "verses-list-item";
+    item.tabIndex = 0;
+    item.setAttribute("role", "button");
+    const kind = getReferenceKindFromData({ subtopics: v.subtopics, refs: v.rawRefs, bookId: v.bookId });
+    applyReferenceKindClass(item, "verses-list-item", kind);
+
+    const refEl = document.createElement("div");
+    refEl.className = "verses-list-ref";
+    refEl.textContent = v.refText;
+    item.appendChild(refEl);
+
+    const textEl = document.createElement("div");
+    textEl.className = "verses-list-text";
+    textEl.textContent = verseText || "Verse text unavailable.";
+    item.appendChild(textEl);
+
+    if (subtopicText) {
+      const noteEl = document.createElement("div");
+      noteEl.className = "verses-list-note";
+      noteEl.textContent = subtopicText;
+      item.appendChild(noteEl);
+    }
+
+    const jumpToChapter = () => openChapterInState3(v.bookId, v.chapter, v.verse);
+    item.addEventListener("click", jumpToChapter);
+    item.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        jumpToChapter();
       }
-      const merged = mergedByRef.get(key);
-      (entry.subtopics || []).forEach((note) => {
-        if (note && !merged.subtopics.includes(note)) merged.subtopics.push(note);
-      });
     });
 
-    const sortedVerses = Array.from(mergedByRef.values()).sort((a, b) => a.absoluteVerse - b.absoluteVerse);
-    if (!sortedVerses.length) return;
-
-    const heading = document.createElement("h3");
-    heading.className = "verses-book-heading";
-    heading.textContent = BOOK_NAMES[bookId] || bookId;
-    fragment.appendChild(heading);
-
-    sortedVerses.forEach((v) => {
-      totalCount += 1;
-      const verseText = getVerseText(bookId, v.chapter, v.verse);
-      const subtopicText = v.subtopics.join("; ");
-
-      const item = document.createElement("div");
-      item.className = "verses-list-item";
-      item.tabIndex = 0;
-      item.setAttribute("role", "button");
-      const kind = getReferenceKindFromData({ subtopics: v.subtopics, refs: v.rawRefs, bookId });
-      applyReferenceKindClass(item, "verses-list-item", kind);
-
-      const refEl = document.createElement("div");
-      refEl.className = "verses-list-ref";
-      refEl.textContent = v.refText;
-      item.appendChild(refEl);
-
-      const textEl = document.createElement("div");
-      textEl.className = "verses-list-text";
-      textEl.textContent = verseText || "Verse text unavailable.";
-      item.appendChild(textEl);
-
-      if (subtopicText) {
-        const noteEl = document.createElement("div");
-        noteEl.className = "verses-list-note";
-        noteEl.textContent = subtopicText;
-        item.appendChild(noteEl);
-      }
-
-      const jumpToChapter = () => openChapterInState3(bookId, v.chapter, v.verse);
-      item.addEventListener("click", jumpToChapter);
-      item.addEventListener("keydown", (event) => {
-        if (event.key === "Enter" || event.key === " ") {
-          event.preventDefault();
-          jumpToChapter();
-        }
-      });
-
-      fragment.appendChild(item);
-    });
+    fragment.appendChild(item);
   });
 
   listEl.appendChild(fragment);
@@ -3631,6 +3667,59 @@ const boot = async () => {
       if (currentIndex === -1 || currentIndex >= eligible.length - 1) return;
       applyTopicSelection(eligible[currentIndex + 1], { commit: true });
       closeMobileMenu();
+    });
+  }
+
+  if (topicCopyVersesBtn) {
+    // innerHTML (not textContent) so the SVG icon markup survives the
+    // temporary "copied" swap below and can be restored afterward.
+    const copyVersesDefaultMarkup = topicCopyVersesBtn.innerHTML;
+    let copyVersesResetTimer = null;
+    topicCopyVersesBtn.addEventListener("click", async () => {
+      if (!selectedTopic) return;
+      const refs = getTopicVerseRefs(selectedTopic).map((v) => v.refText);
+      if (refs.length === 0) return;
+      const value = JSON.stringify(refs); // e.g. ["John 3:16","Romans 8:28"]
+      try {
+        await navigator.clipboard.writeText(value);
+        topicCopyVersesBtn.textContent = "✅";
+      } catch (error) {
+        // Clipboard API unavailable/denied - icon-only button, nothing to
+        // fall back to showing the value in.
+      }
+      if (copyVersesResetTimer) clearTimeout(copyVersesResetTimer);
+      copyVersesResetTimer = setTimeout(() => {
+        topicCopyVersesBtn.innerHTML = copyVersesDefaultMarkup;
+      }, 1500);
+    });
+  }
+
+  if (topicVerseListBtn) {
+    const verseListDefaultMarkup = topicVerseListBtn.innerHTML;
+    const verseListDefaultTitle = topicVerseListBtn.title;
+    let verseListWarnTimer = null;
+    topicVerseListBtn.addEventListener("click", () => {
+      if (!selectedTopic) return;
+      const allRefs = getTopicVerseRefs(selectedTopic).map((v) => v.refText);
+      if (allRefs.length === 0) return;
+      const truncated = allRefs.length > VERSELIST_MAX_REFS;
+      const refs = truncated ? allRefs.slice(0, VERSELIST_MAX_REFS) : allRefs;
+
+      const params = new URLSearchParams();
+      params.set("refs", refs.join(";"));
+      params.set("order", "bible");
+      params.set("title", selectedTopic);
+      window.open(`${VERSELIST_BASE_URL}#${params.toString()}`, "_blank", "noopener");
+
+      if (truncated) {
+        topicVerseListBtn.textContent = "⚠";
+        topicVerseListBtn.title = `Showing first ${VERSELIST_MAX_REFS} of ${allRefs.length} verses — use Copy for the full list`;
+        if (verseListWarnTimer) clearTimeout(verseListWarnTimer);
+        verseListWarnTimer = setTimeout(() => {
+          topicVerseListBtn.innerHTML = verseListDefaultMarkup;
+          topicVerseListBtn.title = verseListDefaultTitle;
+        }, 3500);
+      }
     });
   }
 
