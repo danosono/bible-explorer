@@ -100,6 +100,38 @@ body::before {
 	font-weight: 700;
 }
 
+.app-title-trigger {
+	background: none;
+	border: none;
+	font: inherit;
+	font-family: inherit;
+	color: inherit;
+	letter-spacing: inherit;
+	cursor: pointer;
+	padding: 0;
+	display: inline-flex;
+	align-items: baseline;
+	gap: 0.2em;
+	transition: color 0.2s ease;
+}
+
+.app-title-trigger:hover,
+.app-title-trigger:focus-visible {
+	color: var(--accent-2);
+}
+
+.app-title-info-icon {
+	font-size: 0.5em;
+	opacity: 0.75;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.app-title-trigger:hover .app-title-info-icon,
+.app-title-trigger:focus-visible .app-title-info-icon {
+	opacity: 1;
+	transform: scale(1.15);
+}
+
 .by-link {
 	display: inline-flex;
 	align-items: center;
@@ -715,6 +747,15 @@ body[data-state="4"] .state--read {
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+
+.state-current-topic--has-bio {
+	cursor: pointer;
+}
+
+.state-current-topic--has-bio:hover {
+	color: var(--text-1);
+	text-decoration: underline;
 }
 
 .state-topic-group {
@@ -1457,6 +1498,82 @@ body[data-state="4"] .state--read {
 
 .verse-modal-content--split {
 	overflow: hidden;
+}
+
+.verse-modal-content--bio {
+	flex-direction: column;
+	align-items: stretch;
+}
+
+.topic-bio-map-link {
+	color: var(--accent-2);
+	font-weight: 600;
+	align-self: flex-start;
+}
+
+.topic-bio-map-link:visited {
+	color: var(--accent-2);
+}
+
+.topic-bio-map-link:hover,
+.topic-bio-map-link:focus-visible {
+	color: var(--text-1);
+	text-decoration: underline;
+}
+
+.topic-bio-person {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding-top: 16px;
+	border-top: 1px solid rgba(95, 200, 255, 0.15);
+}
+
+.topic-bio-person:first-child {
+	padding-top: 0;
+	border-top: none;
+}
+
+.topic-bio-person-heading {
+	color: var(--accent-2);
+	font-weight: 600;
+}
+
+.about-donate-section {
+	margin-top: 8px;
+	padding-top: 20px;
+	border-top: 1px solid rgba(95, 200, 255, 0.15);
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 10px;
+	text-align: center;
+}
+
+.about-donate-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 24px;
+	border-radius: 999px;
+	background: var(--accent-1);
+	color: #1a1208;
+	font-weight: 700;
+	text-decoration: none;
+	letter-spacing: 0.02em;
+	transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.about-donate-btn:hover,
+.about-donate-btn:focus-visible {
+	transform: translateY(-1px);
+	box-shadow: 0 6px 18px rgba(242, 166, 90, 0.35);
+}
+
+.about-donate-note {
+	color: var(--text-3);
+	font-size: 0.85em;
+	margin: 0;
 }
 
 @media (max-width: 700px) {

@@ -150,9 +150,9 @@ query. This is a low-specificity rule and doesn't affect the more specific
 `#book-grid[data-density="high"/"ultra"] .pin-lines` overrides used by
 high-chapter-count books in Book View.
 
-## The five datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
+## The seven datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
 
-All five share one schema and are loaded generically by `loadTopics()`:
+All seven share one schema and are loaded generically by `loadTopics()`:
 
 ```json
 {
@@ -161,15 +161,26 @@ All five share one schema and are loaded generically by `loadTopics()`:
     "references": {
       "BOOKID": [ { "verse": <absolute verse index>, "subtopics": [...], "refs": ["Gen 1:1"] } ]
     },
-    "books": ["BOOKID", ...]
+    "books": ["BOOKID", ...],
+    "bio": { "subtitle": "...", "text": "...", "family": "...", "alsoCalled": "...", "mapUrl": "..." }
   }
 }
 ```
+
+`bio` is optional and currently only present in People/Places (see below) - every piece inside
+it is independently optional too, omitted when there's nothing to say. `topicsData[name].bio`
+is read directly at render time (`applyTopicBioAffordance`, `js/app.js` ~line 3993) to decide
+whether the `.state-current-topic` label (all four states) gets a click affordance; clicking
+opens `showTopicBioModal`, reusing the same `.verse-modal-*` CSS as `showBookSummaryModal`
+(with a `.verse-modal-content--bio` modifier forcing `flex-direction: column`, since the split
+layout those classes were built for doesn't suit a single scrolling column of text).
 
 | Dropdown label | `DATASET_CONFIG` key | File | Source |
 |---|---|---|---|
 | Nave's Topics | `topics` | `data/topics-with-references.json` (~19MB) | `source/Naves.txt` via `scripts/parse-naves-text.js` → `scripts/parse-topics.js` |
 | BSB Topics | `bsb-topics` | `data/bsb-topics-with-references.json` | `C:\Unity Projects\_BibleDatasets\Berean\bsb_topical_index.xlsx` via `scripts/parse-bsb-topics.js` |
+| People | `people` | `data/theographic-people-with-references.json` | Theographic `people.json`/`verses.json` via `scripts/parse-theographic-people.js` |
+| Places | `places` | `data/theographic-places-with-references.json` | Theographic `places.json`/`verses.json` via `scripts/parse-theographic-places.js` |
 | Prophecy | `prophecy` | `data/prophecy-topics-with-references.json` | Prophecy docx parse (separate aggregate-topic logic, `PROPHECY_AGGREGATE_TOPICS`) |
 | BSB Concordance | `concordance` | `data/bsb-concordance-with-references.json` (14.77MB, 14,526 words, 276,602 refs) | `C:\Unity Projects\_BibleDatasets\Berean\bsb_concordance.xlsx` via `scripts/parse-bsb-concordance.js` |
 | Custom Dataset | `custom` | `data/custom-topics-with-references.json` | `source/custom-topics.json` via `scripts/build-custom-dataset.js` |
@@ -352,6 +363,85 @@ per-book sort/`books`-array pass so they're indistinguishable from word
 entries downstream. "Son of Man" → 82 references across Matthew, Mark, Luke,
 John, Acts, Daniel, and Revelation (the capitalized Messianic title — the
 lowercase "son of man" address to Ezekiel doesn't match).
+
+### People / Places (`scripts/parse-theographic-people.js` / `-places.js`, `scripts/lib/theographic-shared.js`)
+Source: [Theographic Bible Metadata](https://github.com/robertrouse/theographic-bible-metadata)'s
+`json/people.json` / `places.json` / `verses.json` / `peopleGroups.json`, read from
+`C:\Unity Projects\_BibleDatasets\GospelGo_GoMap_Datasets\RawDataInclude\theographic-bible-metadata-master\theographic-bible-metadata-master\json`
+(`THEOGRAPHIC_JSON_DIR` in the shared lib). Added as a non-scholarly counterpart to BSB
+Concordance: Concordance already gives an exhaustive literal-text match for any name (its
+"Moses" has more refs than Theographic's own curated list), so People/Places isn't trying to
+out-exhaustive it — the value is *identity* (disambiguating distinct same-named people/places)
+and friendly metadata (birth/death years, family, a plain-language Easton's blurb) via the `bio`
+field, surfaced through a click-to-open modal rather than cluttering the search/treemap UI.
+
+- Each verse ID (from a person/place's `verses` array) resolves to an OSIS ref
+  (`Gen.1.1`) via a book/chapter/verse map built from `verses.json`, then to this
+  app's 3-letter book ID (`OSIS_TO_BOOK_ID` in `theographic-shared.js` = the shared
+  `BOOK_IDS` from `bsb-shared.js`, plus `OSIS_BOOK_ALIASES` for exact OSIS spellings
+  it doesn't already cover — `1Sam`/`2Sam`/`1John`/`2John`/`3John`/`Obad`/`Phlm`/`Esth`/`Prov`),
+  then to an absolute verse index the same way every other parser does
+  (`getAbsoluteVerseIndex` against `data/bible.json`). Verified empirically: 0 unknown
+  book prefixes across all 66 books once those aliases were added.
+- `BOOK_ABBREVIATIONS` (bookId → "Exo"/"1 Joh"/etc. citation style) was promoted from
+  `parse-bsb-concordance.js` into `scripts/lib/bsb-shared.js` so all three parsers
+  generate `refs` strings in the same format, rather than keeping three copies of the
+  same object in sync by hand.
+- **Undisambiguated-homonym merging.** Theographic's `displayTitle` is meant to be a
+  unique, disambiguated name ("Jacob (Israel)", "Abiel (Arbathite)"), but a large share
+  of minor/genealogical records are never actually disambiguated in the source itself
+  (flagged `ambiguous: true` — e.g. three unrelated "Abiah" records: Samuel's son, Hezron's
+  wife, and a son of Becher, with no distinguishing info beyond the bare name). Discovered
+  by the parser's own duplicate-key warnings on the first run: **427 of 1,870** distinct
+  person names (1,599 of 3,042 eligible records) collide this way; 84 of 1,158 place names
+  (190 records) do too. Records sharing a `displayTitle` are grouped and merged into one
+  *topic* (verse references are unioned, deduping a verse ID that mentions more than one
+  merged person so it doesn't appear twice) — but **not** into one merged *bio*. An earlier
+  version intersected every record's fields (`commonValue()`, now removed) so a field only
+  survived if every record in the group agreed on it; in practice this was actively
+  misleading rather than merely conservative — e.g. "Abiah"'s intersected bio showed
+  `Spouse: Hezron · Children: Ashur` with nothing to indicate that's only true of *one* of
+  the three Abiahs (the other two simply had no spouse/children field to conflict with it),
+  and it discarded all three individuals' own Easton write-ups outright, since those almost
+  never match verbatim across unrelated people. `buildPersonBio()`/`buildPlaceBio()` now
+  build each record's bio independently, with nothing compared or merged; a group of more
+  than one becomes `{ subtitle: "N biblical people/places share this name", people: [...] }`,
+  one self-contained bio per record, and `showTopicBioModal` (`js/app.js`) renders each as
+  its own numbered, divider-separated block (`.topic-bio-person`) instead of trying to
+  present one unified answer for what's really several different people/places.
+- `alsoCalled` (people) / `aliases` (places) are raw comma-separated strings with no
+  guaranteed spacing (e.g. Jesus Christ's is `"Lord,Son,Lamb,Saviour,..."`) —
+  `formatCommaList()` splits/trims/rejoins with `", "` before it reaches the bio.
+- `bio.text` is an array of paragraphs, not one string. Easton's `dictionaryText` has no
+  real line breaks - `splitDictionaryParagraphs()` (`theographic-shared.js`) splits on runs
+  of 4+ spaces, which the source markup leaves exactly where a paragraph break belongs
+  (verified empirically: always follows a sentence-ending period). Shorter 2-3 space runs
+  are unrelated padding around inline scripture citations (`"(  Genesis 45:17-25  )"`) and
+  are collapsed to a single space per-paragraph instead of being treated as breaks. Also
+  decodes the handful of entries with a stray literal `&nbsp;`/`&amp;` left over from the
+  source. `showTopicBioModal` (`js/app.js`) renders each array element as its own `<p>`.
+- **`dictionaryText` vs `dictText` fallback.** Theographic exports two forms of the same
+  Easton's entry: `dictionaryText` (plain text, 2-3 space padding around citations) and
+  `dictText` (a 1-element markdown array, real `\n` line breaks, citations as markdown
+  links like `[1 Chr. 7:8](/1chr#1Chr.7.8)`). `dictionaryText` is only populated for a
+  small, better-documented subset — verified empirically: of people/places with *some*
+  Easton entry, **1,693 of ~1,934 people** and **862 of ~1,059 places** have `dictText` but
+  no `dictionaryText` at all. The first version of these parsers only read `dictionaryText`,
+  so the large majority of entries silently showed no bio text whatsoever (this is exactly
+  why none of "Abiah"'s three merged people originally had any). `getEastonParagraphs()`
+  now prefers `dictionaryText` when present and falls back to `dictText[0]` otherwise,
+  via a parallel `splitDictTextParagraphs()` that strips markdown links down to their
+  citation text (`stripMarkdownLinks()`) and splits on `\n+` instead of 4+ spaces.
+- Places additionally get a `mapUrl` in their bio, linking to GospelGo's own map app
+  (`C:\Unity Projects\Builds\BiblePlaces`, deployed at `https://bibleplaces.gospelgo.org`)
+  rather than a generic Google Maps pin - its deep-link contract (`src/deepLink.ts`)
+  takes the Theographic `slug` directly (`?place=<slug>`, or `?places=<slug1>,<slug2>`
+  for several), which a merged group of undisambiguated same-named places maps onto
+  exactly: every merged place's slug goes into one `?places=` link rather than picking
+  just one and losing the others. Rendered as "Open in Bible Places" in the bio modal.
+- `defaultTopic`: People → `"Jesus Christ"`, Places → `"Jerusalem"` (both exist as exact
+  keys in the generated files — verified directly rather than assumed, since Theographic
+  has separate `"Jesus"` and `"Jesus Christ"` records).
 
 ## Per-dataset default topics
 Each `DATASET_CONFIG` entry has a `defaultTopic` (resolved via

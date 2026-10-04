@@ -1,7 +1,7 @@
 const fs = require('fs').promises;
 const path = require('path');
 const XLSX = require('xlsx');
-const { BOOK_IDS, loadBibleData, getAbsoluteVerseIndex } = require('./lib/bsb-shared');
+const { BOOK_IDS, BOOK_ABBREVIATIONS, loadBibleData, getAbsoluteVerseIndex } = require('./lib/bsb-shared');
 
 const INPUT_PATH = 'C:/Unity Projects/_BibleDatasets/Berean/bsb_concordance.xlsx';
 
@@ -16,21 +16,6 @@ const KEEP_WORDS = new Set([
 // source xlsx is single-word only. Found by regex-scanning data/bible.json
 // (word-boundary, case-sensitive) and merged into the result like word entries.
 const PHRASE_ENTRIES = ['Son of Man'];
-
-// bookId -> abbreviation, matching the format used in the source xlsx's
-// verse-reference column (e.g. "Gen 1:1", "1Ki 1:42", "1 Joh 1:5").
-const BOOK_ABBREVIATIONS = {
-  GEN: 'Gen', EXO: 'Exo', LEV: 'Lev', NUM: 'Num', DEU: 'Deu', JOS: 'Jos', JDG: 'Jdg', RUT: 'Rut',
-  '1SA': '1Sa', '2SA': '2Sa', '1KI': '1Ki', '2KI': '2Ki', '1CH': '1Ch', '2CH': '2Ch',
-  EZR: 'Ezr', NEH: 'Neh', EST: 'Est', JOB: 'Job', PSA: 'Psa', PRO: 'Pro', ECC: 'Ecc', SNG: 'Sos',
-  ISA: 'Isa', JER: 'Jer', LAM: 'Lam', EZK: 'Eze', DAN: 'Dan', HOS: 'Hos', JOL: 'Joe', AMO: 'Amo',
-  OBA: 'Oba', JON: 'Jon', MIC: 'Mic', NAM: 'Nah', HAB: 'Hab', ZEP: 'Zep', HAG: 'Hag', ZEC: 'Zec',
-  MAL: 'Mal', MAT: 'Mat', MRK: 'Mar', LUK: 'Luk', JHN: 'Joh', ACT: 'Act', ROM: 'Rom',
-  '1CO': '1Co', '2CO': '2Co', GAL: 'Gal', EPH: 'Eph', PHP: 'Php', COL: 'Col',
-  '1TH': '1Th', '2TH': '2Th', '1TI': '1Ti', '2TI': '2Ti', TIT: 'Tts', PHM: 'Phm', HEB: 'Heb',
-  JAS: 'Jam', '1PE': '1Pe', '2PE': '2Pe', '1JN': '1 Joh', '2JN': '2 Joh', '3JN': '3 Joh',
-  JUD: 'Jde', REV: 'Rev'
-};
 
 // The 117 highest-frequency (>=600 occurrences) function words, minus KEEP_WORDS.
 const DISCARD_WORDS = [

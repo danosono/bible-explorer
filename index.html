@@ -30,7 +30,7 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css?v=14" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="icon" type="image/png" href="images/Gg4_512.png?v=3" />
+    <link rel="icon" type="image/png" href="images/favicon-explorer-v3.png?v=1" />
   </head>
   <body>
     <div id="app">
@@ -38,7 +38,14 @@
         <div class="title-block">
           <div class="header-main">
             <h1 class="app-title">
-              Bible Explorer
+              <button
+                type="button"
+                id="about-trigger-btn"
+                class="app-title-trigger"
+                aria-haspopup="dialog"
+                title="About Bible Explorer"
+                >Bible Explorer<span class="app-title-info-icon" aria-hidden="true">ⓘ</span></button
+              >
               <a
                 href="https://gospelgo.org/"
                 target="_blank"
@@ -99,6 +106,8 @@
               <select id="dataset-mode" class="jump-select">
                 <option value="topics" selected>Nave's Topics</option>
                 <option value="bsb-topics">BSB Topics</option>
+                <option value="people">People</option>
+                <option value="places">Places</option>
                 <option value="prophecy">Prophecy</option>
                 <option value="concordance">BSB Concordance</option>
                 <option value="custom">Custom Dataset</option>

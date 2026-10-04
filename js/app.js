@@ -15,6 +15,7 @@ const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
 const topicSearchLabel = document.getElementById("topic-search-label");
+const aboutTriggerBtn = document.getElementById("about-trigger-btn");
 
 // Mobile layout mode — must match the @media (max-width: 899.98px) block in style.css
 const MOBILE_LAYOUT_QUERY = window.matchMedia("(max-width: 899.98px)");
@@ -68,19 +69,46 @@ const STORED_TOPIC_KEY = "bibleExplorerTopic";
 const STORED_DATASET_KEY = "bibleExplorerDatasetMode";
 const topicsIndex = new Map();
 let allTopicNames = [];
+// Only populated for datasets with `defaultSuggestionsBy: "popularity"` - the
+// blank-query suggestion list for those (People/Places) shows this instead of
+// alphabetical allTopicNames. allTopicNames itself is left untouched since
+// it's also what Prev/Next-topic and the random-topic button step through,
+// and what typed-query matching iterates - reordering it would change all of
+// those, not just the empty-search default.
+let popularTopicNames = [];
 const MAX_TOPIC_OPTIONS = 200;
+const DEFAULT_POPULAR_SUGGESTION_COUNT = 50;
 const DATASET_CONFIG = {
   topics: {
     file: "data/topics-with-references.json",
     label: "Nave's Topics",
     placeholder: "Search topics",
-    defaultTopic: "JESUS, THE CHRIST"
+    defaultTopic: "JESUS, THE CHRIST",
+    defaultSuggestionsBy: "popularity"
   },
   "bsb-topics": {
     file: "data/bsb-topics-with-references.json",
     label: "BSB Topics",
     placeholder: "Search BSB topics",
-    defaultTopic: "Light"
+    defaultTopic: "Light",
+    defaultSuggestionsBy: "popularity"
+  },
+  people: {
+    file: "data/theographic-people-with-references.json",
+    label: "People",
+    placeholder: "Search people",
+    defaultTopic: "Jesus Christ",
+    // With 1,870 entries, an alphabetical blank-query list is mostly obscure
+    // genealogy names starting with "A" - a by-verse-count "most mentioned"
+    // list is a far more useful thing to show before the user's typed anything.
+    defaultSuggestionsBy: "popularity"
+  },
+  places: {
+    file: "data/theographic-places-with-references.json",
+    label: "Places",
+    placeholder: "Search places",
+    defaultTopic: "Jerusalem",
+    defaultSuggestionsBy: "popularity"
   },
   prophecy: {
     file: "data/prophecy-topics-with-references.json",
@@ -90,14 +118,18 @@ const DATASET_CONFIG = {
     // Entries are numbered 1-351 - the default 200-item cap (MAX_TOPIC_OPTIONS)
     // cut the list off mid-list with no indication there was more, since
     // unlike the other datasets there's no obviously-truncated alphabetical
-    // pattern to hint at it.
+    // pattern to hint at it. Entries are also already numbered in the source
+    // doc's own order (1, 2, 3, ... 351) - that reads more naturally as the
+    // blank-query default than a popularity re-sort, so no
+    // defaultSuggestionsBy here (unlike every other non-Custom dataset).
     maxOptions: 400
   },
   concordance: {
     file: "data/bsb-concordance-with-references.json",
     label: "BSB Concordance",
     placeholder: "Search words",
-    defaultTopic: "Eternal"
+    defaultTopic: "Eternal",
+    defaultSuggestionsBy: "popularity"
   },
   custom: {
     file: "data/custom-topics-with-references.json",
@@ -1143,6 +1175,7 @@ const updateCurrentTopicLabel = () => {
   currentTopicEl.textContent = label;
   currentTopicEl.title = label;
   fitTextToWidth(currentTopicEl);
+  applyTopicBioAffordance(currentTopicEl);
 };
 
 const getStoredTopic = () => {
@@ -1427,10 +1460,24 @@ const applyTopicSelection = (topicName, options = {}) => {
   updateTopicActionState();
 };
 
+// Total verse-reference count for a topic entry - used as the "popularity"
+// measure for datasets with defaultSuggestionsBy: "popularity" (People/Places).
+const getTopicReferenceCount = (topicEntry) => {
+  if (!topicEntry || !topicEntry.references) return 0;
+  let total = 0;
+  for (const refs of Object.values(topicEntry.references)) {
+    total += Array.isArray(refs) ? refs.length : 0;
+  }
+  return total;
+};
+
 const getTopicOptions = (filterValue) => {
   const maxOptions = DATASET_CONFIG[activeDatasetMode]?.maxOptions || MAX_TOPIC_OPTIONS;
   const normalized = normalizeTopicKey(filterValue);
   if (!normalized) {
+    if (DATASET_CONFIG[activeDatasetMode]?.defaultSuggestionsBy === "popularity" && popularTopicNames.length) {
+      return popularTopicNames.slice(0, DEFAULT_POPULAR_SUGGESTION_COUNT);
+    }
     return allTopicNames.slice(0, maxOptions);
   }
   const startsWithMatches = [];
@@ -2376,6 +2423,7 @@ const renderBookView = (bookId, topic = null) => {
   grid.innerHTML = "";
   topicEl.textContent = getCurrentTopicDisplayText();
   fitTextToWidth(topicEl);
+  applyTopicBioAffordance(topicEl);
 
   const book = bookId ? bibleData[bookId] : null;
   if (!book || !Array.isArray(book.chapters)) {
@@ -2850,6 +2898,7 @@ const renderReadView = (bookId, topic = null) => {
   readTitle.textContent = bookName;
   readTopic.textContent = getCurrentTopicDisplayText();
   fitTextToWidth(readTopic);
+  applyTopicBioAffordance(readTopic);
 
   readingBlock.innerHTML = "";
 
@@ -3183,6 +3232,7 @@ const renderVersesView = (topic = null) => {
 
   topicEl.textContent = getCurrentTopicDisplayText();
   fitTextToWidth(topicEl);
+  applyTopicBioAffordance(topicEl);
   setSourceLabel("Berean Standard Bible");
   setPinnedLegendGenre(null);
 
@@ -3530,9 +3580,14 @@ const boot = async () => {
       applyTopicSelection(e.target.value, { commit: false });
     });
 
-    // Arrow keys move the highlighted suggestion; Enter selects it (or, with
-    // nothing highlighted, commits whatever text is currently typed - this
-    // covers the exact-match-by-typing case, not just picking from the list).
+    // Arrow keys move the highlighted suggestion; Enter selects the
+    // highlighted one, or (nothing arrowed to yet, but there's a non-empty
+    // search term with the list open) the top suggestion - matches the usual
+    // search-box convention of Enter picking the best match. An empty field
+    // falls through to the commit branch below instead, which clears the
+    // topic - otherwise clearing the field and pressing Enter would
+    // re-select whatever's first in the now-blank-query suggestion list
+    // instead of actually clearing.
     topicInput.addEventListener("keydown", (e) => {
       const list = getTopicSuggestionsList();
       const isOpen = list && !list.hidden;
@@ -3558,9 +3613,10 @@ const boot = async () => {
         return;
       }
       if (e.key === "Enter") {
-        if (isOpen && topicSuggestionActiveIndex >= 0 && topicSuggestionNames[topicSuggestionActiveIndex]) {
+        if (isOpen && topicInput.value.trim() !== "" && topicSuggestionNames.length > 0) {
           e.preventDefault();
-          selectTopicSuggestion(topicSuggestionNames[topicSuggestionActiveIndex]);
+          const index = topicSuggestionActiveIndex >= 0 ? topicSuggestionActiveIndex : 0;
+          selectTopicSuggestion(topicSuggestionNames[index]);
           return;
         }
         applyTopicSelection(e.target.value, { commit: true });
@@ -3620,6 +3676,10 @@ const boot = async () => {
         applyTopicSelection(randomTopic, { commit: true });
       }
     });
+  }
+
+  if (aboutTriggerBtn) {
+    aboutTriggerBtn.addEventListener("click", () => showAboutModal());
   }
 
   // Steps to a Back/Forward history entry, switching dataset first if that
@@ -3916,6 +3976,84 @@ const boot = async () => {
 };
 
 
+// Launched by clicking the "Bible Explorer" header text (app-title-trigger
+// in index.html) - a one-time orientation/credits page, not tied to any
+// dataset or topic state, so it's a plain static modal rather than something
+// built from topicsData like showTopicBioModal.
+const showAboutModal = () => {
+  const modal = document.createElement("div");
+  modal.className = "verse-modal-overlay";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "verse-modal";
+
+  const header = document.createElement("div");
+  header.className = "verse-modal-header";
+  header.innerHTML = "<h3>About Bible Explorer</h3>";
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "verse-modal-close";
+  closeBtn.innerHTML = "✕";
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modal.remove();
+  });
+  header.appendChild(closeBtn);
+
+  const content = document.createElement("div");
+  content.className = "verse-modal-content verse-modal-content--bio";
+
+  const paragraphs = [
+    "Bible Explorer is a visual way to browse Scripture by topic, word, person, place, or prophecy - not just by chapter and verse. Pick a topic and every verse that mentions it lights up across an Overview map of all 66 books; from there, drill into a single Book, read a Chapter in full, or pull up a flat list of every matching Verse.",
+    "Search across seven datasets: Nave's Topics and BSB Topics (classic topical indexes), People and Places (every named person and place in Scripture - click the topic's title, once selected, for a short bio and family details), Prophecy (Old Testament prophecies alongside their New Testament fulfillments), the BSB Concordance (every word, exhaustively), and a hand-curated Custom Dataset.",
+    "Clicking a Place's info also opens a link to Bible Places, GospelGo's companion map app - a way to see that location plotted on an actual map alongside the rest of its biblical geography."
+  ];
+  paragraphs.forEach((text) => {
+    const p = document.createElement("p");
+    p.className = "book-summary-text";
+    p.textContent = text;
+    content.appendChild(p);
+  });
+
+  const closingP = document.createElement("p");
+  closingP.className = "book-summary-text";
+  closingP.append("Bible Explorer is one of several free apps and games from ");
+  const gospelGoLink = document.createElement("a");
+  gospelGoLink.className = "topic-bio-map-link";
+  gospelGoLink.href = "https://gospelgo.org/";
+  gospelGoLink.target = "_blank";
+  gospelGoLink.rel = "noopener noreferrer";
+  gospelGoLink.textContent = "GospelGo";
+  closingP.appendChild(gospelGoLink);
+  closingP.append(".");
+  content.appendChild(closingP);
+
+  const donateSection = document.createElement("div");
+  donateSection.className = "about-donate-section";
+  const donateLink = document.createElement("a");
+  donateLink.className = "about-donate-btn";
+  donateLink.href = "https://gospelgo.org/donate/";
+  donateLink.target = "_blank";
+  donateLink.rel = "noopener noreferrer";
+  donateLink.textContent = "Donate";
+  const donateNote = document.createElement("p");
+  donateNote.className = "about-donate-note";
+  donateNote.textContent = "Donations are welcome, but zero pressure.";
+  donateSection.appendChild(donateLink);
+  donateSection.appendChild(donateNote);
+  content.appendChild(donateSection);
+
+  modalContent.appendChild(header);
+  modalContent.appendChild(content);
+  modal.appendChild(modalContent);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  document.body.appendChild(modal);
+};
+
 // Use global BOOK_METADATA if available (loaded via <script>), fallback to empty object
 const BOOK_METADATA = window.BOOK_METADATA || {};
 
@@ -3991,6 +4129,101 @@ const showBookSummaryModal = (bookId, bookName) => {
   });
 
   document.body.appendChild(modal);
+};
+
+// Appends one person/place's own paragraphs (Easton's text, family line,
+// alsoCalled line - whichever are present) into a container. bio.text is
+// pre-split into paragraphs at parse time (Easton's entries are one long
+// string with no real line breaks - see splitDictionaryParagraphs in
+// scripts/lib/theographic-shared.js); family/alsoCalled are single lines.
+const appendBioParagraphs = (container, personBio) => {
+  const parts = [...(personBio.text || []), personBio.family, personBio.alsoCalled].filter(Boolean);
+  parts.forEach((part) => {
+    const p = document.createElement("p");
+    p.className = "book-summary-text";
+    p.textContent = part;
+    container.appendChild(p);
+  });
+};
+
+// People/Places topics carry an optional `bio` object (built at parse time
+// from Theographic data - see scripts/parse-theographic-people.js /
+// -places.js): { subtitle, text, family, alsoCalled, mapUrl }, each piece
+// omitted when there's nothing to say. When several undisambiguated same-
+// named people/places were merged into one topic (Theographic itself never
+// tells them apart - see the parser scripts), there's no single true bio to
+// show, so `bio.people` holds one full bio per person/place instead, each
+// rendered as its own labeled block rather than mixed together. Shown on
+// demand (click the current-topic label) rather than inline, since bios can
+// run long and every other dataset has no use for this modal at all.
+const showTopicBioModal = (topicName, bio) => {
+  const modal = document.createElement("div");
+  modal.className = "verse-modal-overlay";
+
+  const modalContent = document.createElement("div");
+  modalContent.className = "verse-modal";
+
+  const header = document.createElement("div");
+  header.className = "verse-modal-header";
+  header.innerHTML = `<h3>${topicName}</h3>${bio.subtitle ? `<p>${bio.subtitle}</p>` : ""}`;
+
+  const closeBtn = document.createElement("button");
+  closeBtn.className = "verse-modal-close";
+  closeBtn.innerHTML = "✕";
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    modal.remove();
+  });
+  header.appendChild(closeBtn);
+
+  const content = document.createElement("div");
+  content.className = "verse-modal-content verse-modal-content--bio";
+
+  if (Array.isArray(bio.people)) {
+    bio.people.forEach((personBio, index) => {
+      const block = document.createElement("div");
+      block.className = "topic-bio-person";
+      const heading = document.createElement("p");
+      heading.className = "topic-bio-person-heading";
+      heading.textContent = personBio.subtitle ? `${index + 1}. ${personBio.subtitle}` : `${index + 1}.`;
+      block.appendChild(heading);
+      appendBioParagraphs(block, personBio);
+      content.appendChild(block);
+    });
+  } else {
+    appendBioParagraphs(content, bio);
+  }
+
+  if (bio.mapUrl) {
+    const link = document.createElement("a");
+    link.className = "topic-bio-map-link";
+    link.href = bio.mapUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = "Open in Bible Places";
+    content.appendChild(link);
+  }
+
+  modalContent.appendChild(header);
+  modalContent.appendChild(content);
+  modal.appendChild(modalContent);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) modal.remove();
+  });
+
+  document.body.appendChild(modal);
+};
+
+// Toggles the click-for-bio affordance on a .state-current-topic element,
+// based on whether the active topic carries a `bio` (People/Places only).
+// Called alongside every place that sets that element's text, so it always
+// reflects the currently selected topic/dataset.
+const applyTopicBioAffordance = (el) => {
+  if (!el) return;
+  const bio = selectedTopic && topicsData[selectedTopic] ? topicsData[selectedTopic].bio : null;
+  el.classList.toggle("state-current-topic--has-bio", Boolean(bio));
+  el.onclick = bio ? () => showTopicBioModal(selectedTopic, bio) : null;
 };
 
 const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {
@@ -4530,6 +4763,9 @@ const loadTopics = async () => {
       topicsIndex.set(normalizeTopicKey(name), name);
     });
     allTopicNames = topicNames;
+    popularTopicNames = config.defaultSuggestionsBy === "popularity"
+      ? [...topicNames].sort((a, b) => getTopicReferenceCount(topicsData[b]) - getTopicReferenceCount(topicsData[a]))
+      : [];
     hideTopicSuggestions();
   } catch (error) {
     console.warn(`Failed to load ${activeDatasetMode} data, using fallback`);
@@ -4543,6 +4779,7 @@ const loadTopics = async () => {
       topicsIndex.set(normalizeTopicKey(name), name);
     });
     allTopicNames = fallbackTopics;
+    popularTopicNames = [];
     hideTopicSuggestions();
   }
 };
