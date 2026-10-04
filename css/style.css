@@ -1539,6 +1539,55 @@ body[data-state="4"] .state--read {
 	font-weight: 600;
 }
 
+/* Tighter than the default .verse-modal-content--bio spacing (also used by
+   the per-topic bio modal, left untouched there) - About is mostly-static
+   copy meant to be skimmed in one view, not a long bio, so the Donate
+   section at the bottom should be visible without scrolling on a typical
+   viewport. */
+.about-modal-content {
+	padding: 14px 20px;
+	gap: 8px;
+}
+
+.about-modal-content .book-summary-text {
+	padding: 0;
+}
+
+.about-modal-content .about-sources {
+	margin-top: 4px;
+	padding-top: 10px;
+}
+
+.about-modal-content .about-donate-section {
+	margin-top: 4px;
+	padding-top: 12px;
+}
+
+.about-sources {
+	margin-top: 8px;
+	padding-top: 16px;
+	border-top: 1px solid rgba(95, 200, 255, 0.15);
+}
+
+.about-sources-heading {
+	color: var(--text-3);
+	font-size: 0.8em;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+	margin: 0 0 8px;
+}
+
+.about-source-line {
+	color: var(--text-3);
+	font-size: 0.85em;
+	line-height: 1.5;
+	margin: 0 0 4px;
+}
+
+.about-source-line strong {
+	color: var(--text-2);
+}
+
 .about-donate-section {
 	margin-top: 8px;
 	padding-top: 20px;

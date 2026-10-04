@@ -4001,7 +4001,7 @@ const showAboutModal = () => {
   header.appendChild(closeBtn);
 
   const content = document.createElement("div");
-  content.className = "verse-modal-content verse-modal-content--bio";
+  content.className = "verse-modal-content verse-modal-content--bio about-modal-content";
 
   const paragraphs = [
     "Bible Explorer is a visual way to browse Scripture by topic, word, person, place, or prophecy - not just by chapter and verse. Pick a topic and every verse that mentions it lights up across an Overview map of all 66 books; from there, drill into a single Book, read a Chapter in full, or pull up a flat list of every matching Verse.",
@@ -4027,6 +4027,37 @@ const showAboutModal = () => {
   closingP.appendChild(gospelGoLink);
   closingP.append(".");
   content.appendChild(closingP);
+
+  // Each dataset's source text, verified against what the parsers actually
+  // read/credit rather than assumed - see source/Naves.txt's own CCEL
+  // header, the Prophecy docx's file metadata (creator "David Webb"), and
+  // BSB_NAVES_SOURCE_TAG/BSB_TORREYS_SOURCE_TAG in parse-bsb-topics.js (the
+  // BSB Topical Index is itself compiled from Nave's and Torrey's).
+  const sourcesSection = document.createElement("div");
+  sourcesSection.className = "about-sources";
+  const sourcesHeading = document.createElement("p");
+  sourcesHeading.className = "about-sources-heading";
+  sourcesHeading.textContent = "Sources";
+  sourcesSection.appendChild(sourcesHeading);
+
+  const sourceLines = [
+    ["Nave's Topics", "Nave's Topical Bible by Orville J. Nave (1897, public domain), via the CCEL plain-text edition."],
+    ["BSB Topics", "the Berean Standard Bible (BSB) Topical Index, itself compiled from Nave's Topical Bible and Torrey's New Topical Textbook. The BSB is a public-domain translation produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee (bereanbible.com)."],
+    ["People & Places", "Theographic Bible Metadata (viz.bible), including Easton's Bible Dictionary (1897, public domain) entries for each bio."],
+    ["Prophecy", "“351 Old Testament Prophecies Fulfilled in Jesus Christ,” compiled by David Webb."],
+    ["BSB Concordance", "the Berean Standard Bible (BSB) Concordance - see BSB Topics above for the BSB's own translation credit."],
+    ["Custom Dataset", "the developer's own study and observations - no external source."]
+  ];
+  sourceLines.forEach(([label, text]) => {
+    const p = document.createElement("p");
+    p.className = "about-source-line";
+    const strong = document.createElement("strong");
+    strong.textContent = `${label}: `;
+    p.appendChild(strong);
+    p.append(text);
+    sourcesSection.appendChild(p);
+  });
+  content.appendChild(sourcesSection);
 
   const donateSection = document.createElement("div");
   donateSection.className = "about-donate-section";
