@@ -66,10 +66,19 @@ let isRenderingStateTransition = false;
 let isRestoringHistory = false;
 let pinnedLegendGenre = null;
 let activeDatasetMode = "topics";
-// Back/Forward through the user's own topic selections, spanning dataset
-// switches - entries are { mode, topic } so going back can restore both.
-let topicHistoryStack = [];
-let topicHistoryIndex = -1;
+// Topic Back/Forward now just drives the real browser history (every topic/
+// subtopic/dataset change pushes a real entry - see syncHistory) instead of
+// keeping a separate shadow stack. Browsers don't expose "how many entries
+// can I go back/forward to" to a page for privacy reasons, so this pair of
+// counters approximates it: historySeqCounter is the highest sequence number
+// pushed so far this page load, currentHistorySeq is where we currently sit.
+// Each push/replace tags its entry with { seq } (synced back out of
+// event.state on popstate) so Back/Forward can be disabled at the edges of
+// THIS page load's history - it can't know about entries from before the
+// page loaded, which is an inherent, accepted limitation (see button click
+// handlers below).
+let historySeqCounter = 0;
+let currentHistorySeq = 0;
 const DEFAULT_TOPIC = "JESUS, THE CHRIST";
 const FALLBACK_NAV_TOPIC = "Love";
 const FALLBACK_NAV_BOOK = "JHN";
@@ -679,6 +688,13 @@ const getVerseText = (bookId, chapter, verse) => {
   return verseText;
 };
 
+const getChapterVerseCount = (bookId, chapter) => {
+  const book = bibleData[bookId];
+  const chapterData = book && Array.isArray(book.chapters) ? book.chapters[chapter - 1] : null;
+  if (!chapterData) return 0;
+  return Number(chapterData.verseCount) || (Array.isArray(chapterData.verses) ? chapterData.verses.length : 0);
+};
+
 const positionTooltip = (tooltip, e) => {
   let x = e.clientX + 20;
   let y = e.clientY + 20;
@@ -744,16 +760,40 @@ const showTooltip = (e, refText, subtopicText, bookId, verseNumber, clickHint = 
   const range = parseRangeFromRefText(refText);
   if (range) {
     const { startChapter, endChapter, startVerse, endVerse } = range;
-    if (startChapter === endChapter && Number.isFinite(startVerse) && Number.isFinite(endVerse)) {
+    if (Number.isFinite(startChapter) && Number.isFinite(endChapter) && Number.isFinite(startVerse) && Number.isFinite(endVerse)) {
       const lines = [];
-      const step = startVerse <= endVerse ? 1 : -1;
-      for (let v = startVerse; step > 0 ? v <= endVerse : v >= endVerse; v += step) {
-        const verseText = getVerseText(bookId, startChapter, v);
-        if (verseText) {
-          lines.push(`${startChapter}:${v} — ${verseText}`);
+      if (startChapter === endChapter && startVerse > endVerse) {
+        // Only occurs for a same-chapter range (parseRangeFromRefText's
+        // multi-match fallback can't reverse chapters); walk it backwards
+        // instead of producing an empty range below.
+        for (let v = startVerse; v >= endVerse; v -= 1) {
+          const verseText = getVerseText(bookId, startChapter, v);
+          if (verseText) lines.push(`${startChapter}:${v} — ${verseText}`);
+        }
+      } else {
+        // Walk every verse from startChapter:startVerse through
+        // endChapter:endVerse, rolling over chapter boundaries as needed
+        // (e.g. "Acts 19:12 - Acts 21:15" spans chapters 19-21).
+        for (let c = startChapter; c <= endChapter; c += 1) {
+          const firstVerse = c === startChapter ? startVerse : 1;
+          const lastVerse = c === endChapter ? endVerse : (getChapterVerseCount(bookId, c) || endVerse);
+          for (let v = firstVerse; v <= lastVerse; v += 1) {
+            const verseText = getVerseText(bookId, c, v);
+            if (verseText) lines.push(`${c}:${v} — ${verseText}`);
+          }
         }
       }
-      if (lines.length > 0) {
+
+      // A tooltip can't scroll, so a long range is previewed rather than
+      // shown in full: the first and last few verses, with a "..." gap
+      // marking how many were skipped.
+      const EDGE_VERSE_COUNT = 3;
+      if (lines.length > EDGE_VERSE_COUNT * 2) {
+        const skipped = lines.length - EDGE_VERSE_COUNT * 2;
+        const head = lines.slice(0, EDGE_VERSE_COUNT);
+        const tail = lines.slice(lines.length - EDGE_VERSE_COUNT);
+        text += `\n\n${head.join("\n")}\n\n... (${skipped} more verse${skipped !== 1 ? 's' : ''}) ...\n\n${tail.join("\n")}`;
+      } else if (lines.length > 0) {
         text += `\n\n${lines.join("\n")}`;
       }
     } else {
@@ -1140,7 +1180,7 @@ const renderSubtopicSuggestions = () => {
       selectedSubtopic = item.dataset.subtopicValue || null;
       updateCurrentTopicLabel();
       renderCurrentState();
-      syncHistory();
+      syncHistory({ push: true });
       hideSubtopicSuggestions();
     });
     topicInput.parentElement.appendChild(list);
@@ -1289,7 +1329,7 @@ const NO_TOPIC_SELECTED_TEXT = "No Topic Selected";
 // Dataset before topic (not just the topic name) so mobile - where the
 // dataset dropdown itself is hidden off-canvas - can still tell which
 // dataset is active from this label alone.
-const getCurrentTopicDisplayText = () => {
+const getCurrentTopicDisplayText = ({ includeVerseCount = false } = {}) => {
   const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
   const topicText = selectedTopic || NO_TOPIC_SELECTED_TEXT;
   // Append the active subclassification so it stays visible once the
@@ -1306,7 +1346,12 @@ const getCurrentTopicDisplayText = () => {
     }
   }
   const subtopicSuffix = subtopicDisplay ? `: ${subtopicDisplay}` : "";
-  return `${config.label} • ${topicText}${subtopicSuffix}`;
+  let verseCountSuffix = "";
+  if (includeVerseCount && selectedTopic) {
+    const verseCount = getVisibleTopicVerseRefs(selectedTopic).length;
+    verseCountSuffix = ` (${verseCount} verse${verseCount !== 1 ? "s" : ""})`;
+  }
+  return `${config.label} • ${topicText}${subtopicSuffix}${verseCountSuffix}`;
 };
 
 // Shrinks an element's width, then its font-size, until its text fits
@@ -1366,7 +1411,7 @@ const fitTextToWidth = (el, { minScale = 0.6 } = {}) => {
 
 const updateCurrentTopicLabel = () => {
   if (!currentTopicEl) return;
-  const label = getCurrentTopicDisplayText();
+  const label = getCurrentTopicDisplayText({ includeVerseCount: true });
   currentTopicEl.textContent = label;
   currentTopicEl.title = label;
   fitTextToWidth(currentTopicEl);
@@ -1438,18 +1483,27 @@ const buildStateUrl = () => {
   return url;
 };
 
-// push: state/book/chapter transitions (browser back/forward retraces them).
-// replace: topic/dataset changes and in-chapter verse hops (no history spam).
+// push: any real user action (state/book/chapter/verse, topic, subtopic,
+// dataset) - the browser's own Back/Forward (and the Topic nav buttons,
+// which just call history.back()/forward()) retrace these.
+// replace: in-chapter verse hops and history restores (popstate/deep-link
+// boot) - not new actions, so no history spam and no double-entries.
+// Every entry is tagged with a { seq } sequence number (read back out of
+// event.state on popstate) purely so Back/Forward can approximate "is there
+// anything to go back/forward to" - see historySeqCounter's comment above.
 const syncHistory = ({ push = false } = {}) => {
   if (isRestoringHistory) return;
   try {
     const url = buildStateUrl();
     if (url.href === window.location.href) return;
     if (push) {
-      history.pushState(null, "", url);
+      historySeqCounter += 1;
+      currentHistorySeq = historySeqCounter;
+      history.pushState({ seq: currentHistorySeq }, "", url);
     } else {
-      history.replaceState(null, "", url);
+      history.replaceState({ seq: currentHistorySeq }, "", url);
     }
+    updateTopicNavButtonState();
   } catch (error) {
     // Ignore - URL sync is best-effort and shouldn't break navigation.
   }
@@ -1502,6 +1556,42 @@ const applyUrlNavState = (params) => {
   }
   updateStateUI(stateValue);
   renderCurrentState();
+};
+
+// Restores dataset/topic/subtopic from a URL's query params - the topic-side
+// counterpart to applyUrlNavState, used by real browser Back/Forward
+// (popstate) to put the page back exactly how it looked when that entry was
+// pushed. Callers set isRestoringHistory around this, same as
+// applyUrlNavState, so it can't push new entries mid-restore.
+const applyUrlTopicState = async (params) => {
+  const urlDatasetMode = params.get("dataset");
+  const urlTopic = params.get("topic");
+  const urlSubtopic = params.get("subtopic");
+  const targetMode = urlDatasetMode && DATASET_CONFIG[urlDatasetMode] ? urlDatasetMode : activeDatasetMode;
+
+  if (targetMode !== activeDatasetMode) {
+    if (datasetModeSelect) datasetModeSelect.value = targetMode;
+    await switchDataset(targetMode, { forceTopic: urlTopic || undefined, skipHistoryPush: true });
+  } else {
+    applyTopicSelection(urlTopic || "", { commit: true, skipHistoryPush: true });
+  }
+
+  // applyTopicSelection/switchDataset only reset selectedSubtopic to null via
+  // syncSubtopicFilterInfo when the TOPIC itself changes - two URLs can share
+  // the same topic with different subcategories (e.g. "God" ->
+  // "God: Providence of"), in which case that reset never fires and the old
+  // subcategory would otherwise stay stuck. So always resolve the target
+  // subtopic explicitly (falling back to "All") instead of relying on
+  // whatever syncSubtopicFilterInfo happened to leave behind.
+  const nextSubtopic = urlSubtopic && subtopicFilterInfo.enabled && subtopicFilterInfo.optionsByLabel.has(urlSubtopic)
+    ? urlSubtopic
+    : null;
+  if (nextSubtopic !== selectedSubtopic) {
+    selectedSubtopic = nextSubtopic;
+    updateCurrentTopicLabel();
+    renderSubtopicFilterControl();
+    renderCurrentState();
+  }
 };
 
 const updateDatasetUI = () => {
@@ -1580,12 +1670,7 @@ const updateTopicActionState = () => {
     const hasEligibleTopics = allTopicNames.some((name) => !isProphecyAggregateTopic(name));
     topicRandomBtn.disabled = !hasEligibleTopics;
   }
-  if (topicBackBtn) {
-    topicBackBtn.disabled = topicHistoryIndex <= 0;
-  }
-  if (topicForwardBtn) {
-    topicForwardBtn.disabled = topicHistoryIndex >= topicHistoryStack.length - 1;
-  }
+  updateTopicNavButtonState();
   if (topicPrevBtn || topicNextBtn) {
     const eligible = allTopicNames.filter((name) => !isProphecyAggregateTopic(name));
     const currentIndex = selectedTopic ? eligible.indexOf(selectedTopic) : -1;
@@ -1600,16 +1685,11 @@ const updateTopicActionState = () => {
   }
 };
 
-// Records the current (dataset, topic) pair as a Back/Forward history entry.
-// Dedupes an immediate repeat, and - like real browser history - discards
-// any "forward" entries once a new selection is made from a stepped-back
-// position.
-const pushTopicHistory = () => {
-  const top = topicHistoryStack[topicHistoryIndex];
-  if (top && top.mode === activeDatasetMode && top.topic === selectedTopic) return;
-  topicHistoryStack = topicHistoryStack.slice(0, topicHistoryIndex + 1);
-  topicHistoryStack.push({ mode: activeDatasetMode, topic: selectedTopic });
-  topicHistoryIndex = topicHistoryStack.length - 1;
+// Approximates Back/Forward's disabled state from this page load's own
+// push count - see the historySeqCounter/currentHistorySeq comment above.
+const updateTopicNavButtonState = () => {
+  if (topicBackBtn) topicBackBtn.disabled = currentHistorySeq <= 0;
+  if (topicForwardBtn) topicForwardBtn.disabled = currentHistorySeq >= historySeqCounter;
 };
 
 const applyTopicSelection = (topicName, options = {}) => {
@@ -1652,13 +1732,12 @@ const applyTopicSelection = (topicName, options = {}) => {
   }
 
   // Sync after the render: in states 2-3 the render can swap selectedBookId
-  // to a fallback, and the URL must reflect what actually got drawn.
+  // to a fallback, and the URL must reflect what actually got drawn. A real
+  // commit pushes a new browser-history entry for this topic selection;
+  // skipHistoryPush (history restore via Back/Forward/popstate, or a
+  // deep-linked initial load) only replaces, since that's not a new action.
   if (commit || isExactMatch) {
-    syncHistory();
-  }
-
-  if ((commit || isExactMatch) && !skipHistoryPush) {
-    pushTopicHistory();
+    syncHistory({ push: !skipHistoryPush });
   }
 
   updateTopicActionState();
@@ -1718,9 +1797,9 @@ const getTopicOptions = (filterValue) => {
 // carry the current search term over into the new dataset - an exact
 // case-insensitive match first, then the same startsWith/contains matcher
 // the suggestion dropdown uses, and only then that dataset's configured
-// default topic. forceTopic (used by the Back/Forward history buttons to
-// restore an exact prior dataset+topic pair) skips all of that and just
-// uses the given topic if it still exists.
+// default topic. forceTopic (used when restoring an exact prior
+// dataset+topic pair from a URL - see applyUrlTopicState) skips all of
+// that and just uses the given topic if it still exists.
 const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } = {}) => {
   if (!DATASET_CONFIG[nextMode]) return;
 
@@ -1759,11 +1838,8 @@ const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } =
   // Label before render - see the comment in applyTopicSelection.
   updateCurrentTopicLabel();
   renderCurrentState();
-  syncHistory();
+  syncHistory({ push: !skipHistoryPush });
 
-  if (!skipHistoryPush) {
-    pushTopicHistory();
-  }
   updateTopicActionState();
   renderSubtopicFilterControl();
   closeMobileMenu();
@@ -3679,7 +3755,7 @@ const updateBookGenreFooter = (genre = null, bookName = null) => {
 
 const loadBooks = async () => {
   try {
-    const response = await fetch("data/books-summary.json", { cache: "no-store" });
+    const response = await fetch("data/books-summary.json");
     if (!response.ok) throw new Error("Missing data");
     const data = await response.json();
     if (!data || !Array.isArray(data.books) || data.books.length === 0) {
@@ -3693,7 +3769,7 @@ const loadBooks = async () => {
 
 const loadVerseCounts = async () => {
   try {
-    const response = await fetch("data/book-verse-counts.json", { cache: "no-store" });
+    const response = await fetch("data/book-verse-counts.json");
     if (!response.ok) throw new Error("Missing verse counts");
     const data = await response.json();
     if (!data || !data.books) throw new Error("Invalid verse counts data");
@@ -3706,7 +3782,7 @@ const loadVerseCounts = async () => {
 
 const loadCharacterCounts = async () => {
   try {
-    const response = await fetch("data/book-character-counts.json", { cache: "no-store" });
+    const response = await fetch("data/book-character-counts.json");
     if (!response.ok) throw new Error("Missing character counts");
     const data = await response.json();
     if (!data || !data.books) throw new Error("Invalid character counts data");
@@ -3719,7 +3795,7 @@ const loadCharacterCounts = async () => {
 
 const loadBible = async () => {
   try {
-    const response = await fetch("data/bible.json", { cache: "no-store" });
+    const response = await fetch("data/bible.json");
     if (!response.ok) throw new Error("Missing bible data");
     const data = await response.json();
     if (!data || !data.books) throw new Error("Invalid bible data");
@@ -3737,7 +3813,7 @@ const loadBible = async () => {
 
 const loadBookSummaries = async () => {
   try {
-    const response = await fetch("data/book-summaries.json", { cache: "no-store" });
+    const response = await fetch("data/book-summaries.json");
     if (!response.ok) throw new Error("Missing book summaries");
     const data = await response.json();
     return data || {};
@@ -3794,6 +3870,10 @@ const boot = async () => {
 
     // Also listen for input changes (for the suggestion dropdown)
     topicInput.addEventListener("input", (e) => {
+      // Typing a new search term means the user is done with the current
+      // topic's subcategory list - close it so the topic suggestions it was
+      // covering are visible again, instead of leaving both open at once.
+      hideSubtopicSuggestions();
       renderTopicSuggestions(e.target.value);
       applyTopicSelection(e.target.value, { commit: false });
     });
@@ -3857,6 +3937,7 @@ const boot = async () => {
         window.clearTimeout(topicSuggestionsHideTimer);
         topicSuggestionsHideTimer = null;
       }
+      hideSubtopicSuggestions();
       renderTopicSuggestions(topicInput.value);
     });
     topicInput.addEventListener("blur", () => {
@@ -3866,26 +3947,36 @@ const boot = async () => {
       }, 150);
     });
 
-    const linkedTopic = urlTopic ? resolveTopicKey(urlTopic) : null;
-    const storedTopic = resolveTopicKey(getStoredTopic());
-    if (linkedTopic) {
-      applyTopicSelection(linkedTopic, { commit: true });
-    } else if (storedTopic) {
-      applyTopicSelection(storedTopic, { commit: true });
-    } else {
-      const initialTopic = getDatasetDefaultTopic(activeDatasetMode) || "";
-      applyTopicSelection(initialTopic, { commit: true });
-    }
+    // The initial topic/subtopic resolution below is page load, not a new
+    // user action - isRestoringHistory keeps it from pushing real history
+    // entries (syncHistory no-ops while this is true, same as a popstate
+    // restore). The one normalizing replace near the end of boot() stamps
+    // the final, settled position onto the initial entry instead.
+    isRestoringHistory = true;
+    try {
+      const linkedTopic = urlTopic ? resolveTopicKey(urlTopic) : null;
+      const storedTopic = resolveTopicKey(getStoredTopic());
+      if (linkedTopic) {
+        applyTopicSelection(linkedTopic, { commit: true });
+      } else if (storedTopic) {
+        applyTopicSelection(storedTopic, { commit: true });
+      } else {
+        const initialTopic = getDatasetDefaultTopic(activeDatasetMode) || "";
+        applyTopicSelection(initialTopic, { commit: true });
+      }
 
-    // Deep-link support for &subtopic= - only meaningful once the topic
-    // above has resolved and subtopicFilterInfo reflects it, and only when
-    // the linked value is actually one of that topic's options.
-    const urlSubtopic = urlParams.get("subtopic");
-    if (urlSubtopic && subtopicFilterInfo.enabled && subtopicFilterInfo.optionsByLabel.has(urlSubtopic)) {
-      selectedSubtopic = urlSubtopic;
-      updateCurrentTopicLabel();
-      renderSubtopicFilterControl();
-      renderCurrentState();
+      // Deep-link support for &subtopic= - only meaningful once the topic
+      // above has resolved and subtopicFilterInfo reflects it, and only when
+      // the linked value is actually one of that topic's options.
+      const urlSubtopic = urlParams.get("subtopic");
+      if (urlSubtopic && subtopicFilterInfo.enabled && subtopicFilterInfo.optionsByLabel.has(urlSubtopic)) {
+        selectedSubtopic = urlSubtopic;
+        updateCurrentTopicLabel();
+        renderSubtopicFilterControl();
+        renderCurrentState();
+      }
+    } finally {
+      isRestoringHistory = false;
     }
   }
 
@@ -3944,32 +4035,18 @@ const boot = async () => {
     aboutTriggerBtn.addEventListener("click", () => showAboutModal());
   }
 
-  // Steps to a Back/Forward history entry, switching dataset first if that
-  // entry belongs to a different one.
-  const goToTopicHistoryEntry = (entry) => {
-    if (entry.mode !== activeDatasetMode) {
-      if (datasetModeSelect) datasetModeSelect.value = entry.mode;
-      switchDataset(entry.mode, { forceTopic: entry.topic, skipHistoryPush: true });
-    } else {
-      applyTopicSelection(entry.topic, { commit: true, skipHistoryPush: true });
-    }
-    closeMobileMenu();
-  };
-
+  // Topic Back/Forward are just the real browser history now - every topic/
+  // subtopic/dataset change pushes a real entry (see syncHistory), so these
+  // buttons are plain shortcuts for the same navigation the browser's own
+  // Back/Forward buttons (and a mouse's side buttons) already do. The actual
+  // restore work happens once, in the popstate handler below, via
+  // applyUrlTopicState - not here.
   if (topicBackBtn) {
-    topicBackBtn.addEventListener("click", () => {
-      if (topicHistoryIndex <= 0) return;
-      topicHistoryIndex -= 1;
-      goToTopicHistoryEntry(topicHistoryStack[topicHistoryIndex]);
-    });
+    topicBackBtn.addEventListener("click", () => history.back());
   }
 
   if (topicForwardBtn) {
-    topicForwardBtn.addEventListener("click", () => {
-      if (topicHistoryIndex >= topicHistoryStack.length - 1) return;
-      topicHistoryIndex += 1;
-      goToTopicHistoryEntry(topicHistoryStack[topicHistoryIndex]);
-    });
+    topicForwardBtn.addEventListener("click", () => history.forward());
   }
 
   if (topicPrevBtn) {
@@ -4176,10 +4253,11 @@ const boot = async () => {
 
   // Deep-link restore: &state=&book=&ch=&v= re-open the exact Book/Verse
   // view (refresh in state 2/3 comes back where you were). Then normalize
-  // the initial entry via replace so invalid nav params get cleaned and
-  // dataset/topic are always stamped on. Uses urlParams captured at boot
-  // start - the topic-selection sync above already rewrote location.search
-  // (still state 1 at that point, so it strips the nav params).
+  // the initial entry via replace so invalid nav params get cleaned up.
+  // Uses urlParams captured at boot start, not a fresh read of
+  // location.search - the topic-selection resolution above runs under
+  // isRestoringHistory, so it never touches the URL either way, but using
+  // the original capture is correct regardless.
   const navParams = urlParams;
   if (navParams.get("state") || navParams.get("book")) {
     isRestoringHistory = true;
@@ -4192,18 +4270,30 @@ const boot = async () => {
     renderCurrentState();
   }
   syncHistory();
+  updateTopicNavButtonState();
 
-  // Browser back/forward: restore the app position from the URL. Registered
-  // here (not top-level) so bibleData is guaranteed loaded before a restore.
-  window.addEventListener("popstate", () => {
+  // Real browser Back/Forward (and a mouse's side buttons, which trigger the
+  // same event): restore the full app position - topic/subtopic/dataset AND
+  // state/book/chapter/verse - from whatever URL the browser just navigated
+  // to. Registered here (not top-level) so bibleData is guaranteed loaded
+  // before a restore. currentHistorySeq is read back out of this entry's
+  // own state (tagged by syncHistory when it was pushed) so the Topic
+  // Back/Forward buttons' disabled state stays accurate.
+  window.addEventListener("popstate", async (event) => {
+    currentHistorySeq = (event.state && typeof event.state.seq === "number") ? event.state.seq : 0;
     isRestoringHistory = true;
     try {
-      applyUrlNavState(new URLSearchParams(window.location.search));
+      const params = new URLSearchParams(window.location.search);
+      await applyUrlTopicState(params);
+      applyUrlNavState(params);
     } finally {
       isRestoringHistory = false;
     }
-    // Older entries can carry a stale topic/dataset (those only ever
-    // replaceState the newest entry) - re-stamp the current ones.
+    closeMobileMenu();
+    updateTopicNavButtonState();
+    // Normalizes the entry (e.g. invalid nav params dropped) without moving
+    // currentHistorySeq, since isRestoringHistory is already false but this
+    // call passes push:false (replace).
     syncHistory();
   });
 
@@ -5046,7 +5136,7 @@ boot();
 const loadTopics = async () => {
   try {
     const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
-    const response = await fetch(config.file, { cache: "no-store" });
+    const response = await fetch(config.file);
     if (!response.ok) throw new Error("Missing topics data");
     const rawTopicsData = await response.json();
     topicsData = activeDatasetMode === "prophecy"
