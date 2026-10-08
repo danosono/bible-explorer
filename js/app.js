@@ -4,6 +4,8 @@ const stateCaptions = document.querySelectorAll(".state-captions span");
 const statePill = document.querySelector(".control-pill");
 const topicInput = document.getElementById("topic-input");
 const topicClearBtn = document.getElementById("topic-clear-btn");
+const topicSubtopicToggleBtn = document.getElementById("topic-subtopic-toggle-btn");
+const topicSuggestionsToggleBtn = document.getElementById("topic-suggestions-toggle-btn");
 const topicRandomBtn = document.getElementById("topic-random-btn");
 const topicBackBtn = document.getElementById("topic-back-btn");
 const topicForwardBtn = document.getElementById("topic-forward-btn");
@@ -50,6 +52,12 @@ let characterCounts = {}; // Book character counts for proportional Overview siz
 let bibleData = {}; // Bible text data
 let bookSummaries = {}; // Book summaries
 let selectedTopic = null;
+// Subclassification filter (e.g. Nave's "WORD OF GOD" -> "Taught by the
+// apostles") - null means "All". Shown whenever the current topic has more
+// than one distinct subtopic value, regardless of verse count.
+let selectedSubtopic = null;
+let subtopicFilterInfo = { enabled: false };
+let subtopicFilterTopicKey = null;
 let booksData = [];
 let selectedBookId = null;
 let selectedReadReference = null;
@@ -150,6 +158,19 @@ const PROPHECY_NT_PREFIX = "Fulfillment (NT):";
 // the PROPHECY_*_PREFIX constants above, duplicated from parse-prophecy-docx.js).
 const BSB_NAVES_SOURCE_TAG = " — Nave's";
 const BSB_TORREYS_SOURCE_TAG = " — Torrey's";
+const BSB_SOURCE_TAG_RE = new RegExp(`(${BSB_NAVES_SOURCE_TAG}|${BSB_TORREYS_SOURCE_TAG})$`);
+
+// Datasets where `subtopics` holds real, shared categories worth filtering
+// by. Prophecy repurposes the field for a near-unique per-verse label
+// ("Prophecy (OT): Gen 3:15") rather than a shared classification, so it's
+// deliberately excluded. People/Places/Concordance never populate
+// `subtopics` at all, so the feature never triggers for them regardless.
+const SUBTOPIC_FILTER_MODES = new Set(["topics", "bsb-topics", "custom"]);
+// No verse-count floor - a topic qualifies purely by having more than one
+// distinct subtopic, even a small one (e.g. "Obed" having 5 distinct people
+// across just 14 verses is exactly the case worth surfacing: without the
+// dropdown there's no way to tell the topic isn't about a single person).
+const SUBTOPIC_FILTER_MIN_VERSES = 0;
 
 const isProphecyAggregateTopic = (name) => {
   return PROPHECY_AGGREGATE_TOPICS.some((item) => item.key === name);
@@ -988,6 +1009,166 @@ const getTopicVerseRefs = (topicName) => {
   return result;
 };
 
+// Builds the subclassification filter's option list for a topic: one entry
+// per distinct subtopic value, each carrying the set of raw subtopic strings
+// it represents (BSB Topics collapses "X — Nave's" and "X — Torrey's" into
+// one option by label, but still matches verses tagged with either) and how
+// many distinct verses carry it. Returns { enabled: false } when the topic
+// doesn't meet the two conditions (>20 verses AND >1 distinct subtopic) or
+// the active dataset doesn't support this feature at all.
+const computeSubtopicFilterInfo = (topicName) => {
+  if (!topicName || !SUBTOPIC_FILTER_MODES.has(activeDatasetMode)) {
+    return { enabled: false };
+  }
+  const flatVerses = getTopicVerseRefs(topicName);
+  if (flatVerses.length <= SUBTOPIC_FILTER_MIN_VERSES) {
+    return { enabled: false };
+  }
+
+  const groups = new Map(); // label -> { label, count, rawKeys: Set }
+  flatVerses.forEach((verse) => {
+    const seenLabels = new Set();
+    (verse.subtopics || []).forEach((raw) => {
+      if (!raw) return;
+      const label = activeDatasetMode === "bsb-topics" ? raw.replace(BSB_SOURCE_TAG_RE, "") : raw;
+      if (!groups.has(label)) {
+        groups.set(label, { label, count: 0, rawKeys: new Set() });
+      }
+      const group = groups.get(label);
+      group.rawKeys.add(raw);
+      if (!seenLabels.has(label)) {
+        group.count += 1;
+        seenLabels.add(label);
+      }
+    });
+  });
+
+  if (groups.size <= 1) {
+    return { enabled: false };
+  }
+
+  const options = Array.from(groups.values()).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  const optionsByLabel = new Map(options.map((option) => [option.label, option]));
+  return { enabled: true, totalCount: flatVerses.length, options, optionsByLabel };
+};
+
+// Recomputes subtopicFilterInfo whenever (dataset, topic) actually changes,
+// resetting selectedSubtopic back to "All" for the new topic. Pure state -
+// no DOM - call this BEFORE renderCurrentState() so the render reflects the
+// right filter; pair with renderSubtopicFilterControl() (DOM only) after,
+// once other end-of-selection UI updates (e.g. updateTopicActionState) have
+// run, so this has the final say over the search-box/clear-button.
+const syncSubtopicFilterInfo = () => {
+  const topicKey = `${activeDatasetMode}::${selectedTopic || ""}`;
+  if (topicKey !== subtopicFilterTopicKey) {
+    subtopicFilterTopicKey = topicKey;
+    subtopicFilterInfo = computeSubtopicFilterInfo(selectedTopic);
+    selectedSubtopic = null;
+  }
+};
+
+// True if a verse (given its merged subtopics array) belongs to the
+// currently selected subclassification - or always true when "All"/disabled.
+const verseMatchesSubtopic = (subtopicsArray) => {
+  if (!selectedSubtopic || !subtopicFilterInfo.enabled) return true;
+  const option = subtopicFilterInfo.optionsByLabel.get(selectedSubtopic);
+  if (!option) return true;
+  return Array.isArray(subtopicsArray) && subtopicsArray.some((raw) => option.rawKeys.has(raw));
+};
+
+// Drop-in replacement for `topicsData[topicName].references[bookId]` that
+// additionally narrows to the selected subclassification. Used by every
+// per-book renderer (Overview, Book, Chapter) so they all stay in sync with
+// the Verses state's getVisibleTopicVerseRefs below.
+const getVisibleReferencesForBook = (topicName, bookId) => {
+  const entries = topicName && topicsData[topicName] && topicsData[topicName].references
+    ? topicsData[topicName].references[bookId]
+    : null;
+  if (!Array.isArray(entries)) return entries;
+  if (!selectedSubtopic || !subtopicFilterInfo.enabled) return entries;
+  return entries.filter((entry) => verseMatchesSubtopic(entry.subtopics));
+};
+
+// Same idea as getVisibleReferencesForBook, but for the already-merged,
+// Bible-wide flat list getTopicVerseRefs produces (Verses state, Copy
+// verses, Open in Verse List).
+const getVisibleTopicVerseRefs = (topicName) => {
+  const all = getTopicVerseRefs(topicName);
+  if (!selectedSubtopic || !subtopicFilterInfo.enabled) return all;
+  return all.filter((verse) => verseMatchesSubtopic(verse.subtopics));
+};
+
+// The input stays a plain text field at all times now - it never swaps for
+// a <select> (a native select's box can grow to fit its longest <option>
+// text regardless of an explicit width, which was blowing out the whole
+// header layout on long subtopic labels). Instead, the subtopic-filter
+// toggle chevron just shows/hides next to the existing × clear button.
+const renderSubtopicFilterControl = () => {
+  if (!topicSubtopicToggleBtn || !topicInput) return;
+  topicSubtopicToggleBtn.hidden = !subtopicFilterInfo.enabled;
+  if (topicClearBtn) topicClearBtn.hidden = !selectedTopic;
+  if (!subtopicFilterInfo.enabled) {
+    hideSubtopicSuggestions();
+  }
+};
+
+const getSubtopicSuggestionsList = () => document.getElementById("topic-subtopic-suggestions");
+
+const hideSubtopicSuggestions = () => {
+  const list = getSubtopicSuggestionsList();
+  if (list) list.hidden = true;
+  if (topicSubtopicToggleBtn) topicSubtopicToggleBtn.setAttribute("aria-expanded", "false");
+};
+
+// Mirrors renderTopicSuggestions()'s listbox pattern exactly (same CSS
+// classes, same lazy-build-then-reuse shape) so the two popovers look and
+// behave identically - just a fixed list of this topic's subclassifications
+// instead of a typed/filtered topic search.
+const renderSubtopicSuggestions = () => {
+  if (!topicInput || !subtopicFilterInfo.enabled) return;
+  let list = getSubtopicSuggestionsList();
+  if (!list) {
+    list = document.createElement("ul");
+    list.id = "topic-subtopic-suggestions";
+    list.className = "topic-suggestions";
+    list.setAttribute("role", "listbox");
+    list.hidden = true;
+    list.addEventListener("mousedown", (e) => {
+      const item = e.target.closest(".topic-suggestion-item");
+      if (!item) return;
+      e.preventDefault();
+      selectedSubtopic = item.dataset.subtopicValue || null;
+      updateCurrentTopicLabel();
+      renderCurrentState();
+      syncHistory();
+      hideSubtopicSuggestions();
+    });
+    topicInput.parentElement.appendChild(list);
+  }
+
+  list.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+
+  const makeItem = (value, label, isSelected) => {
+    const item = document.createElement("li");
+    item.className = "topic-suggestion-item" + (isSelected ? " active" : "");
+    item.textContent = label;
+    item.dataset.subtopicValue = value;
+    item.setAttribute("role", "option");
+    item.setAttribute("aria-selected", isSelected ? "true" : "false");
+    return item;
+  };
+
+  fragment.appendChild(makeItem("", `${selectedTopic}: All (${subtopicFilterInfo.totalCount})`, !selectedSubtopic));
+  subtopicFilterInfo.options.forEach((option) => {
+    fragment.appendChild(makeItem(option.label, `${option.label} (${option.count})`, selectedSubtopic === option.label));
+  });
+
+  list.appendChild(fragment);
+  list.hidden = false;
+  topicSubtopicToggleBtn.setAttribute("aria-expanded", "true");
+};
+
 const getFirstReferenceForBook = (topicName, bookId) => {
   const entries = topicName && topicsData[topicName] && topicsData[topicName].references
     ? topicsData[topicName].references[bookId]
@@ -1111,7 +1292,21 @@ const NO_TOPIC_SELECTED_TEXT = "No Topic Selected";
 const getCurrentTopicDisplayText = () => {
   const config = DATASET_CONFIG[activeDatasetMode] || DATASET_CONFIG.topics;
   const topicText = selectedTopic || NO_TOPIC_SELECTED_TEXT;
-  return `${config.label} • ${topicText}`;
+  // Append the active subclassification so it stays visible once the
+  // dropdown that set it has closed - otherwise the only verses shown
+  // (a subset) have no persistent indication they're filtered at all. BSB
+  // Topics subtopic strings already repeat the topic name as their own
+  // prefix (e.g. "God: Preserver: ..."), so strip that back off first -
+  // otherwise it reads "God: God: Preserver: ...".
+  let subtopicDisplay = selectedSubtopic && subtopicFilterInfo.enabled ? selectedSubtopic : null;
+  if (subtopicDisplay) {
+    const redundantPrefix = `${topicText}: `;
+    if (subtopicDisplay.toLowerCase().startsWith(redundantPrefix.toLowerCase())) {
+      subtopicDisplay = subtopicDisplay.slice(redundantPrefix.length);
+    }
+  }
+  const subtopicSuffix = subtopicDisplay ? `: ${subtopicDisplay}` : "";
+  return `${config.label} • ${topicText}${subtopicSuffix}`;
 };
 
 // Shrinks an element's width, then its font-size, until its text fits
@@ -1203,6 +1398,8 @@ const setStoredDatasetMode = (mode) => {
 };
 
 // Serializes the full app position into the URL: ?dataset=&topic= plus
+// &subtopic= (only when the current topic qualifies for subclassification
+// filtering and a specific one is selected - "All" carries no param) and
 // &state=&book= (states 2-3) and &ch=&v= (state 3). State 1 carries no nav
 // params so the root URL stays clean and shareable. State 4 (Verses) spans
 // every book for the topic, so it sets only &state=4, with no book/ch/v.
@@ -1213,6 +1410,11 @@ const buildStateUrl = () => {
     url.searchParams.set("topic", selectedTopic);
   } else {
     url.searchParams.delete("topic");
+  }
+  if (selectedSubtopic && subtopicFilterInfo.enabled) {
+    url.searchParams.set("subtopic", selectedSubtopic);
+  } else {
+    url.searchParams.delete("subtopic");
   }
 
   const stateValue = getCurrentState();
@@ -1434,6 +1636,8 @@ const applyTopicSelection = (topicName, options = {}) => {
     setStoredTopic(selectedTopic);
   }
 
+  syncSubtopicFilterInfo();
+
   // Update the header label BEFORE rendering, not after - otherwise the
   // treemap sizes itself against the header's old (possibly shorter)
   // height, then the label grows the header a moment later, which trips
@@ -1458,6 +1662,7 @@ const applyTopicSelection = (topicName, options = {}) => {
   }
 
   updateTopicActionState();
+  renderSubtopicFilterControl();
 };
 
 // Total verse-reference count for a topic entry - used as the "popularity"
@@ -1480,9 +1685,16 @@ const getTopicOptions = (filterValue) => {
     }
     return allTopicNames.slice(0, maxOptions);
   }
+  // An exact (case-insensitive) match always leads, regardless of where it
+  // falls in the dataset's own key order - e.g. typing "god" in BSB Topics
+  // should rank the topic "God" first, not wherever it happens to sit among
+  // "God Forgives", "God Hates Liars", etc. in the source JSON, since Enter
+  // with nothing arrowed to yet selects whatever is first in this list.
+  const exactMatch = resolveTopicKey(filterValue);
   const startsWithMatches = [];
   const containsMatches = [];
   for (const name of allTopicNames) {
+    if (name === exactMatch) continue;
     const candidate = normalizeTopicKey(name);
     if (candidate.startsWith(normalized)) {
       startsWithMatches.push(name);
@@ -1491,10 +1703,11 @@ const getTopicOptions = (filterValue) => {
     }
     if (startsWithMatches.length >= maxOptions) break;
   }
-  if (startsWithMatches.length >= maxOptions) {
-    return startsWithMatches.slice(0, maxOptions);
+  const leading = exactMatch ? [exactMatch] : [];
+  if (leading.length + startsWithMatches.length >= maxOptions) {
+    return leading.concat(startsWithMatches).slice(0, maxOptions);
   }
-  const combined = startsWithMatches.concat(containsMatches);
+  const combined = leading.concat(startsWithMatches, containsMatches);
   if (combined.length > maxOptions) {
     return combined.slice(0, maxOptions);
   }
@@ -1542,6 +1755,7 @@ const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } =
     }
   }
   setStoredTopic(selectedTopic);
+  syncSubtopicFilterInfo();
   // Label before render - see the comment in applyTopicSelection.
   updateCurrentTopicLabel();
   renderCurrentState();
@@ -1551,6 +1765,7 @@ const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } =
     pushTopicHistory();
   }
   updateTopicActionState();
+  renderSubtopicFilterControl();
   closeMobileMenu();
 };
 
@@ -1574,6 +1789,7 @@ const hideTopicSuggestions = () => {
   topicSuggestionNames = [];
   topicSuggestionActiveIndex = -1;
   if (topicInput) topicInput.setAttribute("aria-expanded", "false");
+  if (topicSuggestionsToggleBtn) topicSuggestionsToggleBtn.setAttribute("aria-expanded", "false");
 };
 
 const highlightTopicSuggestion = (index) => {
@@ -1647,6 +1863,7 @@ const renderTopicSuggestions = (filterValue) => {
   list.appendChild(fragment);
   list.hidden = false;
   topicInput.setAttribute("aria-expanded", "true");
+  if (topicSuggestionsToggleBtn) topicSuggestionsToggleBtn.setAttribute("aria-expanded", "true");
 };
 
 const stateNames = {
@@ -2258,9 +2475,10 @@ const renderTreemap = (books, topic = null) => {
       lines.className = "pin-lines";
       
       // Render lines based on topic data or fallback to placeholder lines
-      if (topicData && topicData.references[item.id]) {
+      const visibleEntries = topicData ? getVisibleReferencesForBook(topic, item.id) : null;
+      if (visibleEntries && visibleEntries.length > 0) {
         // Render real lines at verse position percentages
-        const verseEntries = topicData.references[item.id];
+        const verseEntries = visibleEntries;
         const totalVerses = getBookVerseTotal(item.id) || verseCounts[item.id] || 1;
         
         const versePositions = verseEntries.map((entry) => {
@@ -2477,8 +2695,8 @@ const renderBookView = (bookId, topic = null) => {
   metaEl.appendChild(navWrap);
 
   const topicData = topic ? topicsData[topic] : null;
-  const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
-  
+  const bookEntries = getVisibleReferencesForBook(topic, bookId);
+
   // Calculate total verses for this topic in this book
   let topicVerseCount = 0;
   if (bookEntries && Array.isArray(bookEntries)) {
@@ -2915,7 +3133,7 @@ const renderReadView = (bookId, topic = null) => {
   }
 
   const topicData = topic && topicsData[topic] ? topicsData[topic] : null;
-  const bookEntries = topicData && topicData.references ? topicData.references[bookId] : null;
+  const bookEntries = getVisibleReferencesForBook(topic, bookId);
   const chapterVerseMap = new Map();
   const chapterVerseKinds = new Map();
   // Prophecy dataset only: raw subtopic text per verse, needed to resolve
@@ -3248,7 +3466,7 @@ const renderVersesView = (topic = null) => {
   }
 
   const orderedBookIds = getOrderedReferencedBookIds(topic);
-  const flatVerses = getTopicVerseRefs(topic);
+  const flatVerses = getVisibleTopicVerseRefs(topic);
   const fragment = document.createDocumentFragment();
   let totalCount = 0;
   let currentBookId = null;
@@ -3658,6 +3876,17 @@ const boot = async () => {
       const initialTopic = getDatasetDefaultTopic(activeDatasetMode) || "";
       applyTopicSelection(initialTopic, { commit: true });
     }
+
+    // Deep-link support for &subtopic= - only meaningful once the topic
+    // above has resolved and subtopicFilterInfo reflects it, and only when
+    // the linked value is actually one of that topic's options.
+    const urlSubtopic = urlParams.get("subtopic");
+    if (urlSubtopic && subtopicFilterInfo.enabled && subtopicFilterInfo.optionsByLabel.has(urlSubtopic)) {
+      selectedSubtopic = urlSubtopic;
+      updateCurrentTopicLabel();
+      renderSubtopicFilterControl();
+      renderCurrentState();
+    }
   }
 
   if (topicClearBtn) {
@@ -3668,6 +3897,39 @@ const boot = async () => {
       if (topicInput) topicInput.focus();
     });
   }
+
+  if (topicSubtopicToggleBtn) {
+    topicSubtopicToggleBtn.addEventListener("click", () => {
+      const list = getSubtopicSuggestionsList();
+      if (list && !list.hidden) {
+        hideSubtopicSuggestions();
+      } else {
+        hideTopicSuggestions();
+        renderSubtopicSuggestions();
+      }
+    });
+  }
+
+  if (topicSuggestionsToggleBtn) {
+    topicSuggestionsToggleBtn.addEventListener("click", () => {
+      const list = getTopicSuggestionsList();
+      if (list && !list.hidden) {
+        hideTopicSuggestions();
+        topicInput.blur();
+      } else {
+        hideSubtopicSuggestions();
+        topicInput.focus();
+      }
+    });
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest(".topic-input-wrap")) return;
+    hideSubtopicSuggestions();
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") hideSubtopicSuggestions();
+  });
 
   if (topicRandomBtn) {
     topicRandomBtn.addEventListener("click", () => {
@@ -3737,7 +3999,7 @@ const boot = async () => {
     let copyVersesResetTimer = null;
     topicCopyVersesBtn.addEventListener("click", async () => {
       if (!selectedTopic) return;
-      const refs = getTopicVerseRefs(selectedTopic).map((v) => v.refText);
+      const refs = getVisibleTopicVerseRefs(selectedTopic).map((v) => v.refText);
       if (refs.length === 0) return;
       const value = JSON.stringify(refs); // e.g. ["John 3:16","Romans 8:28"]
       try {
@@ -3760,7 +4022,7 @@ const boot = async () => {
     let verseListWarnTimer = null;
     topicVerseListBtn.addEventListener("click", () => {
       if (!selectedTopic) return;
-      const allRefs = getTopicVerseRefs(selectedTopic).map((v) => v.refText);
+      const allRefs = getVisibleTopicVerseRefs(selectedTopic).map((v) => v.refText);
       if (allRefs.length === 0) return;
       const truncated = allRefs.length > VERSELIST_MAX_REFS;
       const refs = truncated ? allRefs.slice(0, VERSELIST_MAX_REFS) : allRefs;
@@ -4645,8 +4907,12 @@ const showVerseModal = (bookId, bookName, versePositions, topicName, options = {
     applyReferenceKindClass(line, "verse-line", group.referenceKind);
     line.style.top = `${group.renderTop}%`;
     const verseCount = Math.max(1, (group.endVerse - group.startVerse + 1));
-    const widthPercent = Math.min(100, 20 + (verseCount * 6));
-    line.style.width = `${widthPercent}%`;
+    // Log-scaled: matches the old linear formula at 1-2 verses (the common
+    // case, e.g. most Nave's/BSB entries), but no longer lets a long run
+    // (e.g. Deut 27:12-26, 15 verses) balloon out to the pane's full width
+    // and overflow it - see the 20px inset accounted for in the width below.
+    const widthPercent = Math.min(72, 26 + Math.log2(verseCount) * 6);
+    line.style.width = `calc(${widthPercent}% - 20px)`;
     line.style.left = "10px";
     line.style.right = "auto";
     const subtopicText = group.subtopicText;

@@ -491,7 +491,12 @@ body::before {
 .topic-search input {
 	min-width: clamp(242px, 17.5vw, 352px);
 	width: 100%;
-	padding: clamp(11px, 0.88vw, 15px) clamp(38px, 3vw, 50px) clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
+	/* Reserves room for up to 3 trailing icons (× + the 2 toggle chevrons
+	   below) so the box never needs to resize/reposition as they come and
+	   go - a topic without subcategories just shows a bit of empty space
+	   between × and the suggestions chevron, which is cheap insurance
+	   against layout shift compared to repositioning them dynamically. */
+	padding: clamp(11px, 0.88vw, 15px) clamp(92px, 7vw, 112px) clamp(11px, 0.88vw, 15px) clamp(13px, 1.05vw, 20px);
 	border-radius: 12px;
 	border: 1px solid rgba(255, 210, 128, 0.45);
 	background: rgba(12, 18, 28, 0.9);
@@ -509,13 +514,13 @@ body::before {
 	appearance: none;
 }
 
-/* An overlay inside the input again (not a flex sibling) so showing/hiding
-   it never resizes or repositions the input - it just fades in on hover or
-   focus, staying out of the way of typed text the rest of the time. */
-.topic-clear-btn {
+/* Shared box for every trailing icon button in the search box (×, the
+   subtopic-filter toggle, the topic-suggestions toggle) - same circular
+   look, each pinned to its own fixed `right` offset so none of them ever
+   need to shift position when a sibling shows/hides. */
+.topic-icon-btn {
 	position: absolute;
 	top: 50%;
-	right: clamp(6px, 0.6vw, 10px);
 	transform: translateY(-50%);
 	width: clamp(24px, 1.8vw, 32px);
 	height: clamp(24px, 1.8vw, 32px);
@@ -530,25 +535,74 @@ body::before {
 	font-size: clamp(1rem, 1vw, 1.3rem);
 	line-height: 1;
 	cursor: pointer;
-	opacity: 0;
-	pointer-events: none;
 	transition: opacity 0.15s ease, background 0.2s ease, box-shadow 0.2s ease;
 	box-shadow: var(--shadow-1);
 }
 
-.topic-input-wrap:hover .topic-clear-btn:not([hidden]),
-.topic-input-wrap:focus-within .topic-clear-btn:not([hidden]) {
-	opacity: 1;
-	pointer-events: auto;
+/* The ▾ glyph itself rotates to point up while its popover is open - a
+   standard disclosure-chevron convention - independent of the button's own
+   translateY(-50%) centering, which it must not clobber. */
+.topic-icon-btn .chevron-glyph {
+	display: inline-block;
+	transition: transform 0.2s ease;
 }
 
-.topic-clear-btn:hover {
+.topic-icon-btn[aria-expanded="true"] .chevron-glyph {
+	transform: rotate(180deg);
+}
+
+.topic-icon-btn:hover {
 	background: rgba(95, 200, 255, 0.15);
 	box-shadow: 0 0 12px rgba(95, 200, 255, 0.25);
 }
 
-.topic-clear-btn[hidden] {
+.topic-icon-btn[hidden] {
 	display: none;
+}
+
+/* Innermost (leftmost): × clear button - the one icon that stays hidden
+   until hovered/focused, same as before. */
+#topic-clear-btn {
+	right: clamp(64px, 4.8vw, 78px);
+	opacity: 0;
+	pointer-events: none;
+}
+
+.topic-input-wrap:hover #topic-clear-btn:not([hidden]),
+.topic-input-wrap:focus-within #topic-clear-btn:not([hidden]) {
+	opacity: 1;
+	pointer-events: auto;
+}
+
+/* Middle: only present when the current topic has subclassifications - a
+   bit smaller and in the search box's own gold accent (distinct from the
+   blue used for navigation/× elsewhere) so its size and color both read as
+   "the secondary, topic-specific one," not just its inner position. */
+#topic-subtopic-toggle-btn {
+	right: clamp(36px, 2.7vw, 44px);
+	border-color: rgba(255, 210, 128, 0.55);
+	color: var(--accent-1);
+}
+
+#topic-subtopic-toggle-btn:hover {
+	background: rgba(255, 210, 128, 0.15);
+	box-shadow: 0 0 12px rgba(255, 210, 128, 0.3);
+}
+
+#topic-subtopic-toggle-btn .chevron-glyph {
+	font-size: 0.78em;
+}
+
+/* Outermost (rightmost): always present - toggles the topic-name
+   suggestions list, giving that existing feature a visible affordance it
+   didn't have before (it only opened today via focusing the input). Larger
+   glyph since it's the primary, always-available control. */
+#topic-suggestions-toggle-btn {
+	right: clamp(8px, 0.7vw, 12px);
+}
+
+#topic-suggestions-toggle-btn .chevron-glyph {
+	font-size: 1.2em;
 }
 
 .topic-search input:focus {
@@ -616,7 +670,7 @@ body::before {
 @media (min-width: 2560px) {
 	.topic-search input {
 		font-size: 1.05rem;
-		padding: 11px 44px 11px 14px;
+		padding: 11px 112px 11px 14px;
 	}
 
 	.topic-suggestion-item {
@@ -1649,7 +1703,10 @@ body[data-state="4"] .state--read {
 	border: 1px solid rgba(95, 200, 255, 0.2);
 	border-radius: 8px;
 	padding: 10px;
-	flex: 1;
+	/* Diagram pane is sparse by nature (a handful of thin position bars) -
+	   giving it an even 50/50 split with the verse list left most of it
+	   empty, so it gets a smaller fixed share instead. */
+	flex: 0 0 34%;
 	min-height: 0;
 	height: 100%;
 	overflow: visible;
@@ -2705,7 +2762,7 @@ body[data-state="3"] .legend-genre.active {
 
 	.topic-search input {
 		min-width: clamp(230px, calc(30.5vw - 106px), 480px);
-		padding: 10px 38px 10px 12px;
+		padding: 10px 92px 10px 12px;
 		font-size: 1rem;
 	}
 
@@ -2894,7 +2951,7 @@ body[data-state="3"] .legend-genre.active {
 	.topic-search input {
 		min-width: clamp(500px, 22vw, 800px);
 		font-size: 1.32rem;
-		padding: 15px 50px 15px 18px;
+		padding: 15px 112px 15px 18px;
 	}
 
 	.card-title-bar {

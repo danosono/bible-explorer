@@ -78,8 +78,15 @@ async function parseTopics(bibleData) {
 
   const isSubtopicOfCurrentTopic = (label) => {
     if (!currentTopicName) return false;
-    const prefix = label.split(':')[0].trim();
-    return normalizeForMatch(prefix).startsWith(normalizeForMatch(currentTopicName));
+    const prefix = normalizeForMatch(label.split(':')[0].trim());
+    const topic = normalizeForMatch(currentTopicName);
+    // Exact match, or a simple plural of the topic name (e.g. "Entertainment"
+    // -> "Entertainments: ..."). A bare startsWith() here (no word boundary)
+    // used to also match unrelated words that merely begin with the same
+    // letters - e.g. "Obedience: Asa" and "Obed-Edom: ..." both satisfied
+    // "obedience...".startsWith("obed") and got wrongly merged into the
+    // "Obed" topic instead of becoming their own "Obedience"/"Obed-Edom".
+    return prefix === topic || prefix === `${topic}s`;
   };
 
   for (const row of data) {

@@ -28,7 +28,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=14" />
+    <link rel="stylesheet" href="css/style.css?v=15" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
     <link rel="icon" type="image/png" href="images/favicon-explorer-v3.png?v=1" />
   </head>
@@ -266,12 +266,33 @@
                     placeholder="Search topics"
                   />
                   <button
-                    class="topic-clear-btn"
+                    class="topic-icon-btn"
                     id="topic-clear-btn"
                     type="button"
                     aria-label="Clear topic"
                   >
                     &times;
+                  </button>
+                  <button
+                    class="topic-icon-btn"
+                    id="topic-subtopic-toggle-btn"
+                    type="button"
+                    aria-label="Filter by subclassification"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                    hidden
+                  >
+                    <span class="chevron-glyph">&#9662;</span>
+                  </button>
+                  <button
+                    class="topic-icon-btn"
+                    id="topic-suggestions-toggle-btn"
+                    type="button"
+                    aria-label="Show topic list"
+                    aria-haspopup="listbox"
+                    aria-expanded="false"
+                  >
+                    <span class="chevron-glyph">&#9662;</span>
                   </button>
                 </span>
               </span>
@@ -568,7 +589,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=65"></script>
+    <script src="js/app.js?v=68"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
