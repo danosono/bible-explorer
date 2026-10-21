@@ -1160,6 +1160,23 @@ const hideSubtopicSuggestions = () => {
   if (topicSubtopicToggleBtn) topicSubtopicToggleBtn.setAttribute("aria-expanded", "false");
 };
 
+// .topic-suggestion-item truncates with an ellipsis (fixed-width dropdown,
+// variable-length topic/subtopic names), so the full text can be cut off
+// with no way to read the rest. Reuses the same mouse-follow tooltip as the
+// pin-line hovers (showPlainTooltip/updateTooltipPosition/hideTooltip)
+// rather than the native `title` attribute, so it looks and behaves like
+// every other hover tooltip in the app instead of the browser's own delayed,
+// unstyled one. Only fires when the text is actually clipped (scrollWidth >
+// clientWidth) - checked at hover time, once the item has real layout -
+// so short entries that already fit don't get a redundant popup.
+const attachTruncatedItemTooltip = (item) => {
+  item.addEventListener("mouseenter", (e) => {
+    if (item.scrollWidth > item.clientWidth) showPlainTooltip(e, item.textContent);
+  });
+  item.addEventListener("mousemove", updateTooltipPosition);
+  item.addEventListener("mouseleave", hideTooltip);
+};
+
 // Mirrors renderTopicSuggestions()'s listbox pattern exactly (same CSS
 // classes, same lazy-build-then-reuse shape) so the two popovers look and
 // behave identically - just a fixed list of this topic's subclassifications
@@ -1196,6 +1213,7 @@ const renderSubtopicSuggestions = () => {
     item.dataset.subtopicValue = value;
     item.setAttribute("role", "option");
     item.setAttribute("aria-selected", isSelected ? "true" : "false");
+    attachTruncatedItemTooltip(item);
     return item;
   };
 
@@ -1934,6 +1952,7 @@ const renderTopicSuggestions = (filterValue) => {
     item.textContent = String(topic);
     item.setAttribute("role", "option");
     item.setAttribute("aria-selected", "false");
+    attachTruncatedItemTooltip(item);
     fragment.appendChild(item);
   });
   list.appendChild(fragment);
