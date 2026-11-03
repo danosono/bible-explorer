@@ -100,6 +100,7 @@ const DATASET_CONFIG = {
     file: "data/topics-with-references.json",
     label: "Nave's Topics",
     placeholder: "Search topics",
+    countNoun: "topics",
     defaultTopic: "JESUS, THE CHRIST",
     defaultSuggestionsBy: "popularity"
   },
@@ -107,6 +108,7 @@ const DATASET_CONFIG = {
     file: "data/bsb-topics-with-references.json",
     label: "BSB Topics",
     placeholder: "Search BSB topics",
+    countNoun: "topics",
     defaultTopic: "Light",
     defaultSuggestionsBy: "popularity"
   },
@@ -114,6 +116,7 @@ const DATASET_CONFIG = {
     file: "data/theographic-people-with-references.json",
     label: "People",
     placeholder: "Search people",
+    countNoun: "people",
     defaultTopic: "Jesus Christ",
     // With 1,870 entries, an alphabetical blank-query list is mostly obscure
     // genealogy names starting with "A" - a by-verse-count "most mentioned"
@@ -124,6 +127,7 @@ const DATASET_CONFIG = {
     file: "data/theographic-places-with-references.json",
     label: "Places",
     placeholder: "Search places",
+    countNoun: "places",
     defaultTopic: "Jerusalem",
     defaultSuggestionsBy: "popularity"
   },
@@ -131,6 +135,7 @@ const DATASET_CONFIG = {
     file: "data/prophecy-topics-with-references.json",
     label: "Prophecy",
     placeholder: "Search prophecy references",
+    countNoun: "prophecies",
     defaultTopic: "[All] OT + NT Combined",
     // Entries are numbered 1-351 - the default 200-item cap (MAX_TOPIC_OPTIONS)
     // cut the list off mid-list with no indication there was more, since
@@ -145,6 +150,7 @@ const DATASET_CONFIG = {
     file: "data/bsb-concordance-with-references.json",
     label: "BSB Concordance",
     placeholder: "Search words",
+    countNoun: "words",
     defaultTopic: "Eternal",
     defaultSuggestionsBy: "popularity"
   },
@@ -152,6 +158,7 @@ const DATASET_CONFIG = {
     file: "data/custom-topics-with-references.json",
     label: "Custom Dataset",
     placeholder: "Search custom topics",
+    countNoun: "topics",
     defaultTopic: "Jesus is God",
     note: "Custom dataset — from the developer's own study and observations."
   }
@@ -1623,8 +1630,50 @@ const updateDatasetUI = () => {
     }
   }
   if (topicInput) {
-    topicInput.placeholder = config.placeholder;
+    topicInput.placeholder = getTopicInputPlaceholder(config);
   }
+};
+
+// Number of real entries in the active dataset - Prophecy's synthetic
+// "[All] ..." aggregate topics (withProphecyAggregateTopics) are excluded so
+// the count reads as "351 prophecies", not 354.
+const getTopicCatalogCount = () => {
+  if (!allTopicNames.length) return 0;
+  if (activeDatasetMode !== "prophecy") return allTopicNames.length;
+  const aggregateKeys = new Set(PROPHECY_AGGREGATE_TOPICS.map((entry) => entry.key));
+  return allTopicNames.filter((name) => !aggregateKeys.has(name)).length;
+};
+
+// The search field is the narrowest portal between the user and the data, so
+// its placeholder carries the dataset's size ("Search 5,312 topics") - the
+// cheapest possible hint that the blank-query suggestion list (top 50 by
+// popularity for most datasets) is a sample, not the whole catalog. Before
+// the dataset has loaded (count 0) it falls back to the static placeholder.
+const getTopicInputPlaceholder = (config) => {
+  const count = getTopicCatalogCount();
+  if (!count || !config.countNoun) return config.placeholder;
+  return `Search ${count.toLocaleString()} ${config.countNoun}`;
+};
+
+// Caption shown as the first row of the blank-query suggestion list, saying
+// what the list is (a top-N sample vs. the whole catalog) and how to reach
+// the rest. Returns null when there's nothing to say.
+const getTopicSuggestionsCaption = (shownCount) => {
+  const config = DATASET_CONFIG[activeDatasetMode];
+  const total = getTopicCatalogCount();
+  if (!config || !total) return null;
+  const noun = config.countNoun || "entries";
+  const totalText = total.toLocaleString();
+  if (config.defaultSuggestionsBy === "popularity" && shownCount < total) {
+    return `Top ${shownCount} of ${totalText} ${noun} by references. Type to search all.`;
+  }
+  if (activeDatasetMode === "prophecy") {
+    return `All ${totalText} ${noun}, in source order. Type to search.`;
+  }
+  if (shownCount < total) {
+    return `First ${shownCount} of ${totalText} ${noun}. Type to search all.`;
+  }
+  return `All ${totalText} ${noun}. Type to search.`;
 };
 
 const parseChapterVerse = (refText) => {
@@ -1836,7 +1885,12 @@ const switchDataset = async (nextMode, { forceTopic, skipHistoryPush = false } =
     if (exactMatch && topicsData[exactMatch] && !isProphecyAggregateTopic(exactMatch)) {
       nextTopic = exactMatch;
     } else {
-      const fuzzyMatches = getTopicOptions(carrySearchTerm || "").filter((name) => !isProphecyAggregateTopic(name));
+      // Only fuzzy-match a real term - getTopicOptions("") returns the
+      // blank-query default list, whose first entry would otherwise win
+      // over the dataset's own defaultTopic whenever the field was empty.
+      const fuzzyMatches = carrySearchTerm
+        ? getTopicOptions(carrySearchTerm).filter((name) => !isProphecyAggregateTopic(name))
+        : [];
       nextTopic = fuzzyMatches[0] || getDatasetDefaultTopic(nextMode);
     }
   }
@@ -1945,6 +1999,16 @@ const renderTopicSuggestions = (filterValue) => {
   }
 
   const fragment = document.createDocumentFragment();
+  // Blank query only - once the user is typing, the list is their own
+  // filtered result and the "this is a sample" caption no longer applies.
+  const caption = normalizeTopicKey(filterValue) ? null : getTopicSuggestionsCaption(topicSuggestionNames.length);
+  if (caption) {
+    const captionItem = document.createElement("li");
+    captionItem.className = "topic-suggestions-caption";
+    captionItem.setAttribute("role", "presentation");
+    captionItem.textContent = caption;
+    fragment.appendChild(captionItem);
+  }
   topicSuggestionNames.forEach((topic, index) => {
     const item = document.createElement("li");
     item.className = "topic-suggestion-item";
@@ -3950,12 +4014,43 @@ const boot = async () => {
     // the input has already been refocused (e.g. clicking the clear button
     // blurs the input, then immediately refocuses it) - otherwise the
     // freshly-rendered list would flash open and then vanish 150ms later.
+    //
+    // Focus also selects the whole current value (standard search-box /
+    // address-bar convention) so the next keystroke replaces the current
+    // topic - the user never has to find the × first - and, since the field
+    // is now effectively blank for their next keystroke, the dropdown shows
+    // the blank-query list (top-N sample + its caption) rather than the one
+    // or two entries matching the current topic's own name. A mouse click
+    // fires mouseup after focus, and the browser's default mouseup would
+    // collapse that selection to a caret - preventDefault on that one
+    // mouseup keeps it (the flag is cleared so later clicks place the caret
+    // normally).
     let topicSuggestionsHideTimer = null;
+    let keepSelectAllOnMouseUp = false;
     topicInput.addEventListener("focus", () => {
       if (topicSuggestionsHideTimer) {
         window.clearTimeout(topicSuggestionsHideTimer);
         topicSuggestionsHideTimer = null;
       }
+      hideSubtopicSuggestions();
+      if (topicInput.value) {
+        topicInput.select();
+        keepSelectAllOnMouseUp = true;
+      }
+      renderTopicSuggestions("");
+    });
+    topicInput.addEventListener("mouseup", (e) => {
+      if (!keepSelectAllOnMouseUp) return;
+      keepSelectAllOnMouseUp = false;
+      e.preventDefault();
+    });
+    // Clicking a field that is already focused fires no focus event, so
+    // the list would stay closed after Escape or after picking an item
+    // (which keeps focus). Reopen it, filtered by the current text - the
+    // user is editing in place here, not starting over, so no select-all.
+    topicInput.addEventListener("click", () => {
+      const list = getTopicSuggestionsList();
+      if (list && !list.hidden) return;
       hideSubtopicSuggestions();
       renderTopicSuggestions(topicInput.value);
     });
@@ -5173,6 +5268,7 @@ const loadTopics = async () => {
       ? [...topicNames].sort((a, b) => getTopicReferenceCount(topicsData[b]) - getTopicReferenceCount(topicsData[a]))
       : [];
     hideTopicSuggestions();
+    updateDatasetUI();
   } catch (error) {
     console.warn(`Failed to load ${activeDatasetMode} data, using fallback`);
     const fallbackTopics = ["angels", "birth of Jesus Christ", "crucifixion of Jesus Christ", "demons", "appearance of Jesus", "paradise", "resurrection", "Son of man", "transfiguration"];
@@ -5187,6 +5283,7 @@ const loadTopics = async () => {
     allTopicNames = fallbackTopics;
     popularTopicNames = [];
     hideTopicSuggestions();
+    updateDatasetUI();
   }
 };
 

@@ -560,18 +560,12 @@ body::before {
 	display: none;
 }
 
-/* Innermost (leftmost): × clear button - the one icon that stays hidden
-   until hovered/focused, same as before. */
+/* Innermost (leftmost): × clear button. Always visible while a topic is
+   selected (updateTopicActionState() hides it via [hidden] otherwise) - it
+   used to appear only on hover/focus, which left no visible hint that an
+   auto-chosen topic (e.g. Prophecy's default aggregate) could be cleared. */
 #topic-clear-btn {
 	right: clamp(64px, 4.8vw, 78px);
-	opacity: 0;
-	pointer-events: none;
-}
-
-.topic-input-wrap:hover #topic-clear-btn:not([hidden]),
-.topic-input-wrap:focus-within #topic-clear-btn:not([hidden]) {
-	opacity: 1;
-	pointer-events: auto;
 }
 
 /* Middle: only present when the current topic has subclassifications - a
@@ -648,6 +642,28 @@ body::before {
 
 .topic-suggestions[hidden] {
 	display: none;
+}
+
+/* First row of the blank-query list: "Top 50 of 5,312 topics by references.
+   Type to search all." - tells the user the list is a sample and how to
+   reach the rest. Sticky so it stays readable while the list scrolls. */
+.topic-suggestions-caption {
+	position: sticky;
+	top: -6px;
+	margin: -6px -6px 4px;
+	padding: 7px 12px 6px;
+	background: rgba(12, 18, 28, 0.97);
+	border-bottom: 1px solid rgba(95, 200, 255, 0.2);
+	color: var(--text-3);
+	font-size: 0.78rem;
+	line-height: 1.3;
+	/* .topic-search uppercases + letter-spaces everything inside it (the
+	   suggestion items included) - a sentence reads better as a sentence,
+	   and wrapping beats clipping it to an ellipsis on narrow widths. */
+	text-transform: none;
+	letter-spacing: 0.02em;
+	white-space: normal;
+	cursor: default;
 }
 
 .topic-suggestion-item {
