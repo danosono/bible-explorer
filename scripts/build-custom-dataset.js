@@ -10,8 +10,23 @@
 //       "Book Ch:V",
 //       "Book Ch:V-V2",        // verse range
 //       "Book Ch:V | a note"   // optional note, shown as the verse's subtopic text
+//       "Book Ch:V | a theme | a note"
+//                             // optional shared theme + per-verse note (see below)
 //     ]
 //   }
+//
+// The app's subtopic-filter dropdown (SUBTOPIC_FILTER_MODES in js/app.js)
+// groups a topic's verses by their exact `subtopics` strings, so with the
+// two-segment form every unique note is its own one-verse group - useless as
+// a filter. The three-segment form splits the two jobs: the THEME is a short
+// label shared verbatim by every verse making the same point ("I am",
+// "calls on the name of the Lord"), and the NOTE stays free-form commentary
+// for that one verse. Both are emitted into `subtopics` (theme first) so the
+// verse tooltip shows "theme; note"; the app then hides one-verse groups for
+// this dataset, so the dropdown lists only the themes that actually recur.
+// A verse with nothing in common with the others can keep the two-segment
+// form - its note becomes a one-verse group and is simply left out of the
+// dropdown.
 //
 // Output follows the same schema as the other datasets (see
 // data/prophecy-topics-with-references.json and docs/treemap-and-datasets.md):
@@ -144,7 +159,14 @@ const REF_PATTERN = /^([1-3]?\s?[A-Za-z.]+(?:\s+[A-Za-z.]+)*)\s+(\d+):([\d\s,\-]
 const parseRefLine = (line) => {
   const [refPart, ...noteParts] = String(line).split("|");
   const ref = normalizeWhitespace(refPart);
-  const note = normalizeWhitespace(noteParts.join("|"));
+  // "Ref | note" -> [note]; "Ref | theme | note" -> [theme, note]. Any
+  // further pipes stay inside the note text.
+  const segments = noteParts.map(normalizeWhitespace);
+  const theme = segments.length >= 2 ? segments[0] : "";
+  const note = segments.length >= 2 ? segments.slice(1).join(" | ") : (segments[0] || "");
+  const subtopics = [];
+  if (theme) subtopics.push(theme);
+  if (note && note !== theme) subtopics.push(note);
   const match = ref.match(REF_PATTERN);
   if (!match) return { error: `Could not parse reference: "${line}"` };
 
@@ -156,7 +178,7 @@ const parseRefLine = (line) => {
   const verses = expandVerseSpec(match[3]);
   if (!verses.length) return { error: `No verse numbers parsed in reference: "${line}"` };
 
-  return { bookId, chapter, verses, note };
+  return { bookId, chapter, verses, subtopics };
 };
 
 const buildChapterOffsets = (bibleBooks) => {
@@ -235,7 +257,7 @@ const main = () => {
         const displayBook = BOOK_DISPLAY[parsed.bookId] || parsed.bookId;
         referenceMaps[parsed.bookId].push({
           verse: absoluteVerse,
-          subtopics: parsed.note ? [parsed.note] : [],
+          subtopics: parsed.subtopics,
           refs: [`${displayBook} ${parsed.chapter}:${verse}`]
         });
         verseEntriesAdded += 1;

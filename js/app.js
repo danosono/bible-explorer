@@ -187,6 +187,17 @@ const SUBTOPIC_FILTER_MODES = new Set(["topics", "bsb-topics", "custom"]);
 // across just 14 verses is exactly the case worth surfacing: without the
 // dropdown there's no way to tell the topic isn't about a single person).
 const SUBTOPIC_FILTER_MIN_VERSES = 0;
+// Custom Dataset verses carry free-form per-verse notes in `subtopics` as
+// well as (optionally) a shared theme - see the authoring-format comment in
+// scripts/build-custom-dataset.js. Every note is unique, so without a floor
+// a hand-annotated topic like "Jesus is God" would offer ~50 one-note
+// "groups" that bury the handful of real recurring themes. The floor counts
+// PASSAGES (runs of consecutive verses in one book), not verses: a single
+// "Luke 4:16-29 | note" line is 14 verses but one passage, and must stay
+// hidden just like a one-verse note. The sourced datasets keep the no-floor
+// behavior (a single-verse Nave's subtopic is a real classification, not
+// commentary).
+const SUBTOPIC_FILTER_MIN_PASSAGES = { custom: 2 };
 
 const isProphecyAggregateTopic = (name) => {
   return PROPHECY_AGGREGATE_TOPICS.some((item) => item.key === name);
@@ -1072,29 +1083,40 @@ const computeSubtopicFilterInfo = (topicName) => {
     return { enabled: false };
   }
 
-  const groups = new Map(); // label -> { label, count, rawKeys: Set }
+  // flatVerses is ordered book by book, ascending verse within each, so a
+  // group's passage count can be tracked inline: a verse starts a new
+  // passage unless it directly follows the group's previous verse.
+  const groups = new Map(); // label -> { label, count, passages, rawKeys: Set, last: { bookId, absoluteVerse } }
   flatVerses.forEach((verse) => {
     const seenLabels = new Set();
     (verse.subtopics || []).forEach((raw) => {
       if (!raw) return;
       const label = activeDatasetMode === "bsb-topics" ? raw.replace(BSB_SOURCE_TAG_RE, "") : raw;
       if (!groups.has(label)) {
-        groups.set(label, { label, count: 0, rawKeys: new Set() });
+        groups.set(label, { label, count: 0, passages: 0, rawKeys: new Set(), last: null });
       }
       const group = groups.get(label);
       group.rawKeys.add(raw);
       if (!seenLabels.has(label)) {
         group.count += 1;
         seenLabels.add(label);
+        const continues = group.last
+          && group.last.bookId === verse.bookId
+          && group.last.absoluteVerse === verse.absoluteVerse - 1;
+        if (!continues) group.passages += 1;
+        group.last = { bookId: verse.bookId, absoluteVerse: verse.absoluteVerse };
       }
     });
   });
 
-  if (groups.size <= 1) {
+  const minPassages = SUBTOPIC_FILTER_MIN_PASSAGES[activeDatasetMode] || 0;
+  const options = Array.from(groups.values())
+    .filter((group) => group.passages >= minPassages)
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  if (options.length <= 1) {
     return { enabled: false };
   }
 
-  const options = Array.from(groups.values()).sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
   const optionsByLabel = new Map(options.map((option) => [option.label, option]));
   return { enabled: true, totalCount: flatVerses.length, options, optionsByLabel };
 };

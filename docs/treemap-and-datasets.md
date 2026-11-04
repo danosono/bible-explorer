@@ -191,7 +191,12 @@ source — for personal study (e.g. "Jesus is God" with supporting verses), adde
 over time. `source/custom-topics.json` is a flat `{ "Topic Name": ["Book Ch:V", ...] }`
 map kept deliberately simple to hand-edit; each ref string may be a single verse
 ("John 1:1"), a verse range ("John 1:1-3"), a comma list ("John 1:1,3"), and/or end
-with `| a note` (becomes that verse's `subtopics` entry). Workflow: edit
+with `| a note` (becomes that verse's `subtopics` entry) or `| a theme | a note` (emits
+`[theme, note]` - the theme is a short label shared verbatim by every verse making the
+same point, so the app's subtopic-filter dropdown can group them; the note stays
+per-verse commentary). The app hides one-verse groups for this dataset
+(`SUBTOPIC_FILTER_MIN_PASSAGES` in `js/app.js`), so the dropdown lists only recurring
+themes - "Jesus is God" is the worked example. Workflow: edit
 `source/custom-topics.json`, run `node scripts/build-custom-dataset.js` to regenerate
 `data/custom-topics-with-references.json` (computing each absolute verse index against
 `data/bible.json`, same approach as `scripts/parse-prophecy-docx.js`), then commit both
