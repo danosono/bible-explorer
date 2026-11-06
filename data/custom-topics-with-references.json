@@ -10063,6 +10063,20 @@
           ]
         },
         {
+          "verse": 41,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:23"
+          ]
+        },
+        {
+          "verse": 42,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:24"
+          ]
+        },
+        {
           "verse": 70,
           "subtopics": [],
           "refs": [
@@ -10227,6 +10241,188 @@
       ],
       "EZK": [
         {
+          "verse": 3,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:3"
+          ]
+        },
+        {
+          "verse": 4,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:4"
+          ]
+        },
+        {
+          "verse": 5,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:5"
+          ]
+        },
+        {
+          "verse": 6,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:6"
+          ]
+        },
+        {
+          "verse": 7,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:7"
+          ]
+        },
+        {
+          "verse": 8,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:8"
+          ]
+        },
+        {
+          "verse": 9,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:9"
+          ]
+        },
+        {
+          "verse": 10,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:10"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:11"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:12"
+          ]
+        },
+        {
+          "verse": 13,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:13"
+          ]
+        },
+        {
+          "verse": 14,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:14"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:15"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:16"
+          ]
+        },
+        {
+          "verse": 17,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:17"
+          ]
+        },
+        {
+          "verse": 18,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:18"
+          ]
+        },
+        {
+          "verse": 19,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:19"
+          ]
+        },
+        {
+          "verse": 20,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:20"
+          ]
+        },
+        {
+          "verse": 21,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:21"
+          ]
+        },
+        {
+          "verse": 22,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:22"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:23"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:24"
+          ]
+        },
+        {
+          "verse": 25,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:25"
+          ]
+        },
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:26"
+          ]
+        },
+        {
+          "verse": 27,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:27"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [],
+          "refs": [
+            "Ezek 1:28"
+          ]
+        },
+        {
           "verse": 69,
           "subtopics": [],
           "refs": [
@@ -10387,6 +10583,15 @@
           "subtopics": [],
           "refs": [
             "Dan 6:22"
+          ]
+        }
+      ],
+      "HOS": [
+        {
+          "verse": 2,
+          "subtopics": [],
+          "refs": [
+            "Hos 1:2"
           ]
         }
       ],
@@ -10626,6 +10831,34 @@
           ]
         },
         {
+          "verse": 434,
+          "subtopics": [],
+          "refs": [
+            "Acts 12:21"
+          ]
+        },
+        {
+          "verse": 435,
+          "subtopics": [],
+          "refs": [
+            "Acts 12:22"
+          ]
+        },
+        {
+          "verse": 436,
+          "subtopics": [],
+          "refs": [
+            "Acts 12:23"
+          ]
+        },
+        {
+          "verse": 437,
+          "subtopics": [],
+          "refs": [
+            "Acts 12:24"
+          ]
+        },
+        {
           "verse": 710,
           "subtopics": [],
           "refs": [
@@ -10675,6 +10908,7 @@
       "EXO",
       "EZK",
       "GEN",
+      "HOS",
       "ISA",
       "JDG",
       "JER",
@@ -12666,10 +12900,94 @@
           ]
         },
         {
+          "verse": 529,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:10"
+          ]
+        },
+        {
+          "verse": 530,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:11"
+          ]
+        },
+        {
+          "verse": 531,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:12"
+          ]
+        },
+        {
+          "verse": 532,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:13"
+          ]
+        },
+        {
+          "verse": 533,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:14"
+          ]
+        },
+        {
+          "verse": 534,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:15"
+          ]
+        },
+        {
+          "verse": 535,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:16"
+          ]
+        },
+        {
+          "verse": 536,
+          "subtopics": [],
+          "refs": [
+            "Ex 20:17"
+          ]
+        },
+        {
+          "verse": 613,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:1"
+          ]
+        },
+        {
           "verse": 614,
           "subtopics": [],
           "refs": [
             "Ex 23:2"
+          ]
+        },
+        {
+          "verse": 615,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:3"
+          ]
+        },
+        {
+          "verse": 616,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:4"
+          ]
+        },
+        {
+          "verse": 617,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:5"
           ]
         },
         {
@@ -12684,6 +13002,34 @@
           "subtopics": [],
           "refs": [
             "Ex 23:7"
+          ]
+        },
+        {
+          "verse": 620,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:8"
+          ]
+        },
+        {
+          "verse": 621,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:9"
+          ]
+        },
+        {
+          "verse": 637,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:25"
+          ]
+        },
+        {
+          "verse": 638,
+          "subtopics": [],
+          "refs": [
+            "Ex 23:26"
           ]
         }
       ],
@@ -16225,12 +16571,12 @@
     "references": {
       "ACT": [
         {
-          "verse": 633,
+          "verse": 634,
           "subtopics": [
             "Claudius had ordered all the Jews to leave Rome"
           ],
           "refs": [
-            "Acts 18:1"
+            "Acts 18:2"
           ]
         },
         {
@@ -17337,15 +17683,6 @@
           ]
         },
         {
-          "verse": 68,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 3:12"
-          ]
-        },
-        {
           "verse": 69,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -17409,6 +17746,15 @@
           ]
         },
         {
+          "verse": 78,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Gen 3:22"
+          ]
+        },
+        {
           "verse": 86,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -17424,15 +17770,6 @@
           ],
           "refs": [
             "Gen 4:7"
-          ]
-        },
-        {
-          "verse": 88,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 4:8"
           ]
         },
         {
@@ -17469,24 +17806,6 @@
           ],
           "refs": [
             "Gen 4:12"
-          ]
-        },
-        {
-          "verse": 93,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 4:13"
-          ]
-        },
-        {
-          "verse": 94,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 4:14"
           ]
         },
         {
@@ -17541,6 +17860,24 @@
           ],
           "refs": [
             "Gen 8:15"
+          ]
+        },
+        {
+          "verse": 200,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Gen 8:16"
+          ]
+        },
+        {
+          "verse": 201,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Gen 8:17"
           ]
         },
         {
@@ -17753,7 +18090,7 @@
         {
           "verse": 362,
           "subtopics": [
-            "General divine speech"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
             "Gen 15:1"
@@ -17769,33 +18106,6 @@
           ]
         },
         {
-          "verse": 363,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:2"
-          ]
-        },
-        {
-          "verse": 364,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:3"
-          ]
-        },
-        {
-          "verse": 365,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:4"
-          ]
-        },
-        {
           "verse": 366,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -17805,66 +18115,12 @@
           ]
         },
         {
-          "verse": 367,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:6"
-          ]
-        },
-        {
           "verse": 368,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
             "Gen 15:7"
-          ]
-        },
-        {
-          "verse": 369,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:8"
-          ]
-        },
-        {
-          "verse": 370,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:9"
-          ]
-        },
-        {
-          "verse": 371,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:10"
-          ]
-        },
-        {
-          "verse": 372,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:11"
-          ]
-        },
-        {
-          "verse": 373,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:12"
           ]
         },
         {
@@ -17904,72 +18160,9 @@
           ]
         },
         {
-          "verse": 378,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:17"
-          ]
-        },
-        {
-          "verse": 379,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:18"
-          ]
-        },
-        {
-          "verse": 380,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:19"
-          ]
-        },
-        {
-          "verse": 381,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:20"
-          ]
-        },
-        {
-          "verse": 382,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 15:21"
-          ]
-        },
-        {
-          "verse": 389,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 16:7"
-          ]
-        },
-        {
-          "verse": 389,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 16:7"
-          ]
-        },
-        {
           "verse": 391,
           "subtopics": [
-            "An angel of the Lord speaks"
+            "The angel of the Lord speaks"
           ],
           "refs": [
             "Gen 16:9"
@@ -17985,12 +18178,21 @@
           ]
         },
         {
-          "verse": 399,
+          "verse": 393,
           "subtopics": [
-            "General divine speech"
+            "The angel of the Lord speaks"
           ],
           "refs": [
-            "Gen 17:1"
+            "Gen 16:11"
+          ]
+        },
+        {
+          "verse": 394,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Gen 16:12"
           ]
         },
         {
@@ -18066,96 +18268,6 @@
           ]
         },
         {
-          "verse": 407,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:9"
-          ]
-        },
-        {
-          "verse": 408,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:10"
-          ]
-        },
-        {
-          "verse": 409,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:11"
-          ]
-        },
-        {
-          "verse": 410,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:12"
-          ]
-        },
-        {
-          "verse": 411,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:13"
-          ]
-        },
-        {
-          "verse": 412,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:14"
-          ]
-        },
-        {
-          "verse": 413,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:15"
-          ]
-        },
-        {
-          "verse": 414,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:16"
-          ]
-        },
-        {
-          "verse": 415,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:17"
-          ]
-        },
-        {
-          "verse": 416,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 17:18"
-          ]
-        },
-        {
           "verse": 417,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -18183,12 +18295,12 @@
           ]
         },
         {
-          "verse": 420,
+          "verse": 435,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Gen 17:22"
+            "Gen 18:10"
           ]
         },
         {
@@ -18237,279 +18349,9 @@
           ]
         },
         {
-          "verse": 447,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:22"
-          ]
-        },
-        {
-          "verse": 448,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:23"
-          ]
-        },
-        {
-          "verse": 449,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:24"
-          ]
-        },
-        {
-          "verse": 450,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:25"
-          ]
-        },
-        {
-          "verse": 451,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:26"
-          ]
-        },
-        {
-          "verse": 452,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:27"
-          ]
-        },
-        {
-          "verse": 453,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:28"
-          ]
-        },
-        {
-          "verse": 454,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:29"
-          ]
-        },
-        {
-          "verse": 455,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:30"
-          ]
-        },
-        {
-          "verse": 456,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:31"
-          ]
-        },
-        {
-          "verse": 457,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:32"
-          ]
-        },
-        {
-          "verse": 458,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 18:33"
-          ]
-        },
-        {
-          "verse": 471,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:13"
-          ]
-        },
-        {
-          "verse": 472,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:14"
-          ]
-        },
-        {
-          "verse": 473,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:15"
-          ]
-        },
-        {
-          "verse": 474,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:16"
-          ]
-        },
-        {
-          "verse": 475,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:17"
-          ]
-        },
-        {
-          "verse": 476,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:18"
-          ]
-        },
-        {
-          "verse": 477,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:19"
-          ]
-        },
-        {
-          "verse": 478,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:20"
-          ]
-        },
-        {
-          "verse": 479,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:21"
-          ]
-        },
-        {
-          "verse": 480,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:22"
-          ]
-        },
-        {
-          "verse": 481,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:23"
-          ]
-        },
-        {
-          "verse": 482,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:24"
-          ]
-        },
-        {
-          "verse": 483,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:25"
-          ]
-        },
-        {
-          "verse": 484,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:26"
-          ]
-        },
-        {
-          "verse": 485,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:27"
-          ]
-        },
-        {
-          "verse": 486,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:28"
-          ]
-        },
-        {
-          "verse": 487,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 19:29"
-          ]
-        },
-        {
           "verse": 531,
           "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 21:17"
-          ]
-        },
-        {
-          "verse": 531,
-          "subtopics": [
-            "An angel of the Lord speaks"
+            "General divine speech"
           ],
           "refs": [
             "Gen 21:17"
@@ -18518,7 +18360,7 @@
         {
           "verse": 532,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "General divine speech"
           ],
           "refs": [
             "Gen 21:18"
@@ -18543,51 +18385,15 @@
           ]
         },
         {
-          "verse": 559,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 22:11"
-          ]
-        },
-        {
-          "verse": 559,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 22:11"
-          ]
-        },
-        {
           "verse": 560,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "The angel of the Lord speaks"
           ],
           "refs": [
             "Gen 22:12"
           ]
         },
         {
-          "verse": 561,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 22:13"
-          ]
-        },
-        {
-          "verse": 562,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 22:14"
-          ]
-        },
-        {
           "verse": 563,
           "subtopics": [
             "The angel of the Lord speaks"
@@ -18597,36 +18403,9 @@
           ]
         },
         {
-          "verse": 563,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 22:15"
-          ]
-        },
-        {
-          "verse": 563,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 22:15"
-          ]
-        },
-        {
           "verse": 564,
           "subtopics": [
             "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 22:16"
-          ]
-        },
-        {
-          "verse": 564,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
           ],
           "refs": [
             "Gen 22:16"
@@ -18635,7 +18414,7 @@
         {
           "verse": 565,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "The angel of the Lord speaks"
           ],
           "refs": [
             "Gen 22:17"
@@ -18644,7 +18423,7 @@
         {
           "verse": 566,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "The angel of the Lord speaks"
           ],
           "refs": [
             "Gen 22:18"
@@ -18741,18 +18520,9 @@
           ]
         },
         {
-          "verse": 1021,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Gen 35:9"
-          ]
-        },
-        {
           "verse": 1022,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "General divine speech"
           ],
           "refs": [
             "Gen 35:10"
@@ -18761,7 +18531,7 @@
         {
           "verse": 1023,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "General divine speech"
           ],
           "refs": [
             "Gen 35:11"
@@ -18770,59 +18540,1561 @@
         {
           "verse": 1024,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "General divine speech"
           ],
           "refs": [
             "Gen 35:12"
           ]
-        },
-        {
-          "verse": 1468,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Gen 48:16"
-          ]
         }
       ],
-      "EXO": [
+      "DEU": [
         {
-          "verse": 49,
+          "verse": 6,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Ex 3:2"
+            "Deut 1:6"
           ]
         },
         {
-          "verse": 49,
+          "verse": 48,
           "subtopics": [
-            "An angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Ex 3:2"
+            "Deut 2:2"
           ]
         },
         {
-          "verse": 51,
+          "verse": 85,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 3:2"
+          ]
+        },
+        {
+          "verse": 122,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 4:10"
+          ]
+        },
+        {
+          "verse": 123,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 4:11"
+          ]
+        },
+        {
+          "verse": 124,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 4:12"
+          ]
+        },
+        {
+          "verse": 167,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:6"
+          ]
+        },
+        {
+          "verse": 168,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:7"
+          ]
+        },
+        {
+          "verse": 169,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:8"
+          ]
+        },
+        {
+          "verse": 170,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:9"
+          ]
+        },
+        {
+          "verse": 171,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:10"
+          ]
+        },
+        {
+          "verse": 172,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:11"
+          ]
+        },
+        {
+          "verse": 173,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:12"
+          ]
+        },
+        {
+          "verse": 174,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:13"
+          ]
+        },
+        {
+          "verse": 175,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:14"
+          ]
+        },
+        {
+          "verse": 176,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:15"
+          ]
+        },
+        {
+          "verse": 177,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:16"
+          ]
+        },
+        {
+          "verse": 178,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:17"
+          ]
+        },
+        {
+          "verse": 179,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:18"
+          ]
+        },
+        {
+          "verse": 180,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:19"
+          ]
+        },
+        {
+          "verse": 181,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:20"
+          ]
+        },
+        {
+          "verse": 182,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:21"
+          ]
+        },
+        {
+          "verse": 183,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 5:22"
+          ]
+        },
+        {
+          "verse": 305,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Deut 10:11"
+          ]
+        },
+        {
+          "verse": 826,
           "subtopics": [
             "General divine speech"
           ],
           "refs": [
-            "Ex 3:4"
+            "Deut 30:10"
           ]
         },
         {
-          "verse": 51,
+          "verse": 827,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Deut 30:11"
+          ]
+        },
+        {
+          "verse": 828,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Deut 30:12"
+          ]
+        },
+        {
+          "verse": 829,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Deut 30:13"
+          ]
+        },
+        {
+          "verse": 830,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Deut 30:14"
+          ]
+        },
+        {
+          "verse": 831,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Deut 30:15"
+          ]
+        }
+      ],
+      "JDG": [
+        {
+          "verse": 37,
           "subtopics": [
             "The angel of the Lord speaks"
           ],
           "refs": [
-            "Ex 3:4"
+            "Judg 2:1"
           ]
         },
+        {
+          "verse": 157,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 6:12"
+          ]
+        },
+        {
+          "verse": 159,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Judg 6:14"
+          ]
+        },
+        {
+          "verse": 159,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Judg 6:14"
+          ]
+        },
+        {
+          "verse": 161,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Judg 6:16"
+          ]
+        },
+        {
+          "verse": 165,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 6:20"
+          ]
+        },
+        {
+          "verse": 166,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 6:21"
+          ]
+        },
+        {
+          "verse": 167,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 6:22"
+          ]
+        },
+        {
+          "verse": 378,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:3"
+          ]
+        },
+        {
+          "verse": 379,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:4"
+          ]
+        },
+        {
+          "verse": 380,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:5"
+          ]
+        },
+        {
+          "verse": 388,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:13"
+          ]
+        },
+        {
+          "verse": 389,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:14"
+          ]
+        },
+        {
+          "verse": 391,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:16"
+          ]
+        },
+        {
+          "verse": 393,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:18"
+          ]
+        },
+        {
+          "verse": 395,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:20"
+          ]
+        },
+        {
+          "verse": 396,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:21"
+          ]
+        },
+        {
+          "verse": 397,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Judg 13:22"
+          ]
+        }
+      ],
+      "JOB": [
+        {
+          "verse": 925,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Job 38:1"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 745,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Ps 50:16"
+          ]
+        }
+      ],
+      "EZK": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Ezek 1:3"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Ezek 1:28"
+          ]
+        },
+        {
+          "verse": 29,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Ezek 2:1"
+          ]
+        },
+        {
+          "verse": 30,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Ezek 2:2"
+          ]
+        },
+        {
+          "verse": 196,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Ezek 11:5"
+          ]
+        }
+      ],
+      "HOS": [
+        {
+          "verse": 2,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Hos 1:2"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Hos 1:2"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 155,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 5:19"
+          ]
+        },
+        {
+          "verse": 156,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 5:20"
+          ]
+        },
+        {
+          "verse": 279,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 8:26"
+          ]
+        },
+        {
+          "verse": 282,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 8:29"
+          ]
+        },
+        {
+          "verse": 296,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Acts 9:4"
+          ]
+        },
+        {
+          "verse": 297,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Acts 9:5"
+          ]
+        },
+        {
+          "verse": 298,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Acts 9:6"
+          ]
+        },
+        {
+          "verse": 338,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:3"
+          ]
+        },
+        {
+          "verse": 339,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:4"
+          ]
+        },
+        {
+          "verse": 340,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:5"
+          ]
+        },
+        {
+          "verse": 341,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:6"
+          ]
+        },
+        {
+          "verse": 354,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 10:19"
+          ]
+        },
+        {
+          "verse": 355,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 10:20"
+          ]
+        },
+        {
+          "verse": 395,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 11:12"
+          ]
+        },
+        {
+          "verse": 420,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 12:7"
+          ]
+        },
+        {
+          "verse": 421,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 12:8"
+          ]
+        },
+        {
+          "verse": 440,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 13:2"
+          ]
+        },
+        {
+          "verse": 724,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 20:23"
+          ]
+        },
+        {
+          "verse": 743,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 21:4"
+          ]
+        },
+        {
+          "verse": 750,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 21:11"
+          ]
+        },
+        {
+          "verse": 786,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Acts 22:7"
+          ]
+        },
+        {
+          "verse": 787,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Acts 22:8"
+          ]
+        },
+        {
+          "verse": 952,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:23"
+          ]
+        },
+        {
+          "verse": 953,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:24"
+          ]
+        },
+        {
+          "verse": 954,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:25"
+          ]
+        },
+        {
+          "verse": 955,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:26"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 8,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Rev 1:8"
+          ]
+        },
+        {
+          "verse": 10,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 1:10"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 1:11"
+          ]
+        },
+        {
+          "verse": 17,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 1:17"
+          ]
+        },
+        {
+          "verse": 18,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 1:18"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 2:8"
+          ]
+        },
+        {
+          "verse": 38,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 2:18"
+          ]
+        },
+        {
+          "verse": 56,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 3:7"
+          ]
+        },
+        {
+          "verse": 63,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 3:14"
+          ]
+        },
+        {
+          "verse": 242,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Rev 14:13"
+          ]
+        },
+        {
+          "verse": 359,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:3"
+          ]
+        },
+        {
+          "verse": 360,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:4"
+          ]
+        },
+        {
+          "verse": 361,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:5"
+          ]
+        },
+        {
+          "verse": 362,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:6"
+          ]
+        },
+        {
+          "verse": 363,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:7"
+          ]
+        },
+        {
+          "verse": 364,
+          "subtopics": [
+            "General divine speech"
+          ],
+          "refs": [
+            "Rev 21:8"
+          ]
+        },
+        {
+          "verse": 395,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 22:12"
+          ]
+        },
+        {
+          "verse": 396,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Rev 22:13"
+          ]
+        },
+        {
+          "verse": 400,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Rev 22:17"
+          ]
+        }
+      ],
+      "NUM": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 1:1"
+          ]
+        },
+        {
+          "verse": 55,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 2:1"
+          ]
+        },
+        {
+          "verse": 93,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 3:5"
+          ]
+        },
+        {
+          "verse": 140,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 4:1"
+          ]
+        },
+        {
+          "verse": 189,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 5:1"
+          ]
+        },
+        {
+          "verse": 220,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:1"
+          ]
+        },
+        {
+          "verse": 241,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:22"
+          ]
+        },
+        {
+          "verse": 242,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:23"
+          ]
+        },
+        {
+          "verse": 243,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:24"
+          ]
+        },
+        {
+          "verse": 244,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:25"
+          ]
+        },
+        {
+          "verse": 245,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:26"
+          ]
+        },
+        {
+          "verse": 246,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 6:27"
+          ]
+        },
+        {
+          "verse": 250,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 7:4"
+          ]
+        },
+        {
+          "verse": 336,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 8:1"
+          ]
+        },
+        {
+          "verse": 362,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 9:1"
+          ]
+        },
+        {
+          "verse": 385,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 10:1"
+          ]
+        },
+        {
+          "verse": 436,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 11:16"
+          ]
+        },
+        {
+          "verse": 459,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 12:4"
+          ]
+        },
+        {
+          "verse": 472,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 13:1"
+          ]
+        },
+        {
+          "verse": 515,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 14:11"
+          ]
+        },
+        {
+          "verse": 550,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 15:1"
+          ]
+        },
+        {
+          "verse": 610,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 16:20"
+          ]
+        },
+        {
+          "verse": 641,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 17:1"
+          ]
+        },
+        {
+          "verse": 654,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 18:1"
+          ]
+        },
+        {
+          "verse": 686,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 19:1"
+          ]
+        },
+        {
+          "verse": 714,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 20:7"
+          ]
+        },
+        {
+          "verse": 744,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 21:8"
+          ]
+        },
+        {
+          "verse": 745,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Num 21:9"
+          ]
+        },
+        {
+          "verse": 803,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Num 22:32"
+          ]
+        },
+        {
+          "verse": 806,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Num 22:35"
+          ]
+        }
+      ],
+      "1CH": [
+        {
+          "verse": 700,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "1 Chr 21:18"
+          ]
+        }
+      ],
+      "ZEC": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 1:3"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [
+            "The angel of the Lord speaks"
+          ],
+          "refs": [
+            "Zech 1:12"
+          ]
+        },
+        {
+          "verse": 13,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 1:13"
+          ]
+        },
+        {
+          "verse": 14,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 1:14"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 1:15"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 1:16"
+          ]
+        },
+        {
+          "verse": 29,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:8"
+          ]
+        },
+        {
+          "verse": 30,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:9"
+          ]
+        },
+        {
+          "verse": 31,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:10"
+          ]
+        },
+        {
+          "verse": 32,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:11"
+          ]
+        },
+        {
+          "verse": 33,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:12"
+          ]
+        },
+        {
+          "verse": 34,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Zech 2:13"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 20,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 1:20"
+          ]
+        },
+        {
+          "verse": 38,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 2:13"
+          ]
+        },
+        {
+          "verse": 44,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 2:19"
+          ]
+        },
+        {
+          "verse": 65,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Matt 3:17"
+          ]
+        },
+        {
+          "verse": 293,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Matt 10:20"
+          ]
+        },
+        {
+          "verse": 561,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Matt 17:5"
+          ]
+        },
+        {
+          "verse": 1049,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:1"
+          ]
+        },
+        {
+          "verse": 1050,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:2"
+          ]
+        },
+        {
+          "verse": 1051,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:3"
+          ]
+        },
+        {
+          "verse": 1052,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:4"
+          ]
+        },
+        {
+          "verse": 1053,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:5"
+          ]
+        },
+        {
+          "verse": 1054,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:6"
+          ]
+        },
+        {
+          "verse": 1055,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:7"
+          ]
+        },
+        {
+          "verse": 1056,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Matt 28:8"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 11,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 1:11"
+          ]
+        },
+        {
+          "verse": 26,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 1:26"
+          ]
+        },
+        {
+          "verse": 89,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:9"
+          ]
+        },
+        {
+          "verse": 90,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:10"
+          ]
+        },
+        {
+          "verse": 91,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:11"
+          ]
+        },
+        {
+          "verse": 92,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:12"
+          ]
+        },
+        {
+          "verse": 93,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:13"
+          ]
+        },
+        {
+          "verse": 94,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Luke 2:14"
+          ]
+        },
+        {
+          "verse": 106,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Luke 2:26"
+          ]
+        },
+        {
+          "verse": 107,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Luke 2:27"
+          ]
+        }
+      ],
+      "EXO": [
         {
           "verse": 51,
           "subtopics": [
@@ -18887,6 +20159,15 @@
           ]
         },
         {
+          "verse": 59,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Ex 3:12"
+          ]
+        },
+        {
           "verse": 61,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -18902,15 +20183,6 @@
           ],
           "refs": [
             "Ex 3:15"
-          ]
-        },
-        {
-          "verse": 70,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Ex 4:1"
           ]
         },
         {
@@ -19028,15 +20300,6 @@
           ],
           "refs": [
             "Ex 19:6"
-          ]
-        },
-        {
-          "verse": 520,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Ex 20:1"
           ]
         },
         {
@@ -19238,42 +20501,6 @@
           ]
         },
         {
-          "verse": 632,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:20"
-          ]
-        },
-        {
-          "verse": 633,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:21"
-          ]
-        },
-        {
-          "verse": 634,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:22"
-          ]
-        },
-        {
-          "verse": 635,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:23"
-          ]
-        },
-        {
           "verse": 636,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -19307,33 +20534,6 @@
           ],
           "refs": [
             "Ex 23:27"
-          ]
-        },
-        {
-          "verse": 640,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:28"
-          ]
-        },
-        {
-          "verse": 641,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:29"
-          ]
-        },
-        {
-          "verse": 642,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 23:30"
           ]
         },
         {
@@ -19454,60 +20654,6 @@
           ]
         },
         {
-          "verse": 917,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 32:11"
-          ]
-        },
-        {
-          "verse": 918,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 32:12"
-          ]
-        },
-        {
-          "verse": 919,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 32:13"
-          ]
-        },
-        {
-          "verse": 920,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 32:14"
-          ]
-        },
-        {
-          "verse": 953,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 33:12"
-          ]
-        },
-        {
-          "verse": 954,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 33:13"
-          ]
-        },
-        {
           "verse": 955,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -19517,39 +20663,12 @@
           ]
         },
         {
-          "verse": 956,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 33:15"
-          ]
-        },
-        {
-          "verse": 957,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 33:16"
-          ]
-        },
-        {
           "verse": 958,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
             "Ex 33:17"
-          ]
-        },
-        {
-          "verse": 959,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 33:18"
           ]
         },
         {
@@ -19598,15 +20717,6 @@
           ]
         },
         {
-          "verse": 969,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 34:5"
-          ]
-        },
-        {
           "verse": 970,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -19623,39 +20733,12 @@
           "refs": [
             "Ex 34:7"
           ]
-        },
-        {
-          "verse": 972,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 34:8"
-          ]
-        },
-        {
-          "verse": 973,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ex 34:9"
-          ]
         }
       ],
       "LEV": [
         {
           "verse": 1,
           "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Lev 1:1"
-          ]
-        },
-        {
-          "verse": 1,
-          "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
@@ -19663,30 +20746,93 @@
           ]
         },
         {
-          "verse": 2,
+          "verse": 51,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Lev 1:2"
+            "Lev 4:1"
           ]
         },
         {
-          "verse": 296,
+          "verse": 105,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Lev 11:44"
+            "Lev 6:1"
           ]
         },
         {
-          "verse": 297,
+          "verse": 173,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Lev 11:45"
+            "Lev 8:1"
+          ]
+        },
+        {
+          "verse": 253,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 11:1"
+          ]
+        },
+        {
+          "verse": 300,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 12:1"
+          ]
+        },
+        {
+          "verse": 308,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 13:1"
+          ]
+        },
+        {
+          "verse": 367,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 14:1"
+          ]
+        },
+        {
+          "verse": 424,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 15:1"
+          ]
+        },
+        {
+          "verse": 457,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 16:1"
+          ]
+        },
+        {
+          "verse": 491,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 17:1"
           ]
         },
         {
@@ -19750,6 +20896,60 @@
           ],
           "refs": [
             "Lev 19:2"
+          ]
+        },
+        {
+          "verse": 574,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 20:1"
+          ]
+        },
+        {
+          "verse": 601,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 21:1"
+          ]
+        },
+        {
+          "verse": 625,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 22:1"
+          ]
+        },
+        {
+          "verse": 658,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 23:1"
+          ]
+        },
+        {
+          "verse": 702,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 24:1"
+          ]
+        },
+        {
+          "verse": 725,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Lev 25:1"
           ]
         },
         {
@@ -19868,670 +21068,18 @@
           "refs": [
             "Lev 26:13"
           ]
-        }
-      ],
-      "NUM": [
-        {
-          "verse": 1,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Num 1:1"
-          ]
-        },
-        {
-          "verse": 241,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:22"
-          ]
-        },
-        {
-          "verse": 242,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:23"
-          ]
-        },
-        {
-          "verse": 243,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:24"
-          ]
-        },
-        {
-          "verse": 244,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:25"
-          ]
-        },
-        {
-          "verse": 245,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:26"
-          ]
-        },
-        {
-          "verse": 246,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 6:27"
-          ]
-        },
-        {
-          "verse": 515,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:11"
-          ]
-        },
-        {
-          "verse": 516,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:12"
-          ]
-        },
-        {
-          "verse": 517,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:13"
-          ]
-        },
-        {
-          "verse": 518,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:14"
-          ]
-        },
-        {
-          "verse": 519,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:15"
-          ]
-        },
-        {
-          "verse": 520,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:16"
-          ]
-        },
-        {
-          "verse": 521,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:17"
-          ]
-        },
-        {
-          "verse": 522,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:18"
-          ]
-        },
-        {
-          "verse": 523,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:19"
-          ]
-        },
-        {
-          "verse": 524,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 14:20"
-          ]
-        },
-        {
-          "verse": 610,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:20"
-          ]
-        },
-        {
-          "verse": 611,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:21"
-          ]
-        },
-        {
-          "verse": 612,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:22"
-          ]
-        },
-        {
-          "verse": 613,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:23"
-          ]
-        },
-        {
-          "verse": 614,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:24"
-          ]
-        },
-        {
-          "verse": 615,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:25"
-          ]
-        },
-        {
-          "verse": 616,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:26"
-          ]
-        },
-        {
-          "verse": 617,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:27"
-          ]
-        },
-        {
-          "verse": 618,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:28"
-          ]
-        },
-        {
-          "verse": 619,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:29"
-          ]
-        },
-        {
-          "verse": 620,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:30"
-          ]
-        },
-        {
-          "verse": 621,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:31"
-          ]
-        },
-        {
-          "verse": 622,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:32"
-          ]
-        },
-        {
-          "verse": 623,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:33"
-          ]
-        },
-        {
-          "verse": 624,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:34"
-          ]
-        },
-        {
-          "verse": 625,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 16:35"
-          ]
-        },
-        {
-          "verse": 793,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Num 22:22"
-          ]
-        },
-        {
-          "verse": 793,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Num 22:22"
-          ]
-        },
-        {
-          "verse": 802,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Num 22:31"
-          ]
-        },
-        {
-          "verse": 806,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Num 22:35"
-          ]
-        },
-        {
-          "verse": 831,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Num 23:19"
-          ]
-        }
-      ],
-      "DEU": [
-        {
-          "verse": 122,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Deut 4:10"
-          ]
-        },
-        {
-          "verse": 124,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 4:12"
-          ]
-        },
-        {
-          "verse": 162,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:1"
-          ]
-        },
-        {
-          "verse": 163,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:2"
-          ]
-        },
-        {
-          "verse": 164,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:3"
-          ]
-        },
-        {
-          "verse": 165,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:4"
-          ]
-        },
-        {
-          "verse": 166,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:5"
-          ]
-        },
-        {
-          "verse": 167,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:6"
-          ]
-        },
-        {
-          "verse": 168,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:7"
-          ]
-        },
-        {
-          "verse": 169,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:8"
-          ]
-        },
-        {
-          "verse": 170,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:9"
-          ]
-        },
-        {
-          "verse": 171,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:10"
-          ]
-        },
-        {
-          "verse": 172,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:11"
-          ]
-        },
-        {
-          "verse": 173,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:12"
-          ]
-        },
-        {
-          "verse": 174,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:13"
-          ]
-        },
-        {
-          "verse": 175,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:14"
-          ]
-        },
-        {
-          "verse": 176,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:15"
-          ]
-        },
-        {
-          "verse": 177,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:16"
-          ]
-        },
-        {
-          "verse": 178,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:17"
-          ]
-        },
-        {
-          "verse": 179,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:18"
-          ]
-        },
-        {
-          "verse": 180,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:19"
-          ]
-        },
-        {
-          "verse": 181,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:20"
-          ]
-        },
-        {
-          "verse": 182,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:21"
-          ]
-        },
-        {
-          "verse": 183,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 5:22"
-          ]
-        },
-        {
-          "verse": 198,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 6:4"
-          ]
-        },
-        {
-          "verse": 199,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 6:5"
-          ]
-        },
-        {
-          "verse": 306,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 10:12"
-          ]
-        },
-        {
-          "verse": 307,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 10:13"
-          ]
-        },
-        {
-          "verse": 831,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 30:15"
-          ]
-        },
-        {
-          "verse": 832,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 30:16"
-          ]
-        },
-        {
-          "verse": 833,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 30:17"
-          ]
-        },
-        {
-          "verse": 834,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 30:18"
-          ]
-        },
-        {
-          "verse": 835,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Deut 30:19"
-          ]
         },
         {
-          "verse": 836,
+          "verse": 826,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Deut 30:20"
+            "Lev 27:1"
           ]
         }
       ],
       "JOS": [
-        {
-          "verse": 1,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Josh 1:1"
-          ]
-        },
         {
           "verse": 1,
           "subtopics": [
@@ -20612,254 +21160,99 @@
           "refs": [
             "Josh 1:9"
           ]
-        }
-      ],
-      "JDG": [
-        {
-          "verse": 37,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 2:1"
-          ]
         },
         {
-          "verse": 37,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 2:1"
-          ]
-        },
-        {
-          "verse": 156,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 6:11"
-          ]
-        },
-        {
-          "verse": 156,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 6:11"
-          ]
-        },
-        {
-          "verse": 157,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 6:12"
-          ]
-        },
-        {
-          "verse": 159,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Judg 6:14"
-          ]
-        },
-        {
-          "verse": 159,
+          "verse": 49,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:14"
+            "Josh 3:7"
           ]
         },
         {
-          "verse": 160,
+          "verse": 60,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:15"
+            "Josh 4:1"
           ]
         },
         {
-          "verse": 161,
+          "verse": 85,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:16"
+            "Josh 5:2"
           ]
         },
         {
-          "verse": 165,
+          "verse": 100,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:20"
+            "Josh 6:2"
           ]
         },
         {
-          "verse": 165,
+          "verse": 135,
           "subtopics": [
-            "An angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:20"
+            "Josh 7:10"
           ]
         },
         {
-          "verse": 166,
+          "verse": 152,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:21"
+            "Josh 8:1"
           ]
         },
         {
-          "verse": 167,
+          "verse": 221,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 6:22"
+            "Josh 10:8"
           ]
         },
         {
-          "verse": 378,
+          "verse": 262,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 13:3"
+            "Josh 11:6"
           ]
         },
         {
-          "verse": 378,
+          "verse": 304,
           "subtopics": [
-            "An angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 13:3"
+            "Josh 13:1"
           ]
         },
         {
-          "verse": 384,
+          "verse": 522,
           "subtopics": [
-            "The angel of the Lord speaks"
+            "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Judg 13:9"
-          ]
-        },
-        {
-          "verse": 384,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:9"
-          ]
-        },
-        {
-          "verse": 388,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:13"
-          ]
-        },
-        {
-          "verse": 390,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:15"
-          ]
-        },
-        {
-          "verse": 390,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:15"
-          ]
-        },
-        {
-          "verse": 391,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:16"
-          ]
-        },
-        {
-          "verse": 393,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:18"
-          ]
-        },
-        {
-          "verse": 393,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:18"
-          ]
-        },
-        {
-          "verse": 395,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:20"
-          ]
-        },
-        {
-          "verse": 396,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:21"
-          ]
-        },
-        {
-          "verse": 397,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Judg 13:22"
+            "Josh 20:1"
           ]
         }
       ],
       "1SA": [
-        {
-          "verse": 68,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "1 Sam 3:4"
-          ]
-        },
         {
           "verse": 74,
           "subtopics": [
@@ -20907,15 +21300,6 @@
         }
       ],
       "2SA": [
-        {
-          "verse": 162,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "2 Sam 7:4"
-          ]
-        },
         {
           "verse": 162,
           "subtopics": [
@@ -21034,27 +21418,9 @@
           ]
         },
         {
-          "verse": 175,
+          "verse": 686,
           "subtopics": [
             "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "2 Sam 7:17"
-          ]
-        },
-        {
-          "verse": 686,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "2 Sam 24:16"
-          ]
-        },
-        {
-          "verse": 686,
-          "subtopics": [
-            "An angel of the Lord speaks"
           ],
           "refs": [
             "2 Sam 24:16"
@@ -21155,15 +21521,6 @@
         {
           "verse": 679,
           "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "1 Kgs 19:9"
-          ]
-        },
-        {
-          "verse": 679,
-          "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
@@ -21252,38 +21609,7 @@
           ]
         }
       ],
-      "JOB": [
-        {
-          "verse": 925,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Job 38:1"
-          ]
-        }
-      ],
-      "PSA": [
-        {
-          "verse": 745,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Ps 50:16"
-          ]
-        }
-      ],
       "ISA": [
-        {
-          "verse": 2,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Isa 1:2"
-          ]
-        },
         {
           "verse": 2,
           "subtopics": [
@@ -21330,93 +21656,12 @@
           ]
         },
         {
-          "verse": 126,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 6:11"
-          ]
-        },
-        {
-          "verse": 127,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 6:12"
-          ]
-        },
-        {
-          "verse": 128,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 6:13"
-          ]
-        },
-        {
           "verse": 852,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
             "Isa 43:1"
-          ]
-        },
-        {
-          "verse": 853,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:2"
-          ]
-        },
-        {
-          "verse": 854,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:3"
-          ]
-        },
-        {
-          "verse": 855,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:4"
-          ]
-        },
-        {
-          "verse": 856,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:5"
-          ]
-        },
-        {
-          "verse": 857,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:6"
-          ]
-        },
-        {
-          "verse": 858,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Isa 43:7"
           ]
         },
         {
@@ -21431,7 +21676,8 @@
         {
           "verse": 908,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:1"
@@ -21440,7 +21686,8 @@
         {
           "verse": 909,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:2"
@@ -21449,7 +21696,8 @@
         {
           "verse": 910,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:3"
@@ -21458,7 +21706,8 @@
         {
           "verse": 911,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:4"
@@ -21467,7 +21716,8 @@
         {
           "verse": 912,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:5"
@@ -21476,7 +21726,8 @@
         {
           "verse": 913,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:6"
@@ -21485,7 +21736,8 @@
         {
           "verse": 914,
           "subtopics": [
-            "Yahweh speaks directly (salient)"
+            "Yahweh speaks directly (salient)",
+            "700 BC"
           ],
           "refs": [
             "Isa 45:7"
@@ -21535,18 +21787,18 @@
           "refs": [
             "Isa 48:16"
           ]
+        },
+        {
+          "verse": 977,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Isa 48:17"
+          ]
         }
       ],
       "JER": [
-        {
-          "verse": 4,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Jer 1:4"
-          ]
-        },
         {
           "verse": 4,
           "subtopics": [
@@ -21608,6 +21860,51 @@
           ],
           "refs": [
             "Jer 1:10"
+          ]
+        },
+        {
+          "verse": 20,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Jer 2:1"
+          ]
+        },
+        {
+          "verse": 21,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Jer 2:2"
+          ]
+        },
+        {
+          "verse": 22,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Jer 2:3"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Jer 2:4"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Jer 2:5"
           ]
         },
         {
@@ -21710,42 +22007,6 @@
           ]
         },
         {
-          "verse": 185,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Jer 7:12"
-          ]
-        },
-        {
-          "verse": 186,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Jer 7:13"
-          ]
-        },
-        {
-          "verse": 187,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Jer 7:14"
-          ]
-        },
-        {
-          "verse": 188,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Jer 7:15"
-          ]
-        },
-        {
           "verse": 776,
           "subtopics": [
             "Yahweh speaks directly (salient)"
@@ -21782,236 +22043,14 @@
           ]
         }
       ],
-      "EZK": [
-        {
-          "verse": 3,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Ezek 1:3"
-          ]
-        },
-        {
-          "verse": 28,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 1:28"
-          ]
-        },
-        {
-          "verse": 29,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 2:1"
-          ]
-        },
-        {
-          "verse": 30,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 2:2"
-          ]
-        },
-        {
-          "verse": 196,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Ezek 11:5"
-          ]
-        },
-        {
-          "verse": 917,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:22"
-          ]
-        },
-        {
-          "verse": 918,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:23"
-          ]
-        },
-        {
-          "verse": 919,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:24"
-          ]
-        },
-        {
-          "verse": 920,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:25"
-          ]
-        },
-        {
-          "verse": 921,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:26"
-          ]
-        },
-        {
-          "verse": 922,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:27"
-          ]
-        },
-        {
-          "verse": 923,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 36:28"
-          ]
-        },
-        {
-          "verse": 959,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 37:26"
-          ]
-        },
-        {
-          "verse": 960,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 37:27"
-          ]
-        },
-        {
-          "verse": 961,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Ezek 37:28"
-          ]
-        }
-      ],
-      "HOS": [
-        {
-          "verse": 2,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Hos 1:2"
-          ]
-        },
-        {
-          "verse": 2,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Hos 1:2"
-          ]
-        }
-      ],
       "JOL": [
         {
-          "verse": 48,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Joel 2:28"
-          ]
-        },
-        {
-          "verse": 48,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Joel 2:28"
-          ]
-        },
-        {
-          "verse": 49,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Joel 2:29"
-          ]
-        },
-        {
-          "verse": 50,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Joel 2:30"
-          ]
-        },
-        {
-          "verse": 51,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Joel 2:31"
-          ]
-        },
-        {
-          "verse": 52,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Joel 2:32"
-          ]
-        }
-      ],
-      "AMO": [
-        {
-          "verse": 32,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Amos 3:1"
-          ]
-        },
-        {
           "verse": 32,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:1"
+            "Joel 2:12"
           ]
         },
         {
@@ -22020,1035 +22059,83 @@
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:2"
+            "Joel 2:13"
           ]
         },
         {
-          "verse": 34,
+          "verse": 48,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:3"
+            "Joel 2:28"
           ]
-        },
+        }
+      ],
+      "AMO": [
         {
-          "verse": 35,
+          "verse": 144,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:4"
+            "Amos 9:13"
           ]
         },
         {
-          "verse": 36,
+          "verse": 145,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:5"
+            "Amos 9:14"
           ]
         },
         {
-          "verse": 37,
+          "verse": 146,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Amos 3:6"
-          ]
-        },
-        {
-          "verse": 38,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Amos 3:7"
-          ]
-        },
-        {
-          "verse": 39,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Amos 3:8"
+            "Amos 9:15"
           ]
         }
       ],
       "MIC": [
         {
-          "verse": 70,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Mic 6:1"
-          ]
-        },
-        {
-          "verse": 70,
+          "verse": 1,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Mic 6:1"
+            "Mic 1:1"
           ]
         },
         {
-          "verse": 71,
+          "verse": 2,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Mic 6:2"
+            "Mic 1:2"
           ]
         },
-        {
-          "verse": 72,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:3"
-          ]
-        },
-        {
-          "verse": 73,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:4"
-          ]
-        },
-        {
-          "verse": 74,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:5"
-          ]
-        },
-        {
-          "verse": 75,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:6"
-          ]
-        },
-        {
-          "verse": 76,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:7"
-          ]
-        },
-        {
-          "verse": 77,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Mic 6:8"
-          ]
-        }
-      ],
-      "MAT": [
-        {
-          "verse": 20,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Matt 1:20"
-          ]
-        },
-        {
-          "verse": 38,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Matt 2:13"
-          ]
-        },
-        {
-          "verse": 44,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Matt 2:19"
-          ]
-        },
-        {
-          "verse": 65,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Matt 3:17"
-          ]
-        },
-        {
-          "verse": 65,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Matt 3:17"
-          ]
-        },
-        {
-          "verse": 76,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Matt 4:11"
-          ]
-        },
-        {
-          "verse": 293,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Matt 10:20"
-          ]
-        },
-        {
-          "verse": 561,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Matt 17:5"
-          ]
-        },
-        {
-          "verse": 561,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Matt 17:5"
-          ]
-        },
-        {
-          "verse": 1050,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Matt 28:2"
-          ]
-        }
-      ],
-      "JHN": [
-        {
-          "verse": 563,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "John 12:28"
-          ]
-        },
-        {
-          "verse": 563,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "John 12:28"
-          ]
-        }
-      ],
-      "ACT": [
-        {
-          "verse": 155,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 5:19"
-          ]
-        },
-        {
-          "verse": 279,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 8:26"
-          ]
-        },
-        {
-          "verse": 282,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 8:29"
-          ]
-        },
-        {
-          "verse": 282,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 8:29"
-          ]
-        },
-        {
-          "verse": 296,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 9:4"
-          ]
-        },
-        {
-          "verse": 296,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Acts 9:4"
-          ]
-        },
-        {
-          "verse": 297,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Acts 9:5"
-          ]
-        },
-        {
-          "verse": 338,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:3"
-          ]
-        },
-        {
-          "verse": 342,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:7"
-          ]
-        },
-        {
-          "verse": 354,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 10:19"
-          ]
-        },
-        {
-          "verse": 354,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 10:19"
-          ]
-        },
-        {
-          "verse": 395,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 11:12"
-          ]
-        },
-        {
-          "verse": 395,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 11:12"
-          ]
-        },
-        {
-          "verse": 396,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 11:13"
-          ]
-        },
-        {
-          "verse": 420,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 12:7"
-          ]
-        },
-        {
-          "verse": 436,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 12:23"
-          ]
-        },
-        {
-          "verse": 440,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 13:2"
-          ]
-        },
-        {
-          "verse": 440,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 13:2"
-          ]
-        },
-        {
-          "verse": 546,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 15:28"
-          ]
-        },
-        {
-          "verse": 564,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 16:6"
-          ]
-        },
-        {
-          "verse": 565,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 16:7"
-          ]
-        },
-        {
-          "verse": 724,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 20:23"
-          ]
-        },
-        {
-          "verse": 724,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 20:23"
-          ]
-        },
-        {
-          "verse": 743,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 21:4"
-          ]
-        },
-        {
-          "verse": 750,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 21:11"
-          ]
-        },
-        {
-          "verse": 786,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 22:7"
-          ]
-        },
-        {
-          "verse": 786,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Acts 22:7"
-          ]
-        },
-        {
-          "verse": 787,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Acts 22:8"
-          ]
-        },
-        {
-          "verse": 952,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 27:23"
-          ]
-        }
-      ],
-      "REV": [
-        {
-          "verse": 8,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Rev 1:8"
-          ]
-        },
-        {
-          "verse": 10,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Rev 1:10"
-          ]
-        },
-        {
-          "verse": 27,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 2:7"
-          ]
-        },
-        {
-          "verse": 31,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 2:11"
-          ]
-        },
-        {
-          "verse": 37,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 2:17"
-          ]
-        },
-        {
-          "verse": 49,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 2:29"
-          ]
-        },
-        {
-          "verse": 55,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 3:6"
-          ]
-        },
-        {
-          "verse": 62,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 3:13"
-          ]
-        },
-        {
-          "verse": 71,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 3:22"
-          ]
-        },
-        {
-          "verse": 84,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 5:2"
-          ]
-        },
-        {
-          "verse": 114,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 7:1"
-          ]
-        },
-        {
-          "verse": 132,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 8:2"
-          ]
-        },
-        {
-          "verse": 165,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 10:1"
-          ]
-        },
-        {
-          "verse": 235,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 14:6"
-          ]
-        },
-        {
-          "verse": 242,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 14:13"
-          ]
-        },
-        {
-          "verse": 297,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 18:1"
-          ]
-        },
-        {
-          "verse": 329,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 19:9"
-          ]
-        },
-        {
-          "verse": 359,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Rev 21:3"
-          ]
-        },
-        {
-          "verse": 359,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Rev 21:3"
-          ]
-        },
-        {
-          "verse": 365,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Rev 21:9"
-          ]
-        },
-        {
-          "verse": 395,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Rev 22:12"
-          ]
-        },
-        {
-          "verse": 396,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Rev 22:13"
-          ]
-        },
-        {
-          "verse": 400,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Rev 22:17"
-          ]
-        }
-      ],
-      "1CH": [
-        {
-          "verse": 700,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "1 Chr 21:18"
-          ]
-        },
-        {
-          "verse": 700,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "1 Chr 21:18"
-          ]
-        }
-      ],
-      "ZEC": [
         {
           "verse": 3,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Zech 1:3"
+            "Mic 1:3"
           ]
         },
         {
-          "verse": 9,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 1:9"
-          ]
-        },
-        {
-          "verse": 12,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 1:12"
-          ]
-        },
-        {
-          "verse": 14,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 1:14"
-          ]
-        },
-        {
-          "verse": 24,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 2:3"
-          ]
-        },
-        {
-          "verse": 29,
+          "verse": 4,
           "subtopics": [
             "Yahweh speaks directly (salient)"
           ],
           "refs": [
-            "Zech 2:8"
-          ]
-        },
-        {
-          "verse": 30,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Zech 2:9"
-          ]
-        },
-        {
-          "verse": 31,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Zech 2:10"
-          ]
-        },
-        {
-          "verse": 32,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "Zech 2:11"
-          ]
-        },
-        {
-          "verse": 35,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 3:1"
-          ]
-        },
-        {
-          "verse": 35,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 3:1"
-          ]
-        },
-        {
-          "verse": 38,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 3:4"
-          ]
-        },
-        {
-          "verse": 45,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 4:1"
-          ]
-        },
-        {
-          "verse": 45,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 4:1"
-          ]
-        },
-        {
-          "verse": 73,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 6:4"
-          ]
-        },
-        {
-          "verse": 73,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 6:4"
-          ]
-        },
-        {
-          "verse": 130,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 9:9"
-          ]
-        },
-        {
-          "verse": 175,
-          "subtopics": [
-            "The angel of the Lord speaks"
-          ],
-          "refs": [
-            "Zech 12:8"
-          ]
-        }
-      ],
-      "2KI": [
-        {
-          "verse": 19,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "2 Kgs 2:1"
-          ]
-        },
-        {
-          "verse": 20,
-          "subtopics": [
-            "Yahweh speaks directly (salient)"
-          ],
-          "refs": [
-            "2 Kgs 2:2"
-          ]
-        },
-        {
-          "verse": 563,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "2 Kgs 19:35"
-          ]
-        }
-      ],
-      "2CH": [
-        {
-          "verse": 702,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "2 Chr 32:21"
-          ]
-        }
-      ],
-      "LUK": [
-        {
-          "verse": 11,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 1:11"
-          ]
-        },
-        {
-          "verse": 26,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 1:26"
-          ]
-        },
-        {
-          "verse": 89,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 2:9"
-          ]
-        },
-        {
-          "verse": 93,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 2:13"
-          ]
-        },
-        {
-          "verse": 95,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 2:15"
-          ]
-        },
-        {
-          "verse": 106,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Luke 2:26"
-          ]
-        },
-        {
-          "verse": 107,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Luke 2:27"
-          ]
-        },
-        {
-          "verse": 108,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 2:28"
-          ]
-        },
-        {
-          "verse": 1013,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Luke 22:43"
+            "Mic 1:4"
           ]
         }
       ],
@@ -23060,6 +22147,26 @@
           ],
           "refs": [
             "Mal 1:6"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "Mal 1:11"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 563,
+          "subtopics": [
+            "Yahweh speaks directly (salient)"
+          ],
+          "refs": [
+            "John 12:28"
           ]
         }
       ],
@@ -23094,6 +22201,15 @@
           "refs": [
             "1 Tim 4:1"
           ]
+        },
+        {
+          "verse": 53,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "1 Tim 4:2"
+          ]
         }
       ],
       "HEB": [
@@ -23105,6 +22221,42 @@
           "refs": [
             "Heb 3:7"
           ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Heb 3:8"
+          ]
+        },
+        {
+          "verse": 41,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Heb 3:9"
+          ]
+        },
+        {
+          "verse": 42,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Heb 3:10"
+          ]
+        },
+        {
+          "verse": 43,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Heb 3:11"
+          ]
         }
       ]
     },
@@ -23113,8 +22265,6 @@
       "1KI",
       "1SA",
       "1TI",
-      "2CH",
-      "2KI",
       "2SA",
       "ACT",
       "AMO",
