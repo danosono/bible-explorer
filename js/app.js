@@ -4189,6 +4189,39 @@ const boot = async () => {
     if (e.key === "Escape") hideSubtopicSuggestions();
   });
 
+  // Verses state (state 4): ArrowUp/ArrowDown and PageUp/PageDown scroll
+  // #verses-list directly. The list is its own scroll container (see
+  // .verses-list in css/style.css), and the page itself does not scroll on
+  // desktop, so native arrow-key scrolling has nothing to act on unless an
+  // element inside the list happens to be focused - and after dragging the
+  // state slider, focus is on the slider, where Up/Down change the state
+  // instead. Left/Right are left alone so the slider still moves by keyboard.
+  // Typing fields, selects, open modals and the mobile layout (where the
+  // list is not a scroller and the page scrolls natively) all fall through.
+  const VERSES_KEY_SCROLL_STEP = 64;
+  document.addEventListener("keydown", (e) => {
+    if (getCurrentState() !== 4) return;
+    if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey) return;
+    const isArrow = e.key === "ArrowDown" || e.key === "ArrowUp";
+    const isPage = e.key === "PageDown" || e.key === "PageUp";
+    if (!isArrow && !isPage) return;
+    const target = e.target;
+    if (target instanceof Element) {
+      const tag = target.tagName;
+      if (target.isContentEditable || tag === "TEXTAREA" || tag === "SELECT") return;
+      if (tag === "INPUT" && target !== stateSlider) return;
+    }
+    if (document.querySelector(".verse-modal-overlay")) return;
+    const listEl = document.getElementById("verses-list");
+    if (!listEl || listEl.scrollHeight <= listEl.clientHeight + 1) return;
+    const overflowY = getComputedStyle(listEl).overflowY;
+    if (overflowY !== "auto" && overflowY !== "scroll") return;
+    e.preventDefault();
+    const direction = e.key === "ArrowDown" || e.key === "PageDown" ? 1 : -1;
+    const step = isPage ? Math.max(listEl.clientHeight - 48, 48) : VERSES_KEY_SCROLL_STEP;
+    listEl.scrollBy({ top: direction * step, behavior: e.repeat ? "auto" : "smooth" });
+  });
+
   if (topicRandomBtn) {
     topicRandomBtn.addEventListener("click", () => {
       const randomTopic = pickRandomTopic();

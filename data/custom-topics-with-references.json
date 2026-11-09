@@ -514,10 +514,24 @@
           ]
         },
         {
+          "verse": 381,
+          "subtopics": [],
+          "refs": [
+            "Rom 15:8"
+          ]
+        },
+        {
           "verse": 382,
           "subtopics": [
             "Promise to Abraham"
           ],
+          "refs": [
+            "Rom 15:9"
+          ]
+        },
+        {
+          "verse": 382,
+          "subtopics": [],
           "refs": [
             "Rom 15:9"
           ]
@@ -532,6 +546,13 @@
           ]
         },
         {
+          "verse": 383,
+          "subtopics": [],
+          "refs": [
+            "Rom 15:10"
+          ]
+        },
+        {
           "verse": 384,
           "subtopics": [
             "Promise to Abraham"
@@ -541,10 +562,24 @@
           ]
         },
         {
+          "verse": 384,
+          "subtopics": [],
+          "refs": [
+            "Rom 15:11"
+          ]
+        },
+        {
           "verse": 385,
           "subtopics": [
             "Promise to Abraham"
           ],
+          "refs": [
+            "Rom 15:12"
+          ]
+        },
+        {
+          "verse": 385,
+          "subtopics": [],
           "refs": [
             "Rom 15:12"
           ]
@@ -4505,6 +4540,16 @@
           "refs": [
             "Rom 10:13"
           ]
+        },
+        {
+          "verse": 361,
+          "subtopics": [
+            "every knee will bow",
+            "every knee will bow to God"
+          ],
+          "refs": [
+            "Rom 14:11"
+          ]
         }
       ],
       "COL": [
@@ -4761,30 +4806,6 @@
           ]
         }
       ],
-      "JOL": [
-        {
-          "verse": 52,
-          "subtopics": [
-            "calls on the name of the Lord",
-            "whoever calls on the name of the LORD (YHWH) will be saved"
-          ],
-          "refs": [
-            "Joel 2:32"
-          ]
-        }
-      ],
-      "MIC": [
-        {
-          "verse": 56,
-          "subtopics": [
-            "came from heaven",
-            "origins ... from the days of eternity"
-          ],
-          "refs": [
-            "Mic 5:2"
-          ]
-        }
-      ],
       "REV": [
         {
           "verse": 8,
@@ -4804,6 +4825,26 @@
           ],
           "refs": [
             "Rev 1:17"
+          ]
+        },
+        {
+          "verse": 94,
+          "subtopics": [
+            "every knee will bow",
+            "every creature (everywhere) worships the Lamb"
+          ],
+          "refs": [
+            "Rev 5:12"
+          ]
+        },
+        {
+          "verse": 95,
+          "subtopics": [
+            "every knee will bow",
+            "every creature (everywhere) worships the Lamb"
+          ],
+          "refs": [
+            "Rev 5:13"
           ]
         },
         {
@@ -4834,6 +4875,30 @@
           ],
           "refs": [
             "Rev 22:13"
+          ]
+        }
+      ],
+      "JOL": [
+        {
+          "verse": 52,
+          "subtopics": [
+            "calls on the name of the Lord",
+            "whoever calls on the name of the LORD (YHWH) will be saved"
+          ],
+          "refs": [
+            "Joel 2:32"
+          ]
+        }
+      ],
+      "MIC": [
+        {
+          "verse": 56,
+          "subtopics": [
+            "came from heaven",
+            "origins ... from the days of eternity"
+          ],
+          "refs": [
+            "Mic 5:2"
           ]
         }
       ],
@@ -5261,6 +5326,20 @@
           "subtopics": [],
           "refs": [
             "John 10:16"
+          ]
+        },
+        {
+          "verse": 567,
+          "subtopics": [],
+          "refs": [
+            "John 12:32"
+          ]
+        },
+        {
+          "verse": 568,
+          "subtopics": [],
+          "refs": [
+            "John 12:33"
           ]
         }
       ],
@@ -15604,48 +15683,1009 @@
   "Types of Christ / Jesus in the Old Testament": {
     "name": "Types of Christ / Jesus in the Old Testament",
     "references": {
-      "ROM": [
-        {
-          "verse": 82,
-          "subtopics": [],
-          "refs": [
-            "Rom 3:21"
-          ]
-        },
-        {
-          "verse": 83,
-          "subtopics": [],
-          "refs": [
-            "Rom 3:22"
-          ]
-        }
-      ],
       "LUK": [
         {
           "verse": 1121,
-          "subtopics": [],
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
           "refs": [
             "Luke 24:25"
           ]
         },
         {
           "verse": 1122,
-          "subtopics": [],
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
           "refs": [
             "Luke 24:26"
           ]
         },
         {
           "verse": 1123,
-          "subtopics": [],
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
           "refs": [
             "Luke 24:27"
+          ]
+        },
+        {
+          "verse": 1141,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Luke 24:45"
+          ]
+        },
+        {
+          "verse": 1142,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Luke 24:46"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 204,
+          "subtopics": [
+            "the mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "John 5:39"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 600,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Acts 17:2"
+          ]
+        },
+        {
+          "verse": 601,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Acts 17:3"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 82,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Rom 3:21"
+          ]
+        },
+        {
+          "verse": 83,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Rom 3:22"
+          ]
+        },
+        {
+          "verse": 430,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Rom 16:25"
+          ]
+        },
+        {
+          "verse": 431,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "Rom 16:26"
+          ]
+        }
+      ],
+      "1CO": [
+        {
+          "verse": 358,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "1 Cor 15:3"
+          ]
+        },
+        {
+          "verse": 359,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "1 Cor 15:4"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 10,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "1 Pet 1:10"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "1 Pet 1:11"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [
+            "The mystery of Christ revealed according to the Scriptures"
+          ],
+          "refs": [
+            "1 Pet 1:12"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Innocent"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Silent"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Trusted God"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Suffered for the sins of others"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Righteous"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "Shepherd"
+          ],
+          "refs": [
+            "1 Pet 2:21"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Innocent"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Silent"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Trusted God"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Suffered for the sins of others"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Righteous"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "Shepherd"
+          ],
+          "refs": [
+            "1 Pet 2:22"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Innocent"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Silent"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Trusted God"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Suffered for the sins of others"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Righteous"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "Shepherd"
+          ],
+          "refs": [
+            "1 Pet 2:23"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Innocent"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Silent"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Trusted God"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Suffered for the sins of others"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Righteous"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 49,
+          "subtopics": [
+            "Shepherd"
+          ],
+          "refs": [
+            "1 Pet 2:24"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Innocent"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Silent"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Trusted God"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Suffered for the sins of others"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Righteous"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [
+            "Shepherd"
+          ],
+          "refs": [
+            "1 Pet 2:25"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 983,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:1"
+          ]
+        },
+        {
+          "verse": 984,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:2"
+          ]
+        },
+        {
+          "verse": 985,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:3"
+          ]
+        },
+        {
+          "verse": 986,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:4"
+          ]
+        },
+        {
+          "verse": 987,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:5"
+          ]
+        },
+        {
+          "verse": 988,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:6"
+          ]
+        },
+        {
+          "verse": 989,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 49:7"
+          ]
+        },
+        {
+          "verse": 1055,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 52:13"
+          ]
+        },
+        {
+          "verse": 1056,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 52:14"
+          ]
+        },
+        {
+          "verse": 1057,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 52:15"
+          ]
+        },
+        {
+          "verse": 1058,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:1"
+          ]
+        },
+        {
+          "verse": 1059,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:2"
+          ]
+        },
+        {
+          "verse": 1060,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:3"
+          ]
+        },
+        {
+          "verse": 1061,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:4"
+          ]
+        },
+        {
+          "verse": 1062,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:5"
+          ]
+        },
+        {
+          "verse": 1063,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:6"
+          ]
+        },
+        {
+          "verse": 1064,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:7"
+          ]
+        },
+        {
+          "verse": 1065,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:8"
+          ]
+        },
+        {
+          "verse": 1066,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:9"
+          ]
+        },
+        {
+          "verse": 1067,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:10"
+          ]
+        },
+        {
+          "verse": 1068,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:11"
+          ]
+        },
+        {
+          "verse": 1069,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Isa 53:12"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 35,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:5"
+          ]
+        },
+        {
+          "verse": 36,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:6"
+          ]
+        },
+        {
+          "verse": 37,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:7"
+          ]
+        },
+        {
+          "verse": 38,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:8"
+          ]
+        },
+        {
+          "verse": 39,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:9"
+          ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:10"
+          ]
+        },
+        {
+          "verse": 41,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Phil 2:11"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 23,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Heb 2:9"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 266,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:1"
+          ]
+        },
+        {
+          "verse": 267,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:2"
+          ]
+        },
+        {
+          "verse": 268,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:3"
+          ]
+        },
+        {
+          "verse": 269,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:4"
+          ]
+        },
+        {
+          "verse": 270,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:5"
+          ]
+        },
+        {
+          "verse": 271,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:6"
+          ]
+        },
+        {
+          "verse": 272,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:7"
+          ]
+        },
+        {
+          "verse": 273,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:8"
+          ]
+        },
+        {
+          "verse": 274,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:9"
+          ]
+        },
+        {
+          "verse": 275,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:10"
+          ]
+        },
+        {
+          "verse": 276,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:11"
+          ]
+        },
+        {
+          "verse": 277,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:12"
+          ]
+        },
+        {
+          "verse": 278,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:13"
+          ]
+        },
+        {
+          "verse": 279,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:14"
+          ]
+        },
+        {
+          "verse": 280,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:15"
+          ]
+        },
+        {
+          "verse": 281,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:16"
+          ]
+        },
+        {
+          "verse": 282,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:17"
+          ]
+        },
+        {
+          "verse": 283,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:18"
+          ]
+        },
+        {
+          "verse": 284,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:19"
+          ]
+        },
+        {
+          "verse": 285,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:20"
+          ]
+        },
+        {
+          "verse": 286,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:21"
+          ]
+        },
+        {
+          "verse": 287,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:22"
+          ]
+        },
+        {
+          "verse": 288,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:23"
+          ]
+        },
+        {
+          "verse": 289,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:24"
+          ]
+        },
+        {
+          "verse": 290,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:25"
+          ]
+        },
+        {
+          "verse": 291,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:26"
+          ]
+        },
+        {
+          "verse": 292,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:27"
+          ]
+        },
+        {
+          "verse": 293,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:28"
+          ]
+        },
+        {
+          "verse": 294,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:29"
+          ]
+        },
+        {
+          "verse": 295,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:30"
+          ]
+        },
+        {
+          "verse": 296,
+          "subtopics": [
+            "Exalted Suffering Servant"
+          ],
+          "refs": [
+            "Ps 22:31"
           ]
         }
       ]
     },
     "books": [
+      "1CO",
+      "1PE",
+      "ACT",
+      "HEB",
+      "ISA",
+      "JHN",
       "LUK",
+      "PHP",
+      "PSA",
       "ROM"
     ]
   },
@@ -17552,8 +18592,8 @@
       "ROM"
     ]
   },
-  "God speaks": {
-    "name": "God speaks",
+  "God speaks (not exhaustive)": {
+    "name": "God speaks (not exhaustive)",
     "references": {
       "GEN": [
         {
@@ -19072,242 +20112,6 @@
           ]
         }
       ],
-      "ACT": [
-        {
-          "verse": 155,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 5:19"
-          ]
-        },
-        {
-          "verse": 156,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 5:20"
-          ]
-        },
-        {
-          "verse": 279,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 8:26"
-          ]
-        },
-        {
-          "verse": 282,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 8:29"
-          ]
-        },
-        {
-          "verse": 296,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 9:4"
-          ]
-        },
-        {
-          "verse": 297,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 9:5"
-          ]
-        },
-        {
-          "verse": 298,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 9:6"
-          ]
-        },
-        {
-          "verse": 338,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:3"
-          ]
-        },
-        {
-          "verse": 339,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:4"
-          ]
-        },
-        {
-          "verse": 340,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:5"
-          ]
-        },
-        {
-          "verse": 341,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 10:6"
-          ]
-        },
-        {
-          "verse": 354,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 10:19"
-          ]
-        },
-        {
-          "verse": 355,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 10:20"
-          ]
-        },
-        {
-          "verse": 395,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 11:12"
-          ]
-        },
-        {
-          "verse": 420,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 12:7"
-          ]
-        },
-        {
-          "verse": 421,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 12:8"
-          ]
-        },
-        {
-          "verse": 440,
-          "subtopics": [
-            "Holy Spirit speaks directly to someone"
-          ],
-          "refs": [
-            "Acts 13:2"
-          ]
-        },
-        {
-          "verse": 724,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 20:23"
-          ]
-        },
-        {
-          "verse": 743,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 21:4"
-          ]
-        },
-        {
-          "verse": 750,
-          "subtopics": [
-            "Holy Spirit speaks"
-          ],
-          "refs": [
-            "Acts 21:11"
-          ]
-        },
-        {
-          "verse": 786,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 22:7"
-          ]
-        },
-        {
-          "verse": 787,
-          "subtopics": [
-            "General divine speech"
-          ],
-          "refs": [
-            "Acts 22:8"
-          ]
-        },
-        {
-          "verse": 952,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 27:23"
-          ]
-        },
-        {
-          "verse": 953,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 27:24"
-          ]
-        },
-        {
-          "verse": 954,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 27:25"
-          ]
-        },
-        {
-          "verse": 955,
-          "subtopics": [
-            "An angel of the Lord speaks"
-          ],
-          "refs": [
-            "Acts 27:26"
-          ]
-        }
-      ],
       "REV": [
         {
           "verse": 8,
@@ -19478,6 +20282,242 @@
           ],
           "refs": [
             "Rev 22:17"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 155,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 5:19"
+          ]
+        },
+        {
+          "verse": 156,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 5:20"
+          ]
+        },
+        {
+          "verse": 279,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 8:26"
+          ]
+        },
+        {
+          "verse": 282,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 8:29"
+          ]
+        },
+        {
+          "verse": 296,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Acts 9:4"
+          ]
+        },
+        {
+          "verse": 297,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Acts 9:5"
+          ]
+        },
+        {
+          "verse": 298,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Acts 9:6"
+          ]
+        },
+        {
+          "verse": 338,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:3"
+          ]
+        },
+        {
+          "verse": 339,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:4"
+          ]
+        },
+        {
+          "verse": 340,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:5"
+          ]
+        },
+        {
+          "verse": 341,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 10:6"
+          ]
+        },
+        {
+          "verse": 354,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 10:19"
+          ]
+        },
+        {
+          "verse": 355,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 10:20"
+          ]
+        },
+        {
+          "verse": 395,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 11:12"
+          ]
+        },
+        {
+          "verse": 420,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 12:7"
+          ]
+        },
+        {
+          "verse": 421,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 12:8"
+          ]
+        },
+        {
+          "verse": 440,
+          "subtopics": [
+            "Holy Spirit speaks directly to someone"
+          ],
+          "refs": [
+            "Acts 13:2"
+          ]
+        },
+        {
+          "verse": 724,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 20:23"
+          ]
+        },
+        {
+          "verse": 743,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 21:4"
+          ]
+        },
+        {
+          "verse": 750,
+          "subtopics": [
+            "Holy Spirit speaks"
+          ],
+          "refs": [
+            "Acts 21:11"
+          ]
+        },
+        {
+          "verse": 786,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Acts 22:7"
+          ]
+        },
+        {
+          "verse": 787,
+          "subtopics": [
+            "Jesus (salient)"
+          ],
+          "refs": [
+            "Acts 22:8"
+          ]
+        },
+        {
+          "verse": 952,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:23"
+          ]
+        },
+        {
+          "verse": 953,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:24"
+          ]
+        },
+        {
+          "verse": 954,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:25"
+          ]
+        },
+        {
+          "verse": 955,
+          "subtopics": [
+            "An angel of the Lord speaks"
+          ],
+          "refs": [
+            "Acts 27:26"
           ]
         }
       ],
@@ -22292,6 +23332,2194 @@
       "PSA",
       "REV",
       "ZEC"
+    ]
+  },
+  "God's love, mercy, compassion": {
+    "name": "God's love, mercy, compassion",
+    "references": {
+      "MAT": [
+        {
+          "verse": 96,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "Blessed are those who hunger and thirst for righteousness, for they will be filled"
+          ],
+          "refs": [
+            "Matt 5:6"
+          ]
+        },
+        {
+          "verse": 179,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Ask, and it will be given to you... how much more will your Father"
+          ],
+          "refs": [
+            "Matt 7:7"
+          ]
+        },
+        {
+          "verse": 180,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Ask, and it will be given to you... how much more will your Father"
+          ],
+          "refs": [
+            "Matt 7:8"
+          ]
+        },
+        {
+          "verse": 181,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Ask, and it will be given to you... how much more will your Father"
+          ],
+          "refs": [
+            "Matt 7:9"
+          ]
+        },
+        {
+          "verse": 182,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Ask, and it will be given to you... how much more will your Father"
+          ],
+          "refs": [
+            "Matt 7:10"
+          ]
+        },
+        {
+          "verse": 183,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Ask, and it will be given to you... how much more will your Father"
+          ],
+          "refs": [
+            "Matt 7:11"
+          ]
+        },
+        {
+          "verse": 271,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He had compassion on them, harassed and helpless like sheep without a shepherd"
+          ],
+          "refs": [
+            "Matt 9:36"
+          ]
+        },
+        {
+          "verse": 343,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come to Me, all you who are weary and burdened, and I will give you rest"
+          ],
+          "refs": [
+            "Matt 11:28"
+          ]
+        },
+        {
+          "verse": 344,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come to Me, all you who are weary and burdened, and I will give you rest"
+          ],
+          "refs": [
+            "Matt 11:29"
+          ]
+        },
+        {
+          "verse": 345,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come to Me, all you who are weary and burdened, and I will give you rest"
+          ],
+          "refs": [
+            "Matt 11:30"
+          ]
+        },
+        {
+          "verse": 467,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He had compassion on them and healed their sick"
+          ],
+          "refs": [
+            "Matt 14:14"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 468,
+          "subtopics": [
+            "God alone is my refuge",
+            "a refuge for the poor, a stronghold for the needy, a shelter from the storm"
+          ],
+          "refs": [
+            "Isa 25:4"
+          ]
+        },
+        {
+          "verse": 581,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the LORD longs to be gracious to you"
+          ],
+          "refs": [
+            "Isa 30:18"
+          ]
+        },
+        {
+          "verse": 794,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He gives power to the faint"
+          ],
+          "refs": [
+            "Isa 40:28"
+          ]
+        },
+        {
+          "verse": 795,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He gives power to the faint"
+          ],
+          "refs": [
+            "Isa 40:29"
+          ]
+        },
+        {
+          "verse": 796,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He gives power to the faint"
+          ],
+          "refs": [
+            "Isa 40:30"
+          ]
+        },
+        {
+          "verse": 797,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He gives power to the faint"
+          ],
+          "refs": [
+            "Isa 40:31"
+          ]
+        },
+        {
+          "verse": 814,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "The poor and needy seek water... I, the LORD, will answer them"
+          ],
+          "refs": [
+            "Isa 41:17"
+          ]
+        },
+        {
+          "verse": 815,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "The poor and needy seek water... I, the LORD, will answer them"
+          ],
+          "refs": [
+            "Isa 41:18"
+          ]
+        },
+        {
+          "verse": 882,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "I will pour water on the thirsty land"
+          ],
+          "refs": [
+            "Isa 44:3"
+          ]
+        },
+        {
+          "verse": 935,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "I have carried you... even to your old age I will carry you"
+          ],
+          "refs": [
+            "Isa 46:3"
+          ]
+        },
+        {
+          "verse": 936,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "I have carried you... even to your old age I will carry you"
+          ],
+          "refs": [
+            "Isa 46:4"
+          ]
+        },
+        {
+          "verse": 992,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "They will not hunger or thirst... He will guide them beside springs of water"
+          ],
+          "refs": [
+            "Isa 49:10"
+          ]
+        },
+        {
+          "verse": 997,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Can a woman forget her nursing child?... I have inscribed you on the palms of My hands"
+          ],
+          "refs": [
+            "Isa 49:15"
+          ]
+        },
+        {
+          "verse": 998,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Can a woman forget her nursing child?... I have inscribed you on the palms of My hands"
+          ],
+          "refs": [
+            "Isa 49:16"
+          ]
+        },
+        {
+          "verse": 1076,
+          "subtopics": [
+            "His love and compassion never fail",
+            "with great compassion I will bring you back"
+          ],
+          "refs": [
+            "Isa 54:7"
+          ]
+        },
+        {
+          "verse": 1077,
+          "subtopics": [
+            "His love and compassion never fail",
+            "with great compassion I will bring you back"
+          ],
+          "refs": [
+            "Isa 54:8"
+          ]
+        },
+        {
+          "verse": 1079,
+          "subtopics": [
+            "His love and compassion never fail",
+            "My loving devotion will not depart from you"
+          ],
+          "refs": [
+            "Isa 54:10"
+          ]
+        },
+        {
+          "verse": 1087,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come, all who are thirsty... listen to Me and your soul will live"
+          ],
+          "refs": [
+            "Isa 55:1"
+          ]
+        },
+        {
+          "verse": 1087,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "Come, all you who are thirsty, come to the waters... without money and without cost"
+          ],
+          "refs": [
+            "Isa 55:1"
+          ]
+        },
+        {
+          "verse": 1088,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come, all who are thirsty... listen to Me and your soul will live"
+          ],
+          "refs": [
+            "Isa 55:2"
+          ]
+        },
+        {
+          "verse": 1089,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Come, all who are thirsty... listen to Me and your soul will live"
+          ],
+          "refs": [
+            "Isa 55:3"
+          ]
+        },
+        {
+          "verse": 1190,
+          "subtopics": [
+            "His love and compassion never fail",
+            "to bind up the brokenhearted... beauty for ashes"
+          ],
+          "refs": [
+            "Isa 61:1"
+          ]
+        },
+        {
+          "verse": 1191,
+          "subtopics": [
+            "His love and compassion never fail",
+            "to bind up the brokenhearted... beauty for ashes"
+          ],
+          "refs": [
+            "Isa 61:2"
+          ]
+        },
+        {
+          "verse": 1192,
+          "subtopics": [
+            "His love and compassion never fail",
+            "to bind up the brokenhearted... beauty for ashes"
+          ],
+          "refs": [
+            "Isa 61:3"
+          ]
+        },
+        {
+          "verse": 1267,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Before they call, I will answer"
+          ],
+          "refs": [
+            "Isa 65:24"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 92,
+          "subtopics": [
+            "His love and compassion never fail",
+            "For God so loved the world"
+          ],
+          "refs": [
+            "John 3:16"
+          ]
+        },
+        {
+          "verse": 122,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "He would have given you living water"
+          ],
+          "refs": [
+            "John 4:10"
+          ]
+        },
+        {
+          "verse": 125,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "whoever drinks the water I give him will never thirst"
+          ],
+          "refs": [
+            "John 4:13"
+          ]
+        },
+        {
+          "verse": 126,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "whoever drinks the water I give him will never thirst"
+          ],
+          "refs": [
+            "John 4:14"
+          ]
+        },
+        {
+          "verse": 249,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "the one who comes to Me I will never drive away"
+          ],
+          "refs": [
+            "John 6:37"
+          ]
+        },
+        {
+          "verse": 320,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "If anyone is thirsty, let him come to Me and drink"
+          ],
+          "refs": [
+            "John 7:37"
+          ]
+        },
+        {
+          "verse": 321,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "If anyone is thirsty, let him come to Me and drink"
+          ],
+          "refs": [
+            "John 7:38"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 32,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "they have forsaken Me, the fountain of living water"
+          ],
+          "refs": [
+            "Jer 2:13"
+          ]
+        },
+        {
+          "verse": 701,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "you will call upon Me and come and pray to Me, and I will listen to you"
+          ],
+          "refs": [
+            "Jer 29:12"
+          ]
+        },
+        {
+          "verse": 702,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "you will call upon Me and come and pray to Me, and I will listen to you"
+          ],
+          "refs": [
+            "Jer 29:13"
+          ]
+        },
+        {
+          "verse": 748,
+          "subtopics": [
+            "His love and compassion never fail",
+            "I have loved you with an everlasting love"
+          ],
+          "refs": [
+            "Jer 31:3"
+          ]
+        },
+        {
+          "verse": 770,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "I will refresh the weary soul"
+          ],
+          "refs": [
+            "Jer 31:25"
+          ]
+        },
+        {
+          "verse": 840,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "voices of joy and thanksgiving restored to the land"
+          ],
+          "refs": [
+            "Jer 33:11"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 91,
+          "subtopics": [
+            "God alone is my refuge",
+            "The LORD is a refuge for the oppressed, a stronghold in times of trouble"
+          ],
+          "refs": [
+            "Ps 9:9"
+          ]
+        },
+        {
+          "verse": 154,
+          "subtopics": [
+            "God alone is my refuge",
+            "Preserve me, O God, for in You I take refuge"
+          ],
+          "refs": [
+            "Ps 16:1"
+          ]
+        },
+        {
+          "verse": 181,
+          "subtopics": [
+            "God alone is my refuge",
+            "The LORD is my rock, my fortress, and my deliverer"
+          ],
+          "refs": [
+            "Ps 18:2"
+          ]
+        },
+        {
+          "verse": 297,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He restores my soul"
+          ],
+          "refs": [
+            "Ps 23:1"
+          ]
+        },
+        {
+          "verse": 298,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He restores my soul"
+          ],
+          "refs": [
+            "Ps 23:2"
+          ]
+        },
+        {
+          "verse": 299,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "He restores my soul"
+          ],
+          "refs": [
+            "Ps 23:3"
+          ]
+        },
+        {
+          "verse": 457,
+          "subtopics": [
+            "God alone is my refuge",
+            "Taste and see that the LORD is good; blessed is the man who takes refuge in Him"
+          ],
+          "refs": [
+            "Ps 34:8"
+          ]
+        },
+        {
+          "verse": 466,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "The LORD is near to the brokenhearted"
+          ],
+          "refs": [
+            "Ps 34:17"
+          ]
+        },
+        {
+          "verse": 467,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "The LORD is near to the brokenhearted"
+          ],
+          "refs": [
+            "Ps 34:18"
+          ]
+        },
+        {
+          "verse": 504,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Your loving devotion reaches to the heavens"
+          ],
+          "refs": [
+            "Ps 36:5"
+          ]
+        },
+        {
+          "verse": 505,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Your loving devotion reaches to the heavens"
+          ],
+          "refs": [
+            "Ps 36:6"
+          ]
+        },
+        {
+          "verse": 506,
+          "subtopics": [
+            "God alone is my refuge",
+            "the children of men take refuge in the shadow of Your wings"
+          ],
+          "refs": [
+            "Ps 36:7"
+          ]
+        },
+        {
+          "verse": 560,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "my every desire is before You; my groaning is not hidden from You"
+          ],
+          "refs": [
+            "Ps 38:9"
+          ]
+        },
+        {
+          "verse": 617,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "my soul thirsts for God, the living God"
+          ],
+          "refs": [
+            "Ps 42:1"
+          ]
+        },
+        {
+          "verse": 618,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "my soul thirsts for God, the living God"
+          ],
+          "refs": [
+            "Ps 42:2"
+          ]
+        },
+        {
+          "verse": 620,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "These things come to mind as I pour out my soul"
+          ],
+          "refs": [
+            "Ps 42:4"
+          ]
+        },
+        {
+          "verse": 676,
+          "subtopics": [
+            "God alone is my refuge",
+            "God is our refuge and strength, an ever-present help in times of trouble"
+          ],
+          "refs": [
+            "Ps 46:1"
+          ]
+        },
+        {
+          "verse": 744,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Call upon Me in the day of trouble; I will deliver you"
+          ],
+          "refs": [
+            "Ps 50:15"
+          ]
+        },
+        {
+          "verse": 809,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "I call to God, and the LORD saves me... He hears my voice"
+          ],
+          "refs": [
+            "Ps 55:16"
+          ]
+        },
+        {
+          "verse": 810,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "I call to God, and the LORD saves me... He hears my voice"
+          ],
+          "refs": [
+            "Ps 55:17"
+          ]
+        },
+        {
+          "verse": 815,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Cast your burden upon the LORD and He will sustain you"
+          ],
+          "refs": [
+            "Ps 55:22"
+          ]
+        },
+        {
+          "verse": 830,
+          "subtopics": [
+            "God alone is my refuge",
+            "In the shadow of Your wings I will take shelter until the danger has passed"
+          ],
+          "refs": [
+            "Ps 57:1"
+          ]
+        },
+        {
+          "verse": 882,
+          "subtopics": [
+            "God alone is my refuge",
+            "lead me to the rock that is higher than I"
+          ],
+          "refs": [
+            "Ps 61:2"
+          ]
+        },
+        {
+          "verse": 883,
+          "subtopics": [
+            "God alone is my refuge",
+            "lead me to the rock that is higher than I"
+          ],
+          "refs": [
+            "Ps 61:3"
+          ]
+        },
+        {
+          "verse": 884,
+          "subtopics": [
+            "God alone is my refuge",
+            "lead me to the rock that is higher than I"
+          ],
+          "refs": [
+            "Ps 61:4"
+          ]
+        },
+        {
+          "verse": 889,
+          "subtopics": [
+            "God alone is my refuge",
+            "In God alone my soul finds rest... He alone is my rock and my salvation"
+          ],
+          "refs": [
+            "Ps 62:1"
+          ]
+        },
+        {
+          "verse": 890,
+          "subtopics": [
+            "God alone is my refuge",
+            "In God alone my soul finds rest... He alone is my rock and my salvation"
+          ],
+          "refs": [
+            "Ps 62:2"
+          ]
+        },
+        {
+          "verse": 893,
+          "subtopics": [
+            "God alone is my refuge",
+            "Rest in God alone, O my soul... pour out your hearts before Him"
+          ],
+          "refs": [
+            "Ps 62:5"
+          ]
+        },
+        {
+          "verse": 894,
+          "subtopics": [
+            "God alone is my refuge",
+            "Rest in God alone, O my soul... pour out your hearts before Him"
+          ],
+          "refs": [
+            "Ps 62:6"
+          ]
+        },
+        {
+          "verse": 895,
+          "subtopics": [
+            "God alone is my refuge",
+            "Rest in God alone, O my soul... pour out your hearts before Him"
+          ],
+          "refs": [
+            "Ps 62:7"
+          ]
+        },
+        {
+          "verse": 896,
+          "subtopics": [
+            "God alone is my refuge",
+            "Rest in God alone, O my soul... pour out your hearts before Him"
+          ],
+          "refs": [
+            "Ps 62:8"
+          ]
+        },
+        {
+          "verse": 896,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Pour out your hearts before Him. God is our refuge"
+          ],
+          "refs": [
+            "Ps 62:8"
+          ]
+        },
+        {
+          "verse": 901,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "my soul thirsts for You... in a dry and weary land"
+          ],
+          "refs": [
+            "Ps 63:1"
+          ]
+        },
+        {
+          "verse": 980,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Blessed be the Lord, who daily bears our burden"
+          ],
+          "refs": [
+            "Ps 68:19"
+          ]
+        },
+        {
+          "verse": 1040,
+          "subtopics": [
+            "God alone is my refuge",
+            "Be my rock of refuge, where I can always go"
+          ],
+          "refs": [
+            "Ps 71:3"
+          ]
+        },
+        {
+          "verse": 1106,
+          "subtopics": [
+            "God alone is my refuge",
+            "Whom have I in heaven but You?... God is the strength of my heart"
+          ],
+          "refs": [
+            "Ps 73:25"
+          ]
+        },
+        {
+          "verse": 1107,
+          "subtopics": [
+            "God alone is my refuge",
+            "Whom have I in heaven but You?... God is the strength of my heart"
+          ],
+          "refs": [
+            "Ps 73:26"
+          ]
+        },
+        {
+          "verse": 1109,
+          "subtopics": [
+            "God alone is my refuge",
+            "I have made the Lord GOD my refuge"
+          ],
+          "refs": [
+            "Ps 73:28"
+          ]
+        },
+        {
+          "verse": 1212,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He was compassionate... He remembered that they were but flesh"
+          ],
+          "refs": [
+            "Ps 78:38"
+          ]
+        },
+        {
+          "verse": 1213,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He was compassionate... He remembered that they were but flesh"
+          ],
+          "refs": [
+            "Ps 78:39"
+          ]
+        },
+        {
+          "verse": 1350,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "In the day of my distress I call on You, because You answer me"
+          ],
+          "refs": [
+            "Ps 86:5"
+          ]
+        },
+        {
+          "verse": 1351,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "In the day of my distress I call on You, because You answer me"
+          ],
+          "refs": [
+            "Ps 86:6"
+          ]
+        },
+        {
+          "verse": 1352,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "In the day of my distress I call on You, because You answer me"
+          ],
+          "refs": [
+            "Ps 86:7"
+          ]
+        },
+        {
+          "verse": 1360,
+          "subtopics": [
+            "His love and compassion never fail",
+            "You, O Lord, are a compassionate and gracious God"
+          ],
+          "refs": [
+            "Ps 86:15"
+          ]
+        },
+        {
+          "verse": 1457,
+          "subtopics": [
+            "God alone is my refuge",
+            "He who dwells in the shelter of the Most High"
+          ],
+          "refs": [
+            "Ps 91:1"
+          ]
+        },
+        {
+          "verse": 1458,
+          "subtopics": [
+            "God alone is my refuge",
+            "He who dwells in the shelter of the Most High"
+          ],
+          "refs": [
+            "Ps 91:2"
+          ]
+        },
+        {
+          "verse": 1460,
+          "subtopics": [
+            "God alone is my refuge",
+            "under His wings you will find refuge"
+          ],
+          "refs": [
+            "Ps 91:4"
+          ]
+        },
+        {
+          "verse": 1514,
+          "subtopics": [
+            "God alone is my refuge",
+            "the LORD has been my stronghold, and my God is my rock of refuge"
+          ],
+          "refs": [
+            "Ps 94:22"
+          ]
+        },
+        {
+          "verse": 1574,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "the LORD is good... His faithfulness continues to all generations"
+          ],
+          "refs": [
+            "Ps 100:5"
+          ]
+        },
+        {
+          "verse": 1583,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Hear my prayer, O LORD; let my cry for help come before You"
+          ],
+          "refs": [
+            "Ps 102:1"
+          ]
+        },
+        {
+          "verse": 1584,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Hear my prayer, O LORD; let my cry for help come before You"
+          ],
+          "refs": [
+            "Ps 102:2"
+          ]
+        },
+        {
+          "verse": 1618,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:8"
+          ]
+        },
+        {
+          "verse": 1619,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:9"
+          ]
+        },
+        {
+          "verse": 1620,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:10"
+          ]
+        },
+        {
+          "verse": 1621,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:11"
+          ]
+        },
+        {
+          "verse": 1622,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:12"
+          ]
+        },
+        {
+          "verse": 1623,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:13"
+          ]
+        },
+        {
+          "verse": 1624,
+          "subtopics": [
+            "His love and compassion never fail",
+            "As a father has compassion on his children, so the LORD has compassion on those who fear Him"
+          ],
+          "refs": [
+            "Ps 103:14"
+          ]
+        },
+        {
+          "verse": 1713,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 106:1"
+          ]
+        },
+        {
+          "verse": 1761,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 107:1"
+          ]
+        },
+        {
+          "verse": 1769,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "He satisfies the thirsty and fills the hungry with good things"
+          ],
+          "refs": [
+            "Ps 107:9"
+          ]
+        },
+        {
+          "verse": 1931,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 118:1"
+          ]
+        },
+        {
+          "verse": 1932,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Let Israel say"
+          ],
+          "refs": [
+            "Ps 118:2"
+          ]
+        },
+        {
+          "verse": 1933,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Let the house of Aaron say"
+          ],
+          "refs": [
+            "Ps 118:3"
+          ]
+        },
+        {
+          "verse": 1934,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Let those who fear the LORD say"
+          ],
+          "refs": [
+            "Ps 118:4"
+          ]
+        },
+        {
+          "verse": 1959,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 118:29"
+          ]
+        },
+        {
+          "verse": 2202,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Out of the depths I cry to You, O LORD"
+          ],
+          "refs": [
+            "Ps 130:1"
+          ]
+        },
+        {
+          "verse": 2203,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Out of the depths I cry to You, O LORD"
+          ],
+          "refs": [
+            "Ps 130:2"
+          ]
+        },
+        {
+          "verse": 2258,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "refrain repeated in all 26 verses"
+          ],
+          "refs": [
+            "Ps 136:1"
+          ]
+        },
+        {
+          "verse": 2259,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:2"
+          ]
+        },
+        {
+          "verse": 2260,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:3"
+          ]
+        },
+        {
+          "verse": 2261,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:4"
+          ]
+        },
+        {
+          "verse": 2262,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:5"
+          ]
+        },
+        {
+          "verse": 2263,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:6"
+          ]
+        },
+        {
+          "verse": 2264,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:7"
+          ]
+        },
+        {
+          "verse": 2265,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:8"
+          ]
+        },
+        {
+          "verse": 2266,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:9"
+          ]
+        },
+        {
+          "verse": 2267,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:10"
+          ]
+        },
+        {
+          "verse": 2268,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:11"
+          ]
+        },
+        {
+          "verse": 2269,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:12"
+          ]
+        },
+        {
+          "verse": 2270,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:13"
+          ]
+        },
+        {
+          "verse": 2271,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:14"
+          ]
+        },
+        {
+          "verse": 2272,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:15"
+          ]
+        },
+        {
+          "verse": 2273,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:16"
+          ]
+        },
+        {
+          "verse": 2274,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:17"
+          ]
+        },
+        {
+          "verse": 2275,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:18"
+          ]
+        },
+        {
+          "verse": 2276,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:19"
+          ]
+        },
+        {
+          "verse": 2277,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:20"
+          ]
+        },
+        {
+          "verse": 2278,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:21"
+          ]
+        },
+        {
+          "verse": 2279,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:22"
+          ]
+        },
+        {
+          "verse": 2280,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:23"
+          ]
+        },
+        {
+          "verse": 2281,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:24"
+          ]
+        },
+        {
+          "verse": 2282,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:25"
+          ]
+        },
+        {
+          "verse": 2283,
+          "subtopics": [
+            "His loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 136:26"
+          ]
+        },
+        {
+          "verse": 2300,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "addressed to God: Your loving devotion endures forever"
+          ],
+          "refs": [
+            "Ps 138:8"
+          ]
+        },
+        {
+          "verse": 2348,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "I pour out my complaint before Him; I reveal my trouble to Him"
+          ],
+          "refs": [
+            "Ps 142:1"
+          ]
+        },
+        {
+          "verse": 2349,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "I pour out my complaint before Him; I reveal my trouble to Him"
+          ],
+          "refs": [
+            "Ps 142:2"
+          ]
+        },
+        {
+          "verse": 2352,
+          "subtopics": [
+            "God alone is my refuge",
+            "You are my refuge, my portion in the land of the living"
+          ],
+          "refs": [
+            "Ps 142:5"
+          ]
+        },
+        {
+          "verse": 2368,
+          "subtopics": [
+            "God alone is my refuge",
+            "my fortress, my stronghold, and my deliverer"
+          ],
+          "refs": [
+            "Ps 144:2"
+          ]
+        },
+        {
+          "verse": 2389,
+          "subtopics": [
+            "His love and compassion never fail",
+            "His compassion rests on all He has made"
+          ],
+          "refs": [
+            "Ps 145:8"
+          ]
+        },
+        {
+          "verse": 2390,
+          "subtopics": [
+            "His love and compassion never fail",
+            "His compassion rests on all He has made"
+          ],
+          "refs": [
+            "Ps 145:9"
+          ]
+        },
+        {
+          "verse": 2399,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "The LORD is near to all who call on Him"
+          ],
+          "refs": [
+            "Ps 145:18"
+          ]
+        },
+        {
+          "verse": 2400,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "The LORD is near to all who call on Him"
+          ],
+          "refs": [
+            "Ps 145:19"
+          ]
+        },
+        {
+          "verse": 2415,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He heals the brokenhearted and binds up their wounds"
+          ],
+          "refs": [
+            "Ps 147:3"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 98,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "Cast all your anxiety on Him, because He cares for you"
+          ],
+          "refs": [
+            "1 Pet 5:7"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 66,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "approach the throne of grace with confidence"
+          ],
+          "refs": [
+            "Heb 4:15"
+          ]
+        },
+        {
+          "verse": 67,
+          "subtopics": [
+            "Come to Me, all who are weary",
+            "approach the throne of grace with confidence"
+          ],
+          "refs": [
+            "Heb 4:16"
+          ]
+        },
+        {
+          "verse": 99,
+          "subtopics": [
+            "God alone is my refuge",
+            "we who have fled to take hold of the hope set before us"
+          ],
+          "refs": [
+            "Heb 6:18"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 129,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "never thirst again... springs of living water... wipe away every tear"
+          ],
+          "refs": [
+            "Rev 7:16"
+          ]
+        },
+        {
+          "verse": 130,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "never thirst again... springs of living water... wipe away every tear"
+          ],
+          "refs": [
+            "Rev 7:17"
+          ]
+        },
+        {
+          "verse": 362,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "To the thirsty I will give freely from the spring of the water of life"
+          ],
+          "refs": [
+            "Rev 21:6"
+          ]
+        },
+        {
+          "verse": 400,
+          "subtopics": [
+            "Come, all who are thirsty",
+            "Let the one who is thirsty come, and the one who desires the water of life drink freely"
+          ],
+          "refs": [
+            "Rev 22:17"
+          ]
+        }
+      ],
+      "DEU": [
+        {
+          "verse": 945,
+          "subtopics": [
+            "God alone is my refuge",
+            "The eternal God is your dwelling place, and underneath are the everlasting arms"
+          ],
+          "refs": [
+            "Deut 33:27"
+          ]
+        }
+      ],
+      "PRO": [
+        {
+          "verse": 511,
+          "subtopics": [
+            "God alone is my refuge",
+            "The name of the LORD is a strong tower; the righteous run to it and are safe"
+          ],
+          "refs": [
+            "Prov 18:10"
+          ]
+        },
+        {
+          "verse": 856,
+          "subtopics": [
+            "God alone is my refuge",
+            "He is a shield to those who take refuge in Him"
+          ],
+          "refs": [
+            "Prov 30:5"
+          ]
+        }
+      ],
+      "NAM": [
+        {
+          "verse": 7,
+          "subtopics": [
+            "God alone is my refuge",
+            "The LORD is good, a stronghold in the day of distress; He cares for those who trust in Him"
+          ],
+          "refs": [
+            "Nah 1:7"
+          ]
+        }
+      ],
+      "1SA": [
+        {
+          "verse": 15,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Hannah: I have poured out my soul before the LORD"
+          ],
+          "refs": [
+            "1 Sam 1:15"
+          ]
+        }
+      ],
+      "LAM": [
+        {
+          "verse": 41,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "Pour out your heart like water in the presence of the Lord"
+          ],
+          "refs": [
+            "Lam 2:19"
+          ]
+        },
+        {
+          "verse": 66,
+          "subtopics": [
+            "His love and compassion never fail",
+            "His mercies never fail. They are new every morning"
+          ],
+          "refs": [
+            "Lam 3:22"
+          ]
+        },
+        {
+          "verse": 67,
+          "subtopics": [
+            "His love and compassion never fail",
+            "His mercies never fail. They are new every morning"
+          ],
+          "refs": [
+            "Lam 3:23"
+          ]
+        },
+        {
+          "verse": 75,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He does not afflict willingly... He will show compassion"
+          ],
+          "refs": [
+            "Lam 3:31"
+          ]
+        },
+        {
+          "verse": 76,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He does not afflict willingly... He will show compassion"
+          ],
+          "refs": [
+            "Lam 3:32"
+          ]
+        },
+        {
+          "verse": 77,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He does not afflict willingly... He will show compassion"
+          ],
+          "refs": [
+            "Lam 3:33"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 87,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "in every situation, by prayer and petition, present your requests to God"
+          ],
+          "refs": [
+            "Phil 4:6"
+          ]
+        },
+        {
+          "verse": 88,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "in every situation, by prayer and petition, present your requests to God"
+          ],
+          "refs": [
+            "Phil 4:7"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 315,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the Lord saw her, He had compassion on her: Do not weep"
+          ],
+          "refs": [
+            "Luke 7:13"
+          ]
+        },
+        {
+          "verse": 715,
+          "subtopics": [
+            "His love and compassion never fail",
+            "his father saw him and was filled with compassion; he ran"
+          ],
+          "refs": [
+            "Luke 15:20"
+          ]
+        },
+        {
+          "verse": 795,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:1"
+          ]
+        },
+        {
+          "verse": 796,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:2"
+          ]
+        },
+        {
+          "verse": 797,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:3"
+          ]
+        },
+        {
+          "verse": 798,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:4"
+          ]
+        },
+        {
+          "verse": 799,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:5"
+          ]
+        },
+        {
+          "verse": 800,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:6"
+          ]
+        },
+        {
+          "verse": 801,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:7"
+          ]
+        },
+        {
+          "verse": 802,
+          "subtopics": [
+            "Pour out your heart to Him",
+            "parable of the persistent widow: always pray and not lose heart"
+          ],
+          "refs": [
+            "Luke 18:8"
+          ]
+        }
+      ],
+      "EXO": [
+        {
+          "verse": 970,
+          "subtopics": [
+            "His love and compassion never fail",
+            "The LORD, the LORD God, is compassionate and gracious, slow to anger, abounding in loving devotion"
+          ],
+          "refs": [
+            "Ex 34:6"
+          ]
+        },
+        {
+          "verse": 971,
+          "subtopics": [
+            "His love and compassion never fail",
+            "The LORD, the LORD God, is compassionate and gracious, slow to anger, abounding in loving devotion"
+          ],
+          "refs": [
+            "Ex 34:7"
+          ]
+        }
+      ],
+      "HOS": [
+        {
+          "verse": 154,
+          "subtopics": [
+            "His love and compassion never fail",
+            "How could I give you up?... My compassion is stirred"
+          ],
+          "refs": [
+            "Hos 11:8"
+          ]
+        }
+      ],
+      "JOL": [
+        {
+          "verse": 33,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Return to the LORD... He relents from sending disaster"
+          ],
+          "refs": [
+            "Joel 2:13"
+          ]
+        }
+      ],
+      "MIC": [
+        {
+          "verse": 103,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Who is a God like You... You delight in loving devotion"
+          ],
+          "refs": [
+            "Mic 7:18"
+          ]
+        },
+        {
+          "verse": 104,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Who is a God like You... You delight in loving devotion"
+          ],
+          "refs": [
+            "Mic 7:19"
+          ]
+        }
+      ],
+      "ZEP": [
+        {
+          "verse": 50,
+          "subtopics": [
+            "His love and compassion never fail",
+            "He will rejoice over you with singing"
+          ],
+          "refs": [
+            "Zeph 3:17"
+          ]
+        }
+      ],
+      "NEH": [
+        {
+          "verse": 232,
+          "subtopics": [
+            "His love and compassion never fail",
+            "You are a forgiving God, gracious and compassionate"
+          ],
+          "refs": [
+            "Neh 9:17"
+          ]
+        }
+      ],
+      "MRK": [
+        {
+          "verse": 41,
+          "subtopics": [
+            "His love and compassion never fail",
+            "Moved with compassion, Jesus reached out His hand and touched the leper"
+          ],
+          "refs": [
+            "Mark 1:41"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 125,
+          "subtopics": [
+            "His love and compassion never fail",
+            "God proves His love for us in this: While we were still sinners, Christ died for us"
+          ],
+          "refs": [
+            "Rom 5:8"
+          ]
+        },
+        {
+          "verse": 224,
+          "subtopics": [
+            "His love and compassion never fail",
+            "nothing can separate us from the love of God"
+          ],
+          "refs": [
+            "Rom 8:38"
+          ]
+        },
+        {
+          "verse": 225,
+          "subtopics": [
+            "His love and compassion never fail",
+            "nothing can separate us from the love of God"
+          ],
+          "refs": [
+            "Rom 8:39"
+          ]
+        }
+      ],
+      "2CO": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the Father of compassion and the God of all comfort"
+          ],
+          "refs": [
+            "2 Cor 1:3"
+          ]
+        },
+        {
+          "verse": 4,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the Father of compassion and the God of all comfort"
+          ],
+          "refs": [
+            "2 Cor 1:4"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 27,
+          "subtopics": [
+            "His love and compassion never fail",
+            "because of His great love for us, God, who is rich in mercy"
+          ],
+          "refs": [
+            "Eph 2:4"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [
+            "His love and compassion never fail",
+            "because of His great love for us, God, who is rich in mercy"
+          ],
+          "refs": [
+            "Eph 2:5"
+          ]
+        }
+      ],
+      "TIT": [
+        {
+          "verse": 35,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the kindness of God our Savior and His love for mankind appeared"
+          ],
+          "refs": [
+            "Titus 3:4"
+          ]
+        },
+        {
+          "verse": 36,
+          "subtopics": [
+            "His love and compassion never fail",
+            "the kindness of God our Savior and His love for mankind appeared"
+          ],
+          "refs": [
+            "Titus 3:5"
+          ]
+        }
+      ],
+      "JAS": [
+        {
+          "verse": 99,
+          "subtopics": [
+            "His love and compassion never fail",
+            "The Lord is full of compassion and mercy"
+          ],
+          "refs": [
+            "Jas 5:11"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 72,
+          "subtopics": [
+            "His love and compassion never fail",
+            "This is love: not that we loved God, but that He loved us"
+          ],
+          "refs": [
+            "1 John 4:9"
+          ]
+        },
+        {
+          "verse": 73,
+          "subtopics": [
+            "His love and compassion never fail",
+            "This is love: not that we loved God, but that He loved us"
+          ],
+          "refs": [
+            "1 John 4:10"
+          ]
+        },
+        {
+          "verse": 79,
+          "subtopics": [
+            "His love and compassion never fail",
+            "God is love"
+          ],
+          "refs": [
+            "1 John 4:16"
+          ]
+        }
+      ],
+      "1CH": [
+        {
+          "verse": 602,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "David's psalm of thanks when the ark was brought to Jerusalem"
+          ],
+          "refs": [
+            "1 Chr 16:34"
+          ]
+        },
+        {
+          "verse": 609,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Heman and Jeduthun appointed to give thanks"
+          ],
+          "refs": [
+            "1 Chr 16:41"
+          ]
+        }
+      ],
+      "2CH": [
+        {
+          "verse": 87,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "temple dedication: singers and trumpeters as one voice, and the glory cloud filled the house"
+          ],
+          "refs": [
+            "2 Chr 5:13"
+          ]
+        },
+        {
+          "verse": 133,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "fire came down and the people bowed with their faces to the ground"
+          ],
+          "refs": [
+            "2 Chr 7:3"
+          ]
+        },
+        {
+          "verse": 136,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Levites with the instruments David had made for giving thanks"
+          ],
+          "refs": [
+            "2 Chr 7:6"
+          ]
+        },
+        {
+          "verse": 414,
+          "subtopics": [
+            "His loving devotion endures forever",
+            "Jehoshaphat's singers go out ahead of the army"
+          ],
+          "refs": [
+            "2 Chr 20:21"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1CH",
+      "1JN",
+      "1PE",
+      "1SA",
+      "2CH",
+      "2CO",
+      "DEU",
+      "EPH",
+      "EXO",
+      "HEB",
+      "HOS",
+      "ISA",
+      "JAS",
+      "JER",
+      "JHN",
+      "JOL",
+      "LAM",
+      "LUK",
+      "MAT",
+      "MIC",
+      "MRK",
+      "NAM",
+      "NEH",
+      "PHP",
+      "PRO",
+      "PSA",
+      "REV",
+      "ROM",
+      "TIT",
+      "ZEP"
     ]
   }
 }
