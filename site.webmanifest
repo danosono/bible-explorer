@@ -1,0 +1,20 @@
+{
+  "name": "Bible Explorer",
+  "short_name": "Bible Explorer",
+  "description": "Visual Bible study by topic: see every verse on a topic, person, place, prophecy, or word across all 66 books, then drill into a book, chapter, or verse list.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b0e14",
+  "lang": "en",
+  "categories": ["books", "education", "reference"],
+  "icons": [
+    {
+      "src": "images/favicon-explorer-v3.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

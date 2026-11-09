@@ -1,0 +1,54 @@
+# Bandwidth: the full Bible text and the sourced topic datasets (Nave's, BSB
+# Topics, People, Places, Prophecy, BSB Concordance - 6-25 MB each) change
+# only when a parser is fixed and the data is regenerated, but are re-fetched
+# conditionally on every new tab/page load because the default response has no
+# caching window (Cache-Control: max-age=0, must-revalidate). A one-week cache
+# lets repeat tab opens within that window skip the network entirely;
+# must-revalidate still guarantees an update is picked up within a week of
+# being deployed. data/custom-topics-with-references.json is the one dataset
+# under active editing (source/custom-topics.json), so it intentionally keeps
+# Netlify's default (always-revalidate) behavior and isn't listed here.
+[[headers]]
+  for = "/data/bible.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/books/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/chapters/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/topics-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/bsb-topics-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/bsb-concordance-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/theographic-people-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/theographic-places-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"
+
+[[headers]]
+  for = "/data/prophecy-topics-with-references.json"
+  [headers.values]
+    Cache-Control = "public, max-age=604800, must-revalidate"

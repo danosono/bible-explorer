@@ -5,22 +5,73 @@
       name="viewport"
       content="width=device-width, initial-scale=1, user-scalable=yes"
     />
-    <meta name="description" content="Bible Explorer." />
-    <meta property="og:title" content="Bible Explorer" />
-    <meta property="og:description" content="Bible Explorer." />
-    <meta property="og:type" content="website" />
+    <title>Bible Explorer</title>
+    <!-- Page metadata: describes the app for search engines, link previews
+         and the web-filter crawlers that categorize domains (see CLAUDE.md,
+         "Metadata"). Keep the wording about Bible study by topic — this
+         subdomain's own content is what gets it rated separately from
+         gospelgo.org. -->
     <meta
-      property="og:image"
-      content="https://gospelgo.org/images/Gospelgo300.png"
+      name="description"
+      content="Bible Explorer: a free online Bible study tool that maps Scripture by topic. Choose a topic, person, place, prophecy, or word and see every verse about it light up across all 66 books, then drill into a book, chapter, or verse list. Includes Nave's Topics and a full concordance. No account needed. Text: Berean Standard Bible."
     />
-    <meta property="og:url" content="https://bibleexplorer.gospelgo.org" />
+    <meta name="application-name" content="Bible Explorer" />
+    <meta name="apple-mobile-web-app-title" content="Bible Explorer" />
     <meta name="theme-color" content="#0b0e14" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta
       name="apple-mobile-web-app-status-bar-style"
       content="black-translucent"
     />
-    <title>Bible Explorer</title>
+    <link rel="canonical" href="https://bible-explorer.gospelgo.org/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Bible Explorer" />
+    <meta property="og:title" content="Bible Explorer — visual Bible study by topic" />
+    <meta
+      property="og:description"
+      content="See every verse on a topic, person, place, or prophecy light up across all 66 books, then drill into a book, chapter, or verse list."
+    />
+    <meta property="og:url" content="https://bible-explorer.gospelgo.org/" />
+    <meta property="og:image" content="https://bible-explorer.gospelgo.org/images/bible-explorer-card-1200x630.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Bible Explorer icon beside the Gospel Go wordmark" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Bible Explorer — visual Bible study by topic" />
+    <meta
+      name="twitter:description"
+      content="See every verse on a topic, person, place, or prophecy light up across all 66 books, then drill into a book, chapter, or verse list."
+    />
+    <meta name="twitter:image" content="https://bible-explorer.gospelgo.org/images/bible-explorer-card-1200x630.png" />
+    <link rel="icon" type="image/png" href="images/favicon-explorer-v3.png?v=1" />
+    <link rel="shortcut icon" type="image/png" href="images/favicon-explorer-v3.png?v=1" />
+    <link rel="apple-touch-icon" href="images/favicon-explorer-v3.png?v=1" />
+    <link rel="manifest" href="site.webmanifest" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "Bible Explorer",
+        "url": "https://bible-explorer.gospelgo.org/",
+        "description": "A free online Bible study tool that maps Scripture by topic: choose a topic, person, place, prophecy, or word and see every verse about it across all 66 books, then drill into a book, chapter, or verse list. Datasets include Nave's Topics, the BSB Topical Index, People, Places, Prophecy, and a full BSB Concordance. Bible text: Berean Standard Bible.",
+        "applicationCategory": "ReferenceApplication",
+        "operatingSystem": "Any",
+        "browserRequirements": "Requires JavaScript",
+        "isAccessibleForFree": true,
+        "inLanguage": "en",
+        "about": {
+          "@type": "Thing",
+          "name": "Bible",
+          "sameAs": "https://en.wikipedia.org/wiki/Bible"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Gospel Go",
+          "url": "https://gospelgo.org/"
+        },
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+      }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -30,7 +81,6 @@
     <link rel="stylesheet" href="css/normalize.css" />
     <link rel="stylesheet" href="css/style.css?v=16" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
-    <link rel="icon" type="image/png" href="images/favicon-explorer-v3.png?v=1" />
   </head>
   <body>
     <div id="app">

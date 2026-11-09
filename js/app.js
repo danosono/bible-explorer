@@ -1530,6 +1530,36 @@ const buildStateUrl = () => {
   return url;
 };
 
+// Tab/bookmark/history title for the current position, e.g.
+// "LOVE · Genesis 3 — Bible Explorer" (topic, then the Book/Chapter/Verses
+// context; just "Bible Explorer" on the bare Overview). Mirrors the parts
+// buildStateUrl() puts in the URL, so a bookmark or history entry reads as
+// what it opens. Called from syncHistory() - the one place every committed
+// change, history restore and deep-link boot already flows through.
+const updateDocumentTitle = () => {
+  const parts = [];
+  if (selectedTopic) {
+    parts.push(
+      selectedSubtopic && subtopicFilterInfo.enabled
+        ? `${selectedTopic}: ${selectedSubtopic}`
+        : selectedTopic
+    );
+  }
+  const stateValue = getCurrentState();
+  if (stateValue === 4) {
+    parts.push("Verses");
+  } else if (stateValue >= 2 && selectedBookId) {
+    const bookName = BOOK_NAMES[selectedBookId] || bibleData[selectedBookId]?.name || selectedBookId;
+    parts.push(
+      stateValue === 3 && selectedReadReference
+        ? `${bookName} ${selectedReadReference.chapter}`
+        : bookName
+    );
+  }
+  const context = parts.join(" · ");
+  document.title = context ? `${context} — Bible Explorer` : "Bible Explorer";
+};
+
 // push: any real user action (state/book/chapter/verse, topic, subtopic,
 // dataset) - the browser's own Back/Forward (and the Topic nav buttons,
 // which just call history.back()/forward()) retrace these.
@@ -1539,6 +1569,7 @@ const buildStateUrl = () => {
 // event.state on popstate) purely so Back/Forward can approximate "is there
 // anything to go back/forward to" - see historySeqCounter's comment above.
 const syncHistory = ({ push = false } = {}) => {
+  updateDocumentTitle();
   if (isRestoringHistory) return;
   try {
     const url = buildStateUrl();
