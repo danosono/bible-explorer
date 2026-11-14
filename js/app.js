@@ -1,3 +1,47 @@
+// Install-as-app support (same recipe as Bible Peruser's window.bpInstall).
+// Chromium (desktop + Android) fires beforeinstallprompt when the page is
+// installable and not yet installed; it can arrive before DOMContentLoaded,
+// so this must stay the first thing in the file. Safari and Firefox never
+// fire it, so canPrompt() stays false there and the About modal simply
+// doesn't offer the button. Android is left entirely to Chrome: it shows its
+// own install banner there, which works well and which preventDefault()
+// would suppress - so on Android the event is neither prevented nor kept.
+// There is deliberately no service worker: installed still means online.
+(function () {
+  let deferred = null;
+  const notify = () => document.dispatchEvent(new Event("be-install-change"));
+  window.addEventListener("beforeinstallprompt", (e) => {
+    if (/Android/i.test(navigator.userAgent)) return;
+    e.preventDefault();
+    deferred = e;
+    notify();
+  });
+  window.addEventListener("appinstalled", () => {
+    deferred = null;
+    notify();
+  });
+  window.beInstall = {
+    canPrompt: () => !!deferred,
+    // Resolves true if the user accepted. The event is single-use.
+    prompt: async () => {
+      if (!deferred) return false;
+      const evt = deferred;
+      deferred = null;
+      notify();
+      try {
+        evt.prompt();
+        const choice = await evt.userChoice;
+        return !!choice && choice.outcome === "accepted";
+      } catch (err) {
+        return false;
+      }
+    },
+    isStandalone: () =>
+      window.matchMedia("(display-mode: standalone)").matches ||
+      window.navigator.standalone === true,
+  };
+})();
+
 const treemapEl = document.getElementById("treemap");
 const stateSlider = document.querySelector(".state-slider");
 const stateCaptions = document.querySelectorAll(".state-captions span");
@@ -17,7 +61,7 @@ const currentTopicEl = document.getElementById("current-topic");
 const sourceLabelEl = document.querySelector(".source");
 const datasetModeSelect = document.getElementById("dataset-mode");
 const topicSearchLabel = document.getElementById("topic-search-label");
-const aboutTriggerBtn = document.getElementById("about-trigger-btn");
+const aboutLinkBtn = document.getElementById("about-link-btn");
 
 // Mobile layout mode — must match the @media (max-width: 899.98px) block in style.css
 const MOBILE_LAYOUT_QUERY = window.matchMedia("(max-width: 899.98px)");
@@ -161,6 +205,19 @@ const DATASET_CONFIG = {
     countNoun: "topics",
     defaultTopic: "Jesus is God",
     note: "Custom dataset — from the developer's own study and observations."
+  },
+  // Generated from the Gospelgo Web game's typology quests by
+  // scripts/build-types-of-christ.js - one topic per Old Testament figure,
+  // each verse's subtopics being the features of Christ it shows plus
+  // "The type (Old Testament)" or "Jesus fulfills the type". Topics from the
+  // game's typology-foundations.json (not tied to one figure) come first.
+  "types-of-christ": {
+    file: "data/types-of-christ-with-references.json",
+    label: "Types of Christ",
+    placeholder: "Search types of Christ",
+    countNoun: "types",
+    defaultTopic: "Joseph — Type of Christ",
+    note: "Old Testament figures who foreshadow Jesus — from the Gospelgo World game's quests."
   }
 };
 const PROPHECY_AGGREGATE_TOPICS = [
@@ -181,7 +238,7 @@ const BSB_SOURCE_TAG_RE = new RegExp(`(${BSB_NAVES_SOURCE_TAG}|${BSB_TORREYS_SOU
 // ("Prophecy (OT): Gen 3:15") rather than a shared classification, so it's
 // deliberately excluded. People/Places/Concordance never populate
 // `subtopics` at all, so the feature never triggers for them regardless.
-const SUBTOPIC_FILTER_MODES = new Set(["topics", "bsb-topics", "custom"]);
+const SUBTOPIC_FILTER_MODES = new Set(["topics", "bsb-topics", "custom", "types-of-christ"]);
 // No verse-count floor - a topic qualifies purely by having more than one
 // distinct subtopic, even a small one (e.g. "Obed" having 5 distinct people
 // across just 14 verses is exactly the case worth surfacing: without the
@@ -1322,21 +1379,8 @@ const ensureNavigationContext = (stateValue) => {
   }
 };
 
-const updateStateIndicator = (state) => {
-  const indicator = document.getElementById('state-indicator');
-  if (!indicator) return;
-  const labels = {
-    1: 'Bible View',
-    2: 'Book View',
-    3: 'Chapter View',
-    4: 'Verses View'
-  };
-  indicator.textContent = labels[state] || 'Bible View';
-};
-
 const renderCurrentState = () => {
   const stateValue = getCurrentState();
-  updateStateIndicator(stateValue);
   if (stateValue === 1) {
     isRenderingStateTransition = false;
     renderTreemap(booksData, selectedTopic);
@@ -4231,8 +4275,13 @@ const boot = async () => {
     });
   }
 
-  if (aboutTriggerBtn) {
-    aboutTriggerBtn.addEventListener("click", () => showAboutModal());
+  // "About" lives in .header-links (inside the hamburger panel on mobile,
+  // hence the closeMobileMenu). The title itself is a plain link home.
+  if (aboutLinkBtn) {
+    aboutLinkBtn.addEventListener("click", () => {
+      closeMobileMenu();
+      showAboutModal();
+    });
   }
 
   // Topic Back/Forward are just the real browser history now - every topic/
@@ -4528,8 +4577,7 @@ const boot = async () => {
 };
 
 
-// Launched by clicking the "Bible Explorer" header text (app-title-trigger
-// in index.html) - a one-time orientation/credits page, not tied to any
+// Launched by the "About" link in .header-links (#about-link-btn) - a one-time orientation/credits page, not tied to any
 // dataset or topic state, so it's a plain static modal rather than something
 // built from topicsData like showTopicBioModal.
 const showAboutModal = () => {
@@ -4557,7 +4605,7 @@ const showAboutModal = () => {
 
   const paragraphs = [
     "Bible Explorer is a visual way to browse Scripture by topic, word, person, place, or prophecy - not just by chapter and verse. Pick a topic and every verse that mentions it lights up across an Overview map of all 66 books; from there, drill into a single Book, read a Chapter in full, or pull up a flat list of every matching Verse.",
-    "Search across seven datasets: Nave's Topics and BSB Topics (classic topical indexes), People and Places (every named person and place in Scripture - click the topic's title, once selected, for a short bio and family details), Prophecy (Old Testament prophecies alongside their New Testament fulfillments), the BSB Concordance (every word, exhaustively), and a hand-curated Custom Dataset.",
+    "Search across eight datasets: Nave's Topics and BSB Topics (classic topical indexes), People and Places (every named person and place in Scripture - click the topic's title, once selected, for a short bio and family details), Prophecy (Old Testament prophecies alongside their New Testament fulfillments), the BSB Concordance (every word, exhaustively), a hand-curated Custom Dataset, and Types of Christ (Old Testament figures who foreshadow Jesus, verse by verse).",
     "Clicking a Place's info also opens a link to Bible Places, GospelGo's companion map app - a way to see that location plotted on an actual map alongside the rest of its biblical geography."
   ];
   paragraphs.forEach((text) => {
@@ -4598,7 +4646,8 @@ const showAboutModal = () => {
     ["People & Places", "Theographic Bible Metadata (viz.bible), including Easton's Bible Dictionary (1897, public domain) entries for each bio."],
     ["Prophecy", "“351 Old Testament Prophecies Fulfilled in Jesus Christ,” compiled by David Webb."],
     ["BSB Concordance", "the Berean Standard Bible (BSB) Concordance - see BSB Topics above for the BSB's own translation credit."],
-    ["Custom Dataset", "the developer's own study and observations - no external source."]
+    ["Custom Dataset", "the developer's own study and observations - no external source."],
+    ["Types of Christ", "the typology quests of the Gospelgo GoMap game (world.gospelgo.org)."]
   ];
   sourceLines.forEach(([label, text]) => {
     const p = document.createElement("p");
@@ -4622,8 +4671,50 @@ const showAboutModal = () => {
   const donateNote = document.createElement("p");
   donateNote.className = "about-donate-note";
   donateNote.textContent = "Donations are welcome, but zero pressure.";
+  // Only shown where the browser says installing is possible right now (see
+  // window.beInstall at the top of this file) - never a dead button. The
+  // modal has several close paths that just remove the overlay, so the sync
+  // handler unregisters itself once the button is no longer in the document.
+  const installBtn = document.createElement("button");
+  installBtn.type = "button";
+  installBtn.className = "about-donate-btn about-install-btn";
+  installBtn.textContent = "Install as an app";
+  installBtn.title =
+    "Opens Bible Explorer in its own window, with an icon you can pin to your taskbar or home screen";
+  installBtn.addEventListener("click", () => window.beInstall.prompt());
+  const syncInstallBtn = () => {
+    if (modal.isConnected === false && installBtn.dataset.synced) {
+      document.removeEventListener("be-install-change", syncInstallBtn);
+      return;
+    }
+    installBtn.dataset.synced = "1";
+    installBtn.hidden = !window.beInstall.canPrompt();
+  };
+  syncInstallBtn();
+  document.addEventListener("be-install-change", syncInstallBtn);
+  donateSection.appendChild(installBtn);
   donateSection.appendChild(donateLink);
   donateSection.appendChild(donateNote);
+  // Browsers that can't install (Firefox, Safari) get one line saying where
+  // it is possible. Not shown in Chromium: there a missing button almost
+  // always means it's already installed.
+  const isChromium = !!navigator.userAgentData || /Chrome\//.test(navigator.userAgent);
+  // iPhone/iPad are the exception: no page can trigger an install there and
+  // every iOS browser is WebKit (so "use Chrome or Edge" would be wrong), but
+  // the Share sheet can add the app to the home screen. iPadOS reports itself
+  // as a Mac, hence the touch-points check.
+  if (!isChromium && !window.beInstall.isStandalone()) {
+    const isIPad =
+      /iPad/.test(navigator.userAgent) ||
+      (/Macintosh/.test(navigator.userAgent) && navigator.maxTouchPoints > 1);
+    const isIOS = isIPad || /iPhone|iPod/.test(navigator.userAgent);
+    const installNote = document.createElement("p");
+    installNote.className = "about-donate-note";
+    installNote.textContent = isIOS
+      ? `To install on this ${isIPad ? "iPad" : "iPhone"}: tap Share, then Add to Home Screen.`
+      : "Bible Explorer can be installed as an app from Chrome or Edge.";
+    donateSection.appendChild(installNote);
+  }
   content.appendChild(donateSection);
 
   modalContent.appendChild(header);

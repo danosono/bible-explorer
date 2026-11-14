@@ -100,36 +100,18 @@ body::before {
 	font-weight: 700;
 }
 
-.app-title-trigger {
-	background: none;
-	border: none;
-	font: inherit;
-	font-family: inherit;
+/* The title is a real link to the app's root so middle-click / Ctrl+click
+   opens a fresh instance in a new tab (a plain click just reloads). About
+   is the "About" text link in .header-links. */
+.app-title-link {
 	color: inherit;
-	letter-spacing: inherit;
-	cursor: pointer;
-	padding: 0;
-	display: inline-flex;
-	align-items: baseline;
-	gap: 0.2em;
+	text-decoration: none;
 	transition: color 0.2s ease;
 }
 
-.app-title-trigger:hover,
-.app-title-trigger:focus-visible {
+.app-title-link:hover,
+.app-title-link:focus-visible {
 	color: var(--accent-2);
-}
-
-.app-title-info-icon {
-	font-size: 0.5em;
-	opacity: 0.75;
-	transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.app-title-trigger:hover .app-title-info-icon,
-.app-title-trigger:focus-visible .app-title-info-icon {
-	opacity: 1;
-	transform: scale(1.15);
 }
 
 .by-link {
@@ -149,15 +131,6 @@ body::before {
 
 .by-link:hover .by-link-icon {
 	opacity: 1;
-}
-
-.state-indicator {
-	font-family: var(--font-display);
-	font-size: clamp(1rem, 1.2vw, 1.6rem);
-	margin: 0;
-	letter-spacing: 0.03em;
-	color: var(--text-2);
-	font-weight: 600;
 }
 
 .subtitle {
@@ -208,56 +181,43 @@ body::before {
 	display: none;
 }
 
-.peruser-link {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	text-align: center;
+/* Far-right 2x2 block of text links: sibling apps + About. Two short rows
+   stay well under the controls' height, so it adds none to the header. */
+.header-links {
+	display: grid;
+	grid-template-columns: auto auto;
+	gap: 4px 16px;
+	font-size: clamp(0.8rem, 0.85vw, 1.1rem);
 	line-height: 1.25;
-	font-size: clamp(0.85rem, 1vw, 1.2rem);
-	color: var(--text-3);
-	text-decoration: none;
-	font-weight: 500;
-	letter-spacing: 0.02em;
-	padding: 6px 14px;
-	border: 1px solid rgba(96, 130, 168, 0.35);
-	border-radius: 14px;
-	transition: color 0.2s ease, border-color 0.2s ease;
+	white-space: nowrap;
 }
 
-.peruser-link:hover {
-	color: var(--text-2);
-	border-color: rgba(157, 227, 212, 0.5);
-}
-
-/* Compact icon badge - line-height:1 and tight padding keep it shorter than
-   .peruser-link, so it adds no height to .header-right's centered flex row. */
-.share-link {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	line-height: 1;
-	font-size: clamp(0.85rem, 0.95vw, 1.15rem);
+.header-links a,
+.header-links button {
 	color: var(--text-3);
 	background: none;
-	font-family: inherit;
+	border: none;
+	padding: 0;
+	font: inherit;
+	font-weight: 500;
+	letter-spacing: 0.02em;
+	text-align: left;
+	text-decoration: none;
 	cursor: pointer;
-	padding: 6px 10px;
-	border: 1px solid rgba(96, 130, 168, 0.35);
-	border-radius: 14px;
-	transition: color 0.2s ease, border-color 0.2s ease;
+	transition: color 0.2s ease;
 }
 
-.share-link svg {
-	width: clamp(15px, 1vw, 19px);
-	height: clamp(15px, 1vw, 19px);
-	display: block;
+.header-links a:hover,
+.header-links button:hover,
+.header-links a:focus-visible,
+.header-links button:focus-visible {
+	color: var(--accent-2);
 }
 
-.share-link:hover {
-	color: var(--text-2);
-	border-color: rgba(157, 227, 212, 0.5);
+/* The copy-link button swaps its icon for a checkmark glyph briefly. */
+#share-link-btn {
+	font-size: 0.7em;
+	line-height: 1;
 }
 
 .controls {
@@ -1689,6 +1649,26 @@ body[data-state="4"] .state--read {
 	box-shadow: 0 6px 18px rgba(242, 166, 90, 0.35);
 }
 
+/* Secondary (outlined) so Donate stays the one filled button. The [hidden]
+   rule is needed because .about-donate-btn's display would override it. */
+.about-install-btn {
+	background: none;
+	border: 1px solid var(--accent-2);
+	color: var(--accent-2);
+	font-family: inherit;
+	font-size: inherit;
+	cursor: pointer;
+}
+
+.about-install-btn[hidden] {
+	display: none;
+}
+
+.about-install-btn:hover,
+.about-install-btn:focus-visible {
+	box-shadow: 0 6px 18px rgba(157, 227, 212, 0.25);
+}
+
 .about-donate-note {
 	color: var(--text-3);
 	font-size: 0.85em;
@@ -2738,9 +2718,9 @@ body[data-state="3"] .legend-genre.active {
 }
 
 @media (max-width: 1920px) and (min-width: 1101px) {
-	.peruser-link {
+	.header-links {
 		font-size: 0.8rem;
-		padding: 5px 10px;
+		gap: 3px 12px;
 	}
 
 	.controls {
@@ -2876,8 +2856,9 @@ body[data-state="3"] .legend-genre.active {
 		min-width: clamp(100px, 9vw, 160px);
 	}
 
-	.peruser-link {
-		display: none;
+	.header-links {
+		font-size: 0.75rem;
+		gap: 2px 10px;
 	}
 
 	.footer {
@@ -2899,10 +2880,6 @@ body[data-state="3"] .legend-genre.active {
 
 	.app-title {
 		font-size: clamp(1.1rem, 1.8vw, 1.5rem);
-	}
-
-	.state-indicator {
-		display: none;
 	}
 
 	.control-pill {
@@ -2929,9 +2906,9 @@ body[data-state="3"] .legend-genre.active {
 }
 
 @media (min-width: 2560px) {
-	.peruser-link {
+	.header-links {
 		font-size: 1.15rem;
-		padding: 8px 16px;
+		gap: 6px 22px;
 	}
 
 	.title {
@@ -3174,10 +3151,6 @@ body[data-state="3"] .legend-genre.active {
 		align-items: center;
 	}
 
-	.state-indicator {
-		font-size: 0.85rem;
-	}
-
 	/* Always-visible compact Bible/Book/Verse switcher on header row 2;
 	   active segment tracks the existing body[data-state] attribute. */
 	.mini-state-switcher {
@@ -3295,8 +3268,22 @@ body[data-state="3"] .legend-genre.active {
 		display: none;
 	}
 
-	.peruser-link {
-		text-align: center;
+	/* Seven icon buttons + the label don't fit one row on a phone. */
+	.topic-search-label-row {
+		flex-wrap: wrap;
+	}
+
+	.header-links {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 4px 8px;
+		font-size: 0.95rem;
+	}
+
+	.header-links a,
+	.header-links button {
+		padding: 10px;
 	}
 
 	/* Canvas grows with content instead of clipping to the viewport */

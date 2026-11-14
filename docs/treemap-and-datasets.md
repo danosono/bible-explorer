@@ -150,9 +150,9 @@ query. This is a low-specificity rule and doesn't affect the more specific
 `#book-grid[data-density="high"/"ultra"] .pin-lines` overrides used by
 high-chapter-count books in Book View.
 
-## The seven datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
+## The eight datasets (`DATASET_CONFIG`, `js/app.js` ~line 34)
 
-All seven share one schema and are loaded generically by `loadTopics()`:
+All eight share one schema and are loaded generically by `loadTopics()`:
 
 ```json
 {
@@ -184,6 +184,7 @@ layout those classes were built for doesn't suit a single scrolling column of te
 | Prophecy | `prophecy` | `data/prophecy-topics-with-references.json` | Prophecy docx parse (separate aggregate-topic logic, `PROPHECY_AGGREGATE_TOPICS`) |
 | BSB Concordance | `concordance` | `data/bsb-concordance-with-references.json` (14.77MB, 14,526 words, 276,602 refs) | `C:\Unity Projects\_BibleDatasets\Berean\bsb_concordance.xlsx` via `scripts/parse-bsb-concordance.js` |
 | Custom Dataset | `custom` | `data/custom-topics-with-references.json` | `source/custom-topics.json` via `scripts/build-custom-dataset.js` |
+| Types of Christ | `types-of-christ` | `data/types-of-christ-with-references.json` | The Gospelgo Web game repo (`..\GospelGoWebApp\public\content\motifs.json` + `quests\*.json`) via `scripts/build-types-of-christ.js` |
 
 ### Custom Dataset pipeline (`source/custom-topics.json` → `scripts/build-custom-dataset.js`)
 The only dataset the developer hand-authors rather than parses from a third-party
@@ -203,6 +204,35 @@ themes - "Jesus is God" is the worked example. Workflow: edit
 files. `DATASET_CONFIG.custom` also carries a `note` string, surfaced next to the
 dataset label in the UI (`updateDatasetUI()`, `js/app.js` ~line 856) so it's clear this
 dataset isn't a sourced text like the other four.
+
+### Types of Christ pipeline (game repo → `scripts/build-types-of-christ.js`)
+Generated, never hand-edited, and with no authoring file in this repo: the Gospelgo Web
+game (`C:\Unity Projects\Builds\GospelGoWebApp`, world.gospelgo.org) is the single
+source of truth for which verse shows which feature of Christ, and this dataset is
+derived from it so the two apps cannot drift. The game keeps a registry of motifs
+(`public/content/motifs.json`: `{ id, label, blurb }`, e.g. `silent`, `third-day`) and
+its quests tag verses with those ids, on a dialogue line (`"motifs": [...]`, applies to
+every ref on the line) or per verse (`{ "ref": "Eph.1.7", "motifs": [...] }`). The script
+emits one topic per quest that has any tagged verse, named by the quest's `title`; each
+verse's `subtopics` are the labels of its motifs followed by which side of the pairing
+it is on: `The type (Old Testament)` (the figure's own verse) or `Jesus fulfills the
+type` (a line marked `antitype: true`). A verse
+cited more than once is one entry with the union of its labels. Refs with no motif tag
+are left out. The dataset is in `SUBTOPIC_FILTER_MODES` with no passage floor, since a
+motif label is a real shared classification, not per-verse commentary.
+
+Runs on its own (`node scripts/build-types-of-christ.js`) and at the end of
+`scripts/build-custom-dataset.js`. It reads the game repo at `../GospelGoWebApp` (or
+`GOSPELGO_WEBAPP_DIR`); when that folder is absent it leaves the committed output alone
+and exits cleanly, and when the content is invalid (unknown motif id, malformed ref,
+nonexistent verse) it writes nothing and exits 1. The direction is one-way: to change
+this dataset, edit the game's JSON and rerun.
+
+Topics that belong to no single figure (the first is "Why look for types? Christ
+revealed according to the Scriptures" - Luke 24, John 5:39, etc.) are hand-written in
+the game repo's `public/content/typology-foundations.json` (`{ topics: [{ title, refs }] }`,
+OSIS refs, each a bare string or `{ ref, note }`) and are emitted first, in that file's
+order. They carry no motif or side labels; a `note` becomes the verse's subtopic text.
 
 ### Nave's Topics pipeline (`source/Naves.txt` → `scripts/parse-naves-text.js` → `scripts/parse-topics.js`)
 Two-stage pipeline, same as the other three datasets' "raw source → intermediate

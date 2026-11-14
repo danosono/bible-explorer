@@ -4,6 +4,9 @@
 //
 //   node scripts/build-custom-dataset.js
 //
+// (This also regenerates data/types-of-christ-with-references.json - see
+// scripts/build-types-of-christ.js and the end of this file.)
+//
 // Authoring format (source/custom-topics.json):
 //   {
 //     "Topic Name": [
@@ -291,3 +294,9 @@ const main = () => {
 };
 
 main();
+
+// The Types of Christ dataset is generated from the Gospelgo Web game's
+// content rather than from source/custom-topics.json, but it changes on the
+// same occasions, so one command refreshes both. It skips itself when the
+// game repo isn't on this machine and fails (exit code 1) on invalid content.
+if (!require("./build-types-of-christ").main()) process.exitCode = 1;

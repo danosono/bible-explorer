@@ -79,7 +79,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=16" />
+    <link rel="stylesheet" href="css/style.css?v=18" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
   <body>
@@ -88,13 +88,8 @@
         <div class="title-block">
           <div class="header-main">
             <h1 class="app-title">
-              <button
-                type="button"
-                id="about-trigger-btn"
-                class="app-title-trigger"
-                aria-haspopup="dialog"
-                title="About Bible Explorer"
-                >Bible Explorer<span class="app-title-info-icon" aria-hidden="true">ⓘ</span></button
+              <a href="./" class="app-title-link" title="Bible Explorer home"
+                >Bible Explorer</a
               >
               <a
                 href="https://gospelgo.org/"
@@ -108,7 +103,6 @@
                   class="by-link-icon"
               /></a>
             </h1>
-            <h2 class="state-indicator" id="state-indicator">Bible View</h2>
             <nav class="mini-state-switcher" aria-label="Switch view">
               <button type="button" data-state="1">Bible</button>
               <button type="button" data-state="2">Book</button>
@@ -161,6 +155,7 @@
                 <option value="prophecy">Prophecy</option>
                 <option value="concordance">BSB Concordance</option>
                 <option value="custom">Custom Dataset</option>
+                <option value="types-of-christ">Types of Christ</option>
               </select>
             </label>
             <div class="topic-search">
@@ -306,6 +301,30 @@
                       <line x1="3" y1="18" x2="3.01" y2="18"></line>
                     </svg>
                   </button>
+                  <button
+                    class="topic-nav-btn"
+                    id="share-link-btn"
+                    type="button"
+                    aria-label="Copy link to this page"
+                    title="Copy link to this page"
+                  >
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path
+                        d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
+                      ></path>
+                      <path
+                        d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
+                      ></path>
+                    </svg>
+                  </button>
                 </span>
               </span>
               <span class="topic-search-controls">
@@ -347,38 +366,18 @@
                 </span>
               </span>
             </div>
-            <button
-              type="button"
-              class="share-link"
-              id="share-link-btn"
-              aria-label="Copy link to this page"
-              title="Copy link to this page"
-            >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
+            <nav class="header-links" aria-label="About and other Gospel Go apps">
+              <a href="https://bible-peruser.gospelgo.org" target="_blank" rel="noopener"
+                >Bible Peruser</a
               >
-                <path
-                  d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"
-                ></path>
-                <path
-                  d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
-                ></path>
-              </svg>
-            </button>
-            <a
-              href="https://bible-peruser.gospelgo.org"
-              target="_blank"
-              rel="noopener"
-              class="peruser-link"
-              title="Try Bible Peruser"
-              >Bible<br />Peruser</a
-            >
+              <a href="https://verselist.gospelgo.org" target="_blank" rel="noopener"
+                >Verse List</a
+              >
+              <a href="https://bibleplaces.gospelgo.org" target="_blank" rel="noopener"
+                >Bible Places</a
+              >
+              <button type="button" id="about-link-btn" aria-haspopup="dialog">About</button>
+            </nav>
           </div>
         </div>
       </header>
@@ -639,7 +638,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=70"></script>
+    <script src="js/app.js?v=75"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
