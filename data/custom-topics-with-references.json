@@ -930,6 +930,107 @@
       "RUT"
     ]
   },
+  "Not Ashamed": {
+    "name": "Not Ashamed",
+    "references": {
+      "MRK": [
+        {
+          "verse": 322,
+          "subtopics": [],
+          "refs": [
+            "Mark 8:38"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 577,
+          "subtopics": [],
+          "refs": [
+            "John 12:42"
+          ]
+        },
+        {
+          "verse": 578,
+          "subtopics": [],
+          "refs": [
+            "John 12:43"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 177,
+          "subtopics": [],
+          "refs": [
+            "Acts 5:41"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 16,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:16"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 20,
+          "subtopics": [],
+          "refs": [
+            "Phil 1:20"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 8,
+          "subtopics": [],
+          "refs": [
+            "2 Tim 1:8"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [],
+          "refs": [
+            "2 Tim 1:12"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 225,
+          "subtopics": [],
+          "refs": [
+            "Heb 11:16"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 88,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 4:16"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1PE",
+      "2TI",
+      "ACT",
+      "HEB",
+      "JHN",
+      "MRK",
+      "PHP",
+      "ROM"
+    ]
+  },
   "Baptism: water / Holy Spirit": {
     "name": "Baptism: water / Holy Spirit",
     "references": {
@@ -992,6 +1093,198 @@
       "LUK",
       "MAT",
       "MRK"
+    ]
+  },
+  "Believe": {
+    "name": "Believe",
+    "references": {
+      "GEN": [
+        {
+          "verse": 367,
+          "subtopics": [],
+          "refs": [
+            "Gen 15:6"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 896,
+          "subtopics": [],
+          "refs": [
+            "Ps 62:8"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 92,
+          "subtopics": [],
+          "refs": [
+            "John 3:16"
+          ]
+        },
+        {
+          "verse": 94,
+          "subtopics": [],
+          "refs": [
+            "John 3:18"
+          ]
+        },
+        {
+          "verse": 112,
+          "subtopics": [],
+          "refs": [
+            "John 3:36"
+          ]
+        },
+        {
+          "verse": 189,
+          "subtopics": [],
+          "refs": [
+            "John 5:24"
+          ]
+        },
+        {
+          "verse": 259,
+          "subtopics": [],
+          "refs": [
+            "John 6:47"
+          ]
+        },
+        {
+          "verse": 503,
+          "subtopics": [],
+          "refs": [
+            "John 11:25"
+          ]
+        },
+        {
+          "verse": 504,
+          "subtopics": [],
+          "refs": [
+            "John 11:26"
+          ]
+        },
+        {
+          "verse": 853,
+          "subtopics": [],
+          "refs": [
+            "John 20:31"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 378,
+          "subtopics": [],
+          "refs": [
+            "Acts 10:43"
+          ]
+        },
+        {
+          "verse": 589,
+          "subtopics": [],
+          "refs": [
+            "Acts 16:31"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 16,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:16"
+          ]
+        },
+        {
+          "verse": 83,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:22"
+          ]
+        },
+        {
+          "verse": 97,
+          "subtopics": [],
+          "refs": [
+            "Rom 4:5"
+          ]
+        },
+        {
+          "verse": 258,
+          "subtopics": [],
+          "refs": [
+            "Rom 9:33"
+          ]
+        },
+        {
+          "verse": 262,
+          "subtopics": [],
+          "refs": [
+            "Rom 10:4"
+          ]
+        },
+        {
+          "verse": 267,
+          "subtopics": [],
+          "refs": [
+            "Rom 10:9"
+          ]
+        },
+        {
+          "verse": 269,
+          "subtopics": [],
+          "refs": [
+            "Rom 10:11"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 40,
+          "subtopics": [],
+          "refs": [
+            "Gal 2:16"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 13,
+          "subtopics": [],
+          "refs": [
+            "Eph 1:13"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 85,
+          "subtopics": [],
+          "refs": [
+            "1 John 5:1"
+          ]
+        },
+        {
+          "verse": 94,
+          "subtopics": [],
+          "refs": [
+            "1 John 5:10"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "ACT",
+      "EPH",
+      "GAL",
+      "GEN",
+      "JHN",
+      "PSA",
+      "ROM"
     ]
   },
   "Face, supernatural": {
@@ -1121,6 +1414,644 @@
       "MAT",
       "PSA",
       "REV"
+    ]
+  },
+  "Faith": {
+    "name": "Faith",
+    "references": {
+      "HEB": [
+        {
+          "verse": 210,
+          "subtopics": [],
+          "refs": [
+            "Heb 11:1"
+          ]
+        },
+        {
+          "verse": 215,
+          "subtopics": [],
+          "refs": [
+            "Heb 11:6"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 17,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:17"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 40,
+          "subtopics": [],
+          "refs": [
+            "Gal 2:16"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 31,
+          "subtopics": [],
+          "refs": [
+            "Eph 2:8"
+          ]
+        },
+        {
+          "verse": 32,
+          "subtopics": [],
+          "refs": [
+            "Eph 2:9"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "EPH",
+      "GAL",
+      "HEB",
+      "ROM"
+    ]
+  },
+  "Faith (concept): we do what we love, and we love what we trust (believe)": {
+    "name": "Faith (concept): we do what we love, and we love what we trust (believe)",
+    "references": {
+      "ROM": [
+        {
+          "verse": 45,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Rom 2:13"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Rom 2:14"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Rom 2:15"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Rom 2:16"
+          ]
+        }
+      ],
+      "JAS": [
+        {
+          "verse": 22,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Jas 1:22"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Jas 1:23"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Jas 1:24"
+          ]
+        },
+        {
+          "verse": 25,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Jas 1:25"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 196,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Matt 7:24"
+          ]
+        },
+        {
+          "verse": 197,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Matt 7:25"
+          ]
+        },
+        {
+          "verse": 198,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Matt 7:26"
+          ]
+        },
+        {
+          "verse": 199,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Matt 7:27"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 540,
+          "subtopics": [
+            "hear/do"
+          ],
+          "refs": [
+            "Luke 11:28"
+          ]
+        }
+      ],
+      "EXO": [
+        {
+          "verse": 525,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Ex 20:6"
+          ]
+        }
+      ],
+      "DEU": [
+        {
+          "verse": 198,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:4"
+          ]
+        },
+        {
+          "verse": 199,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:5"
+          ]
+        },
+        {
+          "verse": 200,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:6"
+          ]
+        },
+        {
+          "verse": 201,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:7"
+          ]
+        },
+        {
+          "verse": 202,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:8"
+          ]
+        },
+        {
+          "verse": 203,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "Deut 6:9"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 112,
+          "subtopics": [
+            "trust -> benefit"
+          ],
+          "refs": [
+            "John 3:36"
+          ]
+        },
+        {
+          "verse": 240,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "John 6:28"
+          ]
+        },
+        {
+          "verse": 241,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "John 6:29"
+          ]
+        },
+        {
+          "verse": 638,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "John 14:15"
+          ]
+        },
+        {
+          "verse": 644,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "John 14:21"
+          ]
+        },
+        {
+          "verse": 646,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "John 14:23"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 13,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 2:3"
+          ]
+        },
+        {
+          "verse": 14,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 2:4"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 2:5"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 2:6"
+          ]
+        },
+        {
+          "verse": 57,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 3:18"
+          ]
+        },
+        {
+          "verse": 87,
+          "subtopics": [
+            "Love -> Obey"
+          ],
+          "refs": [
+            "1 John 5:3"
+          ]
+        }
+      ],
+      "GEN": [
+        {
+          "verse": 367,
+          "subtopics": [
+            "trust = benefit"
+          ],
+          "refs": [
+            "Gen 15:6"
+          ]
+        }
+      ],
+      "PRO": [
+        {
+          "verse": 60,
+          "subtopics": [
+            "trust = hope"
+          ],
+          "refs": [
+            "Prov 3:5"
+          ]
+        },
+        {
+          "verse": 61,
+          "subtopics": [
+            "trust = hope"
+          ],
+          "refs": [
+            "Prov 3:6"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 512,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:1"
+          ]
+        },
+        {
+          "verse": 513,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:2"
+          ]
+        },
+        {
+          "verse": 514,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:3"
+          ]
+        },
+        {
+          "verse": 515,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:4"
+          ]
+        },
+        {
+          "verse": 516,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:5"
+          ]
+        },
+        {
+          "verse": 517,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:6"
+          ]
+        },
+        {
+          "verse": 518,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "Ps 37:7"
+          ]
+        },
+        {
+          "verse": 896,
+          "subtopics": [
+            "trust = hope"
+          ],
+          "refs": [
+            "Ps 62:8"
+          ]
+        },
+        {
+          "verse": 1176,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "Ps 78:2"
+          ]
+        }
+      ],
+      "HAB": [
+        {
+          "verse": 21,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "Hab 2:4"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 1018,
+          "subtopics": [
+            "trust = hope"
+          ],
+          "refs": [
+            "Isa 50:10"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 215,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "Heb 11:6"
+          ]
+        },
+        {
+          "verse": 216,
+          "subtopics": [
+            "trust -> obey"
+          ],
+          "refs": [
+            "Heb 11:7"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 87,
+          "subtopics": [
+            "trust = benefit"
+          ],
+          "refs": [
+            "Phil 4:6"
+          ]
+        },
+        {
+          "verse": 88,
+          "subtopics": [
+            "trust = benefit"
+          ],
+          "refs": [
+            "Phil 4:7"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 18,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:18"
+          ]
+        },
+        {
+          "verse": 19,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:19"
+          ]
+        },
+        {
+          "verse": 20,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:20"
+          ]
+        },
+        {
+          "verse": 21,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:21"
+          ]
+        },
+        {
+          "verse": 22,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:22"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:23"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:24"
+          ]
+        },
+        {
+          "verse": 25,
+          "subtopics": [
+            "trust -> hope"
+          ],
+          "refs": [
+            "1 Pet 1:25"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "1PE",
+      "DEU",
+      "EXO",
+      "GEN",
+      "HAB",
+      "HEB",
+      "ISA",
+      "JAS",
+      "JHN",
+      "LUK",
+      "MAT",
+      "PHP",
+      "PRO",
+      "PSA",
+      "ROM"
     ]
   },
   "False witness": {
@@ -15820,6 +16751,650 @@
       "ACT"
     ]
   },
+  "Hypocrite / Legalist": {
+    "name": "Hypocrite / Legalist",
+    "references": {
+      "DEU": [
+        {
+          "verse": 827,
+          "subtopics": [],
+          "refs": [
+            "Deut 30:11"
+          ]
+        },
+        {
+          "verse": 828,
+          "subtopics": [],
+          "refs": [
+            "Deut 30:12"
+          ]
+        },
+        {
+          "verse": 829,
+          "subtopics": [],
+          "refs": [
+            "Deut 30:13"
+          ]
+        },
+        {
+          "verse": 830,
+          "subtopics": [],
+          "refs": [
+            "Deut 30:14"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 745,
+          "subtopics": [],
+          "refs": [
+            "Ps 50:16"
+          ]
+        },
+        {
+          "verse": 746,
+          "subtopics": [],
+          "refs": [
+            "Ps 50:17"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 11,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:11"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:12"
+          ]
+        },
+        {
+          "verse": 13,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:13"
+          ]
+        },
+        {
+          "verse": 14,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:14"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:15"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:16"
+          ]
+        },
+        {
+          "verse": 17,
+          "subtopics": [],
+          "refs": [
+            "Isa 1:17"
+          ]
+        },
+        {
+          "verse": 552,
+          "subtopics": [],
+          "refs": [
+            "Isa 29:13"
+          ]
+        }
+      ],
+      "AMO": [
+        {
+          "verse": 80,
+          "subtopics": [],
+          "refs": [
+            "Amos 5:21"
+          ]
+        },
+        {
+          "verse": 81,
+          "subtopics": [],
+          "refs": [
+            "Amos 5:22"
+          ]
+        },
+        {
+          "verse": 82,
+          "subtopics": [],
+          "refs": [
+            "Amos 5:23"
+          ]
+        },
+        {
+          "verse": 83,
+          "subtopics": [],
+          "refs": [
+            "Amos 5:24"
+          ]
+        }
+      ],
+      "MIC": [
+        {
+          "verse": 77,
+          "subtopics": [],
+          "refs": [
+            "Mic 6:8"
+          ]
+        }
+      ],
+      "ZEC": [
+        {
+          "verse": 93,
+          "subtopics": [],
+          "refs": [
+            "Zech 7:9"
+          ]
+        },
+        {
+          "verse": 94,
+          "subtopics": [],
+          "refs": [
+            "Zech 7:10"
+          ]
+        }
+      ],
+      "MAL": [
+        {
+          "verse": 6,
+          "subtopics": [],
+          "refs": [
+            "Mal 1:6"
+          ]
+        },
+        {
+          "verse": 7,
+          "subtopics": [],
+          "refs": [
+            "Mal 1:7"
+          ]
+        },
+        {
+          "verse": 8,
+          "subtopics": [],
+          "refs": [
+            "Mal 1:8"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 496,
+          "subtopics": [],
+          "refs": [
+            "Matt 15:7"
+          ]
+        },
+        {
+          "verse": 497,
+          "subtopics": [],
+          "refs": [
+            "Matt 15:8"
+          ]
+        },
+        {
+          "verse": 498,
+          "subtopics": [],
+          "refs": [
+            "Matt 15:9"
+          ]
+        },
+        {
+          "verse": 774,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:2"
+          ]
+        },
+        {
+          "verse": 775,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:3"
+          ]
+        },
+        {
+          "verse": 776,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:4"
+          ]
+        },
+        {
+          "verse": 794,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:23"
+          ]
+        },
+        {
+          "verse": 795,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:24"
+          ]
+        },
+        {
+          "verse": 796,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:25"
+          ]
+        },
+        {
+          "verse": 797,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:26"
+          ]
+        },
+        {
+          "verse": 798,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:27"
+          ]
+        },
+        {
+          "verse": 799,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:28"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 558,
+          "subtopics": [],
+          "refs": [
+            "Luke 11:46"
+          ]
+        },
+        {
+          "verse": 803,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:9"
+          ]
+        },
+        {
+          "verse": 804,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:10"
+          ]
+        },
+        {
+          "verse": 805,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:11"
+          ]
+        },
+        {
+          "verse": 806,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:12"
+          ]
+        },
+        {
+          "verse": 807,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:13"
+          ]
+        },
+        {
+          "verse": 808,
+          "subtopics": [],
+          "refs": [
+            "Luke 18:14"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 38,
+          "subtopics": [],
+          "refs": [
+            "Gal 2:14"
+          ]
+        },
+        {
+          "verse": 144,
+          "subtopics": [],
+          "refs": [
+            "Gal 6:13"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 49,
+          "subtopics": [],
+          "refs": [
+            "Col 2:20"
+          ]
+        },
+        {
+          "verse": 50,
+          "subtopics": [],
+          "refs": [
+            "Col 2:21"
+          ]
+        },
+        {
+          "verse": 51,
+          "subtopics": [],
+          "refs": [
+            "Col 2:22"
+          ]
+        },
+        {
+          "verse": 52,
+          "subtopics": [],
+          "refs": [
+            "Col 2:23"
+          ]
+        }
+      ],
+      "JAS": [
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "Jas 1:26"
+          ]
+        },
+        {
+          "verse": 27,
+          "subtopics": [],
+          "refs": [
+            "Jas 1:27"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 83,
+          "subtopics": [],
+          "refs": [
+            "1 John 4:20"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "AMO",
+      "COL",
+      "DEU",
+      "GAL",
+      "ISA",
+      "JAS",
+      "LUK",
+      "MAL",
+      "MAT",
+      "MIC",
+      "PSA",
+      "ZEC"
+    ]
+  },
+  "Impart spiritual gift": {
+    "name": "Impart spiritual gift",
+    "references": {
+      "NUM": [
+        {
+          "verse": 445,
+          "subtopics": [],
+          "refs": [
+            "Num 11:25"
+          ]
+        },
+        {
+          "verse": 446,
+          "subtopics": [],
+          "refs": [
+            "Num 11:26"
+          ]
+        },
+        {
+          "verse": 447,
+          "subtopics": [],
+          "refs": [
+            "Num 11:27"
+          ]
+        },
+        {
+          "verse": 448,
+          "subtopics": [],
+          "refs": [
+            "Num 11:28"
+          ]
+        },
+        {
+          "verse": 449,
+          "subtopics": [],
+          "refs": [
+            "Num 11:29"
+          ]
+        },
+        {
+          "verse": 968,
+          "subtopics": [],
+          "refs": [
+            "Num 27:18"
+          ]
+        },
+        {
+          "verse": 969,
+          "subtopics": [],
+          "refs": [
+            "Num 27:19"
+          ]
+        },
+        {
+          "verse": 970,
+          "subtopics": [],
+          "refs": [
+            "Num 27:20"
+          ]
+        }
+      ],
+      "DEU": [
+        {
+          "verse": 956,
+          "subtopics": [],
+          "refs": [
+            "Deut 34:9"
+          ]
+        }
+      ],
+      "2KI": [
+        {
+          "verse": 27,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:9"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:10"
+          ]
+        },
+        {
+          "verse": 29,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:11"
+          ]
+        },
+        {
+          "verse": 30,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:12"
+          ]
+        },
+        {
+          "verse": 31,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:13"
+          ]
+        },
+        {
+          "verse": 32,
+          "subtopics": [],
+          "refs": [
+            "2 Kgs 2:14"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 844,
+          "subtopics": [],
+          "refs": [
+            "John 20:22"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 267,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:14"
+          ]
+        },
+        {
+          "verse": 268,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:15"
+          ]
+        },
+        {
+          "verse": 269,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:16"
+          ]
+        },
+        {
+          "verse": 270,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:17"
+          ]
+        },
+        {
+          "verse": 271,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:18"
+          ]
+        },
+        {
+          "verse": 272,
+          "subtopics": [],
+          "refs": [
+            "Acts 8:19"
+          ]
+        },
+        {
+          "verse": 309,
+          "subtopics": [],
+          "refs": [
+            "Acts 9:17"
+          ]
+        },
+        {
+          "verse": 440,
+          "subtopics": [],
+          "refs": [
+            "Acts 13:2"
+          ]
+        },
+        {
+          "verse": 441,
+          "subtopics": [],
+          "refs": [
+            "Acts 13:3"
+          ]
+        },
+        {
+          "verse": 666,
+          "subtopics": [],
+          "refs": [
+            "Acts 19:6"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 11,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:11"
+          ]
+        }
+      ],
+      "1TI": [
+        {
+          "verse": 65,
+          "subtopics": [],
+          "refs": [
+            "1 Tim 4:14"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 6,
+          "subtopics": [],
+          "refs": [
+            "2 Tim 1:6"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1TI",
+      "2KI",
+      "2TI",
+      "ACT",
+      "DEU",
+      "JHN",
+      "NUM",
+      "ROM"
+    ]
+  },
   "Jesus Came to Save Both Jews and Gentiles": {
     "name": "Jesus Came to Save Both Jews and Gentiles",
     "references": {
@@ -15956,6 +17531,1512 @@
       "JHN",
       "LUK",
       "MAT",
+      "ROM"
+    ]
+  },
+  "Jesus (gospel) foretold and fulfilled": {
+    "name": "Jesus (gospel) foretold and fulfilled",
+    "references": {
+      "GEN": [
+        {
+          "verse": 71,
+          "subtopics": [],
+          "refs": [
+            "Gen 3:15"
+          ]
+        },
+        {
+          "verse": 71,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Gen 3:15"
+          ]
+        },
+        {
+          "verse": 302,
+          "subtopics": [
+            "All nations blessed through Abraham"
+          ],
+          "refs": [
+            "Gen 12:3"
+          ]
+        },
+        {
+          "verse": 566,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Gen 22:18"
+          ]
+        },
+        {
+          "verse": 1484,
+          "subtopics": [
+            "Scepter"
+          ],
+          "refs": [
+            "Gen 49:10"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 6,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Gal 1:6"
+          ]
+        },
+        {
+          "verse": 7,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Gal 1:7"
+          ]
+        },
+        {
+          "verse": 8,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Gal 1:8"
+          ]
+        },
+        {
+          "verse": 9,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Gal 1:9"
+          ]
+        },
+        {
+          "verse": 53,
+          "subtopics": [
+            "All nations blessed through Abraham"
+          ],
+          "refs": [
+            "Gal 3:8"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 18,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Ps 2:12"
+          ]
+        },
+        {
+          "verse": 266,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Ps 22:1"
+          ]
+        },
+        {
+          "verse": 283,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Ps 22:18"
+          ]
+        },
+        {
+          "verse": 664,
+          "subtopics": [
+            "Scepter"
+          ],
+          "refs": [
+            "Ps 45:6"
+          ]
+        },
+        {
+          "verse": 665,
+          "subtopics": [
+            "Scepter"
+          ],
+          "refs": [
+            "Ps 45:7"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Heb 1:1"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Heb 1:2"
+          ]
+        },
+        {
+          "verse": 8,
+          "subtopics": [
+            "Scepter"
+          ],
+          "refs": [
+            "Heb 1:8"
+          ]
+        },
+        {
+          "verse": 53,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Heb 4:2"
+          ]
+        },
+        {
+          "verse": 137,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Heb 8:8"
+          ]
+        },
+        {
+          "verse": 138,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Heb 8:9"
+          ]
+        },
+        {
+          "verse": 139,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Heb 8:10"
+          ]
+        },
+        {
+          "verse": 140,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Heb 8:11"
+          ]
+        },
+        {
+          "verse": 141,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Heb 8:12"
+          ]
+        },
+        {
+          "verse": 153,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Heb 9:11"
+          ]
+        },
+        {
+          "verse": 154,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Heb 9:12"
+          ]
+        }
+      ],
+      "DEU": [
+        {
+          "verse": 507,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:15"
+          ]
+        },
+        {
+          "verse": 507,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Deut 18:15"
+          ]
+        },
+        {
+          "verse": 508,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:16"
+          ]
+        },
+        {
+          "verse": 509,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:17"
+          ]
+        },
+        {
+          "verse": 510,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:18"
+          ]
+        },
+        {
+          "verse": 511,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:19"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 42,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:16"
+          ]
+        },
+        {
+          "verse": 43,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:17"
+          ]
+        },
+        {
+          "verse": 44,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:18"
+          ]
+        },
+        {
+          "verse": 45,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:19"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:20"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 2:21"
+          ]
+        },
+        {
+          "verse": 91,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 3:18"
+          ]
+        },
+        {
+          "verse": 95,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:22"
+          ]
+        },
+        {
+          "verse": 96,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:23"
+          ]
+        },
+        {
+          "verse": 97,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 3:24"
+          ]
+        },
+        {
+          "verse": 378,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 10:43"
+          ]
+        },
+        {
+          "verse": 470,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 13:32"
+          ]
+        },
+        {
+          "verse": 471,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 13:33"
+          ]
+        },
+        {
+          "verse": 725,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Acts 20:24"
+          ]
+        },
+        {
+          "verse": 919,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 26:22"
+          ]
+        },
+        {
+          "verse": 920,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Acts 26:23"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 769,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 40:3"
+          ]
+        },
+        {
+          "verse": 775,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Isa 40:9"
+          ]
+        },
+        {
+          "verse": 1049,
+          "subtopics": [
+            "how beautiful the feet"
+          ],
+          "refs": [
+            "Isa 52:7"
+          ]
+        },
+        {
+          "verse": 1055,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 52:13"
+          ]
+        },
+        {
+          "verse": 1056,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 52:14"
+          ]
+        },
+        {
+          "verse": 1058,
+          "subtopics": [
+            "who has believed our message?"
+          ],
+          "refs": [
+            "Isa 53:1"
+          ]
+        },
+        {
+          "verse": 1062,
+          "subtopics": [
+            "pierced",
+            "stripes"
+          ],
+          "refs": [
+            "Isa 53:5"
+          ]
+        },
+        {
+          "verse": 1064,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 53:7"
+          ]
+        },
+        {
+          "verse": 1066,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 53:9"
+          ]
+        },
+        {
+          "verse": 1067,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 53:10"
+          ]
+        },
+        {
+          "verse": 1068,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Isa 53:11"
+          ]
+        },
+        {
+          "verse": 1190,
+          "subtopics": [
+            "anointed (messiah)",
+            "good news"
+          ],
+          "refs": [
+            "Isa 61:1"
+          ]
+        }
+      ],
+      "NAM": [
+        {
+          "verse": 15,
+          "subtopics": [
+            "how beautiful the feet"
+          ],
+          "refs": [
+            "Nah 1:15"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rom 1:1"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rom 1:2"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Rom 1:2"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rom 1:16"
+          ]
+        },
+        {
+          "verse": 17,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Rom 1:17"
+          ]
+        },
+        {
+          "verse": 273,
+          "subtopics": [
+            "how beautiful the feet"
+          ],
+          "refs": [
+            "Rom 10:15"
+          ]
+        },
+        {
+          "verse": 273,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rom 10:15"
+          ]
+        },
+        {
+          "verse": 274,
+          "subtopics": [
+            "who has believed our message?"
+          ],
+          "refs": [
+            "Rom 10:16"
+          ]
+        },
+        {
+          "verse": 389,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rom 15:16"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 89,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Luke 2:9"
+          ]
+        },
+        {
+          "verse": 90,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Luke 2:10"
+          ]
+        },
+        {
+          "verse": 102,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:22"
+          ]
+        },
+        {
+          "verse": 103,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:23"
+          ]
+        },
+        {
+          "verse": 104,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:24"
+          ]
+        },
+        {
+          "verse": 105,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:25"
+          ]
+        },
+        {
+          "verse": 106,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:26"
+          ]
+        },
+        {
+          "verse": 107,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:27"
+          ]
+        },
+        {
+          "verse": 108,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:28"
+          ]
+        },
+        {
+          "verse": 109,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:29"
+          ]
+        },
+        {
+          "verse": 110,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:30"
+          ]
+        },
+        {
+          "verse": 111,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:31"
+          ]
+        },
+        {
+          "verse": 112,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:32"
+          ]
+        },
+        {
+          "verse": 113,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:33"
+          ]
+        },
+        {
+          "verse": 114,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:34"
+          ]
+        },
+        {
+          "verse": 115,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:35"
+          ]
+        },
+        {
+          "verse": 116,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:36"
+          ]
+        },
+        {
+          "verse": 117,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:37"
+          ]
+        },
+        {
+          "verse": 118,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:38"
+          ]
+        },
+        {
+          "verse": 126,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:46"
+          ]
+        },
+        {
+          "verse": 127,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 2:47"
+          ]
+        },
+        {
+          "verse": 188,
+          "subtopics": [
+            "anointed (messiah)",
+            "good news"
+          ],
+          "refs": [
+            "Luke 4:18"
+          ]
+        },
+        {
+          "verse": 189,
+          "subtopics": [
+            "anointed (messiah)",
+            "good news"
+          ],
+          "refs": [
+            "Luke 4:19"
+          ]
+        },
+        {
+          "verse": 190,
+          "subtopics": [
+            "anointed (messiah)",
+            "good news"
+          ],
+          "refs": [
+            "Luke 4:20"
+          ]
+        },
+        {
+          "verse": 191,
+          "subtopics": [
+            "anointed (messiah)",
+            "good news"
+          ],
+          "refs": [
+            "Luke 4:21"
+          ]
+        },
+        {
+          "verse": 882,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 19:45"
+          ]
+        },
+        {
+          "verse": 883,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 19:46"
+          ]
+        },
+        {
+          "verse": 1085,
+          "subtopics": [
+            "come to His temple"
+          ],
+          "refs": [
+            "Luke 23:45"
+          ]
+        },
+        {
+          "verse": 1121,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Luke 24:25"
+          ]
+        },
+        {
+          "verse": 1122,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Luke 24:26"
+          ]
+        },
+        {
+          "verse": 1123,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Luke 24:27"
+          ]
+        },
+        {
+          "verse": 1140,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Luke 24:44"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 23,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "John 1:23"
+          ]
+        },
+        {
+          "verse": 45,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "John 1:45"
+          ]
+        },
+        {
+          "verse": 573,
+          "subtopics": [
+            "who has believed our message?"
+          ],
+          "refs": [
+            "John 12:38"
+          ]
+        },
+        {
+          "verse": 781,
+          "subtopics": [
+            "stripes"
+          ],
+          "refs": [
+            "John 19:1"
+          ]
+        },
+        {
+          "verse": 847,
+          "subtopics": [
+            "pierced"
+          ],
+          "refs": [
+            "John 20:25"
+          ]
+        },
+        {
+          "verse": 848,
+          "subtopics": [
+            "pierced"
+          ],
+          "refs": [
+            "John 20:26"
+          ]
+        },
+        {
+          "verse": 849,
+          "subtopics": [
+            "pierced"
+          ],
+          "refs": [
+            "John 20:27"
+          ]
+        },
+        {
+          "verse": 850,
+          "subtopics": [
+            "pierced"
+          ],
+          "refs": [
+            "John 20:28"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 776,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:31"
+          ]
+        },
+        {
+          "verse": 776,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Jer 31:31"
+          ]
+        },
+        {
+          "verse": 777,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:32"
+          ]
+        },
+        {
+          "verse": 778,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:33"
+          ]
+        },
+        {
+          "verse": 779,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:34"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 22,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 1:22"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 1:23"
+          ]
+        },
+        {
+          "verse": 30,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:5"
+          ]
+        },
+        {
+          "verse": 31,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:6"
+          ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:15"
+          ]
+        },
+        {
+          "verse": 42,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:17"
+          ]
+        },
+        {
+          "verse": 43,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:18"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 2:23"
+          ]
+        },
+        {
+          "verse": 107,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Matt 5:17"
+          ]
+        },
+        {
+          "verse": 325,
+          "subtopics": [
+            "messenger"
+          ],
+          "refs": [
+            "Matt 11:10"
+          ]
+        },
+        {
+          "verse": 326,
+          "subtopics": [
+            "messenger"
+          ],
+          "refs": [
+            "Matt 11:11"
+          ]
+        },
+        {
+          "verse": 935,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Matt 26:28"
+          ]
+        }
+      ],
+      "MAL": [
+        {
+          "verse": 32,
+          "subtopics": [
+            "messenger",
+            "come to His temple"
+          ],
+          "refs": [
+            "Mal 3:1"
+          ]
+        },
+        {
+          "verse": 32,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Mal 3:1"
+          ]
+        }
+      ],
+      "MRK": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Mark 1:1"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Mark 1:2"
+          ]
+        },
+        {
+          "verse": 3,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Mark 1:3"
+          ]
+        },
+        {
+          "verse": 14,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Mark 1:14"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Mark 1:15"
+          ]
+        }
+      ],
+      "1CO": [
+        {
+          "verse": 17,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 1:17"
+          ]
+        },
+        {
+          "verse": 193,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 9:16"
+          ]
+        },
+        {
+          "verse": 356,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 15:1"
+          ]
+        },
+        {
+          "verse": 357,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 15:2"
+          ]
+        },
+        {
+          "verse": 358,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 15:3"
+          ]
+        },
+        {
+          "verse": 359,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Cor 15:4"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 13,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Eph 1:13"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 27,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Phil 1:27"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 5,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Col 1:5"
+          ]
+        },
+        {
+          "verse": 6,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Col 1:6"
+          ]
+        }
+      ],
+      "2TH": [
+        {
+          "verse": 8,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "2 Thess 1:8"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 10,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "2 Tim 1:10"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 10,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "1 Pet 1:10"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "1 Pet 1:11"
+          ]
+        },
+        {
+          "verse": 12,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "1 Pet 1:12"
+          ]
+        },
+        {
+          "verse": 25,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Pet 1:25"
+          ]
+        },
+        {
+          "verse": 89,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "1 Pet 4:17"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 235,
+          "subtopics": [
+            "gospel (good news)"
+          ],
+          "refs": [
+            "Rev 14:6"
+          ]
+        }
+      ],
+      "2SA": [
+        {
+          "verse": 170,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "2 Sam 7:12"
+          ]
+        },
+        {
+          "verse": 171,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "2 Sam 7:13"
+          ]
+        }
+      ],
+      "EZK": [
+        {
+          "verse": 920,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Ezek 36:25"
+          ]
+        }
+      ],
+      "JOL": [
+        {
+          "verse": 48,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Joel 2:28"
+          ]
+        }
+      ],
+      "HAB": [
+        {
+          "verse": 21,
+          "subtopics": [
+            "prophets"
+          ],
+          "refs": [
+            "Hab 2:4"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1CO",
+      "1PE",
+      "2SA",
+      "2TH",
+      "2TI",
+      "ACT",
+      "COL",
+      "DEU",
+      "EPH",
+      "EZK",
+      "GAL",
+      "GEN",
+      "HAB",
+      "HEB",
+      "ISA",
+      "JER",
+      "JHN",
+      "JOL",
+      "LUK",
+      "MAL",
+      "MAT",
+      "MRK",
+      "NAM",
+      "PHP",
+      "PSA",
+      "REV",
       "ROM"
     ]
   },
@@ -17432,6 +20513,1302 @@
       "COL",
       "EPH",
       "HEB",
+      "PSA",
+      "REV",
+      "ROM"
+    ]
+  },
+  "Jesus is Lord": {
+    "name": "Jesus is Lord",
+    "references": {
+      "PSA": [
+        {
+          "verse": 1848,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Ps 110:1"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 767,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:41"
+          ]
+        },
+        {
+          "verse": 768,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:42"
+          ]
+        },
+        {
+          "verse": 769,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:43"
+          ]
+        },
+        {
+          "verse": 770,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:44"
+          ]
+        },
+        {
+          "verse": 771,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:45"
+          ]
+        },
+        {
+          "verse": 772,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Matt 22:46"
+          ]
+        },
+        {
+          "verse": 1065,
+          "subtopics": [],
+          "refs": [
+            "Matt 28:17"
+          ]
+        },
+        {
+          "verse": 1066,
+          "subtopics": [],
+          "refs": [
+            "Matt 28:18"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 47,
+          "subtopics": [
+            "name of the Lord",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Acts 2:21"
+          ]
+        },
+        {
+          "verse": 48,
+          "subtopics": [
+            "name of the Lord",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Acts 2:22"
+          ]
+        },
+        {
+          "verse": 60,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Acts 2:34"
+          ]
+        },
+        {
+          "verse": 61,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Acts 2:35"
+          ]
+        },
+        {
+          "verse": 62,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Acts 2:36"
+          ]
+        },
+        {
+          "verse": 252,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Acts 7:59"
+          ]
+        },
+        {
+          "verse": 253,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Acts 7:60"
+          ]
+        },
+        {
+          "verse": 297,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Acts 9:5"
+          ]
+        },
+        {
+          "verse": 371,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Acts 10:36"
+          ]
+        },
+        {
+          "verse": 471,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Acts 13:33"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Heb 1:3"
+          ]
+        },
+        {
+          "verse": 13,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Heb 1:13"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 769,
+          "subtopics": [
+            "voice in the wilderness",
+            "prepare the way"
+          ],
+          "refs": [
+            "Isa 40:3"
+          ]
+        },
+        {
+          "verse": 929,
+          "subtopics": [
+            "every knee and every tongue",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Isa 45:22"
+          ]
+        },
+        {
+          "verse": 930,
+          "subtopics": [
+            "every knee and every tongue",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Isa 45:23"
+          ]
+        }
+      ],
+      "MRK": [
+        {
+          "verse": 1,
+          "subtopics": [
+            "voice in the wilderness",
+            "prepare the way"
+          ],
+          "refs": [
+            "Mark 1:1"
+          ]
+        },
+        {
+          "verse": 2,
+          "subtopics": [
+            "voice in the wilderness",
+            "prepare the way"
+          ],
+          "refs": [
+            "Mark 1:2"
+          ]
+        },
+        {
+          "verse": 3,
+          "subtopics": [
+            "voice in the wilderness",
+            "prepare the way"
+          ],
+          "refs": [
+            "Mark 1:3"
+          ]
+        },
+        {
+          "verse": 4,
+          "subtopics": [
+            "voice in the wilderness",
+            "prepare the way"
+          ],
+          "refs": [
+            "Mark 1:4"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 39,
+          "subtopics": [
+            "every knee and every tongue",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Phil 2:9"
+          ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [
+            "every knee and every tongue",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Phil 2:10"
+          ]
+        },
+        {
+          "verse": 41,
+          "subtopics": [
+            "every knee and every tongue",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Phil 2:11"
+          ]
+        }
+      ],
+      "JOL": [
+        {
+          "verse": 52,
+          "subtopics": [
+            "name of the Lord",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Joel 2:32"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 4,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rom 1:4"
+          ]
+        },
+        {
+          "verse": 138,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rom 5:21"
+          ]
+        },
+        {
+          "verse": 186,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rom 7:25"
+          ]
+        },
+        {
+          "verse": 267,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rom 10:9"
+          ]
+        },
+        {
+          "verse": 271,
+          "subtopics": [
+            "name of the Lord",
+            "Jesus is God (LORD)"
+          ],
+          "refs": [
+            "Rom 10:13"
+          ]
+        }
+      ],
+      "1CO": [
+        {
+          "verse": 2,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Cor 1:2"
+          ]
+        },
+        {
+          "verse": 170,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Cor 8:6"
+          ]
+        },
+        {
+          "verse": 274,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Cor 12:3"
+          ]
+        },
+        {
+          "verse": 412,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Cor 15:57"
+          ]
+        },
+        {
+          "verse": 435,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Cor 16:22"
+          ]
+        }
+      ],
+      "2CO": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Cor 1:3"
+          ]
+        },
+        {
+          "verse": 64,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Cor 4:5"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 3,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Eph 1:3"
+          ]
+        },
+        {
+          "verse": 20,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Eph 1:20"
+          ]
+        },
+        {
+          "verse": 21,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Eph 1:21"
+          ]
+        },
+        {
+          "verse": 22,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "Eph 1:22"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 15,
+          "subtopics": [
+            "Jesus is God"
+          ],
+          "refs": [
+            "Col 1:15"
+          ]
+        },
+        {
+          "verse": 18,
+          "subtopics": [
+            "Jesus is God"
+          ],
+          "refs": [
+            "Col 1:18"
+          ]
+        },
+        {
+          "verse": 35,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Col 2:6"
+          ]
+        }
+      ],
+      "2TH": [
+        {
+          "verse": 34,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Thess 3:5"
+          ]
+        }
+      ],
+      "1TI": [
+        {
+          "verse": 2,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Tim 1:2"
+          ]
+        },
+        {
+          "verse": 106,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Tim 6:14"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 2,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Tim 1:2"
+          ]
+        }
+      ],
+      "TIT": [
+        {
+          "verse": 4,
+          "subtopics": [
+            "Savior"
+          ],
+          "refs": [
+            "Titus 1:4"
+          ]
+        }
+      ],
+      "1PE": [
+        {
+          "verse": 65,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "1 Pet 3:15"
+          ]
+        },
+        {
+          "verse": 72,
+          "subtopics": [
+            "right hand"
+          ],
+          "refs": [
+            "1 Pet 3:22"
+          ]
+        }
+      ],
+      "2PE": [
+        {
+          "verse": 8,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Pet 1:8"
+          ]
+        },
+        {
+          "verse": 61,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "2 Pet 3:18"
+          ]
+        }
+      ],
+      "JUD": [
+        {
+          "verse": 4,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Jude 1:4"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 292,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rev 17:14"
+          ]
+        },
+        {
+          "verse": 336,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rev 19:16"
+          ]
+        },
+        {
+          "verse": 403,
+          "subtopics": [
+            "Lord"
+          ],
+          "refs": [
+            "Rev 22:20"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1CO",
+      "1PE",
+      "1TI",
+      "2CO",
+      "2PE",
+      "2TH",
+      "2TI",
+      "ACT",
+      "COL",
+      "EPH",
+      "HEB",
+      "ISA",
+      "JOL",
+      "JUD",
+      "MAT",
+      "MRK",
+      "PHP",
+      "PSA",
+      "REV",
+      "ROM",
+      "TIT"
+    ]
+  },
+  "Jesus Son of God": {
+    "name": "Jesus Son of God",
+    "references": {
+      "PSA": [
+        {
+          "verse": 13,
+          "subtopics": [],
+          "refs": [
+            "Ps 2:7"
+          ]
+        }
+      ],
+      "2SA": [
+        {
+          "verse": 172,
+          "subtopics": [],
+          "refs": [
+            "2 Sam 7:14"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 35,
+          "subtopics": [],
+          "refs": [
+            "Luke 1:35"
+          ]
+        },
+        {
+          "verse": 154,
+          "subtopics": [],
+          "refs": [
+            "Luke 3:22"
+          ]
+        },
+        {
+          "verse": 211,
+          "subtopics": [],
+          "refs": [
+            "Luke 4:41"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 65,
+          "subtopics": [],
+          "refs": [
+            "Matt 3:17"
+          ]
+        },
+        {
+          "verse": 68,
+          "subtopics": [],
+          "refs": [
+            "Matt 4:3"
+          ]
+        },
+        {
+          "verse": 230,
+          "subtopics": [],
+          "refs": [
+            "Matt 8:29"
+          ]
+        },
+        {
+          "verse": 544,
+          "subtopics": [],
+          "refs": [
+            "Matt 16:16"
+          ]
+        },
+        {
+          "verse": 561,
+          "subtopics": [],
+          "refs": [
+            "Matt 17:5"
+          ]
+        }
+      ],
+      "MRK": [
+        {
+          "verse": 11,
+          "subtopics": [],
+          "refs": [
+            "Mark 1:11"
+          ]
+        },
+        {
+          "verse": 84,
+          "subtopics": [],
+          "refs": [
+            "Mark 3:11"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 34,
+          "subtopics": [],
+          "refs": [
+            "John 1:34"
+          ]
+        },
+        {
+          "verse": 505,
+          "subtopics": [],
+          "refs": [
+            "John 11:27"
+          ]
+        },
+        {
+          "verse": 853,
+          "subtopics": [],
+          "refs": [
+            "John 20:31"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 312,
+          "subtopics": [],
+          "refs": [
+            "Acts 9:20"
+          ]
+        },
+        {
+          "verse": 471,
+          "subtopics": [],
+          "refs": [
+            "Acts 13:33"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 3,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:3"
+          ]
+        },
+        {
+          "verse": 4,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:4"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 44,
+          "subtopics": [],
+          "refs": [
+            "Gal 2:20"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 79,
+          "subtopics": [],
+          "refs": [
+            "Eph 4:13"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 13,
+          "subtopics": [],
+          "refs": [
+            "Col 1:13"
+          ]
+        }
+      ],
+      "1TH": [
+        {
+          "verse": 10,
+          "subtopics": [],
+          "refs": [
+            "1 Thess 1:10"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 5,
+          "subtopics": [],
+          "refs": [
+            "Heb 1:5"
+          ]
+        },
+        {
+          "verse": 65,
+          "subtopics": [],
+          "refs": [
+            "Heb 4:14"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 78,
+          "subtopics": [],
+          "refs": [
+            "1 John 4:15"
+          ]
+        },
+        {
+          "verse": 89,
+          "subtopics": [],
+          "refs": [
+            "1 John 5:5"
+          ]
+        }
+      ],
+      "2PE": [
+        {
+          "verse": 17,
+          "subtopics": [],
+          "refs": [
+            "2 Pet 1:17"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "1TH",
+      "2PE",
+      "2SA",
+      "ACT",
+      "COL",
+      "EPH",
+      "GAL",
+      "HEB",
+      "JHN",
+      "LUK",
+      "MAT",
+      "MRK",
+      "PSA",
+      "ROM"
+    ]
+  },
+  "Jesus Son of David": {
+    "name": "Jesus Son of David",
+    "references": {
+      "2SA": [
+        {
+          "verse": 170,
+          "subtopics": [],
+          "refs": [
+            "2 Sam 7:12"
+          ]
+        },
+        {
+          "verse": 171,
+          "subtopics": [],
+          "refs": [
+            "2 Sam 7:13"
+          ]
+        },
+        {
+          "verse": 174,
+          "subtopics": [],
+          "refs": [
+            "2 Sam 7:16"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 1390,
+          "subtopics": [],
+          "refs": [
+            "Ps 89:3"
+          ]
+        },
+        {
+          "verse": 1391,
+          "subtopics": [],
+          "refs": [
+            "Ps 89:4"
+          ]
+        },
+        {
+          "verse": 2223,
+          "subtopics": [],
+          "refs": [
+            "Ps 132:11"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 181,
+          "subtopics": [],
+          "refs": [
+            "Isa 9:6"
+          ]
+        },
+        {
+          "verse": 182,
+          "subtopics": [],
+          "refs": [
+            "Isa 9:7"
+          ]
+        },
+        {
+          "verse": 231,
+          "subtopics": [],
+          "refs": [
+            "Isa 11:1"
+          ]
+        },
+        {
+          "verse": 240,
+          "subtopics": [],
+          "refs": [
+            "Isa 11:10"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 543,
+          "subtopics": [],
+          "refs": [
+            "Jer 23:5"
+          ]
+        },
+        {
+          "verse": 544,
+          "subtopics": [],
+          "refs": [
+            "Jer 23:6"
+          ]
+        },
+        {
+          "verse": 844,
+          "subtopics": [],
+          "refs": [
+            "Jer 33:15"
+          ]
+        }
+      ],
+      "EZK": [
+        {
+          "verse": 872,
+          "subtopics": [],
+          "refs": [
+            "Ezek 34:23"
+          ]
+        },
+        {
+          "verse": 873,
+          "subtopics": [],
+          "refs": [
+            "Ezek 34:24"
+          ]
+        }
+      ],
+      "AMO": [
+        {
+          "verse": 142,
+          "subtopics": [],
+          "refs": [
+            "Amos 9:11"
+          ]
+        }
+      ],
+      "MIC": [
+        {
+          "verse": 56,
+          "subtopics": [],
+          "refs": [
+            "Mic 5:2"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 1,
+          "subtopics": [],
+          "refs": [
+            "Matt 1:1"
+          ]
+        },
+        {
+          "verse": 6,
+          "subtopics": [],
+          "refs": [
+            "Matt 1:6"
+          ]
+        },
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "Matt 2:1"
+          ]
+        },
+        {
+          "verse": 31,
+          "subtopics": [],
+          "refs": [
+            "Matt 2:6"
+          ]
+        },
+        {
+          "verse": 262,
+          "subtopics": [],
+          "refs": [
+            "Matt 9:27"
+          ]
+        },
+        {
+          "verse": 368,
+          "subtopics": [],
+          "refs": [
+            "Matt 12:23"
+          ]
+        },
+        {
+          "verse": 689,
+          "subtopics": [],
+          "refs": [
+            "Matt 21:9"
+          ]
+        },
+        {
+          "verse": 767,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:41"
+          ]
+        },
+        {
+          "verse": 768,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:42"
+          ]
+        },
+        {
+          "verse": 769,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:43"
+          ]
+        },
+        {
+          "verse": 770,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:44"
+          ]
+        },
+        {
+          "verse": 771,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:45"
+          ]
+        },
+        {
+          "verse": 772,
+          "subtopics": [],
+          "refs": [
+            "Matt 22:46"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 32,
+          "subtopics": [],
+          "refs": [
+            "Luke 1:32"
+          ]
+        },
+        {
+          "verse": 33,
+          "subtopics": [],
+          "refs": [
+            "Luke 1:33"
+          ]
+        },
+        {
+          "verse": 84,
+          "subtopics": [],
+          "refs": [
+            "Luke 2:4"
+          ]
+        },
+        {
+          "verse": 155,
+          "subtopics": [],
+          "refs": [
+            "Luke 3:23"
+          ]
+        },
+        {
+          "verse": 163,
+          "subtopics": [],
+          "refs": [
+            "Luke 3:31"
+          ]
+        },
+        {
+          "verse": 164,
+          "subtopics": [],
+          "refs": [
+            "Luke 3:32"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 325,
+          "subtopics": [],
+          "refs": [
+            "John 7:42"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 55,
+          "subtopics": [],
+          "refs": [
+            "Acts 2:29"
+          ]
+        },
+        {
+          "verse": 56,
+          "subtopics": [],
+          "refs": [
+            "Acts 2:30"
+          ]
+        },
+        {
+          "verse": 57,
+          "subtopics": [],
+          "refs": [
+            "Acts 2:31"
+          ]
+        },
+        {
+          "verse": 58,
+          "subtopics": [],
+          "refs": [
+            "Acts 2:32"
+          ]
+        },
+        {
+          "verse": 460,
+          "subtopics": [],
+          "refs": [
+            "Acts 13:22"
+          ]
+        },
+        {
+          "verse": 461,
+          "subtopics": [],
+          "refs": [
+            "Acts 13:23"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 3,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:3"
+          ]
+        },
+        {
+          "verse": 4,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:4"
+          ]
+        },
+        {
+          "verse": 385,
+          "subtopics": [],
+          "refs": [
+            "Rom 15:12"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "2 Tim 2:8"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 87,
+          "subtopics": [],
+          "refs": [
+            "Rev 5:5"
+          ]
+        },
+        {
+          "verse": 399,
+          "subtopics": [],
+          "refs": [
+            "Rev 22:16"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "2SA",
+      "2TI",
+      "ACT",
+      "AMO",
+      "EZK",
+      "ISA",
+      "JER",
+      "JHN",
+      "LUK",
+      "MAT",
+      "MIC",
       "PSA",
       "REV",
       "ROM"
@@ -20668,6 +25045,243 @@
       "ROM"
     ]
   },
+  "Natural revelation": {
+    "name": "Natural revelation",
+    "references": {
+      "GEN": [
+        {
+          "verse": 1,
+          "subtopics": [],
+          "refs": [
+            "Gen 1:1"
+          ]
+        }
+      ],
+      "JOB": [
+        {
+          "verse": 266,
+          "subtopics": [],
+          "refs": [
+            "Job 12:7"
+          ]
+        },
+        {
+          "verse": 267,
+          "subtopics": [],
+          "refs": [
+            "Job 12:8"
+          ]
+        },
+        {
+          "verse": 268,
+          "subtopics": [],
+          "refs": [
+            "Job 12:9"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 74,
+          "subtopics": [],
+          "refs": [
+            "Ps 8:1"
+          ]
+        },
+        {
+          "verse": 230,
+          "subtopics": [],
+          "refs": [
+            "Ps 19:1"
+          ]
+        },
+        {
+          "verse": 231,
+          "subtopics": [],
+          "refs": [
+            "Ps 19:2"
+          ]
+        },
+        {
+          "verse": 232,
+          "subtopics": [],
+          "refs": [
+            "Ps 19:3"
+          ]
+        },
+        {
+          "verse": 233,
+          "subtopics": [],
+          "refs": [
+            "Ps 19:4"
+          ]
+        },
+        {
+          "verse": 1545,
+          "subtopics": [],
+          "refs": [
+            "Ps 97:6"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 792,
+          "subtopics": [],
+          "refs": [
+            "Isa 40:26"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 133,
+          "subtopics": [],
+          "refs": [
+            "Jer 5:21"
+          ]
+        },
+        {
+          "verse": 134,
+          "subtopics": [],
+          "refs": [
+            "Jer 5:22"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 135,
+          "subtopics": [],
+          "refs": [
+            "Matt 5:45"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 505,
+          "subtopics": [],
+          "refs": [
+            "Acts 14:15"
+          ]
+        },
+        {
+          "verse": 506,
+          "subtopics": [],
+          "refs": [
+            "Acts 14:16"
+          ]
+        },
+        {
+          "verse": 507,
+          "subtopics": [],
+          "refs": [
+            "Acts 14:17"
+          ]
+        },
+        {
+          "verse": 622,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:24"
+          ]
+        },
+        {
+          "verse": 623,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:25"
+          ]
+        },
+        {
+          "verse": 624,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:26"
+          ]
+        },
+        {
+          "verse": 625,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:27"
+          ]
+        },
+        {
+          "verse": 626,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:28"
+          ]
+        },
+        {
+          "verse": 627,
+          "subtopics": [],
+          "refs": [
+            "Acts 17:29"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 19,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:19"
+          ]
+        },
+        {
+          "verse": 20,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:20"
+          ]
+        },
+        {
+          "verse": 46,
+          "subtopics": [],
+          "refs": [
+            "Rom 2:14"
+          ]
+        },
+        {
+          "verse": 47,
+          "subtopics": [],
+          "refs": [
+            "Rom 2:15"
+          ]
+        },
+        {
+          "verse": 276,
+          "subtopics": [],
+          "refs": [
+            "Rom 10:18"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 82,
+          "subtopics": [],
+          "refs": [
+            "Rev 4:11"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "ACT",
+      "GEN",
+      "ISA",
+      "JER",
+      "JOB",
+      "MAT",
+      "PSA",
+      "REV",
+      "ROM"
+    ]
+  },
   "Persecuted Because of Righteousness": {
     "name": "Persecuted Because of Righteousness",
     "references": {
@@ -21489,6 +26103,910 @@
       "LUK",
       "MAT",
       "MRK"
+    ]
+  },
+  "Righteous, no one is righteous on their own": {
+    "name": "Righteous, no one is righteous on their own",
+    "references": {
+      "PSA": [
+        {
+          "verse": 142,
+          "subtopics": [],
+          "refs": [
+            "Ps 14:1"
+          ]
+        },
+        {
+          "verse": 143,
+          "subtopics": [],
+          "refs": [
+            "Ps 14:2"
+          ]
+        },
+        {
+          "verse": 144,
+          "subtopics": [],
+          "refs": [
+            "Ps 14:3"
+          ]
+        },
+        {
+          "verse": 781,
+          "subtopics": [],
+          "refs": [
+            "Ps 53:1"
+          ]
+        },
+        {
+          "verse": 782,
+          "subtopics": [],
+          "refs": [
+            "Ps 53:2"
+          ]
+        },
+        {
+          "verse": 783,
+          "subtopics": [],
+          "refs": [
+            "Ps 53:3"
+          ]
+        },
+        {
+          "verse": 2355,
+          "subtopics": [],
+          "refs": [
+            "Ps 143:1"
+          ]
+        },
+        {
+          "verse": 2356,
+          "subtopics": [],
+          "refs": [
+            "Ps 143:2"
+          ]
+        }
+      ],
+      "ECC": [
+        {
+          "verse": 134,
+          "subtopics": [],
+          "refs": [
+            "Eccl 7:20"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 1063,
+          "subtopics": [],
+          "refs": [
+            "Isa 53:6"
+          ]
+        },
+        {
+          "verse": 1237,
+          "subtopics": [],
+          "refs": [
+            "Isa 64:6"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 71,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:10"
+          ]
+        },
+        {
+          "verse": 72,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:11"
+          ]
+        },
+        {
+          "verse": 73,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:12"
+          ]
+        },
+        {
+          "verse": 74,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:13"
+          ]
+        },
+        {
+          "verse": 75,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:14"
+          ]
+        },
+        {
+          "verse": 76,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:15"
+          ]
+        },
+        {
+          "verse": 77,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:16"
+          ]
+        },
+        {
+          "verse": 78,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:17"
+          ]
+        },
+        {
+          "verse": 79,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:18"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 67,
+          "subtopics": [],
+          "refs": [
+            "Gal 3:22"
+          ]
+        }
+      ],
+      "JAS": [
+        {
+          "verse": 55,
+          "subtopics": [],
+          "refs": [
+            "Jas 3:2"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 8,
+          "subtopics": [],
+          "refs": [
+            "1 John 1:8"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "ECC",
+      "GAL",
+      "ISA",
+      "JAS",
+      "PSA",
+      "ROM"
+    ]
+  },
+  "Righteousness of God revealed apart from the law": {
+    "name": "Righteousness of God revealed apart from the law",
+    "references": {
+      "PSA": [
+        {
+          "verse": 163,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Ps 16:10"
+          ]
+        },
+        {
+          "verse": 281,
+          "subtopics": [
+            "Promised in advance",
+            "strike heel"
+          ],
+          "refs": [
+            "Ps 22:16"
+          ]
+        },
+        {
+          "verse": 282,
+          "subtopics": [
+            "Promised in advance",
+            "strike heel"
+          ],
+          "refs": [
+            "Ps 22:17"
+          ]
+        },
+        {
+          "verse": 1465,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:9"
+          ]
+        },
+        {
+          "verse": 1466,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:10"
+          ]
+        },
+        {
+          "verse": 1467,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:11"
+          ]
+        },
+        {
+          "verse": 1468,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:12"
+          ]
+        },
+        {
+          "verse": 1469,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:13"
+          ]
+        },
+        {
+          "verse": 1470,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:14"
+          ]
+        },
+        {
+          "verse": 1471,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:15"
+          ]
+        },
+        {
+          "verse": 1472,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Ps 91:16"
+          ]
+        }
+      ],
+      "ACT": [
+        {
+          "verse": 53,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Acts 2:27"
+          ]
+        },
+        {
+          "verse": 54,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Acts 2:28"
+          ]
+        },
+        {
+          "verse": 55,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Acts 2:29"
+          ]
+        },
+        {
+          "verse": 56,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Acts 2:30"
+          ]
+        },
+        {
+          "verse": 57,
+          "subtopics": [
+            "Promised in advance",
+            "no decay"
+          ],
+          "refs": [
+            "Acts 2:31"
+          ]
+        },
+        {
+          "verse": 95,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:22"
+          ]
+        },
+        {
+          "verse": 96,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:23"
+          ]
+        },
+        {
+          "verse": 97,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:24"
+          ]
+        },
+        {
+          "verse": 98,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:25"
+          ]
+        },
+        {
+          "verse": 99,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Acts 3:26"
+          ]
+        },
+        {
+          "verse": 472,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Acts 13:34"
+          ]
+        }
+      ],
+      "GEN": [
+        {
+          "verse": 70,
+          "subtopics": [
+            "Promised in advance",
+            "crush head | strike heel"
+          ],
+          "refs": [
+            "Gen 3:14"
+          ]
+        },
+        {
+          "verse": 71,
+          "subtopics": [
+            "Promised in advance",
+            "crush head | strike heel"
+          ],
+          "refs": [
+            "Gen 3:15"
+          ]
+        },
+        {
+          "verse": 367,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "Gen 15:6"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 195,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:1"
+          ]
+        },
+        {
+          "verse": 196,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:2"
+          ]
+        },
+        {
+          "verse": 197,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:3"
+          ]
+        },
+        {
+          "verse": 198,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:4"
+          ]
+        },
+        {
+          "verse": 199,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:5"
+          ]
+        },
+        {
+          "verse": 200,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:6"
+          ]
+        },
+        {
+          "verse": 201,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:7"
+          ]
+        },
+        {
+          "verse": 202,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:8"
+          ]
+        },
+        {
+          "verse": 203,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:9"
+          ]
+        },
+        {
+          "verse": 204,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:10"
+          ]
+        },
+        {
+          "verse": 205,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rev 12:11"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 28,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Heb 2:14"
+          ]
+        },
+        {
+          "verse": 29,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Heb 2:15"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 44,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Col 2:15"
+          ]
+        },
+        {
+          "verse": 44,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Col 2:15"
+          ]
+        }
+      ],
+      "1JN": [
+        {
+          "verse": 47,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "1 John 3:8"
+          ]
+        }
+      ],
+      "LUK": [
+        {
+          "verse": 488,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Luke 10:18"
+          ]
+        },
+        {
+          "verse": 489,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Luke 10:19"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 17,
+          "subtopics": [
+            "Righteous shall live by faith"
+          ],
+          "refs": [
+            "Rom 1:17"
+          ]
+        },
+        {
+          "verse": 95,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "Rom 4:3"
+          ]
+        },
+        {
+          "verse": 102,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "Rom 4:10"
+          ]
+        },
+        {
+          "verse": 103,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "Rom 4:11"
+          ]
+        },
+        {
+          "verse": 426,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Rom 16:20"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 498,
+          "subtopics": [
+            "Promised in advance",
+            "crush head"
+          ],
+          "refs": [
+            "Isa 27:1"
+          ]
+        },
+        {
+          "verse": 1068,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Isa 53:11"
+          ]
+        },
+        {
+          "verse": 1069,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Isa 53:12"
+          ]
+        }
+      ],
+      "ZEC": [
+        {
+          "verse": 177,
+          "subtopics": [
+            "Promised in advance",
+            "strike heel"
+          ],
+          "refs": [
+            "Zech 12:10"
+          ]
+        }
+      ],
+      "DEU": [
+        {
+          "verse": 507,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:15"
+          ]
+        },
+        {
+          "verse": 508,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:16"
+          ]
+        },
+        {
+          "verse": 509,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:17"
+          ]
+        },
+        {
+          "verse": 510,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:18"
+          ]
+        },
+        {
+          "verse": 511,
+          "subtopics": [
+            "God will raise up a prophet"
+          ],
+          "refs": [
+            "Deut 18:19"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 776,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:31"
+          ]
+        },
+        {
+          "verse": 777,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:32"
+          ]
+        },
+        {
+          "verse": 778,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:33"
+          ]
+        },
+        {
+          "verse": 779,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Jer 31:34"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 935,
+          "subtopics": [
+            "new covenant"
+          ],
+          "refs": [
+            "Matt 26:28"
+          ]
+        }
+      ],
+      "MRK": [
+        {
+          "verse": 100,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Mark 3:27"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 73,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Eph 4:7"
+          ]
+        },
+        {
+          "verse": 74,
+          "subtopics": [
+            "divide spoils"
+          ],
+          "refs": [
+            "Eph 4:8"
+          ]
+        }
+      ],
+      "HAB": [
+        {
+          "verse": 21,
+          "subtopics": [
+            "Righteous shall live by faith"
+          ],
+          "refs": [
+            "Hab 2:4"
+          ]
+        }
+      ],
+      "2CO": [
+        {
+          "verse": 98,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "2 Cor 5:21"
+          ]
+        }
+      ],
+      "GAL": [
+        {
+          "verse": 62,
+          "subtopics": [
+            "Righteousness apart from law"
+          ],
+          "refs": [
+            "Gal 3:17"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1JN",
+      "2CO",
+      "ACT",
+      "COL",
+      "DEU",
+      "EPH",
+      "GAL",
+      "GEN",
+      "HAB",
+      "HEB",
+      "ISA",
+      "JER",
+      "LUK",
+      "MAT",
+      "MRK",
+      "PSA",
+      "REV",
+      "ROM",
+      "ZEC"
     ]
   },
   "Righteous shall live by faith": {
@@ -23720,6 +29238,210 @@
       "ACT"
     ]
   },
+  "Suppress the truth": {
+    "name": "Suppress the truth",
+    "references": {
+      "PSA": [
+        {
+          "verse": 500,
+          "subtopics": [],
+          "refs": [
+            "Ps 36:1"
+          ]
+        },
+        {
+          "verse": 746,
+          "subtopics": [],
+          "refs": [
+            "Ps 50:17"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 1272,
+          "subtopics": [],
+          "refs": [
+            "Isa 66:4"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 124,
+          "subtopics": [],
+          "refs": [
+            "Jer 5:12"
+          ]
+        },
+        {
+          "verse": 456,
+          "subtopics": [],
+          "refs": [
+            "Jer 18:18"
+          ]
+        }
+      ],
+      "MAT": [
+        {
+          "verse": 785,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:13"
+          ]
+        },
+        {
+          "verse": 786,
+          "subtopics": [],
+          "refs": [
+            "Matt 23:15"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 18,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:18"
+          ]
+        },
+        {
+          "verse": 28,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:28"
+          ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [],
+          "refs": [
+            "Rom 2:8"
+          ]
+        },
+        {
+          "verse": 68,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:7"
+          ]
+        },
+        {
+          "verse": 279,
+          "subtopics": [],
+          "refs": [
+            "Rom 10:21"
+          ]
+        }
+      ],
+      "2TH": [
+        {
+          "verse": 22,
+          "subtopics": [],
+          "refs": [
+            "2 Thess 2:10"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [],
+          "refs": [
+            "2 Thess 2:11"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [],
+          "refs": [
+            "2 Thess 2:12"
+          ]
+        }
+      ],
+      "2TI": [
+        {
+          "verse": 52,
+          "subtopics": [],
+          "refs": [
+            "2 Tim 3:8"
+          ]
+        }
+      ],
+      "TIT": [
+        {
+          "verse": 14,
+          "subtopics": [],
+          "refs": [
+            "Titus 1:14"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 44,
+          "subtopics": [],
+          "refs": [
+            "Heb 3:12"
+          ]
+        }
+      ],
+      "2PE": [
+        {
+          "verse": 48,
+          "subtopics": [],
+          "refs": [
+            "2 Pet 3:5"
+          ]
+        }
+      ],
+      "3JN": [
+        {
+          "verse": 9,
+          "subtopics": [],
+          "refs": [
+            "3 John 1:9"
+          ]
+        },
+        {
+          "verse": 10,
+          "subtopics": [],
+          "refs": [
+            "3 John 1:10"
+          ]
+        },
+        {
+          "verse": 11,
+          "subtopics": [],
+          "refs": [
+            "3 John 1:11"
+          ]
+        }
+      ],
+      "JUD": [
+        {
+          "verse": 4,
+          "subtopics": [],
+          "refs": [
+            "Jude 1:4"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "2PE",
+      "2TH",
+      "2TI",
+      "3JN",
+      "HEB",
+      "ISA",
+      "JER",
+      "JUD",
+      "MAT",
+      "PSA",
+      "ROM",
+      "TIT"
+    ]
+  },
   "Surprising Strange Unusual Interesting": {
     "name": "Surprising Strange Unusual Interesting",
     "references": {
@@ -25928,181 +31650,409 @@
       "REV"
     ]
   },
-  "Types of Christ / Jesus in the Old Testament": {
-    "name": "Types of Christ / Jesus in the Old Testament",
+  "Trust God (believe)": {
+    "name": "Trust God (believe)",
     "references": {
-      "LUK": [
+      "GEN": [
         {
-          "verse": 1121,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 367,
+          "subtopics": [],
           "refs": [
-            "Luke 24:25"
+            "Gen 15:6"
+          ]
+        }
+      ],
+      "PRO": [
+        {
+          "verse": 60,
+          "subtopics": [],
+          "refs": [
+            "Prov 3:5"
           ]
         },
         {
-          "verse": 1122,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 61,
+          "subtopics": [],
           "refs": [
-            "Luke 24:26"
+            "Prov 3:6"
+          ]
+        }
+      ],
+      "PSA": [
+        {
+          "verse": 92,
+          "subtopics": [],
+          "refs": [
+            "Ps 9:10"
           ]
         },
         {
-          "verse": 1123,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 512,
+          "subtopics": [],
           "refs": [
-            "Luke 24:27"
+            "Ps 37:1"
           ]
         },
         {
-          "verse": 1141,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 513,
+          "subtopics": [],
           "refs": [
-            "Luke 24:45"
+            "Ps 37:2"
           ]
         },
         {
-          "verse": 1142,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 514,
+          "subtopics": [],
           "refs": [
-            "Luke 24:46"
+            "Ps 37:3"
+          ]
+        },
+        {
+          "verse": 515,
+          "subtopics": [],
+          "refs": [
+            "Ps 37:4"
+          ]
+        },
+        {
+          "verse": 516,
+          "subtopics": [],
+          "refs": [
+            "Ps 37:5"
+          ]
+        },
+        {
+          "verse": 517,
+          "subtopics": [],
+          "refs": [
+            "Ps 37:6"
+          ]
+        },
+        {
+          "verse": 518,
+          "subtopics": [],
+          "refs": [
+            "Ps 37:7"
+          ]
+        },
+        {
+          "verse": 590,
+          "subtopics": [],
+          "refs": [
+            "Ps 40:4"
+          ]
+        },
+        {
+          "verse": 1176,
+          "subtopics": [],
+          "refs": [
+            "Ps 78:2"
+          ]
+        },
+        {
+          "verse": 1900,
+          "subtopics": [],
+          "refs": [
+            "Ps 115:9"
+          ]
+        },
+        {
+          "verse": 1901,
+          "subtopics": [],
+          "refs": [
+            "Ps 115:10"
+          ]
+        },
+        {
+          "verse": 1902,
+          "subtopics": [],
+          "refs": [
+            "Ps 115:11"
+          ]
+        },
+        {
+          "verse": 1938,
+          "subtopics": [],
+          "refs": [
+            "Ps 118:8"
+          ]
+        },
+        {
+          "verse": 1939,
+          "subtopics": [],
+          "refs": [
+            "Ps 118:9"
+          ]
+        },
+        {
+          "verse": 2405,
+          "subtopics": [],
+          "refs": [
+            "Ps 146:3"
+          ]
+        },
+        {
+          "verse": 2406,
+          "subtopics": [],
+          "refs": [
+            "Ps 146:4"
+          ]
+        },
+        {
+          "verse": 2407,
+          "subtopics": [],
+          "refs": [
+            "Ps 146:5"
+          ]
+        }
+      ],
+      "HAB": [
+        {
+          "verse": 21,
+          "subtopics": [],
+          "refs": [
+            "Hab 2:4"
+          ]
+        }
+      ],
+      "ISA": [
+        {
+          "verse": 479,
+          "subtopics": [],
+          "refs": [
+            "Isa 26:3"
+          ]
+        },
+        {
+          "verse": 480,
+          "subtopics": [],
+          "refs": [
+            "Isa 26:4"
+          ]
+        },
+        {
+          "verse": 578,
+          "subtopics": [],
+          "refs": [
+            "Isa 30:15"
+          ]
+        },
+        {
+          "verse": 1018,
+          "subtopics": [],
+          "refs": [
+            "Isa 50:10"
           ]
         }
       ],
       "JHN": [
         {
-          "verse": 204,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 112,
+          "subtopics": [],
           "refs": [
-            "John 5:39"
-          ]
-        }
-      ],
-      "ACT": [
-        {
-          "verse": 600,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
-          "refs": [
-            "Acts 17:2"
+            "John 3:36"
           ]
         },
         {
-          "verse": 601,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 240,
+          "subtopics": [],
           "refs": [
-            "Acts 17:3"
+            "John 6:28"
+          ]
+        },
+        {
+          "verse": 241,
+          "subtopics": [],
+          "refs": [
+            "John 6:29"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 53,
+          "subtopics": [],
+          "refs": [
+            "Heb 4:2"
+          ]
+        },
+        {
+          "verse": 215,
+          "subtopics": [],
+          "refs": [
+            "Heb 11:6"
+          ]
+        },
+        {
+          "verse": 216,
+          "subtopics": [],
+          "refs": [
+            "Heb 11:7"
+          ]
+        }
+      ],
+      "PHP": [
+        {
+          "verse": 87,
+          "subtopics": [],
+          "refs": [
+            "Phil 4:6"
+          ]
+        },
+        {
+          "verse": 88,
+          "subtopics": [],
+          "refs": [
+            "Phil 4:7"
+          ]
+        }
+      ],
+      "JER": [
+        {
+          "verse": 416,
+          "subtopics": [],
+          "refs": [
+            "Jer 17:5"
+          ]
+        },
+        {
+          "verse": 417,
+          "subtopics": [],
+          "refs": [
+            "Jer 17:6"
+          ]
+        },
+        {
+          "verse": 418,
+          "subtopics": [],
+          "refs": [
+            "Jer 17:7"
+          ]
+        },
+        {
+          "verse": 419,
+          "subtopics": [],
+          "refs": [
+            "Jer 17:8"
+          ]
+        }
+      ],
+      "NAM": [
+        {
+          "verse": 7,
+          "subtopics": [],
+          "refs": [
+            "Nah 1:7"
           ]
         }
       ],
       "ROM": [
         {
-          "verse": 82,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 386,
+          "subtopics": [],
           "refs": [
-            "Rom 3:21"
-          ]
-        },
-        {
-          "verse": 83,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
-          "refs": [
-            "Rom 3:22"
-          ]
-        },
-        {
-          "verse": 430,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
-          "refs": [
-            "Rom 16:25"
-          ]
-        },
-        {
-          "verse": 431,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
-          "refs": [
-            "Rom 16:26"
+            "Rom 15:13"
           ]
         }
       ],
-      "1CO": [
+      "2CO": [
         {
-          "verse": 358,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 9,
+          "subtopics": [],
           "refs": [
-            "1 Cor 15:3"
+            "2 Cor 1:9"
           ]
         },
         {
-          "verse": 359,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 10,
+          "subtopics": [],
           "refs": [
-            "1 Cor 15:4"
+            "2 Cor 1:10"
+          ]
+        }
+      ],
+      "1TI": [
+        {
+          "verse": 61,
+          "subtopics": [],
+          "refs": [
+            "1 Tim 4:10"
           ]
         }
       ],
       "1PE": [
         {
-          "verse": 10,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 18,
+          "subtopics": [],
           "refs": [
-            "1 Pet 1:10"
+            "1 Pet 1:18"
           ]
         },
         {
-          "verse": 11,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 19,
+          "subtopics": [],
           "refs": [
-            "1 Pet 1:11"
+            "1 Pet 1:19"
           ]
         },
         {
-          "verse": 12,
-          "subtopics": [
-            "The mystery of Christ revealed according to the Scriptures"
-          ],
+          "verse": 20,
+          "subtopics": [],
           "refs": [
-            "1 Pet 1:12"
+            "1 Pet 1:20"
+          ]
+        },
+        {
+          "verse": 21,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 1:21"
+          ]
+        },
+        {
+          "verse": 22,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 1:22"
+          ]
+        },
+        {
+          "verse": 23,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 1:23"
+          ]
+        },
+        {
+          "verse": 24,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 1:24"
+          ]
+        },
+        {
+          "verse": 25,
+          "subtopics": [],
+          "refs": [
+            "1 Pet 1:25"
           ]
         }
       ]
     },
     "books": [
-      "1CO",
       "1PE",
-      "ACT",
+      "1TI",
+      "2CO",
+      "GEN",
+      "HAB",
+      "HEB",
+      "ISA",
+      "JER",
       "JHN",
-      "LUK",
+      "NAM",
+      "PHP",
+      "PRO",
+      "PSA",
       "ROM"
     ]
   },
@@ -26873,6 +32823,250 @@
       "LUK",
       "MAT",
       "MRK"
+    ]
+  },
+  "Wrath of God": {
+    "name": "Wrath of God",
+    "references": {
+      "ISA": [
+        {
+          "verse": 261,
+          "subtopics": [],
+          "refs": [
+            "Isa 13:9"
+          ]
+        },
+        {
+          "verse": 262,
+          "subtopics": [],
+          "refs": [
+            "Isa 13:10"
+          ]
+        },
+        {
+          "verse": 263,
+          "subtopics": [],
+          "refs": [
+            "Isa 13:11"
+          ]
+        }
+      ],
+      "ZEP": [
+        {
+          "verse": 14,
+          "subtopics": [],
+          "refs": [
+            "Zeph 1:14"
+          ]
+        },
+        {
+          "verse": 15,
+          "subtopics": [],
+          "refs": [
+            "Zeph 1:15"
+          ]
+        },
+        {
+          "verse": 16,
+          "subtopics": [],
+          "refs": [
+            "Zeph 1:16"
+          ]
+        },
+        {
+          "verse": 17,
+          "subtopics": [],
+          "refs": [
+            "Zeph 1:17"
+          ]
+        },
+        {
+          "verse": 18,
+          "subtopics": [],
+          "refs": [
+            "Zeph 1:18"
+          ]
+        }
+      ],
+      "JHN": [
+        {
+          "verse": 112,
+          "subtopics": [],
+          "refs": [
+            "John 3:36"
+          ]
+        }
+      ],
+      "ROM": [
+        {
+          "verse": 18,
+          "subtopics": [],
+          "refs": [
+            "Rom 1:18"
+          ]
+        },
+        {
+          "verse": 37,
+          "subtopics": [],
+          "refs": [
+            "Rom 2:5"
+          ]
+        },
+        {
+          "verse": 40,
+          "subtopics": [],
+          "refs": [
+            "Rom 2:8"
+          ]
+        },
+        {
+          "verse": 66,
+          "subtopics": [],
+          "refs": [
+            "Rom 3:5"
+          ]
+        },
+        {
+          "verse": 107,
+          "subtopics": [],
+          "refs": [
+            "Rom 4:15"
+          ]
+        },
+        {
+          "verse": 126,
+          "subtopics": [],
+          "refs": [
+            "Rom 5:9"
+          ]
+        },
+        {
+          "verse": 334,
+          "subtopics": [],
+          "refs": [
+            "Rom 12:19"
+          ]
+        }
+      ],
+      "EPH": [
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "Eph 2:3"
+          ]
+        },
+        {
+          "verse": 104,
+          "subtopics": [],
+          "refs": [
+            "Eph 5:6"
+          ]
+        }
+      ],
+      "COL": [
+        {
+          "verse": 58,
+          "subtopics": [],
+          "refs": [
+            "Col 3:6"
+          ]
+        }
+      ],
+      "1TH": [
+        {
+          "verse": 10,
+          "subtopics": [],
+          "refs": [
+            "1 Thess 1:10"
+          ]
+        },
+        {
+          "verse": 26,
+          "subtopics": [],
+          "refs": [
+            "1 Thess 2:16"
+          ]
+        },
+        {
+          "verse": 70,
+          "subtopics": [],
+          "refs": [
+            "1 Thess 5:9"
+          ]
+        }
+      ],
+      "HEB": [
+        {
+          "verse": 197,
+          "subtopics": [],
+          "refs": [
+            "Heb 10:27"
+          ]
+        },
+        {
+          "verse": 278,
+          "subtopics": [],
+          "refs": [
+            "Heb 12:29"
+          ]
+        }
+      ],
+      "REV": [
+        {
+          "verse": 112,
+          "subtopics": [],
+          "refs": [
+            "Rev 6:16"
+          ]
+        },
+        {
+          "verse": 113,
+          "subtopics": [],
+          "refs": [
+            "Rev 6:17"
+          ]
+        },
+        {
+          "verse": 193,
+          "subtopics": [],
+          "refs": [
+            "Rev 11:18"
+          ]
+        },
+        {
+          "verse": 239,
+          "subtopics": [],
+          "refs": [
+            "Rev 14:10"
+          ]
+        },
+        {
+          "verse": 258,
+          "subtopics": [],
+          "refs": [
+            "Rev 16:1"
+          ]
+        },
+        {
+          "verse": 335,
+          "subtopics": [],
+          "refs": [
+            "Rev 19:15"
+          ]
+        }
+      ]
+    },
+    "books": [
+      "1TH",
+      "COL",
+      "EPH",
+      "HEB",
+      "ISA",
+      "JHN",
+      "REV",
+      "ROM",
+      "ZEP"
     ]
   }
 }

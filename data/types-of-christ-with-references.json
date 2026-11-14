@@ -2229,6 +2229,16 @@
       ],
       "MRK": [
         {
+          "verse": 562,
+          "subtopics": [
+            "Shepherd",
+            "Jesus fulfills the type"
+          ],
+          "refs": [
+            "Mark 14:27"
+          ]
+        },
+        {
           "verse": 619,
           "subtopics": [
             "Innocent. Hated without cause",
@@ -2490,6 +2500,26 @@
           ],
           "refs": [
             "Zech 11:13"
+          ]
+        },
+        {
+          "verse": 187,
+          "subtopics": [
+            "Shepherd",
+            "Jesus fulfills the type"
+          ],
+          "refs": [
+            "Zech 13:6"
+          ]
+        },
+        {
+          "verse": 188,
+          "subtopics": [
+            "Shepherd",
+            "Jesus fulfills the type"
+          ],
+          "refs": [
+            "Zech 13:7"
           ]
         }
       ]
