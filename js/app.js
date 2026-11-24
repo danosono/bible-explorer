@@ -128,6 +128,34 @@ const FALLBACK_NAV_TOPIC = "Love";
 const FALLBACK_NAV_BOOK = "JHN";
 const STORED_TOPIC_KEY = "bibleExplorerTopic";
 const STORED_DATASET_KEY = "bibleExplorerDatasetMode";
+// Verses state: "subtopic" (default - verses grouped under their subtopic,
+// Bible order within each group) or "bible" (one flat Genesis -> Revelation
+// list). Only matters for topics that have subtopics and no single subtopic
+// selected; a per-viewer preference, so it lives in localStorage, not the URL.
+const STORED_VERSES_SORT_KEY = "bibleExplorerVersesSort";
+// Set the first time the Verses state is opened with a topic. Until then the
+// "Read all N verses" button on the Bible view pulses and the Verses entry in
+// the state switcher carries a dot, so a first-time visitor doesn't leave
+// without ever finding the reading list.
+const STORED_VERSES_VISITED_KEY = "bibleExplorerVersesVisited";
+const readStoredFlag = (key) => {
+  try {
+    return localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+};
+const writeStoredFlag = (key, value) => {
+  try {
+    localStorage.setItem(key, value);
+  } catch (error) {
+    /* private mode / blocked storage - preference just won't persist */
+  }
+};
+let versesSortMode = readStoredFlag(STORED_VERSES_SORT_KEY) === "bible" ? "bible" : "subtopic";
+if (!readStoredFlag(STORED_VERSES_VISITED_KEY)) {
+  document.body.classList.add("verses-unvisited");
+}
 const topicsIndex = new Map();
 let allTopicNames = [];
 // Only populated for datasets with `defaultSuggestionsBy: "popularity"` - the
@@ -1242,7 +1270,11 @@ const getSubtopicSuggestionsList = () => document.getElementById("topic-subtopic
 
 const hideSubtopicSuggestions = () => {
   const list = getSubtopicSuggestionsList();
-  if (list) list.hidden = true;
+  if (list && !list.hidden) {
+    list.hidden = true;
+    // Same stranded-tooltip case as hideTopicSuggestions.
+    hideTooltip();
+  }
   if (topicSubtopicToggleBtn) topicSubtopicToggleBtn.setAttribute("aria-expanded", "false");
 };
 
@@ -1474,7 +1506,15 @@ const fitTextToWidth = (el, { minScale = 0.6 } = {}) => {
   if (nextSibling) {
     for (let attempt = 0; attempt < 10; attempt += 1) {
       const elRect = el.getBoundingClientRect();
-      const overflowPx = elRect.right - nextSibling.getBoundingClientRect().left;
+      const siblingRect = nextSibling.getBoundingClientRect();
+      // Stacked header (mobile, one grid column): the sibling sits on its
+      // own row below, so there is nothing to overlap - without this the
+      // label was squeezed down to the 20px floor.
+      // A hidden sibling (the Overview's verses button with no topic) has an
+      // all-zero rect, which would read as a huge overlap.
+      if (siblingRect.width === 0 && siblingRect.height === 0) break;
+      if (siblingRect.top >= elRect.bottom) break;
+      const overflowPx = elRect.right - siblingRect.left;
       if (overflowPx <= 0) break;
       const newWidth = elRect.width - overflowPx - 4;
       if (newWidth < 20) {
@@ -1500,7 +1540,99 @@ const fitTextToWidth = (el, { minScale = 0.6 } = {}) => {
   }
 };
 
+// The Bible view's "Read all N verses" button: the one place the pins turn
+// into readable text, so it's offered right where the count is shown. Hidden
+// with no topic (nothing to read). Counts the same subtopic-filtered list
+// the Verses state will actually show.
+const updateVersesCta = () => {
+  const btn = document.getElementById("verses-cta-btn");
+  if (!btn) return;
+  const count = selectedTopic ? getVisibleTopicVerseRefs(selectedTopic).length : 0;
+  btn.hidden = count === 0;
+  if (count > 0) {
+    btn.textContent = count === 1 ? "Read this verse ›" : `Read all ${count.toLocaleString()} verses ›`;
+  }
+};
+
+// Duplicated verbatim from scripts/build-custom-dataset.js (PROOFREAD_SUFFIX):
+// a Custom Dataset topic still awaiting proofreading is published with this
+// suffix on its name.
+const PROOFREAD_SUFFIX = " - not proofread yet";
+
+// Floating "not proofread yet" note for such topics. Lives on <body> above
+// the modal overlays, so it stays put through every state and the About
+// modal, and can be dragged out of the way (position kept for the page
+// load). No close button on purpose: it leaves when the topic does, and
+// says so.
+let proofreadNoticeEl = null;
+let proofreadNoticePos = null; // { left, top } once dragged
+const placeProofreadNotice = () => {
+  if (!proofreadNoticeEl || !proofreadNoticePos) return;
+  const rect = proofreadNoticeEl.getBoundingClientRect();
+  const left = Math.max(4, Math.min(proofreadNoticePos.left, window.innerWidth - rect.width - 4));
+  const top = Math.max(4, Math.min(proofreadNoticePos.top, window.innerHeight - rect.height - 4));
+  proofreadNoticeEl.style.left = `${left}px`;
+  proofreadNoticeEl.style.top = `${top}px`;
+  proofreadNoticeEl.style.right = "auto";
+  proofreadNoticeEl.style.bottom = "auto";
+};
+const updateProofreadNotice = () => {
+  const needed = !!selectedTopic && selectedTopic.endsWith(PROOFREAD_SUFFIX);
+  if (!needed) {
+    if (proofreadNoticeEl) proofreadNoticeEl.hidden = true;
+    return;
+  }
+  if (!proofreadNoticeEl) {
+    const el = document.createElement("div");
+    el.className = "proofread-notice";
+    el.setAttribute("role", "status");
+    el.title = "Drag to move";
+    const grip = document.createElement("span");
+    grip.className = "proofread-notice-grip";
+    grip.setAttribute("aria-hidden", "true");
+    const body = document.createElement("div");
+    const heading = document.createElement("strong");
+    heading.textContent = "Not proofread yet";
+    const text = document.createElement("p");
+    text.textContent =
+      "Just a heads-up that this topic hasn't been proofread. This note goes away when you switch to a regular topic. Drag it anywhere.";
+    body.appendChild(heading);
+    body.appendChild(text);
+    el.appendChild(grip);
+    el.appendChild(body);
+
+    let drag = null;
+    el.addEventListener("pointerdown", (event) => {
+      if (event.button !== undefined && event.button !== 0) return;
+      const rect = el.getBoundingClientRect();
+      drag = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+      el.setPointerCapture(event.pointerId);
+      el.classList.add("is-dragging");
+      event.preventDefault();
+    });
+    el.addEventListener("pointermove", (event) => {
+      if (!drag) return;
+      proofreadNoticePos = { left: event.clientX - drag.dx, top: event.clientY - drag.dy };
+      placeProofreadNotice();
+    });
+    const endDrag = () => {
+      drag = null;
+      el.classList.remove("is-dragging");
+    };
+    el.addEventListener("pointerup", endDrag);
+    el.addEventListener("pointercancel", endDrag);
+    window.addEventListener("resize", placeProofreadNotice);
+
+    document.body.appendChild(el);
+    proofreadNoticeEl = el;
+  }
+  proofreadNoticeEl.hidden = false;
+  placeProofreadNotice();
+};
+
 const updateCurrentTopicLabel = () => {
+  updateVersesCta();
+  updateProofreadNotice();
   if (!currentTopicEl) return;
   const label = getCurrentTopicDisplayText({ includeVerseCount: true });
   currentTopicEl.textContent = label;
@@ -2033,6 +2165,9 @@ const hideTopicSuggestions = () => {
   }
   topicSuggestionNames = [];
   topicSuggestionActiveIndex = -1;
+  // The hovered item is removed without ever getting a mouseleave, so its
+  // truncated-name tooltip (attachTruncatedItemTooltip) would be left behind.
+  hideTooltip();
   if (topicInput) topicInput.setAttribute("aria-expanded", "false");
   if (topicSuggestionsToggleBtn) topicSuggestionsToggleBtn.setAttribute("aria-expanded", "false");
 };
@@ -2156,6 +2291,23 @@ document.querySelectorAll(".mini-state-switcher button").forEach((btn) => {
       setState(targetState);
       closeMobileMenu();
     }
+  });
+});
+
+const versesCtaBtn = document.getElementById("verses-cta-btn");
+if (versesCtaBtn) {
+  versesCtaBtn.addEventListener("click", () => setState(4));
+}
+
+document.querySelectorAll("#verses-sort [data-verses-sort]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    const mode = btn.dataset.versesSort === "bible" ? "bible" : "subtopic";
+    if (mode === versesSortMode) return;
+    versesSortMode = mode;
+    writeStoredFlag(STORED_VERSES_SORT_KEY, mode);
+    renderVersesView(selectedTopic);
+    const listEl = document.getElementById("verses-list");
+    if (listEl) listEl.scrollTop = 0;
   });
 });
 
@@ -3712,8 +3864,10 @@ const renderVersesView = (topic = null) => {
 
   listEl.innerHTML = "";
 
+  const sortEl = document.getElementById("verses-sort");
   const topicData = topic ? topicsData[topic] : null;
   if (!topicData || !topicData.references) {
+    if (sortEl) sortEl.hidden = true;
     countEl.textContent = "";
     metaEl.textContent = topic
       ? "No verses found for this topic."
@@ -3721,24 +3875,48 @@ const renderVersesView = (topic = null) => {
     return;
   }
 
+  if (document.body.classList.contains("verses-unvisited")) {
+    document.body.classList.remove("verses-unvisited");
+    writeStoredFlag(STORED_VERSES_VISITED_KEY, "1");
+  }
+
+  // The sort choice only exists while there is something to group by: the
+  // topic has subtopics and none is selected (a selected subtopic is already
+  // a single group, shown flat in Bible order).
+  const canGroup = subtopicFilterInfo.enabled && !selectedSubtopic;
+  const useGroups = canGroup && versesSortMode === "subtopic";
+  if (sortEl) {
+    sortEl.hidden = !canGroup;
+    sortEl.querySelectorAll("[data-verses-sort]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", btn.dataset.versesSort === versesSortMode ? "true" : "false");
+    });
+  }
+
   const orderedBookIds = getOrderedReferencedBookIds(topic);
   const flatVerses = getVisibleTopicVerseRefs(topic);
   const fragment = document.createDocumentFragment();
-  let totalCount = 0;
-  let currentBookId = null;
+  const totalCount = flatVerses.length;
+  let groupCount = 0;
 
-  flatVerses.forEach((v) => {
-    if (v.bookId !== currentBookId) {
-      currentBookId = v.bookId;
-      const heading = document.createElement("h3");
-      heading.className = "verses-book-heading";
-      heading.textContent = BOOK_NAMES[currentBookId] || currentBookId;
-      fragment.appendChild(heading);
+  const appendHeading = (text, count = null) => {
+    const heading = document.createElement("h3");
+    heading.className = "verses-book-heading";
+    heading.textContent = text;
+    if (count !== null) {
+      heading.classList.add("verses-group-heading");
+      const countSpan = document.createElement("span");
+      countSpan.className = "verses-group-count";
+      countSpan.textContent = String(count);
+      heading.appendChild(countSpan);
     }
+    fragment.appendChild(heading);
+  };
 
-    totalCount += 1;
+  // hiddenNotes: raw subtopic strings already stated by the group heading
+  // above this row, so the row's own note doesn't repeat them.
+  const appendVerse = (v, hiddenNotes = null) => {
     const verseText = getVerseText(v.bookId, v.chapter, v.verse);
-    const subtopicText = v.subtopics.join("; ");
+    const subtopicText = (hiddenNotes ? v.subtopics.filter((raw) => !hiddenNotes.has(raw)) : v.subtopics).join("; ");
 
     const item = document.createElement("div");
     item.className = "verses-list-item";
@@ -3774,14 +3952,64 @@ const renderVersesView = (topic = null) => {
     });
 
     fragment.appendChild(item);
-  });
+  };
+
+  if (useGroups) {
+    // Groups in the subtopic dropdown's own order (most verses first), so
+    // the list and the dropdown read as one index. flatVerses is already in
+    // Bible order, so each bucket is too. A verse tagged with several
+    // subtopics appears under each; one tagged with none that qualifies
+    // (e.g. a Custom Dataset verse with only a one-off note) lands in a
+    // trailing "Other verses" group rather than vanishing.
+    const optionByRaw = new Map();
+    subtopicFilterInfo.options.forEach((option) => {
+      option.rawKeys.forEach((raw) => optionByRaw.set(raw, option));
+    });
+    const buckets = new Map(subtopicFilterInfo.options.map((option) => [option, []]));
+    const ungrouped = [];
+    flatVerses.forEach((v) => {
+      const matched = new Set();
+      v.subtopics.forEach((raw) => {
+        const option = optionByRaw.get(raw);
+        if (option) matched.add(option);
+      });
+      if (matched.size === 0) ungrouped.push(v);
+      matched.forEach((option) => buckets.get(option).push(v));
+    });
+
+    const redundantPrefix = `${topic}: `.toLowerCase();
+    buckets.forEach((verses, option) => {
+      if (verses.length === 0) return;
+      groupCount += 1;
+      const label = option.label.toLowerCase().startsWith(redundantPrefix)
+        ? option.label.slice(redundantPrefix.length)
+        : option.label;
+      appendHeading(label, verses.length);
+      verses.forEach((v) => appendVerse(v, option.rawKeys));
+    });
+    if (ungrouped.length > 0) {
+      appendHeading("Other verses", ungrouped.length);
+      ungrouped.forEach((v) => appendVerse(v));
+    }
+  } else {
+    let currentBookId = null;
+    flatVerses.forEach((v) => {
+      if (v.bookId !== currentBookId) {
+        currentBookId = v.bookId;
+        appendHeading(BOOK_NAMES[currentBookId] || currentBookId);
+      }
+      appendVerse(v);
+    });
+  }
 
   listEl.appendChild(fragment);
 
   const bookCount = orderedBookIds.length;
   if (totalCount > 0) {
     countEl.textContent = `${totalCount} verse${totalCount !== 1 ? "s" : ""}`;
-    metaEl.textContent = `${totalCount} verse${totalCount !== 1 ? "s" : ""} across ${bookCount} book${bookCount !== 1 ? "s" : ""}`;
+    metaEl.textContent = useGroups
+      ? `${totalCount} verse${totalCount !== 1 ? "s" : ""} in ${groupCount} subtopic${groupCount !== 1 ? "s" : ""}`
+      : `${totalCount} verse${totalCount !== 1 ? "s" : ""} across ${bookCount} book${bookCount !== 1 ? "s" : ""}`;
   } else {
     countEl.textContent = "";
     metaEl.textContent = "No verses found for this topic.";
@@ -4603,9 +4831,31 @@ const showAboutModal = () => {
   const content = document.createElement("div");
   content.className = "verse-modal-content verse-modal-content--bio about-modal-content";
 
+  // The "why" before the "what": the one claim the whole Overview map exists
+  // to let someone check for themselves.
+  const lead = document.createElement("div");
+  lead.className = "about-lead";
+  const leadHeadline = document.createElement("p");
+  leadHeadline.className = "about-lead-headline";
+  leadHeadline.textContent = "66 books. 40 authors. 1,400 years. One story.";
+  const leadText = document.createElement("p");
+  leadText.className = "about-lead-text";
+  leadText.textContent =
+    "The God who spoke the world into existence with words, who wrote the code of life into DNA, and who calls Himself the Word is the author of information itself. He moved some 40 writers - shepherds and kings, fishermen and physicians, prophets and prisoners, most of whom never met - across 1,400 years to tell a single story. Pick a topic and watch it surface from Genesis to Revelation.";
+  lead.appendChild(leadHeadline);
+  lead.appendChild(leadText);
+  content.appendChild(lead);
+
+  // The count follows DATASET_CONFIG; the names listed after it are still
+  // written by hand, so a new dataset needs its own mention added below.
+  const datasetCount = Object.keys(DATASET_CONFIG).length;
+  const datasetCountWord =
+    ["zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve"][datasetCount] ||
+    String(datasetCount);
+
   const paragraphs = [
     "Bible Explorer is a visual way to browse Scripture by topic, word, person, place, or prophecy - not just by chapter and verse. Pick a topic and every verse that mentions it lights up across an Overview map of all 66 books; from there, drill into a single Book, read a Chapter in full, or pull up a flat list of every matching Verse.",
-    "Search across eight datasets: Nave's Topics and BSB Topics (classic topical indexes), People and Places (every named person and place in Scripture - click the topic's title, once selected, for a short bio and family details), Prophecy (Old Testament prophecies alongside their New Testament fulfillments), the BSB Concordance (every word, exhaustively), a hand-curated Custom Dataset, and Types of Christ (Old Testament figures who foreshadow Jesus, verse by verse).",
+    `Search across ${datasetCountWord} datasets: Nave's Topics and BSB Topics (classic topical indexes), People and Places (every named person and place in Scripture - click the topic's title, once selected, for a short bio and family details), Prophecy (Old Testament prophecies alongside their New Testament fulfillments), the BSB Concordance (every word, exhaustively), a hand-curated Custom Dataset, and Types of Christ (Old Testament figures who foreshadow Jesus, verse by verse).`,
     "Clicking a Place's info also opens a link to Bible Places, GospelGo's companion map app - a way to see that location plotted on an actual map alongside the rest of its biblical geography."
   ];
   paragraphs.forEach((text) => {
@@ -4628,6 +4878,34 @@ const showAboutModal = () => {
   closingP.append(".");
   content.appendChild(closingP);
 
+  // Navigation that is otherwise invisible: none of these have an on-screen
+  // hint. Every line describes behavior that already exists (history via
+  // syncHistory/popstate, the #topic-input keydown handler, the Verses
+  // state's document keydown handler, the plain-link title) - keep it in
+  // step with those if they change.
+  const tipsSection = document.createElement("div");
+  tipsSection.className = "about-sources";
+  const tipsHeading = document.createElement("p");
+  tipsHeading.className = "about-sources-heading";
+  tipsHeading.textContent = "Getting around";
+  tipsSection.appendChild(tipsHeading);
+  [
+    ["Back and Forward", "every change of topic, subtopic, dataset or view is a step you can retrace. Use your browser's Back and Forward buttons, Alt + Left / Right, the side buttons on your mouse, or the two arrows above the search box."],
+    ["Search box", "click it and start typing. Up / Down move through the suggestions, Enter picks the highlighted one (or the top one), and Esc closes the list."],
+    ["Verses view", "Up / Down and Page Up / Page Down scroll the list. Click any verse to read it in its chapter."],
+    ["Second window", "middle-click or Ctrl + click the Bible Explorer title to open another copy in a new tab."],
+    ["Share", "the link button above the search box copies a link to exactly what you are looking at."]
+  ].forEach(([label, text]) => {
+    const p = document.createElement("p");
+    p.className = "about-source-line";
+    const strong = document.createElement("strong");
+    strong.textContent = `${label}: `;
+    p.appendChild(strong);
+    p.append(text);
+    tipsSection.appendChild(p);
+  });
+  content.appendChild(tipsSection);
+
   // Each dataset's source text, verified against what the parsers actually
   // read/credit rather than assumed - see source/Naves.txt's own CCEL
   // header, the Prophecy docx's file metadata (creator "David Webb"), and
@@ -4641,11 +4919,12 @@ const showAboutModal = () => {
   sourcesSection.appendChild(sourcesHeading);
 
   const sourceLines = [
+    ["Bible text", "the Berean Standard Bible (BSB), used for every verse in the app. The BSB is a public-domain translation produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee (bereanbible.com)."],
     ["Nave's Topics", "Nave's Topical Bible by Orville J. Nave (1897, public domain), via the CCEL plain-text edition."],
-    ["BSB Topics", "the Berean Standard Bible (BSB) Topical Index, itself compiled from Nave's Topical Bible and Torrey's New Topical Textbook. The BSB is a public-domain translation produced in cooperation with Bible Hub, Discovery Bible, unfoldingWord, Bible Aquifer, OpenBible.com, and the Berean Bible Translation Committee (bereanbible.com)."],
+    ["BSB Topics", "the Berean Standard Bible Topical Index, itself compiled from Nave's Topical Bible and Torrey's New Topical Textbook."],
     ["People & Places", "Theographic Bible Metadata (viz.bible), including Easton's Bible Dictionary (1897, public domain) entries for each bio."],
     ["Prophecy", "“351 Old Testament Prophecies Fulfilled in Jesus Christ,” compiled by David Webb."],
-    ["BSB Concordance", "the Berean Standard Bible (BSB) Concordance - see BSB Topics above for the BSB's own translation credit."],
+    ["BSB Concordance", "the Berean Standard Bible Concordance."],
     ["Custom Dataset", "the developer's own study and observations - no external source."],
     ["Types of Christ", "the typology quests of the Gospelgo GoMap game (world.gospelgo.org)."]
   ];

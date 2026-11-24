@@ -79,7 +79,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="css/normalize.css" />
-    <link rel="stylesheet" href="css/style.css?v=18" />
+    <link rel="stylesheet" href="css/style.css?v=23" />
     <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
   </head>
   <body>
@@ -389,9 +389,13 @@
               <div class="state-current-topic" id="current-topic">
                 All topics
               </div>
-              <div class="state-meta">
-                66 Books written by 40 authors over a span of 1400 years
-              </div>
+              <button
+                type="button"
+                class="jump-button verses-cta"
+                id="verses-cta-btn"
+                title="Read every verse for this topic in one list"
+                hidden
+              ></button>
             </div>
             <div class="treemap" id="treemap"></div>
           </div>
@@ -546,6 +550,30 @@
               <div class="state-meta" id="verses-meta">
                 Select a topic to see every verse in Bible order
               </div>
+              <div
+                class="jump-control verses-sort"
+                id="verses-sort"
+                role="group"
+                aria-label="Verse order"
+                hidden
+              >
+                <button
+                  type="button"
+                  class="jump-button"
+                  data-verses-sort="subtopic"
+                  title="Group verses under their subtopics"
+                >
+                  By subtopic
+                </button>
+                <button
+                  type="button"
+                  class="jump-button"
+                  data-verses-sort="bible"
+                  title="One list, Genesis to Revelation"
+                >
+                  Bible order
+                </button>
+              </div>
             </div>
             <div class="reading-container">
               <aside class="reading-sidebar reading-sidebar--left">
@@ -628,6 +656,11 @@
       </section>
       <footer class="footer">
         <div class="legend" id="genre-legend"></div>
+        <span
+          class="footer-tagline"
+          title="66 books written by 40 authors over a span of 1,400 years"
+          >66 books &middot; 40 authors &middot; 1,400 years</span
+        >
         <a
           href="https://berean.bible/"
           target="_blank"
@@ -638,7 +671,7 @@
       </footer>
     </div>
     <script src="js/book-metadata.js?v=1"></script>
-    <script src="js/app.js?v=75"></script>
+    <script src="js/app.js?v=82"></script>
     <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
     <script>
       AOS.init();
