@@ -126,6 +126,14 @@ const BOOK_DISPLAY = {
   "3JN": "3 John", JUD: "Jude", REV: "Rev"
 };
 
+// A topic still awaiting proofreading is marked in source/custom-topics.json
+// by prefixing its name with PROOFREAD_NEEDED ("PROOFREAD_NEEDED Gospel -
+// Suffering Servant"). The marker never reaches the site as-is: the topic is
+// published as "<name> - not proofread yet", and every marked topic is listed
+// at the end of the build output. Delete the prefix once it's proofread.
+const PROOFREAD_MARKER = /^s*PROOFREAD_NEEDED[s:_-]*/i;
+const PROOFREAD_SUFFIX = " - not proofread yet";
+
 const normalizeWhitespace = (value) => String(value || "").replace(/\s+/g, " ").trim();
 
 const resolveBookId = (bookName) => {
@@ -232,9 +240,21 @@ const main = () => {
 
   const result = {};
   const warnings = [];
+  const unproofread = [];
   let verseEntriesAdded = 0;
 
-  Object.entries(source).forEach(([topicName, refLines]) => {
+  Object.entries(source).forEach(([sourceName, refLines]) => {
+    const needsProofread = PROOFREAD_MARKER.test(sourceName);
+    const cleanName = sourceName.replace(PROOFREAD_MARKER, "").trim();
+    const topicName = needsProofread ? `${cleanName}${PROOFREAD_SUFFIX}` : sourceName;
+    if (needsProofread && !cleanName) {
+      warnings.push(`Topic "${sourceName}": no name after the PROOFREAD_NEEDED marker, skipping.`);
+      return;
+    }
+    if (result[topicName]) {
+      warnings.push(`Topic "${sourceName}": published name "${topicName}" duplicates another topic, skipping.`);
+      return;
+    }
     if (!Array.isArray(refLines)) {
       warnings.push(`Topic "${topicName}": expected an array of reference strings, skipping.`);
       return;
@@ -282,6 +302,7 @@ const main = () => {
       references: referenceMaps,
       books
     };
+    if (needsProofread) unproofread.push(cleanName);
   });
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(result, null, 2), "utf8");
@@ -290,6 +311,11 @@ const main = () => {
   if (warnings.length) {
     console.log(`\n${warnings.length} warning(s):`);
     warnings.forEach((w) => console.log(`  - ${w}`));
+  }
+  if (unproofread.length) {
+    console.log(`
+${unproofread.length} topic(s) still marked PROOFREAD_NEEDED (published with "${PROOFREAD_SUFFIX.trim()}"):`);
+    unproofread.forEach((name) => console.log(`  - ${name}`));
   }
 };
 
