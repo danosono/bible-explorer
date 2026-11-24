@@ -779,8 +779,27 @@ body[data-state="4"] .state--read {
 	white-space: nowrap;
 }
 
+/* People/Places: the topic label opens a bio. A dotted underline plus the
+   same info mark the book cards use, so it reads as clickable before anyone
+   hovers it. */
 .state-current-topic--has-bio {
 	cursor: pointer;
+	text-decoration: underline dotted rgba(157, 227, 212, 0.7);
+	text-underline-offset: 0.25em;
+}
+
+.state-current-topic--has-bio::after {
+	content: "\24D8";
+	/* inline-block keeps the label's underline from running under the mark */
+	display: inline-block;
+	margin-left: 0.4em;
+	color: var(--accent-2);
+	letter-spacing: 0;
+}
+
+.state-current-topic--has-bio:focus-visible {
+	outline: 2px solid var(--accent-2);
+	outline-offset: 3px;
 }
 
 .state-current-topic--has-bio:hover {
@@ -1684,6 +1703,13 @@ body[data-state="4"] .state--read {
 	font-size: 0.85em;
 	line-height: 1.5;
 	margin: 0 0 4px;
+}
+
+/* Credit line at the foot of a People/Places bio modal. */
+.topic-bio-source {
+	margin: 8px 0 0;
+	padding-top: 10px;
+	border-top: 1px solid rgba(95, 200, 255, 0.15);
 }
 
 .about-source-line strong {

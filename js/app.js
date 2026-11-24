@@ -1637,8 +1637,12 @@ const updateCurrentTopicLabel = () => {
   const label = getCurrentTopicDisplayText({ includeVerseCount: true });
   currentTopicEl.textContent = label;
   currentTopicEl.title = label;
-  fitTextToWidth(currentTopicEl);
+  // Affordance first: its info badge adds width that the fit must account for.
   applyTopicBioAffordance(currentTopicEl);
+  // The affordance owns the tooltip while there is a bio, and clears it when
+  // one goes away - restore the plain full-label tooltip in that case.
+  if (!currentTopicEl.dataset.bioHint) currentTopicEl.title = label;
+  fitTextToWidth(currentTopicEl);
 };
 
 const getStoredTopic = () => {
@@ -3048,8 +3052,9 @@ const renderBookView = (bookId, topic = null) => {
 
   grid.innerHTML = "";
   topicEl.textContent = getCurrentTopicDisplayText();
-  fitTextToWidth(topicEl);
+  // Affordance first: its info badge adds width that the fit must account for.
   applyTopicBioAffordance(topicEl);
+  fitTextToWidth(topicEl);
 
   const book = bookId ? bibleData[bookId] : null;
   if (!book || !Array.isArray(book.chapters)) {
@@ -3523,8 +3528,9 @@ const renderReadView = (bookId, topic = null) => {
   updateBookGenreFooter(book && Array.isArray(book.chapters) ? bookGenre : null, bookName);
   readTitle.textContent = bookName;
   readTopic.textContent = getCurrentTopicDisplayText();
-  fitTextToWidth(readTopic);
+  // Affordance first: its info badge adds width that the fit must account for.
   applyTopicBioAffordance(readTopic);
+  fitTextToWidth(readTopic);
 
   readingBlock.innerHTML = "";
 
@@ -3857,8 +3863,9 @@ const renderVersesView = (topic = null) => {
   if (!listEl || !topicEl || !countEl || !metaEl) return;
 
   topicEl.textContent = getCurrentTopicDisplayText();
-  fitTextToWidth(topicEl);
+  // Affordance first: its info badge adds width that the fit must account for.
   applyTopicBioAffordance(topicEl);
+  fitTextToWidth(topicEl);
   setSourceLabel("Berean Standard Bible");
   setPinnedLegendGenre(null);
 
@@ -5157,6 +5164,25 @@ const showTopicBioModal = (topicName, bio) => {
     content.appendChild(link);
   }
 
+  // Same credit as the About modal's Sources, shown where the text is read.
+  // `text` is the Easton's entry (see getEastonParagraphs, theographic-
+  // shared.js); dates, family and alternate names are Theographic's own, so
+  // Easton's is only credited when this bio actually carries some.
+  const hasEastonText = (Array.isArray(bio.people) ? bio.people : [bio]).some(
+    (entry) => Array.isArray(entry.text) && entry.text.length > 0
+  );
+  const sourceLine = document.createElement("p");
+  sourceLine.className = "about-source-line topic-bio-source";
+  const sourceLabel = document.createElement("strong");
+  sourceLabel.textContent = "Source: ";
+  sourceLine.appendChild(sourceLabel);
+  sourceLine.append(
+    hasEastonText
+      ? "Easton's Bible Dictionary (1897, public domain) for the description; Theographic Bible Metadata (viz.bible) for the other details."
+      : "Theographic Bible Metadata (viz.bible)."
+  );
+  content.appendChild(sourceLine);
+
   modalContent.appendChild(header);
   modalContent.appendChild(content);
   modal.appendChild(modalContent);
@@ -5177,6 +5203,26 @@ const applyTopicBioAffordance = (el) => {
   const bio = selectedTopic && topicsData[selectedTopic] ? topicsData[selectedTopic].bio : null;
   el.classList.toggle("state-current-topic--has-bio", Boolean(bio));
   el.onclick = bio ? () => showTopicBioModal(selectedTopic, bio) : null;
+  // Make it read (and behave) as a control: the CSS adds a dotted underline
+  // and an info badge, this adds the tooltip, keyboard focus and Enter/Space.
+  if (bio) {
+    el.title = `About ${selectedTopic} - click for details`;
+    el.dataset.bioHint = "1";
+    el.tabIndex = 0;
+    el.setAttribute("role", "button");
+    el.onkeydown = (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        showTopicBioModal(selectedTopic, bio);
+      }
+    };
+  } else if (el.dataset.bioHint) {
+    delete el.dataset.bioHint;
+    el.removeAttribute("title");
+    el.removeAttribute("tabindex");
+    el.removeAttribute("role");
+    el.onkeydown = null;
+  }
 };
 
 const showVerseModal = (bookId, bookName, versePositions, topicName, options = {}) => {

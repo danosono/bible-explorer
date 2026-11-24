@@ -69,7 +69,12 @@ const buildIdNameMap = (recordsJson, field = 'displayTitle') => {
 // A handful of entries carry a literal HTML entity (e.g. "1&nbsp;Corinthians")
 // left over from the source markup - decode the few that actually occur
 // rather than pulling in a full HTML-entity-decoding dependency for this.
+// The same non-breaking space also arrives already mangled into U+FFFD (the
+// "unknown character" diamond) in the source JSON itself - always between a
+// book's number and its name ("1�Chronicles", "2�Samuel"), 105 times
+// across the People entries.
 const decodeStrayEntities = (text) => text
+  .replace(/�/g, ' ')
   .replace(/&nbsp;/g, ' ')
   .replace(/&amp;/g, '&');
 
