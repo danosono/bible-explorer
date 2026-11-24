@@ -1414,7 +1414,6 @@ body[data-state="4"] .state--read {
 	margin-bottom: 1em;
 	position: relative;
 }
-}
 
 .verse-modal-header .book-stats {
 	font-size: clamp(0.75rem, 0.9vw, 1.2rem);
@@ -2454,8 +2453,6 @@ tip.show {
 	position: absolute;
 	right: 1em;
 	bottom: 0.5em;
-}
-}
 }
 .book-citation-icon:hover {
 	opacity: 1;
@@ -3560,5 +3557,72 @@ body[data-state="3"] .legend-genre.active {
 		max-height: 94vh;
 		max-height: 94dvh;
 		border-radius: 10px;
+	}
+}
+
+/* Forced colors (Windows "contrast themes" / Edge high contrast). The
+   browser replaces every background with the theme's canvas color and drops
+   gradients and box-shadows, which erased everything this app draws as a
+   filled shape with no text or border: above all the pin-lines, which are
+   the whole point of the Overview. Repaint those marks in the user's own
+   theme colors (system color keywords) rather than opting them out to our
+   palette, so they stay visible on light and dark contrast themes alike.
+   Emulate with DevTools > Rendering > "forced-colors: active". */
+@media (forced-colors: active) {
+	.pin-line,
+	.chapter-nav-indicator,
+	.chapter-nav-position {
+		forced-color-adjust: none;
+		background: Highlight;
+		box-shadow: none;
+		mix-blend-mode: normal;
+		filter: none;
+	}
+
+	/* Old Testament references keep a second color so OT vs NT still reads. */
+	.pin-line--ot,
+	.chapter-nav-indicator--ot {
+		background: LinkText;
+	}
+
+	.pin-line--mixed,
+	.chapter-nav-indicator--mixed {
+		background: linear-gradient(90deg, LinkText 50%, Highlight 50%);
+	}
+
+	.pin-line:hover {
+		outline: 2px solid CanvasText;
+	}
+
+	.chapter-nav-position {
+		background: CanvasText;
+		border-color: Canvas;
+	}
+
+	/* Verses carrying the current topic (Chapter view) were told apart only
+	   by a tinted background. */
+	.chapter-verse.is-topic {
+		border: 3px solid Highlight;
+	}
+
+	.chapter-verse.is-selected {
+		outline: 3px solid CanvasText;
+		outline-offset: 2px;
+	}
+
+	/* "Which one is on" states that were background-only. */
+	.verses-sort .jump-button[aria-pressed="true"],
+	body[data-state="1"] .mini-state-switcher button[data-state="1"],
+	body[data-state="2"] .mini-state-switcher button[data-state="2"],
+	body[data-state="3"] .mini-state-switcher button[data-state="3"],
+	body[data-state="4"] .mini-state-switcher button[data-state="4"],
+	.topic-suggestion-item.active {
+		forced-color-adjust: none;
+		background: Highlight;
+		color: HighlightText;
+	}
+
+	.verses-book-heading {
+		border-left-color: Highlight;
 	}
 }
